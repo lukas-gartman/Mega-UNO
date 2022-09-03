@@ -1,0 +1,107 @@
+%
+%  Title       :  System design document
+%  Authors     :  Alex Gerdes
+%  Created     :  August 20, 2018
+%
+%  Purpose     :  Template SDD for TDA367/DIT212
+%
+%-------------------------------------------------------------------------------
+
+\documentclass[12pt,a4paper]{scrartcl}
+
+\usepackage[hyphens]{url}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{mathpazo}
+
+\title{System design document for \ldots}
+\author{authors}
+\date{date\\version}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+
+Give an introduction to the document and your application.
+
+\subsection{Definitions, acronyms, and abbreviations}
+
+Definitions etc. probably same as in RAD
+
+
+\section{System architecture}
+
+The most overall, top level description of your application. If your application
+uses multiple components (such as servers, databases, etc.), describe their
+responsibilities here and show how they are dependent on each other and how they
+communicate (which protocols etc.)
+
+You will to describe the `flow' of the application at a high level. What happens
+if the application is started (and later stopped) and what the normal flow of
+operation is. Relate this to the different components (if any) in your
+application.
+
+
+\section{System design}
+
+Draw an UML package diagram for the top level for all components that you have
+identified above (which can be just one if you develop a standalone application).
+Describe the interfaces and dependencies between the packages. Describe how you
+have implemented the MVC design pattern.
+
+Create an UML class diagram for every package. One of the packages will contain
+the model of your application. This will be the design model of your
+application, describe in detail the relation between your domain model and your
+design model. There should be a clear and logical relation between the two. Make
+sure that these models stay in `sync' during the development of your application.
+
+Describe which (if any) design patterns you have used.
+
+The above describes the static design of your application. It may sometimes be
+necessary to describe the \emph{dynamic} design of your application as well. You 
+can use an UML \emph{sequence diagram} to show the different parts of your
+application communicate an in what order.
+
+
+\section{Persistent data management}
+
+If your application makes use of persistent data (for example stores user
+profiles etc.), then explain how you store data (and other resources such as 
+icons, images, audio, etc.). 
+
+
+\section{Quality}
+
+\begin{itemize}
+  \item Describe how you test your application and where to find these tests. If 
+    applicable, give a link to your continuous integration.
+  \item List all known issues.
+  \item Run analytical tools on your software and show the results. Use for example:
+    \begin{itemize}
+      \item Dependencies: \href{http://stan4j.com/}{STAN} or similar.
+      \item Quality tool reports, like \href{http://filehippo.com/download_pmd/}{PMD}.
+    \end{itemize}
+\end{itemize}
+
+NOTE: Each Java, XML, etc. file should have a header comment: Author,
+responsibility, used by ..., uses ..., etc.
+
+
+\subsection{Access control and security}
+
+If you applications has some kind of access control, for example a login, of
+has different user roles (admin, standard, etc.), then explain how you 
+application manages this. 
+
+
+\section{References}
+
+List all references to external tools, platforms, libraries, papers, etc. The
+purpose is that the reader can find additional information quickly and use this
+to understand how your application works.
+
+
+\end{document}
