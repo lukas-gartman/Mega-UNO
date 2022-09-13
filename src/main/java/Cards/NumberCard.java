@@ -3,6 +3,7 @@ package Cards;
 import java.util.Objects;
 
 public class NumberCard implements Card {
+    // type -- type : NumberCard, takeTwo, reverse, ...
     private final Color color;
     private final int value;
 

@@ -7,4 +7,6 @@ public interface Card {
     public int hashCode();
 
     public String toString();
+
+    public boolean canBePlayed(Card c);
 }
