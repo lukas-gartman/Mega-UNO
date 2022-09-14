@@ -2,20 +2,14 @@ package Cards;
 
 import java.util.Objects;
 
-public class NumberCard implements Card {
-    // type -- type : NumberCard, takeTwo, reverse, ...
-    private final Color color;
+public class NumberCard extends AbstractCard {
     private final int value;
 
     public NumberCard(Color color, int value) {
+        super(color, CardType.NUMBERCARD);
         CardValidation.validateColor(color);
         CardValidation.validateNumber(value);
-        this.color = color;
         this.value = value;
-    }
-
-    public Color getColor() {
-        return color;
     }
 
     public int getValue() {
@@ -24,7 +18,7 @@ public class NumberCard implements Card {
 
     @Override
     public int hashCode() {
-        return Objects.hash(color, value);
+        return Objects.hash(this.getColor(), value);
     }
 
     @Override
@@ -32,14 +26,19 @@ public class NumberCard implements Card {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         NumberCard that = (NumberCard) o;
-        return value == that.value && color == that.color;
+        return value == that.value && this.getColor() == that.getColor();
     }
 
     @Override
     public String toString() {
         return "NumberCard{" +
-                "color=" + color +
+                "color=" + super.getColor() +
                 ", value=" + value +
                 '}';
+    }
+
+    @Override
+    public boolean canBePlayed(Card c) {
+        return false;
     }
 }

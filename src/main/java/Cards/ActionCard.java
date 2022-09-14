@@ -2,28 +2,34 @@ package Cards;
 
 import java.util.Objects;
 
-public class ActionCard implements Card {
+public class ActionCard extends AbstractCard {
    // Card reverseCard = new ActionCard(REVERSE, new RerseAction(), blue)
   // Card reverseCard = new ReverseCard(..., blue) --
    private final IAction action;
-   private final Color color;
 
-   public ActionCard(IAction action, Color color) {
+   public ActionCard(IAction action, Color color, CardType type) {
+      super(color, type);
+      CardValidation.validateColor(color);
+      //validate action
+      // check that type and action correlates
       this.action = action;
-      this.color = color;
    }
 
    @Override
    public boolean equals(Object o) {
       if (this == o) return true;
-      if (!(o instanceof ActionCard)) return false;
-      ActionCard that = (ActionCard) o;
-      return action.equals(that.action) && color == that.color;
+      if (!(o instanceof ActionCard that)) return false;
+      return action.equals(that.action) && this.getColor() == that.getColor();
    }
 
    @Override
    public int hashCode() {
-      return Objects.hash(action, color);
+      return Objects.hash(action, this.getColor());
+   }
+
+   @Override
+   public boolean canBePlayed(Card c) {
+      return false;
    }
 
    //public void getAction();
