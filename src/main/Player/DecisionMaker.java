@@ -1,6 +1,6 @@
 package Player;
 
 public interface DecisionMaker {
-    Icard ChooseCard();
+    ICard chooseCard();
     boolean saidUno();
 }

@@ -1,6 +1,7 @@
 package Player;
 
 import java.util.ArrayList;
+import java.util.List;
 
 //
 public abstract class Player {
@@ -10,46 +11,51 @@ public abstract class Player {
     //The entity who makes the decisions
     private DecisionMaker decisionMaker;
     //The hand of the player, has the cards
-    private ArrayList<Icard> hand;
+    private ArrayList<ICard> hand;
 
-     Player(ArrayList<Icard> hand, DecisionMaker decisionMaker) {
+     Player(ArrayList<ICard> hand, DecisionMaker decisionMaker) {
         this.hand = hand;
         this.decisionMaker = decisionMaker;
     }
 
-    boolean isSaidUno() {
+    boolean uno() {
         return saidUno;
     }
 
 
-    ArrayList<Icard> getCards(){
+    ArrayList<ICard> getCards(){
         return copyCards(hand);
     }
-    void addCard(Icard card){
+    void addCard(ICard card){
          hand.add(card.copyCard());
     }
+    void addCards(List<ICard> cards){
+        for (ICard card: cards) {
+            addCard(card);
+        }
+    }
+
 
 
     //To get the card a player wants to play
-    Icard play(Icard topCard){
+    ICard play(ICard topCard){
         saidUno = decisionMaker.saidUno();
         boolean playable = false;
-        Icard selectedCard;
-        selectedCard = decisionMaker.ChooseCard();
+        ICard selectedCard;
+        selectedCard = decisionMaker.chooseCard();
         playable = selectedCard.canBePlayedOn(topCard);
         while(!playable){
-            selectedCard = decisionMaker.ChooseCard();
+            selectedCard = decisionMaker.chooseCard();
             playable = selectedCard.canBePlayedOn(topCard);
             if(playable){
                 playable = hand.remove(selectedCard);
             }
         }
-        hand.remove(selectedCard);
         return selectedCard;
     }
-    private ArrayList<Icard> copyCards(ArrayList<Icard> cards){
-        ArrayList<Icard> copy = new ArrayList<>();
-        for (Icard card: cards) {
+    private ArrayList<ICard> copyCards(ArrayList<ICard> cards){
+        ArrayList<ICard> copy = new ArrayList<>();
+        for (ICard card: cards) {
             copy.add(card.copyCard());
         }
         return copy;
