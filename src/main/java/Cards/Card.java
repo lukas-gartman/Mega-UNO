@@ -9,4 +9,8 @@ public interface Card {
     public String toString();
 
     public boolean canBePlayed(Card c);
+
+    public CardType getType();
+
+    public Color getColor();
 }

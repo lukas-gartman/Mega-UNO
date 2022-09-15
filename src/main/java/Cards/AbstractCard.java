@@ -10,10 +10,12 @@ public abstract class AbstractCard implements Card {
         this.type = type;
     }
 
+    @Override
     public CardType getType() {
         return type;
     }
 
+    @Override
     public Color getColor() {
         return color;
     }

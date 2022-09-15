@@ -29,8 +29,11 @@ public class ActionCard extends AbstractCard {
 
    @Override
    public boolean canBePlayed(Card c) {
-      return false;
+      if (this.getColor() == Color.NONE)
+         return true;
+      else {
+         return this.getColor() == c.getColor() || this.getType() == c.getType();
+      }
    }
-
    //public void getAction();
 }

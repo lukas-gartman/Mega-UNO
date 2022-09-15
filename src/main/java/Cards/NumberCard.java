@@ -37,8 +37,14 @@ public class NumberCard extends AbstractCard {
                 '}';
     }
 
+    // what to do with NONE type?
     @Override
     public boolean canBePlayed(Card c) {
-        return false;
+        return this.getColor() == c.getColor();
     }
+
+    public boolean canBePlayed(NumberCard nc) {
+        return this.getColor() == nc.getColor() || this.value == nc.getValue();
+    }
+
 }
