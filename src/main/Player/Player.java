@@ -1,15 +1,18 @@
 package Player;
+
+import java.util.ArrayList;
+
 //
 public abstract class Player {
 
     //Bool for if the player has said uno this round
     private boolean saidUno = false;
     //The entity who makes the decisions
-    DecisionMaker decisionMaker;
+    private DecisionMaker decisionMaker;
     //The hand of the player, has the cards
-    Ihand hand;
+    private ArrayList<Icard> hand;
 
-     Player(Ihand hand, DecisionMaker decisionMaker) {
+     Player(ArrayList<Icard> hand, DecisionMaker decisionMaker) {
         this.hand = hand;
         this.decisionMaker = decisionMaker;
     }
@@ -19,11 +22,11 @@ public abstract class Player {
     }
 
 
-    Icard[] getCards(){
-        return hand.copyCards(hand.getCards());
+    ArrayList<Icard> getCards(){
+        return copyCards(hand);
     }
-    void addCards(Icard[] cards){
-        hand.addCards(hand.copyCards(cards));
+    void addCard(Icard card){
+         hand.add(card.copyCard());
     }
 
 
@@ -37,10 +40,20 @@ public abstract class Player {
         while(!playable){
             selectedCard = decisionMaker.ChooseCard();
             playable = selectedCard.canBePlayedOn(topCard);
+            if(playable){
+                playable = hand.remove(selectedCard);
+            }
         }
+        hand.remove(selectedCard);
         return selectedCard;
     }
-
+    private ArrayList<Icard> copyCards(ArrayList<Icard> cards){
+        ArrayList<Icard> copy = new ArrayList<>();
+        for (Icard card: cards) {
+            copy.add(card.copyCard());
+        }
+        return copy;
+    }
 
 
 }
