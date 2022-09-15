@@ -10,6 +10,7 @@ public class ActionCard extends AbstractCard {
    public ActionCard(IAction action, Color color, CardType type) {
       super(color, type);
       CardValidation.validateColor(color);
+      CardValidation.validateType(type);
       //validate action
       // check that type and action correlates
       this.action = action;
@@ -28,7 +29,7 @@ public class ActionCard extends AbstractCard {
    }
 
    @Override
-   public boolean canBePlayed(Card c) {
+   public boolean canBePlayed(ICard c) {
       if (this.getColor() == Color.NONE)
          return true;
       else {

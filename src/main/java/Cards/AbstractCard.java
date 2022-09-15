@@ -1,6 +1,6 @@
 package Cards;
 
-public abstract class AbstractCard implements Card {
+public abstract class AbstractCard implements ICard {
 
     private final Color color;
     private final CardType type;
@@ -21,5 +21,5 @@ public abstract class AbstractCard implements Card {
     }
 
     @Override
-    public abstract boolean canBePlayed(Card c);
+    public abstract boolean canBePlayed(ICard c);
 }

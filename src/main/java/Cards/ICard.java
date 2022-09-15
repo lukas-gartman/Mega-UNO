@@ -1,6 +1,6 @@
 package Cards;
 
-public interface Card {
+public interface ICard {
 
     public boolean equals(Object o);
 
@@ -8,7 +8,7 @@ public interface Card {
 
     public String toString();
 
-    public boolean canBePlayed(Card c);
+    public boolean canBePlayed(ICard c);
 
     public CardType getType();
 

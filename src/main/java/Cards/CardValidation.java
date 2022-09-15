@@ -6,9 +6,8 @@ package Cards;
 public class CardValidation {
 
     public static void validateColor(Color color) {
-        if (color == null || !checkColor(color)) {
+        if (color == null || !checkColor(color))
             throw new IllegalArgumentException("Undefined color");
-        }
     }
 
     private static boolean checkColor(Color color) {
@@ -19,9 +18,20 @@ public class CardValidation {
     }
 
     public static void validateNumber(int num) {
-        if (num <= 0 || num > 9) {
+        if (num <= 0 || num > 9)
             throw new IllegalArgumentException("Number out of range");
+    }
+
+    private static boolean checkType(CardType type) {
+        for (CardType ct: CardType.values()) {
+            if (type == ct) return true;
         }
+        return false;
+    }
+
+    public static void validateType(CardType type) {
+        if (type == null || !checkType(type))
+            throw new IllegalArgumentException("Undefined card type");
     }
 
     // public static void validSpecialCard();
