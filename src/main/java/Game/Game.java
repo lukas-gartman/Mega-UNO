@@ -15,7 +15,15 @@ public class Game {
     }
 
     public void play() {
-        players.nextTurn();
+        while (players.playersLeft() > 1) {
 
+            ICard choice = players.currentMakeTurn(top);
+            while(!choice.isPlayable(top)){
+                players.returnCard(choice);
+                choice = players.currentMakeTurn(top);
+            }
+            top = choice;
+            players.nextTurn();
+        }
     }
 }
