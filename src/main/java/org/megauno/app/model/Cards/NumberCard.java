@@ -47,4 +47,10 @@ public class NumberCard extends AbstractCard {
         return this.getColor() == nc.getColor() || this.value == nc.getValue();
     }
 
+    // Shallow copy, no need for deep copy since the attributes are immutable.
+    @Override
+    public ICard copyCard() {
+        return new NumberCard(this.getColor(), this.getValue());
+    }
+
 }
