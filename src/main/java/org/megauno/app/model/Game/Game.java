@@ -1,4 +1,6 @@
-package Game;
+package org.megauno.app.model.Game;
+
+import org.megauno.app.model.Cards.ICard;
 
 public class Game {
     PlayerCircle players;
@@ -18,7 +20,7 @@ public class Game {
         while (players.playersLeft() > 1) {
 
             ICard choice = players.currentMakeTurn(top);
-            while(!choice.isPlayable(top)){
+            while(!choice.canBePlayed(top)){
                 players.returnCard(choice);
                 choice = players.currentMakeTurn(top);
             }

@@ -13,4 +13,6 @@ public interface ICard {
     CardType getType();
 
     Color getColor();
+
+    ICard copyCard();
 }

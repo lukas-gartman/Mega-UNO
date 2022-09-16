@@ -1,5 +1,9 @@
 package org.megauno.app.model;
 
+import org.megauno.app.model.Cards.Color;
+import org.megauno.app.model.Cards.ICard;
+import org.megauno.app.model.Cards.NumberCard;
+
 import java.util.Random;
 import java.util.Stack;
 

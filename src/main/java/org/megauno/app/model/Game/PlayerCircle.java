@@ -1,4 +1,7 @@
-package Game;
+package org.megauno.app.model.Game;
+
+import org.megauno.app.model.Cards.ICard;
+import org.megauno.app.model.Player.Player;
 
 import java.util.List;
 
@@ -8,13 +11,13 @@ public class PlayerCircle {
     private Node head = null;
     private Node tail = null;
     private Node currentPlayer = null;
-    rotation direction;
+    Rotation direction;
 
     private int numPlayers;
 
     public PlayerCircle(List<Player> players){
         // starts with clockwise as default
-        direction = rotation.CLOCKWISE;
+        direction = Rotation.CLOCKWISE;
 
         for (Player p : players) {
             addNode(p);
@@ -50,7 +53,7 @@ public class PlayerCircle {
 
     // Changes currentPlayer to next in line depending on current rotation
     public void nextTurn(){
-        if (direction == rotation.CLOCKWISE) currentPlayer = currentPlayer.nextNode;
+        if (direction == Rotation.CLOCKWISE) currentPlayer = currentPlayer.nextNode;
         else currentPlayer = currentPlayer.previousNode;
     }
 
@@ -59,8 +62,8 @@ public class PlayerCircle {
     }
 
     public void changeRotation(){
-        if (direction == rotation.CLOCKWISE) direction = rotation.ANTICLOCKWISE;
-        else direction = rotation.CLOCKWISE;
+        if (direction == Rotation.CLOCKWISE) direction = Rotation.ANTICLOCKWISE;
+        else direction = Rotation.CLOCKWISE;
     }
 
     public int playersLeft(){
@@ -71,9 +74,4 @@ public class PlayerCircle {
         currentPlayer.returnCard(choice);
     }
 
-}
-
-enum rotation {
-    CLOCKWISE,
-    ANTICLOCKWISE
 }
