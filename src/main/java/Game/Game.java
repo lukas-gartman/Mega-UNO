@@ -1,17 +1,21 @@
 package Game;
 
 public class Game {
-    PlayerCircle enemies;
+    PlayerCircle players;
+    ICard top;
+    // deck
+    // discardPile
 
     public Game(PlayerCircle enemies){
-        this.enemies = enemies;
+        this.players = enemies;
     }
 
-    public void reverseCard(){
-        enemies.changeRotation();
+    public void reverse(){
+        players.changeRotation();
     }
 
-    public void nextPlayer(){
-        enemies.nextPlayer();
+    public void play() {
+        players.nextTurn();
+
     }
 }
