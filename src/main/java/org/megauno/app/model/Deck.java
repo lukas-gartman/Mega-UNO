@@ -1,5 +1,7 @@
 package org.megauno.app.model;
 
+import org.megauno.app.model.Cards.ICard;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
