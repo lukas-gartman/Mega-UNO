@@ -10,7 +10,11 @@ public class Node {
         this.player = p;
     }
 
-    public void play(){
-        player.play();
+    public ICard play(ICard top){
+        return player.play(top);
+    }
+
+    void returnCard(ICard choice){
+        player.addCard(choice);
     }
 }
