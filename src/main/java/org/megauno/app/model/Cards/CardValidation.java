@@ -1,4 +1,4 @@
-package Cards;
+package org.megauno.app.model.Cards;
 
 /**
  * To ensure that the cards created are valid.

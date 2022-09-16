@@ -1,4 +1,4 @@
-package Cards;
+package org.megauno.app.model.Cards;
 
 public abstract class AbstractCard implements ICard {
 
