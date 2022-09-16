@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 //
-public abstract class Player {
+public class Player {
 
     //Bool for if the player has said uno this round
     private boolean saidUno = false;
