@@ -37,4 +37,10 @@ public class ActionCard extends AbstractCard {
       }
    }
    //public void getAction();
+
+   // Shallow copy, no need for deep copy since the attributes are immutable.
+   @Override
+   public ICard copyCard() {
+      return new ActionCard(this.action, this.getColor(), this.getType());
+   }
 }

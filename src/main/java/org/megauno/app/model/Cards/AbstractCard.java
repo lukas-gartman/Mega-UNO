@@ -23,7 +23,5 @@ public abstract class AbstractCard implements ICard {
     @Override
     public abstract boolean canBePlayed(ICard c);
 
-    public ICard copyCard() {
-        return this;
-    }
+    public abstract ICard copyCard();
 }
