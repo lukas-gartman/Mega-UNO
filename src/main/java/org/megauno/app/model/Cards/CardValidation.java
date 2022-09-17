@@ -18,7 +18,7 @@ public class CardValidation {
     }
 
     public static void validateNumber(int num) {
-        if (num <= 0 || num > 9)
+        if (num < 0 || num > 9)
             throw new IllegalArgumentException("Number out of range");
     }
 
