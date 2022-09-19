@@ -8,8 +8,7 @@ public class Game {
     // deck
     // discardPile
 
-    public Game(PlayerCircle enemies){
-        this.players = enemies;
+    public Game(){
     }
 
     public void reverse(){
