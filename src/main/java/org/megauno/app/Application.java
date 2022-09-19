@@ -1,19 +1,21 @@
 package org.megauno.app;
 
+import org.megauno.app.model.Game.Game;
 import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.Gdx;
 
 public class Application extends ApplicationAdapter {
 	ViewController viewController;
+	Game game;
 	
 	@Override
 	public void create () {
-		viewController = new ViewController();
+		game = new Game();
+		viewController = new ViewController(game);
 	}
 
 	@Override
 	public void render () {
-		viewController.draw(Gdx.graphics.getDeltaTime());
+		viewController.draw();
 	}
 	
 	@Override
