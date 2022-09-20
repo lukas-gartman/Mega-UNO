@@ -10,6 +10,11 @@ public class CardValidation {
             throw new IllegalArgumentException("Undefined color");
     }
 
+    public static void validateColorNc(Color color) {
+        if (color == null || color == Color.NONE || !checkColor(color))
+            throw new IllegalArgumentException("Undefined or wrong color");
+    }
+
     private static boolean checkColor(Color color) {
         for (Color c: Color.values()) {
             if (color == c) return true;

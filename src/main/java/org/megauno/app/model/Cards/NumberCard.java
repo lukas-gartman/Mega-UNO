@@ -7,7 +7,7 @@ public class NumberCard extends AbstractCard {
 
     public NumberCard(Color color, int value) {
         super(color, CardType.NUMBERCARD);
-        CardValidation.validateColor(color);
+        CardValidation.validateColorNc(color);
         CardValidation.validateNumber(value);
         this.value = value;
     }
@@ -40,12 +40,19 @@ public class NumberCard extends AbstractCard {
     // what to do with NONE type?
     @Override
     public boolean canBePlayed(ICard c) {
-        return this.getColor() == c.getColor();
+        if (c instanceof NumberCard nc) {
+            return this.getColor() == nc.getColor() || this.value == nc.getValue();
+        }
+        else {
+            return this.getColor() == c.getColor();
+        }
+        //CardUtility.canBePlaced(this, c);
     }
 
+    /*@Override
     public boolean canBePlayed(NumberCard nc) {
         return this.getColor() == nc.getColor() || this.value == nc.getValue();
-    }
+    }*/
 
     // Shallow copy, no need for deep copy since the attributes are immutable.
     @Override
