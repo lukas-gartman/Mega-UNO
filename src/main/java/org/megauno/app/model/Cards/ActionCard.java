@@ -30,11 +30,26 @@ public class ActionCard extends AbstractCard {
 
    @Override
    public boolean canBePlayed(ICard c) {
+      return c.canBePlayedOnMe(this);
+/*
       if (this.getColor() == Color.NONE)
          return true;
       else {
          return this.getColor() == c.getColor() || this.getType() == c.getType();
       }
+*/
+
+   }
+
+   @Override
+   public boolean canBePlayedOnMe(NumberCard c) {
+     return this.getColor() == c.getColor();
+   }
+
+   //This can probably be abstracted in the abstract class
+   @Override
+   public boolean canBePlayedOnMe(ActionCard c) {
+     return c.getColor() == Color.NONE || c.getColor() == this.getColor() || c.getType() == this.getType();
    }
    //public void getAction();
 

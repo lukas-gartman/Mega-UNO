@@ -40,13 +40,28 @@ public class NumberCard extends AbstractCard {
     // what to do with NONE type?
     @Override
     public boolean canBePlayed(ICard c) {
+        return c.canBePlayedOnMe(this);
+
+/*
         if (c instanceof NumberCard nc) {
             return this.getColor() == nc.getColor() || this.value == nc.getValue();
         }
         else {
             return this.getColor() == c.getColor();
         }
+*/
+
         //CardUtility.canBePlaced(this, c);
+    }
+
+    @Override
+    public boolean canBePlayedOnMe(NumberCard c) {
+        return this.getColor() == c.getColor() || this.value == c.getValue();
+    }
+
+    @Override
+    public boolean canBePlayedOnMe(ActionCard c) {
+        return this.getColor() == c.getColor();
     }
 
     /*@Override

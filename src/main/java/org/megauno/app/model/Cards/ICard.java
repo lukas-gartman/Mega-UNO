@@ -10,6 +10,10 @@ public interface ICard {
 
     boolean canBePlayed(ICard c);
 
+    boolean canBePlayedOnMe(NumberCard nc);
+
+    boolean canBePlayedOnMe(ActionCard ac);
+
     CardType getType();
 
     Color getColor();
