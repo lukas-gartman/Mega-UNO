@@ -10,14 +10,21 @@ public class Player {
 
     //Bool for if the player has said uno this round
     private boolean saidUno = false;
-    //The entity who makes the decisions
-    private DecisionMaker decisionMaker;
+
+    private ICard selectedCard;
     //The hand of the player, has the cards
     private ArrayList<ICard> hand;
-
-    Player(ArrayList<ICard> hand, DecisionMaker decisionMaker) {
+    //The selected card
+    Player(ArrayList<ICard> hand) {
         this.hand = hand;
-        this.decisionMaker = decisionMaker;
+    }
+
+    public void selectCard(ICard c){
+        selectedCard = c;
+    }
+
+    public void sayUno(){
+        saidUno = true;
     }
 
     public boolean uno() {
@@ -25,14 +32,10 @@ public class Player {
     }
 
 
+
     public ArrayList<ICard> getCards(){
         return copyCards(hand);
     }
-
-    public int numOfCards(){
-        return hand.size();
-    }
-
     public void addCard(ICard card){
         hand.add(card.copyCard());
     }
@@ -46,18 +49,14 @@ public class Player {
 
     //To get the card a player wants to play
     public ICard play(ICard topCard){
-        saidUno = decisionMaker.saidUno();
-        boolean playable = false;
-        ICard selectedCard;
-        selectedCard = decisionMaker.chooseCard();
-        playable = selectedCard.canBePlayed(topCard);
+        boolean playable = selectedCard.canBePlayed(topCard);
         while(!playable){
-            selectedCard = decisionMaker.chooseCard();
             playable = selectedCard.canBePlayed(topCard);
             if(playable){
                 playable = hand.remove(selectedCard);
             }
         }
+        saidUno = false;
         return selectedCard;
     }
     private ArrayList<ICard> copyCards(ArrayList<ICard> cards){
