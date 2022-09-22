@@ -23,9 +23,14 @@ public class Player {
         selectedCard = c;
     }
 
-    boolean uno() {
+    public void sayUno(){
+        saidUno = true;
+    }
+
+    public boolean uno() {
         return saidUno;
     }
+
 
 
     ArrayList<ICard> getCards(){
@@ -51,6 +56,7 @@ public class Player {
                 playable = hand.remove(selectedCard);
             }
         }
+        saidUno = false;
         return selectedCard;
     }
     private ArrayList<ICard> copyCards(ArrayList<ICard> cards){
