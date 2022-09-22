@@ -20,7 +20,7 @@ public class Player {
         this.decisionMaker = decisionMaker;
     }
 
-    boolean uno() {
+    public boolean uno() {
         return saidUno;
     }
 
