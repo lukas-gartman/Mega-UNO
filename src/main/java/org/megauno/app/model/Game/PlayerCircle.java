@@ -74,7 +74,7 @@ public class PlayerCircle {
         return numPlayers;
     }
 
-    void returnCard(ICard choice){
+    void giveCardToPlayer(ICard choice){
         currentPlayer.giveCardToPlayer(choice);
     }
 
