@@ -25,7 +25,7 @@ public class Game {
             Node current = players.getCurrent();
 
             boolean currentHasOnlyOneCard = current.getPlayer().numOfCards() == 1;
-            // if (currentHasOnlyOneCard) diableUnoButton();
+            // if (currentHasOnlyOneCard) disableUnoButton();
 
             ICard choice = players.currentMakeTurn(top);
             while(!choice.canBePlayed(top)){
