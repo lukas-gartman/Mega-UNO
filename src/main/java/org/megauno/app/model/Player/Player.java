@@ -33,7 +33,7 @@ public class Player {
 
 
 
-    ArrayList<ICard> getCards(){
+    public ArrayList<ICard> getCards(){
         return copyCards(hand);
     }
     public void addCard(ICard card){
