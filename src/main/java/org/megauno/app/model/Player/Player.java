@@ -31,7 +31,9 @@ public class Player {
         return saidUno;
     }
 
-
+    public int numOfCards(){
+        return hand.size();
+    }
 
     public ArrayList<ICard> getCards(){
         return copyCards(hand);
