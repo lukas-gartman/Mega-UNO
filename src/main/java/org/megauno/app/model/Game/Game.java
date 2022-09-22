@@ -45,9 +45,9 @@ public class Game {
                 // if the player only had one card, and never said uno,
                 if (currentHasOnlyOneCard && !current.getPlayer().uno()){
                     //penalise: draw 3 cards.
-                    current.returnCard(deck.drawCard());
-                    current.returnCard(deck.drawCard());
-                    current.returnCard(deck.drawCard());
+                    current.giveCardToPlayer(deck.drawCard());
+                    current.giveCardToPlayer(deck.drawCard());
+                    current.giveCardToPlayer(deck.drawCard());
                 } else {
                     // removes player
                     players.playerFinished(current);

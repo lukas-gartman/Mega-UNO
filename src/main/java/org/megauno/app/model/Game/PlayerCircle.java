@@ -75,7 +75,7 @@ public class PlayerCircle {
     }
 
     void returnCard(ICard choice){
-        currentPlayer.returnCard(choice);
+        currentPlayer.giveCardToPlayer(choice);
     }
 
     Node getCurrent(){
