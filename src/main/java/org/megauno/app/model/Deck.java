@@ -51,7 +51,7 @@ public class Deck implements IDeck {
 
         Random rand = new Random();
         int index = rand.nextInt(cardProbs.size());
-        ICard randomCard = cardProbs.get(index);
+        ICard randomCard = cardProbs.get(index).copyCard();
 
         return randomCard;
     }
