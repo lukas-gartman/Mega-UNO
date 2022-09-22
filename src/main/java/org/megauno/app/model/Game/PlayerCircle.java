@@ -60,6 +60,9 @@ public class PlayerCircle {
         if (direction == Rotation.CLOCKWISE) currentPlayer = currentPlayer.nextNode;
         else currentPlayer = currentPlayer.previousNode;
     }
+    public Player nextPlayer(){
+        return currentPlayer.nextNode.getPlayer();
+    }
 
     public ICard currentMakeTurn(ICard top){
        return currentPlayer.play(top);
