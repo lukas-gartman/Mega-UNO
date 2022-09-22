@@ -26,6 +26,7 @@ public class Game {
 
         if(choice.canBePlayed(top)) {
             // card effects here ....
+            choice.activate();
 
             // change currentPlayer to next in line depending on game direction and position in circle:
             players.nextTurn();
