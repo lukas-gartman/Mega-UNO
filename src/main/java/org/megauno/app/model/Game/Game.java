@@ -4,14 +4,26 @@ import org.megauno.app.model.Cards.ICard;
 import org.megauno.app.model.Deck;
 import org.megauno.app.model.Pile;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Game {
     PlayerCircle players;
     //ICard top;
     Deck deck;
     Pile discarded;
 
-    public Game(){
+    public Game(List<Integer> playerIds, int numCards){
         discarded = new Pile();
+        players = new PlayerCircle();
+
+        for (Integer id : playerIds) {
+            ArrayList<ICard> hand = new ArrayList<ICard>();
+            for (int i = 0; i<numCards;i++){
+                hand.add(deck.drawCard());
+            }
+            players.addNode(id, hand);
+        }
     }
 
 

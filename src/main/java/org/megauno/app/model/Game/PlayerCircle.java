@@ -18,17 +18,15 @@ public class PlayerCircle {
 
     private int numPlayers;
 
-    public PlayerCircle(List<Player> players){
+    public PlayerCircle(){
         // starts with clockwise as default
         direction = Rotation.CLOCKWISE;
         winners = new ArrayList<>();
 
-        for (Player p : players) {
-            addNode(p);
-        }
     }
 
-    private void addNode(Player p) {
+    public void addNode(Integer id, ArrayList<ICard> hand) {
+        Player p = new Player(id, hand);
         Node newNode = new Node(p);
         if (head == null) {
             head = newNode;
