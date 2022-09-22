@@ -1,4 +1,7 @@
-package org.megauno.app.model.Cards;
+package org.megauno.app.model.Cards.Impl;
+
+import org.megauno.app.model.Cards.CardType;
+import org.megauno.app.model.Cards.Color;
 
 /**
  * To ensure that the cards created are valid.

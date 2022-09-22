@@ -1,10 +1,10 @@
-package org.megauno.app.model.Cards;
+package org.megauno.app.model.Cards.Impl;
+
+import org.megauno.app.model.Cards.*;
 
 import java.util.Objects;
 
 public class ActionCard extends AbstractCard {
-   // Card reverseCard = new ActionCard(REVERSE, new RerseAction(), blue)
-  // Card reverseCard = new ReverseCard(..., blue) --
    private final IAction action;
 
    public ActionCard(IAction action, Color color, CardType type) {
@@ -16,6 +16,7 @@ public class ActionCard extends AbstractCard {
       this.action = action;
    }
 
+   //public void getAction();
    @Override
    public boolean equals(Object o) {
       if (this == o) return true;
@@ -29,16 +30,14 @@ public class ActionCard extends AbstractCard {
    }
 
    @Override
-   public boolean canBePlayed(ICard c) {
-      return c.canBePlayedOnMe(this);
-/*
-      if (this.getColor() == Color.NONE)
-         return true;
-      else {
-         return this.getColor() == c.getColor() || this.getType() == c.getType();
-      }
-*/
+   public boolean activate() {
+      return action.execute();
+   }
 
+   @Override
+   public boolean canBePlayed(ICard c) {
+      return c.visit(this);
+      //return c.canBePlayedOnMe(this);
    }
 
    @Override
@@ -51,11 +50,21 @@ public class ActionCard extends AbstractCard {
    public boolean canBePlayedOnMe(ActionCard c) {
      return c.getColor() == Color.NONE || c.getColor() == this.getColor() || c.getType() == this.getType();
    }
-   //public void getAction();
 
    // Shallow copy, no need for deep copy since the attributes are immutable.
    @Override
    public ICard copyCard() {
       return new ActionCard(this.action, this.getColor(), this.getType());
+   }
+
+   // The visit methods checks that the given card can be placed on themselves
+   @Override
+   public boolean visit(ActionCard ac) {
+      return ac.getColor() == Color.NONE || ac.getColor() == this.getColor() || ac.getType() == this.getType();
+   }
+
+   @Override
+   public boolean visit(NumberCard nc) {
+      return this.getColor() == nc.getColor();
    }
 }

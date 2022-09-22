@@ -1,4 +1,7 @@
-package org.megauno.app.model.Cards;
+package org.megauno.app.model.Cards.Impl;
+
+import org.megauno.app.model.Cards.Impl.ActionCard;
+import org.megauno.app.model.Cards.Impl.NumberCard;
 
 public class CardUtility {
     public static boolean canBePlaced(NumberCard currentCard, NumberCard topCard) {

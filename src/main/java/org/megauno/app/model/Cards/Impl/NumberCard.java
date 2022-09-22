@@ -1,4 +1,6 @@
-package org.megauno.app.model.Cards;
+package org.megauno.app.model.Cards.Impl;
+
+import org.megauno.app.model.Cards.*;
 
 import java.util.Objects;
 
@@ -38,20 +40,13 @@ public class NumberCard extends AbstractCard {
     }
 
     // what to do with NONE type?
+    // Why it isn't a good idea to use visitor interface is because Card is both the
+    // acceptor and the visitor, which means that they cannot be under the same interface
+    // and at the same time be under separate interfaces (Visitor, accepter (element))
     @Override
     public boolean canBePlayed(ICard c) {
-        return c.canBePlayedOnMe(this);
-
-/*
-        if (c instanceof NumberCard nc) {
-            return this.getColor() == nc.getColor() || this.value == nc.getValue();
-        }
-        else {
-            return this.getColor() == c.getColor();
-        }
-*/
-
-        //CardUtility.canBePlaced(this, c);
+        return c.visit(this);
+        //return c.canBePlayedOnMe(this);
     }
 
     @Override
@@ -75,4 +70,19 @@ public class NumberCard extends AbstractCard {
         return new NumberCard(this.getColor(), this.getValue());
     }
 
+    // This is equivalent to canBePlayedOnMe
+    @Override
+    public boolean visit(ActionCard ac) {
+        return this.getColor() == ac.getColor();
+    }
+
+    @Override
+    public boolean visit(NumberCard nc) {
+        return this.getColor() == nc.getColor() || this.value == nc.getValue();
+    }
+
+    @Override
+    public boolean activate() {
+        return true;
+    }
 }

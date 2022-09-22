@@ -1,6 +1,9 @@
 package org.megauno.app.model.Cards;
 
-public interface ICard {
+import org.megauno.app.model.Cards.Impl.ActionCard;
+import org.megauno.app.model.Cards.Impl.NumberCard;
+
+public interface ICard extends ICardVisitor {
 
     boolean equals(Object o);
 
@@ -8,7 +11,7 @@ public interface ICard {
 
     String toString();
 
-    boolean canBePlayed(ICard c);
+    boolean canBePlayed(ICard c); // This is the "accept" method
 
     boolean canBePlayedOnMe(NumberCard nc);
 
@@ -19,4 +22,6 @@ public interface ICard {
     Color getColor();
 
     ICard copyCard();
+
+    boolean activate();
 }
