@@ -3,6 +3,7 @@ package org.megauno.app.model.Game;
 import org.megauno.app.model.Cards.ICard;
 import org.megauno.app.model.Player.Player;
 
+import java.util.ArrayList;
 import java.util.List;
 
 // Circular doubly linked list to keep track of players and turns
@@ -13,11 +14,14 @@ public class PlayerCircle {
     private Node currentPlayer = null;
     Rotation direction;
 
+    public List<Player> winners;
+
     private int numPlayers;
 
     public PlayerCircle(List<Player> players){
         // starts with clockwise as default
         direction = Rotation.CLOCKWISE;
+        winners = new ArrayList<>();
 
         for (Player p : players) {
             addNode(p);
@@ -70,8 +74,21 @@ public class PlayerCircle {
         return numPlayers;
     }
 
-    void returnCard(ICard choice){
-        currentPlayer.returnCard(choice);
+    void giveCardToPlayer(ICard choice){
+        currentPlayer.giveCardToPlayer(choice);
+    }
+
+    Node getCurrent(){
+        return currentPlayer;
+    }
+
+    boolean playerOutOfCards(Node n){
+        return n.getPlayer().numOfCards() == 0;
+    }
+
+    void playerFinished(Node n){
+        winners.add(n.getPlayer());
+        removeNode(n);
     }
 
 }

@@ -17,7 +17,11 @@ public class Node {
         return player.play(top);
     }
 
-    void returnCard(ICard choice){
+    void giveCardToPlayer(ICard choice){
         player.addCard(choice);
+    }
+
+    Player getPlayer(){
+        return player;
     }
 }
