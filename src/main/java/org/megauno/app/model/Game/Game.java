@@ -11,6 +11,7 @@ public class Game {
     Pile discarded;
 
     public Game(){
+        discarded = new Pile();
     }
 
     public void reverse(){
