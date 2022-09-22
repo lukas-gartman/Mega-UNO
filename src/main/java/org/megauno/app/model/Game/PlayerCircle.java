@@ -81,7 +81,7 @@ public class PlayerCircle {
         currentPlayer.giveCardToPlayer(choice);
     }
 
-    Node getCurrent(){
+    public Node getCurrent(){
         return currentPlayer;
     }
 

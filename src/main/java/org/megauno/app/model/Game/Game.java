@@ -14,9 +14,7 @@ public class Game {
         discarded = new Pile();
     }
 
-    public void reverse(){
-        players.changeRotation();
-    }
+
 
     public void play() {
         ICard top = discarded.getTop();

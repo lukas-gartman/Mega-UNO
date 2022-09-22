@@ -21,7 +21,7 @@ public class Node {
         player.addCard(choice);
     }
 
-    Player getPlayer(){
+    public Player getPlayer(){
         return player;
     }
 }
