@@ -20,4 +20,8 @@ public class Node {
     void returnCard(ICard choice){
         player.addCard(choice);
     }
+
+    Player getPlayer(){
+        return player;
+    }
 }
