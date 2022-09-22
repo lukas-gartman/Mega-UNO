@@ -22,7 +22,9 @@ public class Game {
 
             ICard top = discarded.getTop();
             Node current = players.getCurrent();
-            //boolean currentHasOnlyOneCard;
+
+            boolean currentHasOnlyOneCard = current.getPlayer().numOfCards() == 1;
+            // if (currentHasOnlyOneCard) diableUnoButton();
 
             ICard choice = players.currentMakeTurn(top);
             while(!choice.canBePlayed(top)){
@@ -30,23 +32,25 @@ public class Game {
                 choice = players.currentMakeTurn(top);
             }
 
-            // change to next player:
+            // card effects here ....
+
+            // change currentPlayer to next in line depending on game direction and position in circle:
             players.nextTurn();
 
             // discard played card
             discarded.discard(choice);
 
-            // check if the player is still in the game
+            // check if the player has run out of cards
             if (players.playerOutOfCards(current)){
-                // Check if said uno...
-                //if (currentHasOnlyOneCard && current.getPlayer().uno() || !currentHasOnlyOneCard)
-                if (current.getPlayer().uno()){
-                    players.playerFinished(current);
-                } else {
+                // if the player only had one card, and never said uno,
+                if (currentHasOnlyOneCard && !current.getPlayer().uno()){
                     //penalise: draw 3 cards.
                     current.returnCard(deck.drawCard());
                     current.returnCard(deck.drawCard());
                     current.returnCard(deck.drawCard());
+                } else {
+                    // removes player
+                    players.playerFinished(current);
                 }
             }
         }
