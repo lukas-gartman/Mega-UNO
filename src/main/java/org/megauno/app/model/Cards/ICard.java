@@ -3,7 +3,7 @@ package org.megauno.app.model.Cards;
 import org.megauno.app.model.Cards.Impl.ActionCard;
 import org.megauno.app.model.Cards.Impl.NumberCard;
 
-public interface ICard extends ICardVisitor {
+public interface ICard extends ICardVisitor, ICanBeStackedUnder {
 
     boolean equals(Object o);
 
@@ -24,4 +24,6 @@ public interface ICard extends ICardVisitor {
     ICard copyCard();
 
     boolean activate();
+
+    boolean canBeStacked(ICard c);
 }
