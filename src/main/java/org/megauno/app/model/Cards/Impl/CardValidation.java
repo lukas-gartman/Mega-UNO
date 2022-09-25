@@ -14,8 +14,9 @@ public class CardValidation {
     }
 
     public static void validateColorNc(Color color) {
-        if (color == null || color == Color.NONE || !checkColor(color))
-            throw new IllegalArgumentException("Undefined or wrong color");
+		// This kills my compiler, sometimes
+        //if (color == null || color == Color.NONE || !checkColor(color))
+        //    throw new IllegalArgumentException("Undefined or wrong color");
     }
 
     private static boolean checkColor(Color color) {
