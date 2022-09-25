@@ -67,4 +67,19 @@ public class ActionCard extends AbstractCard {
    public boolean visit(NumberCard nc) {
       return this.getColor() == nc.getColor();
    }
+
+   @Override
+   public boolean canBeStacked(ICard c) {
+      return c.canBeStackedUnder(this);
+   }
+
+   @Override
+   public boolean canBeStackedUnder(ActionCard ac) {
+      return ac.action == this.action;
+   }
+
+   @Override
+   public boolean canBeStackedUnder(NumberCard nc) {
+      return false;
+   }
 }
