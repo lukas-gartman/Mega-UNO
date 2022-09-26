@@ -85,4 +85,24 @@ public class NumberCard extends AbstractCard {
     public boolean activate() {
         return true;
     }
+
+
+
+
+
+
+    @Override
+    public boolean canBeStacked(ICard c) {
+        return c.canBeStackedUnder(this);
+    }
+
+    @Override
+    public boolean canBeStackedUnder(ActionCard ac) {
+        return false;
+    }
+
+    @Override
+    public boolean canBeStackedUnder(NumberCard nc) {
+        return nc.getValue() == this.getValue();
+    }
 }
