@@ -13,7 +13,7 @@ public class Player {
 
     private List<ICard> selectedCards = new ArrayList<>();
     //The hand of the player, has the cards
-    private List<ICard> hand = new ArrayList<>();
+    private List<ICard> hand;
     //The selected card
     Player(ArrayList<ICard> hand) {
         this.hand = hand;
@@ -58,12 +58,21 @@ public class Player {
             addCard(card);
         }
     }
+    private void removeSelectedCardsFromHand(){
+        for (ICard c: selectedCards) {
+            hand.remove(c);
+        }
+    }
 
 
 
     //To get the card a player wants to play
     public List<ICard> play(){
-        return copyCards(selectedCards);
+        saidUno = false;
+        removeSelectedCardsFromHand();
+        List<ICard> out = copyCards(selectedCards);
+        discardAllSelectedCards();
+        return out;
     }
 
     private List<ICard> copyCards(List<ICard> cards){
