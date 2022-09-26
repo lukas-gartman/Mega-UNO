@@ -1,4 +1,7 @@
-package org.megauno.app.model.Cards;
+package org.megauno.app.model.Cards.Impl;
+
+import org.megauno.app.model.Cards.CardType;
+import org.megauno.app.model.Cards.Color;
 
 /**
  * To ensure that the cards created are valid.
@@ -8,6 +11,11 @@ public class CardValidation {
     public static void validateColor(Color color) {
         if (color == null || !checkColor(color))
             throw new IllegalArgumentException("Undefined color");
+    }
+
+    public static void validateColorNc(Color color) {
+        if (color == null || color == Color.NONE || !checkColor(color))
+            throw new IllegalArgumentException("Undefined or wrong color");
     }
 
     private static boolean checkColor(Color color) {

@@ -1,5 +1,8 @@
 package org.megauno.app.model.Cards;
 
+import org.megauno.app.model.Cards.Impl.ActionCard;
+import org.megauno.app.model.Cards.Impl.NumberCard;
+
 public abstract class AbstractCard implements ICard {
 
     private final Color color;
@@ -23,5 +26,20 @@ public abstract class AbstractCard implements ICard {
     @Override
     public abstract boolean canBePlayed(ICard c);
 
+    @Override
+    public abstract boolean canBePlayedOnMe(NumberCard c);
+
+    @Override
+    public abstract boolean canBePlayedOnMe(ActionCard ac);
+
     public abstract ICard copyCard();
+
+    @Override
+    public abstract boolean visit(ActionCard ac);
+
+    @Override
+    public abstract boolean visit(NumberCard nc);
+
+    @Override
+    public abstract boolean activate();
 }

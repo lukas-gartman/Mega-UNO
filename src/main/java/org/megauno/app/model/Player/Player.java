@@ -10,22 +10,42 @@ public class Player {
 
     //Bool for if the player has said uno this round
     private boolean saidUno = false;
-    //The entity who makes the decisions
-    private DecisionMaker decisionMaker;
-    //The hand of the player, has the cards
-    private ArrayList<ICard> hand;
 
-    Player(ArrayList<ICard> hand, DecisionMaker decisionMaker) {
-        this.hand = hand;
-        this.decisionMaker = decisionMaker;
+    private List<ICard> selectedCards = new ArrayList<>();
+    //The hand of the player, has the cards
+    private List<ICard> hand;
+    //The selected card
+
+    Player() {
+        this.hand = new ArrayList<>();
     }
 
-    boolean uno() {
+    public void selectCard(ICard c){
+        if (hand.contains(c)) {
+            selectedCards.add(c);
+        }
+    }
+    public void unSelectCard(ICard c){
+        selectedCards.remove(c);
+    }
+    public void discardAllSelectedCards(){
+        selectedCards = new ArrayList<>();
+    }
+
+
+    public void sayUno(){
+        saidUno = true;
+    }
+
+    public boolean uno() {
         return saidUno;
     }
 
+    public int numOfCards(){
+        return hand.size();
+    }
 
-    ArrayList<ICard> getCards(){
+    public List<ICard> getCards(){
         return copyCards(hand);
     }
     public void addCard(ICard card){
@@ -36,27 +56,25 @@ public class Player {
             addCard(card);
         }
     }
+    private void removeSelectedCardsFromHand(){
+        for (ICard c: selectedCards) {
+            hand.remove(c);
+        }
+    }
 
 
 
     //To get the card a player wants to play
-    public ICard play(ICard topCard){
-        saidUno = decisionMaker.saidUno();
-        boolean playable = false;
-        ICard selectedCard;
-        selectedCard = decisionMaker.chooseCard();
-        playable = selectedCard.canBePlayed(topCard);
-        while(!playable){
-            selectedCard = decisionMaker.chooseCard();
-            playable = selectedCard.canBePlayed(topCard);
-            if(playable){
-                playable = hand.remove(selectedCard);
-            }
-        }
-        return selectedCard;
+    public List<ICard> play(){
+        saidUno = false;
+        removeSelectedCardsFromHand();
+        List<ICard> out = copyCards(selectedCards);
+        discardAllSelectedCards();
+        return out;
     }
-    private ArrayList<ICard> copyCards(ArrayList<ICard> cards){
-        ArrayList<ICard> copy = new ArrayList<>();
+
+    private List<ICard> copyCards(List<ICard> cards){
+        List<ICard> copy = new ArrayList<>();
         for (ICard card: cards) {
             copy.add(card.copyCard());
         }

@@ -4,4 +4,5 @@ public enum CardType {
     NUMBERCARD,
     REVERSECARD,
     WILDCARD,
+    TAKETWO,
     }
