@@ -61,7 +61,7 @@ public class PlayerCircle {
         else currentPlayer = currentPlayer.previousNode;
     }
 
-    public ICard currentMakeTurn(ICard top){
+    public List<ICard> currentMakeTurn(ICard top){
        return currentPlayer.play(top);
     }
 
