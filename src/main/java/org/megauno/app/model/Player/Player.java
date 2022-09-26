@@ -11,12 +11,15 @@ public class Player {
     //Bool for if the player has said uno this round
     private boolean saidUno = false;
 
-    private List<ICard> selectedCards;
+    private List<ICard> selectedCards = new ArrayList<>();
     //The hand of the player, has the cards
-    private ArrayList<ICard> hand = new ArrayList<>();
+    private List<ICard> hand = new ArrayList<>();
     //The selected card
     Player(ArrayList<ICard> hand) {
         this.hand = hand;
+    }
+    Player() {
+        this.hand = new ArrayList<>();
     }
 
     public void selectCard(ICard c){
@@ -26,6 +29,9 @@ public class Player {
     }
     public void unSelectCard(ICard c){
         selectedCards.remove(c);
+    }
+    public void discardAllSelectedCards(){
+        selectedCards = new ArrayList<>();
     }
 
 
@@ -59,6 +65,7 @@ public class Player {
     public List<ICard> play(ICard topCard){
         return copyCards(selectedCards);
     }
+
     private List<ICard> copyCards(List<ICard> cards){
         List<ICard> copy = new ArrayList<>();
         for (ICard card: cards) {
