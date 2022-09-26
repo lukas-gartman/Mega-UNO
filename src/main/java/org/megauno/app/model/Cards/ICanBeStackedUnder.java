@@ -10,5 +10,6 @@ public interface ICanBeStackedUnder {
     boolean canBeStackedUnder(ActionCard ac);
 
     boolean canBeStackedUnder(NumberCard nc);
+
 }
 
