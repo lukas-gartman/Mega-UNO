@@ -14,11 +14,21 @@ public class Game {
         discarded = new Pile();
     }
 
+	// TODO: move method to a more general class (general class represinting the model)
+	// commence_forth: set by a controller (or test) to signal that the player has chosen.
+	// tests should remember to call update
+	public boolean commence_forth = false;
+	public void update() {
+		if (commence_forth) {
+			try_play();
+		}
+	}
+
     public void reverse(){
         players.changeRotation();
     }
 
-    public void play() {
+    public void try_play() {
         ICard top = discarded.getTop();
         Node current = players.getCurrent();
         ICard choice = players.currentMakeTurn(top);

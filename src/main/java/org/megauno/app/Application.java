@@ -16,6 +16,7 @@ public class Application extends ApplicationAdapter {
 	@Override
 	public void render () {
 		viewController.draw();
+		game.update();
 	}
 	
 	@Override
