@@ -15,8 +15,8 @@ public class Node {
         this.player = p;
     }
 
-    public List<ICard> play(ICard top){
-        return player.play(top);
+    public List<ICard> play(){
+        return player.play();
     }
 
     void giveCardToPlayer(ICard choice){

@@ -38,7 +38,7 @@ public class Game {
     public void play() {
         ICard top = discarded.getTop();
         Node current = players.getCurrent();
-        List<ICard> choices = players.currentMakeTurn(top);
+        List<ICard> choices = players.currentMakeTurn();
         boolean currentHasOnlyOneCard = current.getPlayer().numOfCards() == 1;
 
         if(validPlayedCards(choices)) {

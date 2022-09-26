@@ -62,7 +62,7 @@ public class Player {
 
 
     //To get the card a player wants to play
-    public List<ICard> play(ICard topCard){
+    public List<ICard> play(){
         return copyCards(selectedCards);
     }
 
