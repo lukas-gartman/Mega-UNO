@@ -9,29 +9,26 @@ import java.util.List;
 
 public class Game {
     PlayerCircle players;
-    //ICard top;
     Deck deck;
     Pile discarded;
 
-    public Game(List<Integer> playerIds, int numCards){
+    public Game(PlayerCircle players, int numCards){
         discarded = new Pile();
-        players = new PlayerCircle();
+        this.players = players;
 
-        for (Integer id : playerIds) {
-            ArrayList<ICard> hand = new ArrayList<ICard>();
-            for (int i = 0; i<numCards;i++){
-                hand.add(deck.drawCard());
-            }
-            players.addNode(id, hand);
+        int p = 0;
+        while(p < players.playersLeft()*numCards) {
+            players.getCurrent().giveCardToPlayer(deck.drawCard());
+            players.nextPlayer();
+            p++;
         }
     }
-
-
 
     public void play() {
         ICard top = discarded.getTop();
         Node current = players.getCurrent();
         ICard choice = players.currentMakeTurn(top);
+
         boolean currentHasOnlyOneCard = current.getPlayer().numOfCards() == 1;
 
         if(choice.canBePlayed(top)) {
