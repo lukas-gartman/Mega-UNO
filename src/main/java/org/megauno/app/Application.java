@@ -11,7 +11,7 @@ public class Application extends ApplicationAdapter {
 	
 	@Override
 	public void create () {
-		viewController = new ViewController(game);
+		//viewController = new ViewController(game);
 		Publisher<Game> publisher = new Publisher<>();
 		publisher.addSubscriber(viewController);
 		game = new Game(publisher);
@@ -20,16 +20,16 @@ public class Application extends ApplicationAdapter {
 	@Override
 	public void resize (int width, int height) {
 		// See below for what true means.
-		viewController.resize(width, height);
+		//viewController.resize(width, height);
 	}
 	@Override
 	public void render () {
-		viewController.draw();
+		//viewController.draw();
 	}
 	
 	@Override
 	public void dispose () {
-		viewController.teardown();
+		//viewController.teardown();
 	}
 
 	public static void testFunc () {

@@ -9,7 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveByAction;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
+
 import org.lwjgl.opengl.GL20;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -21,23 +21,26 @@ import org.megauno.app.viewcontroller.DataFetching.SpriteLoader;
 
 // The outer class managing views and controllers
 public class ViewController implements Subscriber<Game> {
-	private Game game;
-	private Stage stage;
+	private IGame game;
 
-	public ViewController(Game game) {
+	private Stage gameStage;
+	private Stage lobbyStage;
+
+	// TODO: have empty constructor, get IGame from either controller (client)
+	// or "Lobby" object of model (server) (subscribe to an event of "GameStarting")
+	public ViewController(IGame game) {
 		this.game = game;
-		stage = new Stage(new ScreenViewport());
-		Gdx.input.setInputProcessor(stage); // The app's input processor is our stage
-		DummyActor dummyActor = new DummyActor();
-		stage.addActor(dummyActor);
-		stage.setKeyboardFocus(dummyActor);
-		// TODO: keyboard focus
+		//gameStage = new GameView(game);
+		//Gdx.input.setInputProcessor(stage); // The app's input processor is our stage
+		//DummyActor dummyActor = new DummyActor();
+		//stage.addActor(dummyActor);
+		//stage.setKeyboardFocus(dummyActor);
 	}
 
 	// Necessary call from top level window handler (Application),
 	// viewport of stage cannot handle this itself.
 	public void resize(int width, int height) {
-		stage.getViewport().update(width, height, true);
+		//stage.getViewport().update(width, height, true);
 	}
 
 	// NOTE: the Application is supposed to call this every frame
@@ -45,8 +48,8 @@ public class ViewController implements Subscriber<Game> {
 	public void draw() {
 		// Clear screen
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		stage.act(Gdx.graphics.getDeltaTime());
-		stage.draw();
+		//stage.act(Gdx.graphics.getDeltaTime());
+		//stage.draw();
 	}
 
 	// NOTE: called by Application
@@ -56,7 +59,7 @@ public class ViewController implements Subscriber<Game> {
 
 	@Override
 	public void delivery(Game game) {
-		this.game = game;
+		//this.game = game;
 		//TODO update view state
 	}
 
