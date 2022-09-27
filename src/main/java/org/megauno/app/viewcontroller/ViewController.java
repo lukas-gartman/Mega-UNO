@@ -1,9 +1,6 @@
 package org.megauno.app.viewcontroller;
 
 import org.megauno.app.model.Game.Game;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -19,6 +16,8 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import org.megauno.app.utility.ObserverPattern.Subscriber;
+import org.megauno.app.viewcontroller.DataFetching.FontLoader;
+import org.megauno.app.viewcontroller.DataFetching.SpriteLoader;
 
 // The outer class managing views and controllers
 public class ViewController implements Subscriber<Game> {
@@ -62,8 +61,9 @@ public class ViewController implements Subscriber<Game> {
 	}
 
 	public class DummyActor extends Actor {
-		static Sprite sprite = new Sprite(new Texture("yay.jpg"));
-		static BitmapFont fnt = new BitmapFont(Gdx.files.internal("assets/minecraft.fnt"));
+		static Sprite sprite = new SpriteLoader().getData("yay.jpg");
+		static BitmapFont fnt = new FontLoader("assets/").getDataFromPath("assets/minecraft.fnt");
+
 
 		public DummyActor() {
 			setBounds(sprite.getX(), sprite.getY(), sprite.getWidth(), sprite.getHeight());
