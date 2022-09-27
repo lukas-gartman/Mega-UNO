@@ -1,5 +1,6 @@
 package org.megauno.app;
 
+import org.megauno.app.utility.ObserverPattern.Publisher;
 import org.megauno.app.viewcontroller.*;
 import org.megauno.app.model.Game.Game;
 import com.badlogic.gdx.ApplicationAdapter;
@@ -10,8 +11,10 @@ public class Application extends ApplicationAdapter {
 	
 	@Override
 	public void create () {
-		game = new Game();
 		viewController = new ViewController(game);
+		Publisher<Game> publisher = new Publisher<>();
+		publisher.addSubscriber(viewController);
+		game = new Game(publisher);
 	}
 
 	@Override

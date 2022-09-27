@@ -18,9 +18,10 @@ import org.lwjgl.opengl.GL20;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import org.megauno.app.utility.ObserverPattern.Subscriber;
 
 // The outer class managing views and controllers
-public class ViewController {
+public class ViewController implements Subscriber<Game> {
 	private Game game;
 	private Stage stage;
 
@@ -52,6 +53,12 @@ public class ViewController {
 	// NOTE: called by Application
 	// Application is supposed to call this when the game is about to quit
 	public void teardown() {
+	}
+
+	@Override
+	public void delivery(Game game) {
+		this.game = game;
+		//TODO update view state
 	}
 
 	public class DummyActor extends Actor {

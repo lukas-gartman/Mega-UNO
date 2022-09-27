@@ -3,15 +3,18 @@ package org.megauno.app.model.Game;
 import org.megauno.app.model.Cards.ICard;
 import org.megauno.app.model.Deck;
 import org.megauno.app.model.Pile;
+import org.megauno.app.utility.ObserverPattern.Publisher;
 
 public class Game {
+	Publisher<Game> gameChangePublisher;
 	PlayerCircle players;
 	// ICard top;
 	Deck deck;
 	Pile discarded;
 
-	public Game() {
+	public Game(Publisher<Game> publisher) {
 		discarded = new Pile();
+		this.gameChangePublisher = publisher;
 	}
 
 	public void reverse() {
@@ -47,6 +50,8 @@ public class Game {
 					players.playerFinished(current);
 				}
 			}
+
+			gameChangePublisher.publish(this);
 		} else {
 			players.giveCardToPlayer(choice);
 		}
