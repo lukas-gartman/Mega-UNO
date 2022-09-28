@@ -1,8 +1,8 @@
 package org.megauno.app.model;
 
 import org.megauno.app.model.Cards.ICard;
-import org.megauno.app.model.Cards.ActionCard;
-import org.megauno.app.model.Cards.NumberCard;
+import org.megauno.app.model.Cards.Impl.ActionCard;
+import org.megauno.app.model.Cards.Impl.NumberCard;
 import org.megauno.app.model.Cards.Color;
 
 import java.util.ArrayList;
