@@ -1,7 +1,4 @@
-package org.megauno.app.viewcontroller.DataFetching;
-
-import org.lwjgl.system.CallbackI;
-import org.megauno.app.viewcontroller.DataFetching.AbstactDataFetcher;
+package org.megauno.app.utility.DataFetching;
 
 import java.util.List;
 

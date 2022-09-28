@@ -2,9 +2,8 @@ package org.megauno.app.viewcontroller.DataFetching;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import org.megauno.app.viewcontroller.DataFetching.AbstactDataFetcher;
+import org.megauno.app.utility.DataFetching.PathLoader;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class FontLoader extends PathLoader<BitmapFont> {

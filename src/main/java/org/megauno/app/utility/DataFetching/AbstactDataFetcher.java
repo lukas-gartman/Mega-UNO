@@ -1,4 +1,4 @@
-package org.megauno.app.viewcontroller.DataFetching;
+package org.megauno.app.utility.DataFetching;
 
 import java.util.ArrayList;
 import java.util.List;
