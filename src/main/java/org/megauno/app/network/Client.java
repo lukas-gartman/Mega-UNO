@@ -1,55 +1,47 @@
 package org.megauno.app.network;
 
 import org.json.JSONObject;
-
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.net.Socket;
-import java.nio.charset.StandardCharsets;
 
-//public class Client implements Runnable {
 public class Client {
-    private String hostname;
-    private int port;
+    private final Socket server;
+    private final BufferedReader br;
+    private final BufferedWriter bw;
 
     public Client(String hostname, int port) {
-        this.hostname = hostname;
-        this.port = port;
+        try {
+            this.server = new Socket(hostname, port);
+            this.bw = new BufferedWriter(new OutputStreamWriter(server.getOutputStream()));
+            this.br = new BufferedReader(new InputStreamReader(server.getInputStream()));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        listen();
     }
 
-    public void sendMessage(String msg) {
-        try {
-            Socket socket = new Socket(hostname, port);
-
-            OutputStreamWriter out = new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8);
-            out.write(msg);
-            out.close();
-
-            socket.close();
-        } catch (Exception ex) {
-            System.out.println("[Client Exception] " + ex.getMessage());
-        }
+    private void listen() {
+        new Thread(() -> {
+            String message;
+            while (true) {
+                try {
+                    message = this.br.readLine();
+                    JSONObject json = new JSONObject(message);
+                    // todo: do something with json object
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }).start();
     }
 
     public void sendJSON(JSONObject json) {
         try {
-            Socket socket = new Socket(hostname, port);
-
-            OutputStreamWriter out = new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8);
-            out.write(json.toString());
-            out.close();
-
-            socket.close();
+            this.bw.write(json.toString());
+            this.bw.newLine();
+            this.bw.flush();
         } catch (Exception ex) {
-            System.out.println("[Client Exception] " + ex.getMessage());
+            ex.printStackTrace();
         }
     }
-
-//    @Override
-//    public void run() {
-//        try {
-//            start(hostname, port);
-//        } catch (Exception ex) {
-//            System.out.println("[Client Exception] " + ex.getMessage());
-//        }
-//    }
 }
