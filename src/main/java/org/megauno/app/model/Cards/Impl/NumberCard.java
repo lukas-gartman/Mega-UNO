@@ -85,4 +85,9 @@ public class NumberCard extends AbstractCard {
     public boolean activate() {
         return true;
     }
+
+	@Override
+	public Integer getNumber() {
+		return value;
+	}
 }

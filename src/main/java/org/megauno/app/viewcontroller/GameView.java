@@ -9,7 +9,7 @@ import org.megauno.app.viewcontroller.distributers.dataClasses.handChanges;
 // to update their appearence when the game changes
 // GameView is a view for a specific player, so it is tightly coupled with the
 // playerID, which it uses to query information from the right player object in the game.
-public class GameView extends Stage implements Subscriber<handChanges>, Subscriber<OtherPlayersNrOfCards> {
+public class GameView extends Stage {
 	private int playerID;
 	private WilliamIGame game;
 	
@@ -27,11 +27,6 @@ public class GameView extends Stage implements Subscriber<handChanges>, Subscrib
 				addActor(new OtherPlayer(id, game));
 			}
 		}
-	}
-
-	@Override
-	public void delivery(handChanges np) {
-
 	}
 }
 

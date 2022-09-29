@@ -23,5 +23,7 @@ public interface ICard extends ICardVisitor {
 
     ICard copyCard();
 
+	Integer getNumber();
+
     boolean activate();
 }
