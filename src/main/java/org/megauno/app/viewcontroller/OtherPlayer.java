@@ -10,11 +10,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 public class OtherPlayer extends Image {
 	private int playerID;
 	private int nCards;
-	private IGame game;
+	private WilliamIGame game;
 
 	static BitmapFont font = new FontLoader("assets/").getDataFromPath("assets/minecraft.fnt");
 
-	public OtherPlayer(int playerID, IGame game) {
+	public OtherPlayer(int playerID, WilliamIGame game) {
 		this.playerID = playerID;
 		this.game = game;
 		updateCardsShown();

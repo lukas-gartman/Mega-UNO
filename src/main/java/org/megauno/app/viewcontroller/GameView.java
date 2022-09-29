@@ -1,14 +1,17 @@
 package org.megauno.app.viewcontroller;
 
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import org.megauno.app.utility.ObserverPattern.Subscriber;
+import org.megauno.app.viewcontroller.distributers.dataClasses.OtherPlayersNrOfCards;
+import org.megauno.app.viewcontroller.distributers.dataClasses.handChanges;
 
 // GameView views a set of UNO, delegates work to thisPlayer and otherPlayers
 // to update their appearence when the game changes
 // GameView is a view for a specific player, so it is tightly coupled with the
 // playerID, which it uses to query information from the right player object in the game.
-public class GameView extends Stage {
+public class GameView extends Stage implements Subscriber<handChanges>, Subscriber<OtherPlayersNrOfCards> {
 	private int playerID;
-	private IGame game;
+	private WilliamIGame game;
 	
 	public GameView(int playerID) {
 		// Add this view's player
@@ -24,6 +27,11 @@ public class GameView extends Stage {
 				addActor(new OtherPlayer(id, game));
 			}
 		}
+	}
+
+	@Override
+	public void delivery(handChanges np) {
+
 	}
 }
 

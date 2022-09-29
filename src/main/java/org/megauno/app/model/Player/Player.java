@@ -5,18 +5,25 @@ import org.megauno.app.model.Cards.ICard;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.megauno.app.utility.CardMethodes.copyCards;
+
 //
 public class Player {
 
     //Bool for if the player has said uno this round
+    private final int id;
     private boolean saidUno = false;
-
     private ICard selectedCard;
     //The hand of the player, has the cards
     private ArrayList<ICard> hand;
     //The selected card
-    Player(ArrayList<ICard> hand) {
+    Player(ArrayList<ICard> hand, int id) {
         this.hand = hand;
+        this.id = id;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public void selectCard(ICard c){
@@ -61,13 +68,7 @@ public class Player {
         saidUno = false;
         return selectedCard;
     }
-    private ArrayList<ICard> copyCards(ArrayList<ICard> cards){
-        ArrayList<ICard> copy = new ArrayList<>();
-        for (ICard card: cards) {
-            copy.add(card.copyCard());
-        }
-        return copy;
-    }
+
 
 
 }
