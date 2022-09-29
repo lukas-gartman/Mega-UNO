@@ -12,7 +12,16 @@ public class Game {
     Deck deck;
     Pile discarded;
 
-    public Game(){
+    public Game(PlayerCircle players, int numCards){
+        discarded = new Pile();
+        this.players = players;
+
+        int p = 0;
+        while(p < players.playersLeft()*numCards) {
+            players.getCurrent().giveCardToPlayer(deck.drawCard());
+            players.nextPlayer();
+            p++;
+        }
         discarded = new Pile();
     }
 
@@ -82,5 +91,13 @@ public class Game {
             }
         }
 
+    }
+
+    public Deck getDeck(){
+        return deck;
+    }
+
+    public PlayerCircle getPlayers(){
+        return players;
     }
 }

@@ -29,4 +29,8 @@ public interface ICard extends ICardVisitor {
 
     boolean canBeStacked(ICard c);
 
+    boolean canBeStackedUnder(NumberCard c);
+
+    boolean canBeStackedUnder(ActionCard c);
+
 }
