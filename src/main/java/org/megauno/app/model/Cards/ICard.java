@@ -3,7 +3,7 @@ package org.megauno.app.model.Cards;
 import org.megauno.app.model.Cards.Impl.ActionCard;
 import org.megauno.app.model.Cards.Impl.NumberCard;
 
-public interface ICard extends ICardVisitor, ICanBeStackedUnder {
+public interface ICard extends ICardVisitor {
 
     boolean equals(Object o);
 
@@ -25,5 +25,8 @@ public interface ICard extends ICardVisitor, ICanBeStackedUnder {
 
     boolean activate();
 
+    void setColor(Color choice);
+
     boolean canBeStacked(ICard c);
+
 }
