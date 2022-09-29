@@ -25,8 +25,7 @@ public class PlayerCircle {
 
     }
 
-    public void addNode(Integer id, ArrayList<ICard> hand) {
-        Player p = new Player(id, hand);
+    public void addNode(Player p) {
         Node newNode = new Node(p);
         if (head == null) {
             head = newNode;
@@ -62,8 +61,8 @@ public class PlayerCircle {
         return currentPlayer.nextNode.getPlayer();
     }
 
-    public ICard currentMakeTurn(ICard top){
-       return currentPlayer.play(top);
+    public List<ICard> currentMakeTurn(){
+       return currentPlayer.play();
     }
 
     public void changeRotation(){

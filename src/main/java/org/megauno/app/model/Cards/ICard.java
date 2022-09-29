@@ -26,4 +26,7 @@ public interface ICard extends ICardVisitor {
     boolean activate();
 
     void setColor(Color choice);
+
+    boolean canBeStacked(ICard c);
+
 }

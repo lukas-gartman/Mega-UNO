@@ -24,43 +24,74 @@ public class Game {
         }
     }
 
+    // TODO: move method to a more general class (general class represinting the model)
+    // commence_forth: set by a controller (or test) to signal that the player has chosen.
+    // tests should remember to call update
+    public boolean commence_forth = false;
+    public void update() {
+        if (commence_forth) {
+            try_play();
+        }
+    }
+
     public PlayerCircle getPlayers(){
         return players;
     }
 
-    public void play() {
+    private boolean validPlayedCards(List<ICard> play){
+        ICard top = discarded.getTop();
+        if(play.size() == 0){
+            return false;
+        }else if (!play.get(0).canBePlayed(top)){
+            return false;
+        }
+        for(int i = 1; i < play.size(); i++){
+            if(!play.get(i).canBeStacked(play.get(i-1))){
+                return false;
+            }
+        }
+        return true;
+    }
+    public void try_play() {
         ICard top = discarded.getTop();
         Node current = players.getCurrent();
-        ICard choice = players.currentMakeTurn(top);
-
+        List<ICard> choices = players.currentMakeTurn();
         boolean currentHasOnlyOneCard = current.getPlayer().numOfCards() == 1;
 
-        if(choice.canBePlayed(top)) {
+        if(validPlayedCards(choices)) {
             // card effects here ....
-            choice.activate();
+            for (ICard ch : choices) {
+                ch.activate();
+            }
 
             // change currentPlayer to next in line depending on game direction and position in circle:
             players.nextTurn();
 
             // discard played card
-            discarded.discard(choice);
+            for(int i = 0; i < choices.size(); i++){
+                discarded.discard(choices.get(i));
+            }
+
 
             // check if the player has run out of cards
             if (players.playerOutOfCards(current)) {
                 // if the player only had one card, and never said uno,
                 if (currentHasOnlyOneCard && !current.getPlayer().uno()) {
                     //penalise: draw 3 cards.
-                    current.giveCardToPlayer(draw());
-                    current.giveCardToPlayer(draw());
-                    current.giveCardToPlayer(draw());
+                    current.giveCardToPlayer(deck.drawCard());
+                    current.giveCardToPlayer(deck.drawCard());
+                    current.giveCardToPlayer(deck.drawCard());
                 } else {
                     // removes player
                     players.playerFinished(current);
                 }
             }
         }else{
-            players.giveCardToPlayer(choice);
+            for(int i = 0; i < choices.size(); i++) {
+                players.giveCardToPlayer(choices.get(i));
+            }
         }
+
     }
 
     public Deck getDeck(){
