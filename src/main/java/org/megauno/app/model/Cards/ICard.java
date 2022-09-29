@@ -24,4 +24,6 @@ public interface ICard extends ICardVisitor {
     ICard copyCard();
 
     boolean activate();
+
+    void setColor(Color choice);
 }

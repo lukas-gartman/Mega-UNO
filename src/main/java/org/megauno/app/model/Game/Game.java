@@ -24,6 +24,10 @@ public class Game {
         }
     }
 
+    public PlayerCircle getPlayers(){
+        return players;
+    }
+
     public void play() {
         ICard top = discarded.getTop();
         Node current = players.getCurrent();
@@ -46,9 +50,9 @@ public class Game {
                 // if the player only had one card, and never said uno,
                 if (currentHasOnlyOneCard && !current.getPlayer().uno()) {
                     //penalise: draw 3 cards.
-                    current.giveCardToPlayer(deck.drawCard());
-                    current.giveCardToPlayer(deck.drawCard());
-                    current.giveCardToPlayer(deck.drawCard());
+                    current.giveCardToPlayer(draw());
+                    current.giveCardToPlayer(draw());
+                    current.giveCardToPlayer(draw());
                 } else {
                     // removes player
                     players.playerFinished(current);
@@ -57,5 +61,13 @@ public class Game {
         }else{
             players.giveCardToPlayer(choice);
         }
+    }
+
+    public Deck getDeck(){
+        return deck;
+    }
+
+    public ICard draw(){
+        return deck.drawCard();
     }
 }
