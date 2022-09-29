@@ -2,6 +2,7 @@ package org.megauno.app.model.Cards.Impl;
 
 import org.megauno.app.model.Cards.*;
 
+import javax.lang.model.type.TypeKind;
 import java.util.Objects;
 
 public class ActionCard extends AbstractCard {
@@ -36,10 +37,10 @@ public class ActionCard extends AbstractCard {
 
    @Override
    public boolean canBePlayed(ICard c) {
-      return c.visit(this);
-      //return c.canBePlayedOnMe(this);
+      return c.canBePlayedOnMe(this);
    }
 
+      //return c.visit(this);
    @Override
    public boolean canBePlayedOnMe(NumberCard c) {
      return this.getColor() == c.getColor();
@@ -60,7 +61,7 @@ public class ActionCard extends AbstractCard {
    // The visit methods checks that the given card can be placed on themselves
    @Override
    public boolean visit(ActionCard ac) {
-      return ac.getColor() == Color.NONE || ac.getColor() == this.getColor() || ac.getType() == this.getType();
+      return ac.getType() == CardType.WILDCARD || ac.getColor() == this.getColor() || ac.getType() == this.getType();
    }
 
    @Override

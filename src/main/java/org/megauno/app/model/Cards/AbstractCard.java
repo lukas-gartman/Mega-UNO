@@ -5,7 +5,7 @@ import org.megauno.app.model.Cards.Impl.NumberCard;
 
 public abstract class AbstractCard implements ICard {
 
-    private final Color color;
+    private Color color;
     private final CardType type;
 
     protected AbstractCard(Color color, CardType type) {
@@ -42,4 +42,9 @@ public abstract class AbstractCard implements ICard {
 
     @Override
     public abstract boolean activate();
+
+    public void setColor(Color c){
+        this.color = c;
+
+    }
 }
