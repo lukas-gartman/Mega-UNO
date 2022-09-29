@@ -36,10 +36,10 @@ public class ActionCard extends AbstractCard {
 
    @Override
    public boolean canBePlayed(ICard c) {
-      return c.visit(this);
-      //return c.canBePlayedOnMe(this);
+      return c.canBePlayedOnMe(this);
    }
 
+      //return c.visit(this);
    @Override
    public boolean canBePlayedOnMe(NumberCard c) {
      return this.getColor() == c.getColor();
