@@ -17,7 +17,7 @@ public class Player {
     //The hand of the player, has the cards
     private ArrayList<ICard> hand;
     //The selected card
-    Player(ArrayList<ICard> hand, int id) {
+    public Player(ArrayList<ICard> hand, int id) {
         this.hand = hand;
         this.id = id;
     }

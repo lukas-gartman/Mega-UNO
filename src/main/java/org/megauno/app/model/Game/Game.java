@@ -8,15 +8,16 @@ import org.megauno.app.utility.ObserverPattern.Publisher;
 import org.megauno.app.viewcontroller.IGame;
 
 public class Game implements IGame {
-	Publisher<Game> gameChangePublisher;
+	Publisher<IGame> gameChangePublisher;
 	PlayerCircle players;
 	// ICard top;
 	Deck deck;
 	Pile discarded;
 
-	public Game(Publisher<Game> publisher) {
+	public Game(Publisher<IGame> publisher, PlayerCircle players) {
 		discarded = new Pile();
 		this.gameChangePublisher = publisher;
+		this.players = players;
 	}
 
 	public void reverse() {
