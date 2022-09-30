@@ -1,6 +1,7 @@
 package org.megauno.app.utility;
 
 import org.megauno.app.model.Cards.ICard;
+import org.megauno.app.viewcontroller.Card;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,5 +24,12 @@ public class CardMethodes {
             }
         }
         return newCards;
+    }
+    public static List<ICard> getRealCards(List<Card> cards){
+        List<ICard> out = new ArrayList<>();
+        for(Card card: cards){
+            out.add(card.getCard());
+        }
+        return out;
     }
 }

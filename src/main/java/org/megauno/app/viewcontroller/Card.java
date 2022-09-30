@@ -9,7 +9,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
-class Card extends Actor {
+public class Card extends Actor {
 	static SpriteLoader spAssets = new SpriteLoader("assets/");
 	static Sprite red = spAssets.getData("RedCard.png");
 	static Sprite blue = spAssets.getData("BlueCard.png");
@@ -18,8 +18,8 @@ class Card extends Actor {
 	static Sprite nonColored = spAssets.getData("WhiteCard.png");
 	static BitmapFont fnt = new FontLoader("assets/").getDataFromPath("minecraft.fnt");
 
-	Sprite sprite;
-	ICard card;
+	private Sprite sprite;
+	private ICard card;
 
 	public Card(ICard card) {
 		switch(card.getColor()) {
@@ -52,6 +52,10 @@ class Card extends Actor {
 		}
 		// TODO: type image
 		batch.end();
+	}
+
+	public ICard getCard() {
+		return card.copyCard();
 	}
 }
 

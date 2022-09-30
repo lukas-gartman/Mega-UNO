@@ -39,6 +39,10 @@ public class OtherPlayer extends Image implements Subscriber<IGame> {
 
 	@Override
 	public void delivery(IGame game) {
+		handChanges(game);
+	}
+
+	private void handChanges(IGame game){
 		Player[] players = game.getPlayers();
 		for(int i = 0; i < players.length-1; i++){
 			Player player = players[i];

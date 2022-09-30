@@ -8,7 +8,7 @@ import org.megauno.app.viewcontroller.IGame;
 
 import java.util.List;
 
-import static org.megauno.app.utility.CardMethodes.cardsDelta;
+
 
 public class HandChangesPublisher implements Subscriber<IGame> {
     private List<ICard> oldCards;
@@ -26,6 +26,6 @@ public class HandChangesPublisher implements Subscriber<IGame> {
     public void delivery(IGame game) {
         Player player = game.getPlayerWithId(playerId);
         List<ICard> cards = player.getCards();
-        publisher.publish(new HandChanges(cardsDelta(oldCards,cards),cardsDelta(cards,oldCards)));
+        //publisher.publish(new HandChanges(cardsDelta(oldCards,cards),cardsDelta(cards,oldCards)));
     }
 }

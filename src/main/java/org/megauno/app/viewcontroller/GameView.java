@@ -1,6 +1,7 @@
 package org.megauno.app.viewcontroller;
 
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import org.megauno.app.model.Player.Player;
 
 
 // GameView views a set of UNO, delegates work to thisPlayer and otherPlayers
@@ -18,13 +19,15 @@ public class GameView extends Stage {
 		addActor(thisPlayer);
 
 		// Add all other players
-		int numberOfPlayers = game.getInitialState().numberOfPlayers;
-		for (int id = 0; id < numberOfPlayers; id++) {
-			if (!(id == playerID)) {
+		Player[] players = game.getPlayers();
+		int numberOfPlayers = players.length;
+		for (Player p: players) {
+			if (!(p.getId() == playerID)) {
 				// TODO: add sprite and position
-				addActor(new OtherPlayer(id, game));
+				addActor(new OtherPlayer(p.getId(),p.numOfCards()));
 			}
 		}
+
 	}
 }
 
