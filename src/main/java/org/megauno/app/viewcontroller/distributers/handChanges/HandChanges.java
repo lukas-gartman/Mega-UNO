@@ -1,11 +1,11 @@
-package org.megauno.app.viewcontroller.distributers.dataClasses;
+package org.megauno.app.viewcontroller.distributers.handChanges;
 
 import org.megauno.app.model.Cards.ICard;
 
 import java.util.List;
 
-public class handChanges {
-    public handChanges(List<ICard> addedCards, List<ICard> removedCards) {
+public class HandChanges {
+    public HandChanges(List<ICard> addedCards, List<ICard> removedCards) {
         this.addedCards = addedCards;
         this.removedCards = removedCards;
     }

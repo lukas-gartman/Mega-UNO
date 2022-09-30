@@ -10,11 +10,12 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
 class Card extends Actor {
-	static Sprite red = new SpriteLoader().getData("assets/RedCard.png");
-	static Sprite blue = new SpriteLoader().getData("assets/BlueCard.png");
-	static Sprite yellow = new SpriteLoader().getData("assets/YellowCard.png");
-	static Sprite green = new SpriteLoader().getData("assets/GreenCard.png");
-	static Sprite nonColored = new SpriteLoader().getData("assets/WhiteCard.png");
+	static SpriteLoader spAssets = new SpriteLoader("assets/");
+	static Sprite red = spAssets.getData("RedCard.png");
+	static Sprite blue = spAssets.getData("BlueCard.png");
+	static Sprite yellow = spAssets.getData("YellowCard.png");
+	static Sprite green = spAssets.getData("GreenCard.png");
+	static Sprite nonColored = spAssets.getData("WhiteCard.png");
 	static BitmapFont fnt = new FontLoader("assets/").getDataFromPath("minecraft.fnt");
 
 	Sprite sprite;

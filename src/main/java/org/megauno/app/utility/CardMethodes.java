@@ -13,7 +13,7 @@ public class CardMethodes {
         }
         return copy;
     }
-    public static List<ICard> cardsDelta(List<ICard> oldCards, List<ICard> newCards){
+    public static List<ICard> cardsDifference(List<ICard> oldCards, List<ICard> newCards){
         for (ICard oldCard: oldCards) {
             for (int i = 0; i < newCards.size(); i++) {
                 ICard card = newCards.get(i);

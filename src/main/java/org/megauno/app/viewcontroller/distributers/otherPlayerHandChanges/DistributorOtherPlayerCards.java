@@ -1,21 +1,23 @@
-package org.megauno.app.viewcontroller.distributers;
+package org.megauno.app.viewcontroller.distributers.otherPlayerHandChanges;
 
 import org.megauno.app.model.Player.Player;
 import org.megauno.app.utility.ObserverPattern.Distributor;
 import org.megauno.app.utility.ObserverPattern.Publisher;
+import org.megauno.app.utility.ObserverPattern.Subscriber;
 import org.megauno.app.viewcontroller.IGame;
-import org.megauno.app.viewcontroller.distributers.dataClasses.OtherPlayersNrOfCards;
 
-public class DistributorOtherPlayerCards extends Distributor<IGame, OtherPlayersNrOfCards> {
+public class DistributorOtherPlayerCards implements Subscriber<IGame> {
     private int playerId;
+    private Publisher<OtherPlayersNrOfCards> publisher;
 
     public DistributorOtherPlayerCards(Publisher<OtherPlayersNrOfCards> publisher, int playerId) {
-        super(publisher);
         this.playerId = playerId;
+        this.publisher = publisher;
     }
 
+
     @Override
-    public OtherPlayersNrOfCards extractStory(IGame game) {
+    public void delivery(IGame game) {
 
         Player[] players = game.getPlayers();
         int[] playerNrOfCards = new int[players.length-1];
@@ -27,7 +29,7 @@ public class DistributorOtherPlayerCards extends Distributor<IGame, OtherPlayers
                 j++;
             }
         }
-        return new OtherPlayersNrOfCards(playerNrOfCards);
+        publisher.publish(new OtherPlayersNrOfCards(playerNrOfCards));
 
     }
 }
