@@ -23,6 +23,11 @@ public abstract class AbstractCard implements ICard {
         return color;
     }
 
+	@Override
+	public Integer getNumber() {
+		return null;
+	}
+
     @Override
     public abstract boolean canBePlayed(ICard c);
 

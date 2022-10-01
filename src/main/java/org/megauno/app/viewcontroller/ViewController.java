@@ -21,14 +21,14 @@ import org.megauno.app.viewcontroller.DataFetching.SpriteLoader;
 
 // The outer class managing views and controllers
 public class ViewController implements Subscriber<Game> {
-	private IGame game;
+	private WilliamIGame game;
 
 	private Stage gameStage;
 	private Stage lobbyStage;
 
 	// TODO: have empty constructor, get IGame from either controller (client)
 	// or "Lobby" object of model (server) (subscribe to an event of "GameStarting")
-	public ViewController(IGame game) {
+	public ViewController(WilliamIGame game) {
 		this.game = game;
 		//gameStage = new GameView(game);
 		//Gdx.input.setInputProcessor(stage); // The app's input processor is our stage

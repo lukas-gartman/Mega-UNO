@@ -7,6 +7,6 @@ public class Main {
     public static void main( String[] args ) {
         Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
         config.setMaximized(true);
-        new Lwjgl3Application(new Application(), config);
+        new Lwjgl3Application(new Application(2), config);
     }
 }
