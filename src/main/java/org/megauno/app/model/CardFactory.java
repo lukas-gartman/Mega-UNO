@@ -16,11 +16,11 @@ public class CardFactory {
     }
 
     public ICard createActionCard(Color color, CardType type) {
-        switch (type) {
-            case REVERSECARD: new ActionCard(new ReverseAction(), color, type);
-            case WILDCARD: new ActionCard(new WildCardAction(), color, type);
-            case TAKETWO: new ActionCard(new TakeTwoAction(), color, type);
-        }
-        return null;
+        return switch (type) {
+            case NUMBERCARD -> null;
+            case REVERSECARD -> new ActionCard(new ReverseAction(), color, type);
+            case WILDCARD -> new ActionCard(new WildCardAction(), color, type);
+            case TAKETWO -> new ActionCard(new TakeTwoAction(), color, type);
+        };
     }
 }
