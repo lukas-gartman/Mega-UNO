@@ -14,6 +14,7 @@ public class Game {
 
     public Game(){
         discarded = new Pile();
+        deck = new Deck();
     }
 
 	// TODO: move method to a more general class (general class represinting the model)
