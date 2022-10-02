@@ -7,34 +7,39 @@ import org.megauno.app.model.Cards.ICard;
 import java.util.*;
 
 public class Deck implements IDeck {
-    private final Stack<ICard> cards = new Stack<>();
     private final CardFactory cardFactory = new CardFactory();
     private List<ICard> deck;
     private final HashMap<CardType, Integer> probabilities;
     public Deck() {
-        // default distribution
         probabilities = generateFixedProbabilities();
         deck = generateDeck();
-        //distribution.put(NumberCard, 66); // 66% chance for a NumberCard
-        //distribution.put(ActionCard, 33); // 33% chance for an ActionCard
     }
 
     public Deck(HashMap dist) {
         this.probabilities = dist;
     }
 
-    // For now, it is static probabilites, but this should be modified such that
-    // it can take any probability and generate accordingly.
+    /*
+    For now, it is static probabilities, 66% for number cards and 33% for action cards
+    but this method should be modified such that it can take any probability
+    and generate the distribution of cards accordingly.
+     */
     private HashMap<CardType, Integer> generateFixedProbabilities() {
-       HashMap<CardType, Integer> probabilites = new HashMap<>();
+       HashMap<CardType, Integer> probabilities = new HashMap<>();
        //int distibution = (int) (CardType.stream().count() - 1);
        CardType.stream().forEach(c -> {
-           if (c.getTypeOf().equals("Standard")) probabilites.put(c, 66);
-           else probabilites.put(c, 11);
+           if (c.getTypeOf().equals("Standard")) probabilities.put(c, 66);
+           else probabilities.put(c, 11);
        });
-       return probabilites;
+       return probabilities;
     }
 
+    /*
+    Generates the deck from a fixed distribution, with even amounts of colors
+    for all cards (outside of bounds for the amount in the distribution)
+    and equal amounts of numeric values for number card (with some difference
+    since 66 % 9 != 0.
+     */
     private List<ICard> generateDeck() {
         ArrayList<ICard> deck = new ArrayList<>();
         int numberIndex = 0;
