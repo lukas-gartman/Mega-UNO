@@ -8,6 +8,15 @@ import java.util.Objects;
 public class ActionCard extends AbstractCard {
    private final IAction action;
 
+   @Override
+   public String toString() {
+      return "ActionCard{" +
+              "action=" + action +
+              ", color=" + super.getColor() +
+              ", type=" + super.getType() +
+              '}';
+   }
+
    public ActionCard(IAction action, Color color, CardType type) {
       super(color, type);
       CardValidation.validateColor(color);

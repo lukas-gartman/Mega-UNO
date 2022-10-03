@@ -20,6 +20,10 @@ public class Player {
         this.hand = new ArrayList<>();
     }
 
+    public Player(List<ICard> hand) {
+        this.hand = hand;
+    }
+
     public void selectCard(ICard c){
         if (hand.contains(c)) {
             selectedCards.add(c);
