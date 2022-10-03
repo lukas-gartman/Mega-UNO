@@ -26,6 +26,10 @@ public class Player {
         return id;
     }
 
+    public Player(List<ICard> hand) {
+        this.hand = hand;
+    }
+
     public void selectCard(ICard c){
         selectedCard = c;
     }
