@@ -6,8 +6,7 @@ import org.megauno.app.model.Game.PlayerCircle;
 public class ReverseAction implements IAction {
     PlayerCircle players;
 
-    public ReverseAction(PlayerCircle players){
-        this.players = players;
+    public ReverseAction(){
     }
 
     @Override
