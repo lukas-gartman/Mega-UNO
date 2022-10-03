@@ -2,14 +2,18 @@ package org.megauno.app;
 
 import org.megauno.app.model.Game.Game;
 import com.badlogic.gdx.ApplicationAdapter;
+import org.megauno.app.model.Game.PlayerCircle;
 
 public class Application extends ApplicationAdapter {
 	ViewController viewController;
 	Game game;
-	
+
 	@Override
 	public void create () {
-		game = new Game();
+		PlayerCircle players = new PlayerCircle();
+		// Add players!!!
+
+		game = new Game(players, 10);
 		viewController = new ViewController(game);
 	}
 
@@ -18,7 +22,7 @@ public class Application extends ApplicationAdapter {
 		viewController.draw();
 		game.update();
 	}
-	
+
 	@Override
 	public void dispose () {
 		viewController.teardown();
