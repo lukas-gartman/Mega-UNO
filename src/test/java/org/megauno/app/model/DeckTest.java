@@ -8,6 +8,8 @@ import org.megauno.app.model.Cards.Impl.ActionCard;
 import org.megauno.app.model.Cards.Impl.CardValidation;
 import org.megauno.app.model.Cards.Impl.NumberCard;
 
+import java.util.List;
+
 public class DeckTest {
 
     Deck deck = new Deck();
@@ -31,6 +33,17 @@ public class DeckTest {
        for (ICard card : deck.getDeck()) {
            assert(cardInvariant(card));
        }
+    }
+
+    @Test
+    public void testDealHand() {
+        List<ICard> hand = deck.dealHand();
+        for (ICard card : hand) {
+            System.out.println(card.toString());
+            assert(cardInvariant(card));
+        }
+        System.out.println(hand.size());
+        assert(hand.size() == 7);
     }
 
 }

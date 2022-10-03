@@ -4,6 +4,7 @@ import org.megauno.app.model.Cards.CardType;
 import org.megauno.app.model.Cards.Color;
 import org.megauno.app.model.Cards.ICard;
 
+import java.sql.Array;
 import java.util.*;
 
 public class Deck implements IDeck {
@@ -72,6 +73,14 @@ public class Deck implements IDeck {
         Random rand = new Random();
         int index = rand.nextInt(deck.size());
         ICard randomCard = deck.get(index);
-        return randomCard;
+        return randomCard.copyCard();
+    }
+
+    public List<ICard> dealHand() {
+        List<ICard> hand = new ArrayList<>();
+        for (int i = 0; i < 7; i++) {
+            hand.add(drawCard());
+        }
+        return hand;
     }
 }
