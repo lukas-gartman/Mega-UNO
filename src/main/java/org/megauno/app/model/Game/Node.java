@@ -19,8 +19,8 @@ public class Node {
         return player.play();
     }
 
-    void giveCardToPlayer(ICard choice){
-        player.addCard(choice);
+    void giveCardToPlayer(ICard card){
+        player.addCard(card);
     }
 
     public Player getPlayer(){

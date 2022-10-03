@@ -35,6 +35,7 @@ public class NumberCard extends AbstractCard {
     public String toString() {
         return "NumberCard{" +
                 "color=" + super.getColor() +
+                ", type=" + super.getType() +
                 ", value=" + value +
                 '}';
     }
@@ -86,8 +87,25 @@ public class NumberCard extends AbstractCard {
         return true;
     }
 
-	@Override
-	public Integer getNumber() {
-		return value;
-	}
+
+
+
+
+
+    @Override
+    public boolean canBeStacked(ICard c) {
+        return c.canBeStackedUnder(this);
+    }
+
+    @Override
+    public boolean canBeStackedUnder(ActionCard ac) {
+        return false;
+    }
+
+    @Override
+    public boolean canBeStackedUnder(NumberCard nc) {
+        return nc.getValue() == this.getValue();
+    }
+
+
 }

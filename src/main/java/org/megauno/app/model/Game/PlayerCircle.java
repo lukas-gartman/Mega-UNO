@@ -22,7 +22,13 @@ public class PlayerCircle {
         // starts with clockwise as default
         direction = Rotation.CLOCKWISE;
         winners = new ArrayList<>();
+    }
 
+    public PlayerCircle(List<Player> players){
+        for (Player p : players
+             ) {
+            addNode(p);
+        }
     }
 
     public void addNode(Player p) {
