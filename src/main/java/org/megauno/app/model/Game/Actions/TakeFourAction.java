@@ -8,9 +8,8 @@ public class TakeFourAction implements IAction {
     Deck deck;
     PlayerCircle players;
 
-    public TakeFourAction(Deck d, PlayerCircle p){
-        deck = d;
-        players = p;
+    public TakeFourAction(){
+
     }
 
     @Override

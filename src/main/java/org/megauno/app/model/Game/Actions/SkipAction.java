@@ -6,8 +6,7 @@ import org.megauno.app.model.Game.PlayerCircle;
 public class SkipAction implements IAction {
     PlayerCircle players;
 
-    public SkipAction(PlayerCircle p){
-        players = p;
+    public SkipAction(){
     }
 
     @Override

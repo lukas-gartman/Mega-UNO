@@ -9,9 +9,7 @@ public class TakeTwoAction implements IAction {
     Deck deck;
     PlayerCircle players;
 
-    public TakeTwoAction(Deck d, PlayerCircle p){
-        deck = d;
-        players = p;
+    public TakeTwoAction(){
     }
     @Override
     public boolean execute() {
