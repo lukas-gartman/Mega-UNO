@@ -27,11 +27,12 @@ public class CardFactory {
     }
 
     public ICard createActionCard(Color color, CardType type, Game game) {
+        return
         switch (type) {
-            case REVERSECARD: new ActionCard(new ReverseAction(game.getPlayers()), color, type);
-            case WILDCARD: new ActionCard(new TakeFourAction(game.getDeck(), game.getPlayers()), color, type);
-            case TAKETWO: new ActionCard(new TakeTwoAction(game.getDeck(), game.getPlayers()), color, type);
-        }
-        return null;
+            case NUMBERCARD -> null;
+            case REVERSECARD -> new ActionCard(new ReverseAction(game.getPlayers()), color, type);
+            case WILDCARD -> new ActionCard(new TakeFourAction(game.getDeck(), game.getPlayers()), color, type);
+            case TAKETWO -> new ActionCard(new TakeTwoAction(game.getDeck(), game.getPlayers()), color, type);
+        };
     }
 }
