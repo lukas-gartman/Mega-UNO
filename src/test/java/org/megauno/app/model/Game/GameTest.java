@@ -7,6 +7,7 @@ import org.megauno.app.model.Player.Player;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class GameTest extends TestCase {
 
@@ -17,7 +18,7 @@ public class GameTest extends TestCase {
     public List<Player> generatePlayers(int n) {
         List<Player> playerList = new ArrayList<>();
         for (int i = 0; i < n; i++) {
-            playerList.add(new Player(deck.dealHand()));
+            playerList.add(new Player(deck.dealHand(1)));
         }
         return playerList;
     }
@@ -30,5 +31,19 @@ public class GameTest extends TestCase {
     }
 
     public void testTry_play() {
+        Random rand = new Random();
+        Player currentPlayer = players.getCurrent().getPlayer();
+        int randomIndex = rand.nextInt(currentPlayer.numOfCards());
+        currentPlayer.selectCard(currentPlayer.getCards().get(randomIndex));
+        game.try_play();
     }
+
+    public void testPlayRandomTurn() {
+        for (int i = 0; i < 40; i++) {
+            game.tryPlayTest();
+        }
+        //assert(game.tryPlayTest());
+    }
+
+
 }

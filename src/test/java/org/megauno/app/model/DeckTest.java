@@ -38,7 +38,7 @@ public class DeckTest {
 
     @Test
     public void testDealHand() {
-        List<ICard> hand = deck.dealHand();
+        List<ICard> hand = deck.dealHand(7);
         for (ICard card : hand) {
             //System.out.println(card.toString());
             assert(cardInvariant(card));
