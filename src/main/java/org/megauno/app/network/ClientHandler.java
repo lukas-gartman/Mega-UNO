@@ -7,23 +7,23 @@ import java.net.Socket;
 import java.util.HashMap;
 
 public class ClientHandler implements Runnable {
-    private static final HashMap<ClientHandler, Integer> clientHandlers = new HashMap<>();
+    private HashMap<ClientHandler, Integer> clientHandlers = new HashMap<>();
     private final Socket client;
+    private IServer server;
     private BufferedReader br;
     private BufferedWriter bw;
     private final int id;
 
-    public ClientHandler(Socket client, int id) {
+    public ClientHandler(Socket client, int id, IServer server) {
         this.client = client;
         this.id = id;
+        this.server = server;
         try {
             this.bw = new BufferedWriter(new OutputStreamWriter(client.getOutputStream()));
             this.br = new BufferedReader(new InputStreamReader(client.getInputStream()));
         } catch (IOException ex) {
             ex.printStackTrace();
         }
-
-        clientHandlers.put(this, id);
     }
 
     private void broadcast(JSONObject json) {
@@ -41,8 +41,15 @@ public class ClientHandler implements Runnable {
         }
     }
 
+    public void updateClientHandlers(HashMap<ClientHandler, Integer> clientHandlers) {
+        this.clientHandlers = clientHandlers;
+    }
+
     private void disconnect() {
-        clientHandlers.remove(this);
+        try {
+            client.close();
+        } catch (IOException ex) {}
+        server.disconnect(this);
     }
 
     @Override
@@ -54,6 +61,13 @@ public class ClientHandler implements Runnable {
                 JSONObject json = new JSONObject(message);
                 // todo: do something with json object
             } catch (IOException ex) {
+                try {
+                    br.close();
+                    disconnect();
+                    break;
+                } catch (IOException e) {
+
+                }
                 ex.printStackTrace();
             }
         }
