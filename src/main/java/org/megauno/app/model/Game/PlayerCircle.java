@@ -18,17 +18,14 @@ public class PlayerCircle {
 
     private int numPlayers;
 
-    public PlayerCircle(List<Player> players){
+    public PlayerCircle(){
         // starts with clockwise as default
         direction = Rotation.CLOCKWISE;
         winners = new ArrayList<>();
 
-        for (Player p : players) {
-            addNode(p);
-        }
     }
 
-    private void addNode(Player p) {
+    public void addNode(Player p) {
         Node newNode = new Node(p);
         if (head == null) {
             head = newNode;
@@ -60,6 +57,9 @@ public class PlayerCircle {
         if (direction == Rotation.CLOCKWISE) currentPlayer = currentPlayer.nextNode;
         else currentPlayer = currentPlayer.previousNode;
     }
+    public Player nextPlayer(){
+        return currentPlayer.nextNode.getPlayer();
+    }
 
     public List<ICard> currentMakeTurn(){
        return currentPlayer.play();
@@ -78,7 +78,7 @@ public class PlayerCircle {
         currentPlayer.giveCardToPlayer(choice);
     }
 
-    Node getCurrent(){
+    public Node getCurrent(){
         return currentPlayer;
     }
 
