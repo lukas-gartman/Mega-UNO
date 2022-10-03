@@ -13,8 +13,15 @@ public class Game {
     Pile discarded;
 
     public Game(){
-        discarded = new Pile();
-        deck = new Deck();
+        this.discarded = new Pile();
+        this.deck = new Deck();
+    }
+
+    // For testing purposes
+    public Game(PlayerCircle players) {
+        this.discarded = new Pile();
+        this.deck = new Deck();
+        this.players = players;
     }
 
 	// TODO: move method to a more general class (general class represinting the model)

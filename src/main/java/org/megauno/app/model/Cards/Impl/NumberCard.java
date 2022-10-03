@@ -35,6 +35,7 @@ public class NumberCard extends AbstractCard {
     public String toString() {
         return "NumberCard{" +
                 "color=" + super.getColor() +
+                ", type=" + super.getType() +
                 ", value=" + value +
                 '}';
     }
