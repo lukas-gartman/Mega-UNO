@@ -76,9 +76,9 @@ public class Deck implements IDeck {
         return randomCard.copyCard();
     }
 
-    public List<ICard> dealHand() {
+    public List<ICard> dealHand(int sizeHand) {
         List<ICard> hand = new ArrayList<>();
-        for (int i = 0; i < 7; i++) {
+        for (int i = 0; i < sizeHand; i++) {
             hand.add(drawCard());
         }
         return hand;
