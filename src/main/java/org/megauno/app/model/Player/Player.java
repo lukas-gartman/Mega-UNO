@@ -5,9 +5,8 @@ import org.megauno.app.model.Cards.ICard;
 import java.util.ArrayList;
 import java.util.List;
 
-//
 public class Player {
-
+	public int id;
     //Bool for if the player has said uno this round
     private boolean saidUno = false;
 

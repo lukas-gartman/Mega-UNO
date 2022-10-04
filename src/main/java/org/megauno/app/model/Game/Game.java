@@ -5,6 +5,7 @@ import org.megauno.app.model.Deck;
 import org.megauno.app.model.Pile;
 import org.megauno.app.model.Player.Player;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -15,8 +16,9 @@ public class Game {
     Pile discarded;
 
     public Game(PlayerCircle players, int numCards) {
-        discarded = new Pile();
         this.players = players;
+        this.discarded = new Pile();
+		this.deck = new Deck();
 
         int p = 0;
         while (p < players.playersLeft() * numCards) {
@@ -24,7 +26,6 @@ public class Game {
             players.nextPlayer();
             p++;
         }
-        discarded = new Pile();
     }
     public Game(){
         this.discarded = new Pile();
@@ -46,6 +47,31 @@ public class Game {
 		if (commence_forth) {
 			try_play();
 		}
+	}
+
+	// Basic API for ViewController, potentially tests as well
+	
+	// Each boolean represents wether or not a card is chosen by the current player
+	public boolean[] choices;
+
+	// Inner array is null if the player with the given ID/index is out of the game
+	// TODO: add an ID in the Player class to be able to put null here
+	public List<List<ICard>> getAllPlayerCards() {
+		Player[] players = getPlayers().getPlayers();
+		List<List<ICard>> result = new ArrayList<>();
+		for (int i = 0; i < players.length; i++) {
+			result.add(players[i].getCards());
+		}
+		return result;
+	}
+
+	public int getPlayersLeft() {
+		return players.playersLeft();
+	}
+
+	// Current player
+	public int getCurrentPlayer() {
+		return players.getCurrent().getPlayer().id;
 	}
 
     public void reverse(){

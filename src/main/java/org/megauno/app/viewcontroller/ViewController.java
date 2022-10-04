@@ -6,16 +6,17 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveByAction;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import org.lwjgl.opengl.GL20;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import org.megauno.app.utility.Publisher;
 import org.megauno.app.utility.Subscriber;
 import org.megauno.app.viewcontroller.datafetching.FontLoader;
 import org.megauno.app.viewcontroller.datafetching.SpriteLoader;
@@ -24,24 +25,29 @@ import org.megauno.app.viewcontroller.datafetching.SpriteLoader;
 public class ViewController implements Subscriber<Game> {
 	private Game game;
 
-	private Stage gameStage;
-	private Stage lobbyStage;
+	private GameView currentGameView;
+	private List<GameView> gameViews = new ArrayList<GameView>();
 
 	// TODO: have empty constructor, get IGame from either controller (client)
 	// or "Lobby" object of model (server) (subscribe to an event of "GameStarting")
 	public ViewController(Game game) {
 		this.game = game;
-		//gameStage = new GameView(game);
-		//Gdx.input.setInputProcessor(stage); // The app's input processor is our stage
-		//DummyActor dummyActor = new DummyActor();
-		//stage.addActor(dummyActor);
-		//stage.setKeyboardFocus(dummyActor);
+		// Create all game views, stored in gameViews
+		for (int i = 0; i < game.getPlayersLeft(); i++) {
+			gameViews.add(new GameView(game, i));
+		}
+		currentGameView = gameViews.get(game.getCurrentPlayer());
+
+		// Gdx.input.setInputProcessor(stage); // The app's input processor is our stage
+		// DummyActor dummyActor = new DummyActor();
+		// stage.addActor(dummyActor);
+		// stage.setKeyboardFocus(dummyActor);
 	}
 
 	// Necessary call from top level window handler (Application),
 	// viewport of stage cannot handle this itself.
 	public void resize(int width, int height) {
-		//stage.getViewport().update(width, height, true);
+		// stage.getViewport().update(width, height, true);
 	}
 
 	// NOTE: the Application is supposed to call this every frame
@@ -49,8 +55,9 @@ public class ViewController implements Subscriber<Game> {
 	public void draw() {
 		// Clear screen
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		//stage.act(Gdx.graphics.getDeltaTime());
-		//stage.draw();
+		currentGameView.draw();
+		// stage.act(Gdx.graphics.getDeltaTime());
+		// stage.draw();
 	}
 
 	// NOTE: called by Application
@@ -60,14 +67,13 @@ public class ViewController implements Subscriber<Game> {
 
 	@Override
 	public void delivery(Game game) {
-		//this.game = game;
-		//TODO update view state
+		// this.game = game;
+		// TODO update view state
 	}
 
 	public class DummyActor extends Actor {
 		static Sprite sprite = new SpriteLoader().getData("yay.jpg");
 		static BitmapFont fnt = new FontLoader("assets/").getDataFromPath("assets/minecraft.fnt");
-
 
 		public DummyActor() {
 			setBounds(sprite.getX(), sprite.getY(), sprite.getWidth(), sprite.getHeight());

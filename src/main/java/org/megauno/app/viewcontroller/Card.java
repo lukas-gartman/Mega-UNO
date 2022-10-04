@@ -42,15 +42,13 @@ class Card extends Actor {
 
 	@Override
 	public void draw(Batch batch, float alpha) {
-		batch.begin();
 		// Draw card with it's color
 		batch.draw(sprite, getX(), getY());
 		// Draw number if number card
 		if (card.getNumber() != null) {
-			fnt.draw(batch, card.getNumber().toString(), getX(), getY());
+			fnt.draw(batch, card.getNumber().toString(), getX() + 20, getY());
 		}
 		// TODO: type image
-		batch.end();
 	}
 }
 

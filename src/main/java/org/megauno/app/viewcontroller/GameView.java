@@ -2,31 +2,47 @@ package org.megauno.app.viewcontroller;
 
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
-import org.megauno.app.model.Game.Game;
-import org.megauno.app.utility.Subscriber;
+import java.util.ArrayList;
+import java.util.List;
 
-// GameView views a set of UNO, delegates work to thisPlayer and otherPlayers
-// to update their appearence when the game changes
-// GameView is a view for a specific player, so it is tightly coupled with the
-// playerID, which it uses to query information from the right player object in the game.
+import org.megauno.app.model.Cards.ICard;
+import org.megauno.app.model.Game.Game;
+
+// For now, GameView parses deltas from Game and calls the appropriate
 public class GameView extends Stage {
 	private int playerID;
 	private Game game;
+
+	private ThisPlayer thisPlayer;
+	private List<OtherPlayer> otherPlayers = new ArrayList<>();
 	
-	public GameView(int playerID) {
+	public GameView(Game game, int playerID) {
 		// Add this view's player
 		this.playerID = playerID;
-		ThisPlayer thisPlayer = new ThisPlayer(game);
+		List<List<ICard>> allPlayerCards = game.getAllPlayerCards();   // All the different players' cards
+		thisPlayer = new ThisPlayer(playerID, allPlayerCards.get(playerID));
+		System.out.println("NUMBER OF cards: " + allPlayerCards.get(playerID).size());
 		addActor(thisPlayer);
 
 		// Add all other players
-		//int numberOfPlayers = game.getInitialState().numberOfPlayers;
-		//for (int id = 0; id < numberOfPlayers; id++) {
-		//	if (!(id == playerID)) {
-		//		// TODO: add sprite and position
-		//		addActor(new OtherPlayer(id, game));
-		//	}
-		//}
+		// TODO: make the positions make sense regarding actual placing in the list
+		int playerAmount = game.getPlayersLeft();
+		System.out.println("NUMBER OF PLAYERS: " + Integer.toString(playerAmount));
+		for (int id = 0; id < playerAmount; id++) {
+			if (!(id == playerID)) {
+				OtherPlayer otherPlayer = new OtherPlayer(id, playerAmount);
+				otherPlayer.setY(400);
+				otherPlayer.setX(id * 200);
+				otherPlayers.add(otherPlayer);
+				addActor(otherPlayer);
+				//TODO: add position, do a top-row of OtherPlayers
+			}
+		}
+	}
+
+	// Deltas on game are checked here, called every frame by parent
+	public void update() {
+		
 	}
 }
 
