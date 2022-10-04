@@ -7,7 +7,7 @@ import org.megauno.app.model.Game.PlayerCircle;
 public class Application extends ApplicationAdapter {
 	ViewController viewController;
 	Game game;
-	
+
 	@Override
 	public void create () {
 		PlayerCircle players = new PlayerCircle();
@@ -22,7 +22,7 @@ public class Application extends ApplicationAdapter {
 		viewController.draw();
 		game.update();
 	}
-	
+
 	@Override
 	public void dispose () {
 		viewController.teardown();

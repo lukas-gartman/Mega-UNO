@@ -23,6 +23,8 @@ public interface ICard extends ICardVisitor {
 
     ICard copyCard();
 
+	Integer getNumber();
+
     boolean activate();
 
     void setColor(Color choice);

@@ -97,4 +97,15 @@ public class PlayerCircle {
         removeNode(n);
     }
 
+    public Player[] getPlayers(){
+        Node next = currentPlayer.nextNode;
+        Player[] out = new Player[numPlayers];
+        out[0] = currentPlayer.getPlayer();
+        for (int i = 1; i < numPlayers; i++){
+            out[i] = (next.getPlayer());
+            next = next.nextNode;
+        }
+        return out;
+    }
+
 }
