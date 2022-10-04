@@ -6,15 +6,17 @@ import java.net.Socket;
 import java.util.HashMap;
 
 public class Server implements IServer, Runnable {
-    private final ServerSocket server;
+    private ServerSocket server;
     private HashMap<ClientHandler, Integer> clientHandlers = new HashMap<>();
     private static int cid = 1;
 
     public Server(int port) {
         try {
             this.server = new ServerSocket(port);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        } catch (IOException ex) {
+            System.out.println("A server is already running on port " + port);
+        } catch (IllegalArgumentException ex) {
+            System.out.println("Unable to create server on port " + port + ". Please use a port within the range 0-65535.");
         }
     }
 
@@ -31,8 +33,8 @@ public class Server implements IServer, Runnable {
                 System.out.println("client connected");
             }
         } catch (IOException ex) {
-            ex.printStackTrace();
-        }
+            throw new RuntimeException("Server socket is closed");
+        } catch (NullPointerException ex) {} // server was not setup properly, ignore...
     }
 
     public void disconnect(ClientHandler client) {

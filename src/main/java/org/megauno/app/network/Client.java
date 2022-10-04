@@ -40,7 +40,8 @@ public class Client {
                     JSONObject json = new JSONObject(message);
                     // todo: do something with json object
                 } catch (IOException ex) {
-                    ex.printStackTrace();
+                    System.out.println("Client lost connection to server @ " + this.hostname + ":" + this.port);
+                    break;
                 }
             }
         }).start();
