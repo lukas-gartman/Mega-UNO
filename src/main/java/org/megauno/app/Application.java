@@ -3,6 +3,7 @@ package org.megauno.app;
 import org.megauno.app.model.Game.Game;
 import com.badlogic.gdx.ApplicationAdapter;
 import org.megauno.app.model.Game.PlayerCircle;
+import org.megauno.app.viewcontroller.ViewController;
 
 public class Application extends ApplicationAdapter {
 	ViewController viewController;
