@@ -98,6 +98,9 @@ public class PlayerCircle {
     }
 
     public Player[] getPlayers(){
+        if (numPlayers <= 0)
+            return null;
+
         Node next = currentPlayer.nextNode;
         Player[] out = new Player[numPlayers];
         out[0] = currentPlayer.getPlayer();

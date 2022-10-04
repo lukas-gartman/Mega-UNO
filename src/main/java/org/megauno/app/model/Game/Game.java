@@ -15,7 +15,8 @@ public class Game {
     Pile discarded;
 
     public Game(PlayerCircle players, int numCards) {
-        discarded = new Pile();
+        this.discarded = new Pile();
+        this.deck = new Deck();
         this.players = players;
 
         int p = 0;
@@ -24,7 +25,6 @@ public class Game {
             players.nextPlayer();
             p++;
         }
-        discarded = new Pile();
     }
     public Game(){
         this.discarded = new Pile();
