@@ -46,8 +46,9 @@ class Card extends Actor {
 		batch.draw(sprite, getX(), getY());
 		// Draw number if number card
 		if (card.getNumber() != null) {
-			fnt.draw(batch, card.getNumber().toString(), getX() + 20, getY());
+			fnt.draw(batch, card.getNumber().toString(), getX(), getY()+sprite.getHeight());
 		}
+
 		// TODO: type image
 	}
 }
