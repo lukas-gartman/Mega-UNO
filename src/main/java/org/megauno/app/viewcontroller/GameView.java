@@ -20,9 +20,13 @@ public class GameView extends Stage {
 		// Add this view's player
 		this.playerID = playerID;
 		List<List<ICard>> allPlayerCards = game.getAllPlayerCards();   // All the different players' cards
-		thisPlayer = new ThisPlayer(playerID, allPlayerCards.get(playerID));
+		thisPlayer = new ThisPlayer(playerID, allPlayerCards.get(playerID), game);
 		System.out.println("NUMBER OF cards: " + allPlayerCards.get(playerID).size());
 		addActor(thisPlayer);
+		// Add the card to the stage
+		for (Card vCard : thisPlayer.getVCards()) {
+			addActor(vCard);
+		}
 
 		// Add all other players
 		// TODO: make the positions make sense regarding actual placing in the list
@@ -40,6 +44,7 @@ public class GameView extends Stage {
 		}
 	}
 
+	//TODO: when a card is detected to be rmoved from hand, remove card from stage.
 	// Deltas on game are checked here, called every frame by parent
 	public void update() {
 		

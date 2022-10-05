@@ -37,8 +37,8 @@ public class ViewController implements Subscriber<Game> {
 			gameViews.add(new GameView(game, i));
 		}
 		currentGameView = gameViews.get(game.getCurrentPlayer());
+		Gdx.input.setInputProcessor(currentGameView);
 
-		// Gdx.input.setInputProcessor(stage); // The app's input processor is our stage
 		// DummyActor dummyActor = new DummyActor();
 		// stage.addActor(dummyActor);
 		// stage.setKeyboardFocus(dummyActor);
