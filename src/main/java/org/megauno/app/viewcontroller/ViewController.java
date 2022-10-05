@@ -22,7 +22,7 @@ import org.megauno.app.viewcontroller.datafetching.FontLoader;
 import org.megauno.app.viewcontroller.datafetching.SpriteLoader;
 
 // The outer class managing views and controllers
-public class ViewController implements Subscriber<Game> {
+public class ViewController {
 	private Game game;
 
 	private GameView currentGameView;
@@ -55,7 +55,7 @@ public class ViewController implements Subscriber<Game> {
 	public void draw() {
 		// Clear screen
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		currentGameView.draw();
+		gameViews.get(game.getCurrentPlayer()).draw();
 		// stage.act(Gdx.graphics.getDeltaTime());
 		// stage.draw();
 	}
@@ -65,11 +65,7 @@ public class ViewController implements Subscriber<Game> {
 	public void teardown() {
 	}
 
-	@Override
-	public void delivery(Game game) {
-		// this.game = game;
-		// TODO update view state
-	}
+
 
 	public class DummyActor extends Actor {
 		static Sprite sprite = new SpriteLoader().getData("yay.jpg");
@@ -93,12 +89,7 @@ public class ViewController implements Subscriber<Game> {
 					});
 		}
 
-		@Override
-		public void draw(Batch batch, float parentAlpha) {
-			super.draw(batch, parentAlpha);
-			sprite.draw(batch);
-			fnt.draw(batch, "Absolutely Amazing", Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
-		}
+
 
 		@Override
 		protected void positionChanged() {
