@@ -7,6 +7,9 @@ import java.util.List;
 
 import org.megauno.app.model.Cards.ICard;
 import org.megauno.app.model.Game.Game;
+import org.megauno.app.model.Player.Player;
+
+import static org.megauno.app.utility.CardMethoodes.cardsDifference;
 
 // For now, GameView parses deltas from Game and calls the appropriate
 public class GameView extends Stage {
@@ -17,6 +20,7 @@ public class GameView extends Stage {
 	private List<OtherPlayer> otherPlayers = new ArrayList<>();
 	
 	public GameView(Game game, int playerID) {
+		this.game = game;
 		// Add this view's player
 		this.playerID = playerID;
 		List<List<ICard>> allPlayerCards = game.getAllPlayerCards();   // All the different players' cards
@@ -42,7 +46,44 @@ public class GameView extends Stage {
 
 	// Deltas on game are checked here, called every frame by parent
 	public void update() {
-		
+		thisPlayerHandCHnages();
+
+		for (OtherPlayer op: otherPlayers) {
+			otherPlayerHandChanges(op);
+		}
 	}
+
+	//Deals with teh changes to the players hand
+	private void thisPlayerHandCHnages(){
+		Player player = game.getPlayerWithId(playerID);
+		List<ICard> newCards = player.getCards();
+		List<ICard> currentCards = thisPlayer.getCards();
+		thisPlayer.addCards(cardsDifference(currentCards,newCards));
+		thisPlayer.removeCards(cardsDifference(newCards,currentCards));
+	}
+
+
+
+	private void otherPlayerHandChanges(OtherPlayer otherPlayer){
+		Player[] players = game.getPlayers();
+		for(int i = 0; i < players.length-1; i++){
+			Player player = players[i];
+			if(player.id== playerID){
+				int newCards = player.numOfCards();
+				int nCards = otherPlayer.getNrOfCard();
+				if(nCards > newCards){
+					otherPlayer.removeCards(nCards-newCards);
+				}else if(nCards < newCards){
+					otherPlayer.addCards(newCards-nCards);
+				}
+				nCards = newCards;
+				break;
+			}
+		}
+	}
+
+
+	
+
 }
 

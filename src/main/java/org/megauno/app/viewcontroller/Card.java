@@ -9,7 +9,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
-class Card extends Actor {
+public class Card extends Actor {
 	static Sprite red = new SpriteLoader().getData("assets/RedCard.png");
 	static Sprite blue = new SpriteLoader().getData("assets/BlueCard.png");
 	static Sprite yellow = new SpriteLoader().getData("assets/YellowCard.png");
@@ -38,6 +38,10 @@ class Card extends Actor {
 				sprite = nonColored;
 		}
 		this.card = card;
+	}
+
+	public ICard getCard(){
+		return card.copyCard();
 	}
 
 	@Override
