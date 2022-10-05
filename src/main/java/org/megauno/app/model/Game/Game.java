@@ -139,8 +139,12 @@ public class Game {
         return deck;
     }
 
-    public PlayerCircle getPlayers(){
+    public PlayerCircle getPlayerCircle(){
         return players;
+    }
+
+    public Player[] getPlayers(){
+        return players.getPlayers();
     }
     // To simulate a player choosing a card
     public void currentPlayerChooseCard() {
