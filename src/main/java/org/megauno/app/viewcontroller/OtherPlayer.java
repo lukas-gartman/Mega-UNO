@@ -1,6 +1,8 @@
 package org.megauno.app.viewcontroller;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import org.megauno.app.utility.dataFetching.DataFetcher;
+import org.megauno.app.utility.dataFetching.PathDataFetcher;
 import org.megauno.app.viewcontroller.datafetching.FontLoader;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -13,8 +15,10 @@ import java.util.List;
 
 // Graphical element to represent another player
 public class OtherPlayer extends Image {
-	static BitmapFont font = new FontLoader("assets/").getDataFromPath("assets/minecraft.fnt");
-	static Sprite cardBack = new SpriteLoader().getData("assets/Card.png");
+	static DataFetcher<String,BitmapFont> fontFetcher = new PathDataFetcher<BitmapFont>(new FontLoader(), "assets/");
+	static BitmapFont font = fontFetcher.tryGetDataUnSafe("minecraft.fnt");
+	static DataFetcher<String,Sprite> spriteLoader = new PathDataFetcher<Sprite>(new SpriteLoader(), "assets/");
+	static Sprite cardBack = spriteLoader.tryGetDataSafe("Card.png");
 	private int playerID;
 	private List<Sprite> cards = new ArrayList<>();
 

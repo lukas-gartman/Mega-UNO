@@ -68,8 +68,8 @@ public class ViewController {
 
 
 	public class DummyActor extends Actor {
-		static Sprite sprite = new SpriteLoader().getData("yay.jpg");
-		static BitmapFont fnt = new FontLoader("assets/").getDataFromPath("assets/minecraft.fnt");
+		static Sprite sprite = new SpriteLoader().retrieveData("yay.jpg");
+		static BitmapFont fnt = new FontLoader().retrieveData("assets/minecraft.fnt");
 
 		public DummyActor() {
 			setBounds(sprite.getX(), sprite.getY(), sprite.getWidth(), sprite.getHeight());

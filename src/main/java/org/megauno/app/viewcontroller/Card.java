@@ -1,6 +1,8 @@
 package org.megauno.app.viewcontroller;
 
 import org.megauno.app.model.Cards.ICard;
+import org.megauno.app.utility.dataFetching.DataFetcher;
+import org.megauno.app.utility.dataFetching.PathDataFetcher;
 import org.megauno.app.viewcontroller.datafetching.FontLoader;
 import org.megauno.app.viewcontroller.datafetching.SpriteLoader;
 
@@ -10,12 +12,14 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
 public class Card extends Actor {
-	static Sprite red = new SpriteLoader().getData("assets/RedCard.png");
-	static Sprite blue = new SpriteLoader().getData("assets/BlueCard.png");
-	static Sprite yellow = new SpriteLoader().getData("assets/YellowCard.png");
-	static Sprite green = new SpriteLoader().getData("assets/GreenCard.png");
-	static Sprite nonColored = new SpriteLoader().getData("assets/WhiteCard.png");
-	static BitmapFont fnt = new FontLoader("assets/").getDataFromPath("minecraft.fnt");
+	static DataFetcher<String,Sprite> spriteFetcher = new PathDataFetcher(new SpriteLoader(),"assets/");
+	static Sprite red = spriteFetcher.tryGetDataUnSafe("RedCard.png");
+	static Sprite blue = spriteFetcher.tryGetDataUnSafe("BlueCard.png");
+	static Sprite yellow = spriteFetcher.tryGetDataUnSafe("YellowCard.png");
+	static Sprite green = spriteFetcher.tryGetDataUnSafe("GreenCard.png");
+	static Sprite nonColored = spriteFetcher.tryGetDataUnSafe("WhiteCard.png");
+	static DataFetcher<String,BitmapFont> fontFetcher = new PathDataFetcher<>(new FontLoader(),"assets/");
+	static BitmapFont fnt = fontFetcher.tryGetDataUnSafe("minecraft.fnt");
 
 	Sprite sprite;
 	ICard card;
