@@ -57,7 +57,7 @@ public class Game {
 	// Inner array is null if the player with the given ID/index is out of the game
 	// TODO: add an ID in the Player class to be able to put null here
 	public List<List<ICard>> getAllPlayerCards() {
-		Player[] players = getPlayers().getPlayers();
+		Player[] players = getPlayers();
 		List<List<ICard>> result = new ArrayList<>();
 		for (int i = 0; i < players.length; i++) {
 			result.add(players[i].getCards());
@@ -145,6 +145,15 @@ public class Game {
 
     public Player[] getPlayers(){
         return players.getPlayers();
+    }
+
+    public Player getPlayerWithId(int id){
+        for (Player p:getPlayers()) {
+            if (p.id == id){
+                return p;
+            }
+        }
+        return null;
     }
     // To simulate a player choosing a card
     public void currentPlayerChooseCard() {
