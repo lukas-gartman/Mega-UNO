@@ -23,9 +23,13 @@ public class ThisPlayer extends Image {
 	// Game
 	private Game game;
 
-	public ThisPlayer(int playerID, List<ICard> cards, Game game) {
+	private GameView gv;
+
+	public ThisPlayer(int playerID, List<ICard> cards, Game game,GameView gv) {
 		this.playerID = playerID;
 		this.cards = cards;
+		this.game = game;
+		this.gv = gv;
 		addCards(cards);
 	}
 
@@ -39,7 +43,8 @@ public class ThisPlayer extends Image {
 			vCard.setY(100);
 			// Add controller for card
 			vCard.addListener(new CardListener(i, game));
-			vCards.add(vCard);
+			gv.addActor(vCard);
+			//vCards.add(vCard);
 		}
 
 	}
@@ -55,6 +60,7 @@ public class ThisPlayer extends Image {
 			}
 		}
 		for(Card visualCard: toRemove){
+			visualCard.remove();
 			vCards.remove(visualCard);
 		}
 	}
@@ -63,8 +69,12 @@ public class ThisPlayer extends Image {
 		return copyCards(cards);
 	}
 
-	@Override
- 	public void draw(Batch batch, float parentAlpha) {
+	public List<Card> getVisualCards(){
+		return vCards;
+	}
+
+	//@Override
+ 	public void drawwwww(Batch batch, float parentAlpha) {
 		for (int i = 0; i < vCards.size(); i++) {
 			Card vCard = vCards.get(i);
 			vCard.setX(i * 50);

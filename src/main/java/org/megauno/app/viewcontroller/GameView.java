@@ -24,13 +24,10 @@ public class GameView extends Stage {
 		// Add this view's player
 		this.playerID = playerID;
 		List<List<ICard>> allPlayerCards = game.getAllPlayerCards();   // All the different players' cards
-		thisPlayer = new ThisPlayer(playerID, allPlayerCards.get(playerID), game);
+		thisPlayer = new ThisPlayer(playerID, allPlayerCards.get(playerID), game, this);
 		System.out.println("NUMBER OF cards: " + allPlayerCards.get(playerID).size());
 		addActor(thisPlayer);
-		// Add the card to the stage
-		for (Card vCard : thisPlayer.getVCards()) {
-			addActor(vCard);
-		}
+
 
 		// Add all other players
 		// TODO: make the positions make sense regarding actual placing in the list
