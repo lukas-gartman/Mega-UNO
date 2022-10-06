@@ -90,6 +90,11 @@ public class ThisPlayer extends Image {
 			System.out.println("Clicked card with ID: " + Integer.toString(cardID));
 			// Flip card selection in model and visually
 			//game.choices[cardID] = !game.choices[cardID];
+			if(!vCards.get(cardID).selected){
+				game.getPlayerWithId(playerID).selectCard(vCards.get(cardID).getCard());
+			}else {
+				game.getPlayerWithId(playerID).unSelectCard(vCards.get(cardID).getCard());
+			}
 			vCards.get(cardID).selected = !vCards.get(cardID).selected;
 		}
 	}
