@@ -68,10 +68,15 @@ public class Game {
         return true;
     }
 
-    public void playerDraws(){
-        Node current = players.getCurrent();
-        current.giveCardToPlayer(deck.drawCard());
-        drawCount++;
+    public boolean playerDraws(){
+        if (drawCount > 2){
+            return false;
+        } else {
+            Node current = players.getCurrent();
+            current.giveCardToPlayer(deck.drawCard());
+            drawCount++;
+            return true;
+        }
     }
 
     public void try_play() {
