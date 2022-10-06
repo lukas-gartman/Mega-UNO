@@ -13,6 +13,7 @@ public class Game {
     //ICard top;
     Deck deck;
     Pile discarded;
+    private int drawCount = 0;
 
     public Game(PlayerCircle players, int numCards) {
         discarded = new Pile();
@@ -67,46 +68,66 @@ public class Game {
         return true;
     }
 
+    public void playerDraws(){
+        Node current = players.getCurrent();
+        current.giveCardToPlayer(deck.drawCard());
+        drawCount++;
+    }
+
     public void try_play() {
         ICard top = discarded.getTop();
         Node current = players.getCurrent();
         List<ICard> choices = players.currentMakeTurn();
         boolean currentHasOnlyOneCard = current.getPlayer().numOfCards() == 1;
 
-        if(validPlayedCards(choices)) {
-            // card effects here ....
+        if (validPlay(choices)) {
             for (ICard choice : choices) {
                 choice.activate();
             }
 
-            // change currentPlayer to next in line depending on game direction and position in circle:
-            players.nextTurn();
+            // change currentPlayer to next in line:
+            nextTurn();
 
-            // discard played card
-            for(int i = 0; i < choices.size(); i++){
+            // discard played cards
+            for (int i = 0; i < choices.size(); i++) {
                 discarded.discard(choices.get(i));
             }
 
-
-            // check if the player has run out of cards
-            if (players.playerOutOfCards(current)) {
-                // if the player only had one card, and never said uno,
-                if (currentHasOnlyOneCard && !current.getPlayer().uno()) {
-                    //penalise: draw 3 cards.
-                    current.giveCardToPlayer(deck.drawCard());
-                    current.giveCardToPlayer(deck.drawCard());
-                    current.giveCardToPlayer(deck.drawCard());
-                } else {
-                    // removes player
-                    players.playerFinished(current);
-                }
-            }
-        }else{
-            for(int i = 0; i < choices.size(); i++) {
+            checkPlayersProgress(current, currentHasOnlyOneCard, choices);
+        }
+        /*else {
+            for (int i = 0; i < choices.size(); i++) {
                 players.giveCardToPlayer(choices.get(i));
             }
-        }
+        }*/
+    }
 
+    private void checkPlayersProgress(Node current, boolean currentHasOnlyOneCard, List<ICard> choices){
+        if (currentHasOnlyOneCard && !current.getPlayer().uno()) {
+            //penalise: draw 3 cards.
+            current.giveCardToPlayer(deck.drawCard());
+            current.giveCardToPlayer(deck.drawCard());
+            current.giveCardToPlayer(deck.drawCard());
+        }else if (players.playerOutOfCards(current) && choices.size() > 1) {
+            players.playerFinished(current);
+        }
+    }
+
+
+    private boolean validPlay(List<ICard> choices){
+        Player current = players.getCurrent().getPlayer();
+        List<ICard> hand = current.getCards();
+        int lastCardIndex = current.getCards().size() - 1;
+        return validPlayedCards(choices) &&
+                (drawCount < 1 ||
+                        (choices.size() == 1 && choices.get(0).equals(hand.get(lastCardIndex))));
+    }
+
+
+
+    private void nextTurn(){
+        drawCount = 0;
+        players.nextTurn();
     }
 
     public Deck getDeck(){
@@ -116,6 +137,7 @@ public class Game {
     public PlayerCircle getPlayers(){
         return players;
     }
+
     // To simulate a player choosing a card
     public void currentPlayerChooseCard() {
         Random rand = new Random();
