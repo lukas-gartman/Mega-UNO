@@ -84,13 +84,12 @@ public class Game {
             for (ICard choice : choices) {
                 choice.activate();
             }
-
             // change currentPlayer to next in line:
             nextTurn();
 
-            // discard played cards
-            for (int i = 0; i < choices.size(); i++) {
-                discarded.discard(choices.get(i));
+            // discard successfully played cards
+            for (ICard c: choices) {
+                discarded.discard(c);
             }
 
             checkPlayersProgress(current, currentHasOnlyOneCard, choices);
@@ -121,7 +120,6 @@ public class Game {
                 (drawCount < 1 ||
                         (choices.size() == 1 && choices.get(0).equals(hand.get(lastCardIndex))));
     }
-
 
 
     private void nextTurn(){
