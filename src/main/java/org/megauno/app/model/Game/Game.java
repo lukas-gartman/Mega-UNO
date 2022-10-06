@@ -80,7 +80,7 @@ public class Game {
         List<ICard> choices = players.currentMakeTurn();
         boolean currentHasOnlyOneCard = current.getPlayer().numOfCards() == 1;
 
-        if (validPlay(choices)) {
+        if (validPlay(choices, current)) {
             for (ICard choice : choices) {
                 choice.activate();
             }
@@ -114,10 +114,9 @@ public class Game {
     }
 
 
-    private boolean validPlay(List<ICard> choices){
-        Player current = players.getCurrent().getPlayer();
-        List<ICard> hand = current.getCards();
-        int lastCardIndex = current.getCards().size() - 1;
+    private boolean validPlay(List<ICard> choices, Node current){
+        List<ICard> hand = current.getPlayer().getCards();
+        int lastCardIndex = current.getPlayer().getCards().size() - 1;
         return validPlayedCards(choices) &&
                 (drawCount < 1 ||
                         (choices.size() == 1 && choices.get(0).equals(hand.get(lastCardIndex))));
