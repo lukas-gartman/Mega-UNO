@@ -14,10 +14,10 @@ public class TakeFourAction implements IAction {
 
     @Override
     public boolean execute(){
-        players.nextPlayer().addCard(deck.drawCard());
-        players.nextPlayer().addCard(deck.drawCard());
-        players.nextPlayer().addCard(deck.drawCard());
-        players.nextPlayer().addCard(deck.drawCard());
+        players.getNextPlayer().addCard(deck.drawCard());
+        players.getNextPlayer().addCard(deck.drawCard());
+        players.getNextPlayer().addCard(deck.drawCard());
+        players.getNextPlayer().addCard(deck.drawCard());
         return true;
     }
 }

@@ -15,6 +15,12 @@ public class Game {
     Pile discarded;
     private int drawCount = 0;
 
+
+    /**
+     *
+     * @param players is the circle of players
+     * @param numCards is the number of cards a hand is initially dealt
+     */
     public Game(PlayerCircle players, int numCards) {
         discarded = new Pile();
         this.players = players;
@@ -22,7 +28,7 @@ public class Game {
         int p = 0;
         while (p < players.playersLeft() * numCards) {
             players.getCurrent().giveCardToPlayer(deck.drawCard());
-            players.nextPlayer();
+            players.getNextPlayer();
             p++;
         }
         discarded = new Pile();
@@ -53,6 +59,11 @@ public class Game {
         players.changeRotation();
     }
 
+    /**
+     *
+     * @param play is the list of cards the current player is trying to play
+     * @return whether the list of cards are playable on the current pile
+     */
     private boolean validPlayedCards(List<ICard> play){
         ICard top = discarded.getTop();
         if(play.size() == 0){
@@ -68,6 +79,10 @@ public class Game {
         return true;
     }
 
+    /**
+     * The current player tries to draw a card, which is limited to 3 cards
+     * @return true if the draw succeeded
+     */
     public boolean playerDraws(){
         if (drawCount > 2){
             return false;
@@ -79,6 +94,10 @@ public class Game {
         }
     }
 
+    /**
+     * If the player has selected which cards to play,
+     * attempt to play those cards and discard on pile if successful
+     */
     public void try_play() {
         ICard top = discarded.getTop();
         Node current = players.getCurrent();
@@ -106,18 +125,32 @@ public class Game {
         }*/
     }
 
+    /**
+     * A check to see if the current player has only one card left and said uno,
+     * or is out of cards and qualify to leave the game to
+     * @param current is the current player
+     * @param currentHasOnlyOneCard is true if current player has only one card
+     * @param choices is the set of cards the current player has tried to play
+     */
     private void checkPlayersProgress(Node current, boolean currentHasOnlyOneCard, List<ICard> choices){
         if (currentHasOnlyOneCard && !current.getPlayer().uno()) {
             //penalise: draw 3 cards.
             current.giveCardToPlayer(deck.drawCard());
             current.giveCardToPlayer(deck.drawCard());
             current.giveCardToPlayer(deck.drawCard());
-        }else if (players.playerOutOfCards(current) && choices.size() > 1) {
-            players.playerFinished(current);
+        }else if (players.IsPlayerOutOfCards(current) ) {
+            if (choices.size() > 1 || current.getPlayer().uno()) players.playerFinished(current);
         }
     }
 
 
+    /**
+     * check that the cards attempted to be played can be played given the top of the discard pile.
+     * If a card has been drawn by the current player on this turn, then only this card can be played.
+     * @param choices is the set of cards attempted to be played
+     * @param current
+     * @return true if playing chosen cards is a valid move
+     */
     private boolean validPlay(List<ICard> choices, Node current){
         List<ICard> hand = current.getPlayer().getCards();
         int lastCardIndex = current.getPlayer().getCards().size() - 1;
@@ -127,10 +160,15 @@ public class Game {
     }
 
 
+    /**
+     * method to hand over the turn to next player
+     * resets drawCount for the next turn.
+     */
     private void nextTurn(){
         drawCount = 0;
-        players.nextTurn();
+        players.moveOnToNextTurn();
     }
+
 
     public Deck getDeck(){
         return deck;
@@ -140,8 +178,10 @@ public class Game {
         return players;
     }
 
-    // To simulate a player choosing a card
-    public void currentPlayerChooseCard() {
+    /**
+     * Used for testing purposes, simulates a player choosing a card
+      */
+    public void simulatePlayerChoosingCard() {
         Random rand = new Random();
         Player currentPlayer = players.getCurrent().getPlayer();
         int randomIndex = rand.nextInt(currentPlayer.numOfCards());
@@ -151,7 +191,7 @@ public class Game {
 
     public boolean tryPlayTest() {
         Node current = players.getCurrent();
-        currentPlayerChooseCard();
+        simulatePlayerChoosingCard();
         List<ICard> choices = players.currentMakeTurn();
         boolean currentHasOnlyOneCard = current.getPlayer().numOfCards() == 1;
         System.out.println("Current player: " + current.getPlayer().hashCode());
@@ -166,7 +206,7 @@ public class Game {
             System.out.println("-------------<Successfully played>-------------");
 
             // change currentPlayer to next in line depending on game direction and position in circle:
-            players.nextTurn();
+            players.moveOnToNextTurn();
 
             // discard played card
             for (ICard choice : choices) {
@@ -190,7 +230,7 @@ public class Game {
                 }
             }
 */
-            if (players.playerOutOfCards(current)) {
+            if (players.IsPlayerOutOfCards(current)) {
                 players.playerFinished(current);
                 System.out.println("Player " + current.getPlayer().hashCode() + " has finished");
                 System.out.println("Players left: " + players.playersLeft());
@@ -200,7 +240,7 @@ public class Game {
             for (ICard choice : choices) {
                 players.giveCardToPlayer(choice);
             }
-            players.nextTurn();
+            players.moveOnToNextTurn();
         }
         System.out.println("\n|||||||||| New round |||||||||| \n");
         return !current.equals(players.getCurrent());

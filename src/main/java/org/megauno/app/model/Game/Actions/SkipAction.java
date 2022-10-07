@@ -11,7 +11,7 @@ public class SkipAction implements IAction {
 
     @Override
     public boolean execute() {
-        players.nextTurn();
+        players.moveOnToNextTurn();
         return true;
     }
 }
