@@ -25,10 +25,11 @@ public class PlayerCircle {
     }
 
     public PlayerCircle(List<Player> players){
-        for (Player p : players
-             ) {
+        for (Player p : players) {
             addNode(p);
         }
+        this.direction = Rotation.CLOCKWISE;
+        this.winners = new ArrayList<>();
     }
 
     public void addNode(Player p) {

@@ -12,9 +12,9 @@ public class GameFactory {
     //Deck deck; due to the reference to the game needed in the deck, this is created in game
     //Pile pile;
 
-    public Game createGame(int numberOfPlayers) {
-       PlayerCircle players = new PlayerCircle(generatePlayers(numberOfPlayers));
-       return new Game(players);
+    public Game createGame(int nPlayers, int nCards) {
+       PlayerCircle players = new PlayerCircle(generatePlayers(nPlayers));
+       return new Game(players, nCards);
     }
 
     private List<Player> generatePlayers(int n) {

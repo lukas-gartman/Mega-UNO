@@ -4,14 +4,27 @@ import org.megauno.app.model.Cards.*;
 
 import java.util.Objects;
 
+/**
+ *
+ */
 public class NumberCard extends AbstractCard {
     private final int value;
 
+    /**
+     * The only constructor for NumberCard, has default card type NUMBERCARD.
+     * @param color Color of the card.
+     * @param value Numeric value of the card.
+     */
     public NumberCard(Color color, int value) {
         super(color, CardType.NUMBERCARD);
         CardValidation.validateColorNc(color);
         CardValidation.validateNumber(value);
         this.value = value;
+    }
+
+    @Override
+    public Integer getNumber() {
+        return value;
     }
 
     public int getValue() {
@@ -44,6 +57,12 @@ public class NumberCard extends AbstractCard {
     // Why it isn't a good idea to use visitor interface is because Card is both the
     // acceptor and the visitor, which means that they cannot be under the same interface
     // and at the same time be under separate interfaces (Visitor, accepter (element))
+
+    /**
+     * Checks that this card can be played on the given card.
+     * @param c  The card that is played on.
+     * @return If the card can be played or not.
+     */
     @Override
     public boolean canBePlayed(ICard c) {
         return c.visit(this);
@@ -72,6 +91,12 @@ public class NumberCard extends AbstractCard {
     }
 
     // This is equivalent to canBePlayedOnMe
+
+    /**
+     * Visitor Pattern. Checks that the given card can be played on this card.
+     * @param ac The card that wants to be played on this card
+     * @return Weather it can be played on this or not.
+     */
     @Override
     public boolean visit(ActionCard ac) {
         return this.getColor() == ac.getColor();

@@ -24,8 +24,10 @@ public class Player {
         this.hand = hand;
     }
 
+    // Bug, since the same card can be picked several times
     public void selectCard(ICard c){
-        if (hand.contains(c)) {
+        // This for now, but this doesn't distinguish cards by id, so it isn't complete
+        if (hand.contains(c) && !selectedCards.contains(c)) {
             selectedCards.add(c);
         }
     }

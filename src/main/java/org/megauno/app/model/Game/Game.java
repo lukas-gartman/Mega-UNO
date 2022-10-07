@@ -73,7 +73,7 @@ public class Game {
         List<ICard> choices = players.currentMakeTurn();
         boolean currentHasOnlyOneCard = current.getPlayer().numOfCards() == 1;
 
-        if(validPlayedCards(choices)) {
+        if (validPlayedCards(choices)) {
             // card effects here ....
             for (ICard choice : choices) {
                 choice.activate();
@@ -83,7 +83,7 @@ public class Game {
             players.nextTurn();
 
             // discard played card
-            for(int i = 0; i < choices.size(); i++){
+            for (int i = 0; i < choices.size(); i++){
                 discarded.discard(choices.get(i));
             }
 
@@ -142,7 +142,7 @@ public class Game {
             System.out.println("-------------<Successfully played>-------------");
 
             // change currentPlayer to next in line depending on game direction and position in circle:
-            players.nextTurn();
+            //players.nextTurn();
 
             // discard played card
             for (ICard choice : choices) {
@@ -166,16 +166,22 @@ public class Game {
                 }
             }
 */
-            if (players.playerOutOfCards(current)) {
+            // Added the last condition for debugging, but it could be proven needed
+            // anyway.
+            System.out.println("Current: " + current);
+            System.out.println(current.getPlayer());
+            if (players.playerOutOfCards(current) && players.playersLeft() > 0) {
                 players.playerFinished(current);
                 System.out.println("Player " + current.getPlayer().hashCode() + " has finished");
                 System.out.println("Players left: " + players.playersLeft());
             }
+            players.nextTurn();
         }
         else {
             for (ICard choice : choices) {
                 players.giveCardToPlayer(choice);
             }
+            System.out.println("Invalid card(s), no cards played");
             players.nextTurn();
         }
         System.out.println("\n|||||||||| New round |||||||||| \n");
