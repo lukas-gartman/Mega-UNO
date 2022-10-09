@@ -2,6 +2,7 @@ package org.megauno.app.model.Game.Actions;
 
 import org.megauno.app.model.Cards.IAction;
 import org.megauno.app.model.Deck;
+import org.megauno.app.model.Game.IActOnGame;
 import org.megauno.app.model.Game.PlayerCircle;
 
 public class TakeFourAction implements IAction {
@@ -13,7 +14,7 @@ public class TakeFourAction implements IAction {
     }
 
     @Override
-    public boolean execute(){
+    public boolean execute(IActOnGame g){
         players.getNextPlayer().addCard(deck.drawCard());
         players.getNextPlayer().addCard(deck.drawCard());
         players.getNextPlayer().addCard(deck.drawCard());

@@ -8,7 +8,7 @@ import org.megauno.app.model.Player.Player;
 import java.util.List;
 import java.util.Random;
 
-public class Game {
+public class Game implements IActOnGame {
     PlayerCircle players;
     //ICard top;
     Deck deck;
@@ -106,7 +106,7 @@ public class Game {
 
         if (validPlay(choices, current)) {
             for (ICard choice : choices) {
-                choice.activate();
+                choice.activate(this);
             }
             // change currentPlayer to next in line:
             nextTurn();
