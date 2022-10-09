@@ -201,7 +201,7 @@ public class Game implements IActOnGame {
         if (validPlayedCards(choices)) {
             // card effects here ....
             for (ICard choice : choices) {
-                choice.activate();
+                choice.activate(this);
             }
             System.out.println("-------------<Successfully played>-------------");
 
