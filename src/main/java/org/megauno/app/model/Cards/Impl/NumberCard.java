@@ -1,6 +1,7 @@
 package org.megauno.app.model.Cards.Impl;
 
 import org.megauno.app.model.Cards.*;
+import org.megauno.app.model.Game.IActOnGame;
 
 import java.util.Objects;
 
@@ -83,7 +84,7 @@ public class NumberCard extends AbstractCard {
     }
 
     @Override
-    public boolean activate() {
+    public boolean activate(IActOnGame g) {
         return true;
     }
 
