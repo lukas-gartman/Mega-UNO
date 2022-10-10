@@ -1,12 +1,13 @@
 package org.megauno.app.model.Player;
 
 import org.megauno.app.model.Cards.ICard;
+import org.megauno.app.model.Game.IPlayer;
 
 import java.util.ArrayList;
 import java.util.List;
 
 //
-public class Player {
+public class Player implements IPlayer<ICard> {
 
     //Bool for if the player has said uno this round
     private boolean saidUno = false;

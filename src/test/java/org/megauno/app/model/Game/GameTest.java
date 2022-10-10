@@ -36,7 +36,7 @@ public class GameTest extends TestCase {
 
     public void testTry_play() {
         Random rand = new Random();
-        Player currentPlayer = players.getCurrent().getPlayer();
+        IPlayer currentPlayer = players.getCurrent().getPlayer();
         int randomIndex = rand.nextInt(currentPlayer.numOfCards());
         currentPlayer.selectCard(currentPlayer.getCards().get(randomIndex));
         game.try_play();

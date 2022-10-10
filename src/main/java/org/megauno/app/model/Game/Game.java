@@ -10,7 +10,6 @@ import java.util.Random;
 
 public class Game implements IActOnGame {
     PlayerCircle players;
-    //ICard top;
     Deck deck;
     Pile discarded;
     private int drawCount = 0;
@@ -188,7 +187,7 @@ public class Game implements IActOnGame {
       */
     public void simulatePlayerChoosingCard() {
         Random rand = new Random();
-        Player currentPlayer = players.getCurrent().getPlayer();
+        IPlayer<ICard> currentPlayer = players.getCurrent().getPlayer();
         int randomIndex = rand.nextInt(currentPlayer.numOfCards());
         ICard randomCard = currentPlayer.getCards().get(randomIndex);
         currentPlayer.selectCard(randomCard);
