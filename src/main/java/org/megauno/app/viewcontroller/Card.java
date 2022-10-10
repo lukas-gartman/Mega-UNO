@@ -3,6 +3,7 @@ package org.megauno.app.viewcontroller;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import org.lwjgl.system.CallbackI;
+import org.megauno.app.model.Cards.CardType;
 import org.megauno.app.model.Cards.ICard;
 import org.megauno.app.model.Game.Game;
 import org.megauno.app.utility.dataFetching.DataFetcher;
@@ -106,7 +107,32 @@ public class Card implements IDrawable {
 			fnt.draw(batch, card.getNumber().toString(), x, y + sprite.getHeight());
 		}
 
+		String type = getTypeInString();
+
+		if (type != null){
+			batch.draw(spriteFetcher.tryGetDataUnSafe(type), x, y);
+		}
+
 		// TODO: type image
+	}
+
+	private String getTypeInString(){
+		String special = null;
+		switch (card.getType()){
+			case WILDCARD -> {
+				special = "WildCard.png";
+			}
+			case REVERSECARD -> {
+				special = "Reverse.png";
+			}
+			case TAKETWO-> {
+				special = "Take2.png";
+			}
+			case TAKEFOUR -> {
+				special = "Take4.png";
+			}
+		}
+		return special;
 	}
 
 }
