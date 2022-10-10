@@ -7,17 +7,30 @@ import org.junit.Test;
 import org.megauno.app.model.Cards.Impl.ActionCard;
 import org.megauno.app.model.Cards.Impl.NumberCard;
 import org.megauno.app.model.Game.Actions.ReverseAction;
+import org.megauno.app.model.Game.Game;
+import org.megauno.app.model.Game.IActOnGame;
+import org.megauno.app.model.Game.PlayerCircle;
+import org.megauno.app.model.Player.Player;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ICardTest {
 
     @Before
     public void setUp() throws Exception {
+        Player p = new Player();
+        List<Player> players = new ArrayList<>();
+        players.add(p);
+        g = new Game(new PlayerCircle());
     }
 
     ICard nc = new NumberCard(Color.BLUE, 3);
     ICard nc2 = new NumberCard(Color.BLUE, 3);
     ICard nc3 = new NumberCard(Color.RED, 9);
     ICard ac1 = new ActionCard(new ReverseAction(), Color.BLUE, CardType.REVERSECARD);
+
+    IActOnGame g;
     //ActionCard ac = new ActionCard()
 
     @Test
@@ -73,11 +86,11 @@ public class ICardTest {
     @Test
     public void testActivate1() {
         // This should be "assert" later on
-        Assert.assertFalse(ac1.activate());
+        Assert.assertFalse(ac1.activate(g));
     }
 
     @Test
     public void testActivate2() {
-        Assert.assertFalse(nc.activate());
+        Assert.assertFalse(nc.activate(g));
     }
 }

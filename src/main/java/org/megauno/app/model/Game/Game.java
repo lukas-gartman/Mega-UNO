@@ -36,6 +36,7 @@ public class Game implements IActOnGame {
     public Game(){
         this.discarded = new Pile();
         this.deck = new Deck();
+        players = new PlayerCircle();
     }
 
     // For testing purposes
@@ -238,7 +239,7 @@ public class Game implements IActOnGame {
         }
         else {
             for (ICard choice : choices) {
-                players.giveCardToPlayer(choice);
+                players.giveCardToCurrentPlayer(choice);
             }
             players.moveOnToNextTurn();
         }

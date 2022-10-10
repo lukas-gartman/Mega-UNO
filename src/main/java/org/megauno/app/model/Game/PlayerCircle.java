@@ -28,8 +28,7 @@ public class PlayerCircle {
     }
 
     public PlayerCircle(List<Player> players){
-        for (Player p : players
-             ) {
+        for (Player p : players) {
             addNode(p);
         }
     }
@@ -107,7 +106,7 @@ public class PlayerCircle {
      * give current player a card
      * @param card is the card to give
      */
-    public void giveCardToPlayer(ICard card){
+    public void giveCardToCurrentPlayer(ICard card){
         currentPlayer.giveCardToPlayer(card);
     }
 
