@@ -27,8 +27,8 @@ public class Game implements IActOnGame {
 
         int p = 0;
         while (p < players.playersLeft() * numCards) {
-            players.getCurrent().giveCardToPlayer(deck.drawCard());
-            players.getNextPlayer();
+            players.giveCardToCurrentPlayer(deck.drawCard());
+            players.moveOnToNextTurn();
             p++;
         }
         discarded = new Pile();
