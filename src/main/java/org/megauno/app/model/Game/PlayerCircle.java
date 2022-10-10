@@ -114,6 +114,15 @@ public class PlayerCircle {
         return currentPlayer;
     }
 
+    public Node getNextPlayerNode(){
+        if (direction == Rotation.CLOCKWISE) return currentPlayer.nextNode;
+        else return currentPlayer.previousNode;
+    }
+
+    public void giveCardToPlayer(ICard c, Node p){
+        p.giveCardToPlayer(c);
+    }
+
     /**
      * checking if a player has run out of cards
      * @param n the node that holds the player to be checked
