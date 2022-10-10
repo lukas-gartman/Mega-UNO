@@ -33,7 +33,7 @@ public class Game implements IActOnGame {
     public Game(){
         this.discarded = new Pile();
         this.deck = new Deck();
-        players = new PlayerCircle<>();
+        players = new PlayerCircle<ICard>();
     }
 
     // For testing purposes
