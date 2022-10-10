@@ -1,6 +1,7 @@
 package org.megauno.app.model.Cards.Impl;
 
 import org.megauno.app.model.Cards.*;
+import org.megauno.app.model.Game.IActOnGame;
 
 import javax.lang.model.type.TypeKind;
 import java.util.Objects;
@@ -40,8 +41,8 @@ public class ActionCard extends AbstractCard {
    }
 
    @Override
-   public boolean activate() {
-      return action.execute();
+   public boolean activate(IActOnGame g) {
+      return action.execute(g);
    }
 
    @Override

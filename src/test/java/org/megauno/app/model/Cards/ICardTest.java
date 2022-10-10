@@ -7,31 +7,45 @@ import org.junit.Test;
 import org.megauno.app.model.Cards.Impl.ActionCard;
 import org.megauno.app.model.Cards.Impl.NumberCard;
 import org.megauno.app.model.Game.Actions.ReverseAction;
+import org.megauno.app.model.Game.Game;
+import org.megauno.app.model.Game.IActOnGame;
+import org.megauno.app.model.Game.PlayerCircle;
+import org.megauno.app.model.Player.Player;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ICardTest {
 
     @Before
     public void setUp() throws Exception {
+        Player p = new Player();
+        List<Player> players = new ArrayList<>();
+        players.add(p);
+        g = new Game(new PlayerCircle());
     }
 
     ICard nc = new NumberCard(Color.BLUE, 3);
     ICard nc2 = new NumberCard(Color.BLUE, 3);
     ICard nc3 = new NumberCard(Color.RED, 9);
+    ICard nc4 = new NumberCard(Color.GREEN, 3);
     ICard ac1 = new ActionCard(new ReverseAction(), Color.BLUE, CardType.REVERSECARD);
+
+    IActOnGame g;
     //ActionCard ac = new ActionCard()
 
     @Test
-    public void testTestEquals() {
+    public void testEquals() {
         Assert.assertEquals(nc, nc2);
     }
 
     @Test
-    public void testTestHashCode() {
+    public void testHashCode() {
         Assert.assertNotNull(nc.hashCode());
     }
 
     @Test
-    public void testTestToString() {
+    public void testToString() {
        Assert.assertNotNull(nc.toString());
     }
 
@@ -69,15 +83,34 @@ public class ICardTest {
     public void testCopyCard() {
         assert(nc.equals(nc.copyCard()));
     }
+    @Test
+    public void testGetNumber() {
+        assert(nc.getNumber().equals(3));
+    }
 
     @Test
     public void testActivate1() {
         // This should be "assert" later on
-        Assert.assertFalse(ac1.activate());
+        Assert.assertFalse(ac1.activate(g));
     }
 
     @Test
     public void testActivate2() {
-        Assert.assertFalse(nc.activate());
+        Assert.assertFalse(nc.activate(g));
+    }
+
+    @Test
+    public void testSetColor() {
+        Color newColor = Color.GREEN;
+        nc.setColor(newColor);
+        assert(nc.getColor() == Color.GREEN);
+    }
+
+    @Test
+    public void testCanBeStacked() {
+        assert(nc.canBeStacked(nc4));
+        assert(nc4.canBeStacked(nc));
+        Assert.assertFalse(nc.canBeStacked(nc3));
+        Assert.assertFalse(nc3.canBeStacked(nc));
     }
 }

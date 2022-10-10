@@ -3,6 +3,7 @@ package org.megauno.app.model.Game.Actions;
 import org.megauno.app.model.Cards.Color;
 import org.megauno.app.model.Cards.IAction;
 import org.megauno.app.model.Cards.ICard;
+import org.megauno.app.model.Game.IActOnGame;
 
 
 // Wild card is a type not an actioncard.
@@ -12,7 +13,7 @@ public class WildCardAction implements IAction{
     }
 
     @Override
-    public boolean execute() {
+    public boolean execute(IActOnGame g) {
         return true;
     }
 

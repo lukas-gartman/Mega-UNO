@@ -2,6 +2,7 @@ package org.megauno.app.model.Cards;
 
 import org.megauno.app.model.Cards.Impl.ActionCard;
 import org.megauno.app.model.Cards.Impl.NumberCard;
+import org.megauno.app.model.Game.IActOnGame;
 
 public interface ICard extends ICardVisitor {
 
@@ -25,7 +26,7 @@ public interface ICard extends ICardVisitor {
 
 	Integer getNumber();
 
-    boolean activate();
+    boolean activate(IActOnGame g);
 
     void setColor(Color choice);
 

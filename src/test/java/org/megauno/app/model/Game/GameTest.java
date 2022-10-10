@@ -2,7 +2,9 @@ package org.megauno.app.model.Game;
 
 import junit.framework.TestCase;
 import org.lwjgl.system.CallbackI;
+import org.megauno.app.model.Cards.ICard;
 import org.megauno.app.model.Deck;
+import org.megauno.app.model.GameFactory;
 import org.megauno.app.model.Player.Player;
 
 import java.util.ArrayList;
@@ -15,10 +17,12 @@ public class GameTest extends TestCase {
     PlayerCircle players = new PlayerCircle(generatePlayers(5));
     Game game = new Game(players);
 
+    GameFactory gameFactory = new GameFactory();
+
     public List<Player> generatePlayers(int n) {
         List<Player> playerList = new ArrayList<>();
         for (int i = 0; i < n; i++) {
-            playerList.add(new Player(deck.dealHand(1)));
+            playerList.add(new Player(deck.dealHand(3)));
         }
         return playerList;
     }
@@ -43,6 +47,23 @@ public class GameTest extends TestCase {
             game.tryPlayTest();
         }
         //assert(game.tryPlayTest());
+    }
+
+    public void testCanBeStackedOn() {
+        //assertFalse(game.validPlayedCards());
+    }
+
+    // Try that wrong cards cannot be stacked on top of each other.
+    private void addSelectedCards(int nCards) {
+        Player currentPlayer = game.getPlayers().getCurrent().getPlayer();
+        for (ICard card : currentPlayer.getCards()) {
+            currentPlayer.selectCard(card);
+        }
+    }
+
+    public void testTryPlaySelectedCards() {
+        addSelectedCards(3);
+        game.tryPlayTest(); // an error expected
     }
 
 

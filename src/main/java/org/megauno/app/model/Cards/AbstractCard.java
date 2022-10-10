@@ -2,6 +2,7 @@ package org.megauno.app.model.Cards;
 
 import org.megauno.app.model.Cards.Impl.ActionCard;
 import org.megauno.app.model.Cards.Impl.NumberCard;
+import org.megauno.app.model.Game.IActOnGame;
 
 public abstract class AbstractCard implements ICard {
 
@@ -46,7 +47,7 @@ public abstract class AbstractCard implements ICard {
     public abstract boolean visit(NumberCard nc);
 
     @Override
-    public abstract boolean activate();
+    public abstract boolean activate(IActOnGame g);
 
     public void setColor(Color c){
         this.color = c;

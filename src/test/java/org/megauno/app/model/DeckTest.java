@@ -32,6 +32,7 @@ public class DeckTest {
     public void testAllCardsInDeck() {
        for (ICard card : deck.getDeck()) {
            //System.out.println(card.toString());
+           //System.out.println(card.getColor());
            assert(cardInvariant(card));
        }
     }
