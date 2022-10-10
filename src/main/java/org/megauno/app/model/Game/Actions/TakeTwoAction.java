@@ -1,7 +1,6 @@
 package org.megauno.app.model.Game.Actions;
 
 import org.megauno.app.model.Cards.IAction;
-import org.megauno.app.model.Deck;
 import org.megauno.app.model.Game.IActOnGame;
 import org.megauno.app.model.Game.PlayerCircle;
 
@@ -11,8 +10,9 @@ public class TakeTwoAction implements IAction {
     }
     @Override
     public boolean execute(IActOnGame g) {
-        g.getPlayers().getNextPlayer().addCard(g.getDeck().drawCard());
-        g.getPlayers().getNextPlayer().addCard(g.getDeck().drawCard());
+        PlayerCircle players = g.getPlayers();
+        players.giveCardToPlayer(g.getDeck().drawCard(), players.getNextPlayerNode());
+        players.giveCardToPlayer(g.getDeck().drawCard(), players.getNextPlayerNode());
 
         return true;
     }
