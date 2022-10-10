@@ -19,7 +19,7 @@ public class PlayerCircle {
 
     public List<Player> winners;
 
-    private int numPlayers;
+    private int numPlayers = 0;
 
     public PlayerCircle(){
         // starts with clockwise as default
