@@ -49,14 +49,14 @@ public class Deck implements IDeck {
             if (ct == CardType.NUMBERCARD) {
                for (int i = 0; i < probabilities.get(ct); i++) {
                    deck.add(cardFactory.createNumberCard(Color.getFromIndex(colorIndex), numberIndex + 1));
-                   colorIndex = (colorIndex + 1) % (Color.values().length - 2); // to ignore NONE
+                   colorIndex = (colorIndex + 1) % (Color.values().length - 1); // to ignore NONE
                    numberIndex = (numberIndex + 1) % 9; // such that no value larger than 9 is picked
                }
             }
             else {
                 for (int i = 0; i < probabilities.get(ct); i++) {
                     deck.add(cardFactory.createActionCard(Color.getFromIndex(colorIndex), ct));
-                    colorIndex = (colorIndex + 1) % (Color.values().length - 2); // to ignore NONE
+                    colorIndex = (colorIndex + 1) % (Color.values().length - 1); // to ignore NONE
                 }
             }
         }

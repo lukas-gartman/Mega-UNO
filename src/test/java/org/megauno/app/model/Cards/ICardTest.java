@@ -28,23 +28,24 @@ public class ICardTest {
     ICard nc = new NumberCard(Color.BLUE, 3);
     ICard nc2 = new NumberCard(Color.BLUE, 3);
     ICard nc3 = new NumberCard(Color.RED, 9);
+    ICard nc4 = new NumberCard(Color.GREEN, 3);
     ICard ac1 = new ActionCard(new ReverseAction(), Color.BLUE, CardType.REVERSECARD);
 
     IActOnGame g;
     //ActionCard ac = new ActionCard()
 
     @Test
-    public void testTestEquals() {
+    public void testEquals() {
         Assert.assertEquals(nc, nc2);
     }
 
     @Test
-    public void testTestHashCode() {
+    public void testHashCode() {
         Assert.assertNotNull(nc.hashCode());
     }
 
     @Test
-    public void testTestToString() {
+    public void testToString() {
        Assert.assertNotNull(nc.toString());
     }
 
@@ -82,6 +83,10 @@ public class ICardTest {
     public void testCopyCard() {
         assert(nc.equals(nc.copyCard()));
     }
+    @Test
+    public void testGetNumber() {
+        assert(nc.getNumber().equals(3));
+    }
 
     @Test
     public void testActivate1() {
@@ -92,5 +97,20 @@ public class ICardTest {
     @Test
     public void testActivate2() {
         Assert.assertFalse(nc.activate(g));
+    }
+
+    @Test
+    public void testSetColor() {
+        Color newColor = Color.GREEN;
+        nc.setColor(newColor);
+        assert(nc.getColor() == Color.GREEN);
+    }
+
+    @Test
+    public void testCanBeStacked() {
+        assert(nc.canBeStacked(nc4));
+        assert(nc4.canBeStacked(nc));
+        Assert.assertFalse(nc.canBeStacked(nc3));
+        Assert.assertFalse(nc3.canBeStacked(nc));
     }
 }

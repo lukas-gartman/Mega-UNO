@@ -31,6 +31,8 @@ public class PlayerCircle {
         for (Player p : players) {
             addNode(p);
         }
+        this.direction = Rotation.CLOCKWISE;
+        this.winners = new ArrayList<>();
     }
 
     /**
