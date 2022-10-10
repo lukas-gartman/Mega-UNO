@@ -18,7 +18,7 @@ public class GameTest extends TestCase {
     public List<Player> generatePlayers(int n) {
         List<Player> playerList = new ArrayList<>();
         for (int i = 0; i < n; i++) {
-            playerList.add(new Player(deck.dealHand(1)));
+            playerList.add(new Player(0,deck.dealHand(1)));
         }
         return playerList;
     }
