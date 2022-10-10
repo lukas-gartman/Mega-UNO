@@ -5,19 +5,30 @@ import java.io.*;
 import java.net.Socket;
 
 public class Client {
-    private final Socket server;
-    private final BufferedReader br;
-    private final BufferedWriter bw;
+    private final String hostname;
+    private final int port;
+
+    private Socket server;
+    private BufferedReader br;
+    private BufferedWriter bw;
 
     public Client(String hostname, int port) {
+        this.hostname = hostname;
+        this.port = port;
+        if (connect())
+            listen();
+    }
+
+    private boolean connect() {
         try {
             this.server = new Socket(hostname, port);
             this.bw = new BufferedWriter(new OutputStreamWriter(server.getOutputStream()));
             this.br = new BufferedReader(new InputStreamReader(server.getInputStream()));
+            return true;
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.out.println("Unable to connect to server @ " + hostname + ":" + port);
+            return false;
         }
-        listen();
     }
 
     private void listen() {
@@ -29,7 +40,8 @@ public class Client {
                     JSONObject json = new JSONObject(message);
                     // todo: do something with json object
                 } catch (IOException ex) {
-                    ex.printStackTrace();
+                    System.out.println("Client lost connection to server @ " + this.hostname + ":" + this.port);
+                    break;
                 }
             }
         }).start();

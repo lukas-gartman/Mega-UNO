@@ -21,7 +21,8 @@ public class Game implements IActOnGame {
      * @param numCards is the number of cards a hand is initially dealt
      */
     public Game(PlayerCircle players, int numCards) {
-        discarded = new Pile();
+        this.discarded = new Pile();
+        this.deck = new Deck();
         this.players = players;
 
         int p = 0;
@@ -30,7 +31,6 @@ public class Game implements IActOnGame {
             players.moveOnToNextTurn();
             p++;
         }
-        discarded = new Pile();
     }
     public Game(){
         this.discarded = new Pile();

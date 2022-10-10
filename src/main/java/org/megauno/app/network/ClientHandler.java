@@ -7,9 +7,9 @@ import java.net.Socket;
 import java.util.HashMap;
 
 public class ClientHandler implements Runnable {
-    private HashMap<ClientHandler, Integer> clientHandlers = new HashMap<>();
-    private final Socket client;
     private IServer server;
+    private HashMap<ClientHandler, Integer> clientHandlers;
+    private final Socket client;
     private BufferedReader br;
     private BufferedWriter bw;
     private final int id;
@@ -18,6 +18,7 @@ public class ClientHandler implements Runnable {
         this.client = client;
         this.id = id;
         this.server = server;
+        this.clientHandlers = new HashMap<>();
         try {
             this.bw = new BufferedWriter(new OutputStreamWriter(client.getOutputStream()));
             this.br = new BufferedReader(new InputStreamReader(client.getInputStream()));
