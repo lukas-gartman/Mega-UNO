@@ -16,8 +16,6 @@ import static org.megauno.app.utility.CardMethoodes.copyCards;
 
 public class ThisPlayer implements IDrawable {
 	private int playerID;
-	// Model cards
-	private List<ICard> cards;
 	// Visual cards
 	private List<Card> vCards = new ArrayList<>();
 	// Game
@@ -27,7 +25,6 @@ public class ThisPlayer implements IDrawable {
 
 	public ThisPlayer(int playerID, List<ICard> cards, Game game, GameView gv) {
 		this.playerID = playerID;
-		this.cards = cards;
 		this.game = game;
 		this.gv = gv;
 		addCards(cards);
@@ -44,7 +41,6 @@ public class ThisPlayer implements IDrawable {
 			// vCard.addListener(new CardListener(i, game));
 			vCards.add(vCard);
 		}
-
 	}
 
 	// Removes all the view cards from the player which are equal to the argumnet

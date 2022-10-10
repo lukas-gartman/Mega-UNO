@@ -24,7 +24,7 @@ import org.megauno.app.viewcontroller.datafetching.FontLoader;
 import org.megauno.app.viewcontroller.datafetching.SpriteLoader;
 
 // The outer class managing views and controllers
-public class ViewController {
+public class ViewController implements Subscriber<Game>{
 	private Game game;
 	private Batch batch;
 
@@ -34,7 +34,6 @@ public class ViewController {
 	// TODO: have empty constructor, get IGame from either controller (client)
 	// or "Lobby" object of model (server) (subscribe to an event of "GameStarting")
 	public ViewController(Game game) {
-		this.game = game;
 		// Create all game views, stored in gameViews
 		for (int i = 0; i < game.getPlayersLeft(); i++) {
 			gameViews.add(new GameView(game, i));
@@ -47,6 +46,7 @@ public class ViewController {
 		// DummyActor dummyActor = new DummyActor();
 		// stage.addActor(dummyActor);
 		// stage.setKeyboardFocus(dummyActor);
+
 	}
 
 	// Necessary call from top level window handler (Application),
@@ -66,12 +66,25 @@ public class ViewController {
 		batch.begin();
 		gameViews.get(game.getCurrentPlayer()).draw(Gdx.graphics.getDeltaTime(), batch);
 		batch.end();
+		currentGameView.update();
 	}
 
 	// NOTE: called by Application
 	// Application is supposed to call this when the game is about to quit
 	public void teardown() {
 	}
+
+	@Override
+	public void delivery(Game game) {
+		for(GameView gameView: gameViews){
+			if(gameView.getPlayerID() == game.getCurrentPlayer()){
+				currentGameView = gameView;
+			}
+		}
+		Gdx.input.setInputProcessor(currentGameView);
+		currentGameView.update();
+	}
+
 
 	public class DummyActor extends Actor {
 		static Sprite sprite = new SpriteLoader().retrieveData("yay.jpg");

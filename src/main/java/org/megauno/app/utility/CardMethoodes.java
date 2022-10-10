@@ -16,6 +16,9 @@ public class CardMethoodes {
             return copy;
         }
         public static List<ICard> cardsDifference(List<ICard> oldCards, List<ICard> newCards){
+            oldCards = copyCards(oldCards);
+            newCards = copyCards(newCards);
+
             for (ICard oldCard: oldCards) {
                 for (int i = 0; i < newCards.size(); i++) {
                     ICard card = newCards.get(i);

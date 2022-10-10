@@ -27,8 +27,8 @@ public class PlayerTest extends TestCase {
     }
     @Before
     public void makePlayer(){
-        empltyPlayer = new Player();
-        cardsPlayer = new Player();
+        empltyPlayer = new Player(0);
+        cardsPlayer = new Player(1);
 
         for (ICard c:cards) {
             cardsPlayer.addCard(c);

@@ -4,6 +4,7 @@ import org.megauno.app.model.Cards.ICard;
 import org.megauno.app.model.Deck;
 import org.megauno.app.model.Pile;
 import org.megauno.app.model.Player.Player;
+import org.megauno.app.utility.Publisher;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,16 +15,18 @@ public class Game {
     //ICard top;
     Deck deck;
     Pile discarded;
+    Publisher<Game> publisher;
 
-    public Game(PlayerCircle players, int numCards) {
+    public Game(PlayerCircle players, int numCards, Publisher<Game> publisher) {
         this.players = players;
         this.discarded = new Pile();
 		this.deck = new Deck();
+        this.publisher = publisher;
 
         int p = 0;
         while (p < players.playersLeft() * numCards) {
             players.getCurrent().giveCardToPlayer(deck.drawCard());
-            players.nextPlayer();
+            players.nextTurn();
             p++;
         }
     }
@@ -45,8 +48,11 @@ public class Game {
 	public boolean commence_forth = false;
 	public void update() {
 		if (commence_forth) {
+            System.out.println("commence_forth");
 			try_play();
+            commence_forth = false;
 		}
+        //System.out.println("hej");
 	}
 
 	// Basic API for ViewController, potentially tests as well
@@ -71,7 +77,7 @@ public class Game {
 
 	// Current player
 	public int getCurrentPlayer() {
-		return players.getCurrent().getPlayer().id;
+		return players.getCurrent().getPlayer().getId();
 	}
 
     public void reverse(){
@@ -98,7 +104,6 @@ public class Game {
         Node current = players.getCurrent();
         List<ICard> choices = players.currentMakeTurn();
         boolean currentHasOnlyOneCard = current.getPlayer().numOfCards() == 1;
-
         if(validPlayedCards(choices)) {
             // card effects here ....
             for (ICard choice : choices) {
@@ -127,10 +132,12 @@ public class Game {
                     players.playerFinished(current);
                 }
             }
+            publisher.publish(this);
         }else{
             for(int i = 0; i < choices.size(); i++) {
                 players.giveCardToPlayer(choices.get(i));
             }
+
         }
 
     }
@@ -149,12 +156,18 @@ public class Game {
 
     public Player getPlayerWithId(int id){
         for (Player p:getPlayers()) {
-            if (p.id == id){
+            if (p.getId() == id){
                 return p;
             }
         }
+
         return null;
     }
+
+    public ICard getTopCard(){
+        return discarded.getTop();
+    }
+
     // To simulate a player choosing a card
     public void currentPlayerChooseCard() {
         Random rand = new Random();
