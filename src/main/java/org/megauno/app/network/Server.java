@@ -10,11 +10,12 @@ public class Server implements IServer, Runnable {
     private HashMap<ClientHandler, Integer> clientHandlers = new HashMap<>();
     private static int cid = 1;
 
-    public Server(int port) {
+    public Server(int port) throws Exception {
         try {
             this.server = new ServerSocket(port);
         } catch (IOException ex) {
-            System.out.println("A server is already running on port " + port);
+//            System.out.println("A server is already running on port " + port);
+            throw new Exception("A server is already running on port " + port);
         } catch (IllegalArgumentException ex) {
             System.out.println("Unable to create server on port " + port + ". Please use a port within the range 0-65535.");
         }

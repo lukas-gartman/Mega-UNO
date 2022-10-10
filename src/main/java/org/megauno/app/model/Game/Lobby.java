@@ -15,10 +15,15 @@ public class Lobby {
     private volatile boolean searchingForPlayers = true;
 
     public Lobby() {
-        host();
+        try {
+            host();
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+            searchingForPlayers = false;
+        }
     }
 
-    private void host() {
+    private void host() throws Exception {
         Server server = new Server(1337); // Game host holds the server object
         new Thread(server).start(); // Start the server on a new thread to prevent blocking
         Client client = new Client("localhost", 1337); // Create client for the host
