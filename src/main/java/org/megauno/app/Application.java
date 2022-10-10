@@ -6,6 +6,8 @@ import org.megauno.app.model.Game.Lobby;
 import org.megauno.app.model.Game.PlayerCircle;
 import org.megauno.app.model.Player.Player;
 
+import java.util.HashMap;
+
 public class Application extends ApplicationAdapter {
 	private Lobby lobby;
 	private Game game;
@@ -17,6 +19,7 @@ public class Application extends ApplicationAdapter {
 		while (lobby.isSearchingForPlayers()) {} // Wait for the host to start the game
 		System.out.println("Starting game!");
 		PlayerCircle playerCircle = lobby.getPlayerCircle();
+		HashMap<Integer, Player> playersWithID = lobby.getPlayersWithID();
 
 		game = new Game(playerCircle);
 		viewController = new ViewController(game);

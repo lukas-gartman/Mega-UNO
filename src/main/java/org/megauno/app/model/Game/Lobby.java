@@ -10,7 +10,8 @@ import java.util.*;
 
 public class Lobby {
     private volatile HashMap<ClientHandler,Integer> clientHandlers;
-    private PlayerCircle players = new PlayerCircle();
+    private volatile PlayerCircle players = new PlayerCircle();
+    HashMap<Integer, Player> playersWithID = new HashMap<>();
     private volatile boolean searchingForPlayers = true;
 
     public Lobby() {
@@ -42,6 +43,7 @@ public class Lobby {
             }
         }).start();
 
+        // *** TEMPORARY *** //
         new Thread(() -> {
             Scanner scanner = new Scanner(System.in); // Get input from console
             System.out.print("enter: ");
@@ -52,8 +54,7 @@ public class Lobby {
             for (int id : clientHandlers.values()) {
                 Player p = new Player();
                 players.addNode(p);
-                HashMap<Player, Integer> playerWithID = new HashMap<>(); // todo: use this to remember client ID
-                playerWithID.put(p, id);
+                playersWithID.put(id, p);
             }
 
             this.searchingForPlayers = false; // Tell the loop to stop searching for players
@@ -70,5 +71,9 @@ public class Lobby {
 
     public PlayerCircle getPlayerCircle() {
         return this.players;
+    }
+
+    public HashMap getPlayersWithID() {
+        return this.playersWithID;
     }
 }
