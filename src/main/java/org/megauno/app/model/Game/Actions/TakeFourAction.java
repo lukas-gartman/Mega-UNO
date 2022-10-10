@@ -13,7 +13,7 @@ public class TakeFourAction implements IAction {
 
     @Override
     public boolean execute(IActOnGame g){
-        PlayerCircle players = g.getPlayers();
+        PlayerCircle players = g.getPlayerCircle();
         players.giveCardToPlayer(g.draw(), players.getNextPlayerNode());
         players.giveCardToPlayer(g.draw(), players.getNextPlayerNode());
         players.giveCardToPlayer(g.draw(), players.getNextPlayerNode());

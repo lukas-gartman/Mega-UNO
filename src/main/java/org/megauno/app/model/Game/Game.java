@@ -4,15 +4,18 @@ import org.megauno.app.model.Cards.ICard;
 import org.megauno.app.model.Deck;
 import org.megauno.app.model.Pile;
 import org.megauno.app.model.Player.Player;
+import org.megauno.app.utility.Publisher;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 public class Game implements IActOnGame {
-    PlayerCircle players;
-    Deck deck;
-    Pile discarded;
+    private PlayerCircle players;
+    private Deck deck;
+    private Pile discarded;
     private int drawCount = 0;
+    private Publisher<Game> publisher;
 
 
     /**
@@ -20,10 +23,16 @@ public class Game implements IActOnGame {
      * @param players is the circle of players
      * @param numCards is the number of cards a hand is initially dealt
      */
-    public Game(PlayerCircle players, int numCards) {
-        this.discarded = new Pile();
-        this.deck = new Deck();
+
+    public Game(PlayerCircle players, int numCards){
+        this(players,numCards,new Publisher<Game>());
+    }
+
+    public Game(PlayerCircle players, int numCards, Publisher<Game> publisher) {
         this.players = players;
+        this.discarded = new Pile();
+		this.deck = new Deck();
+        this.publisher = publisher;
 
         int p = 0;
         while (p < players.playersLeft() * numCards) {
@@ -52,7 +61,33 @@ public class Game implements IActOnGame {
 	public void update() {
 		if (commence_forth) {
 			try_play();
+            commence_forth = false;
 		}
+	}
+
+	// Basic API for ViewController, potentially tests as well
+	
+	// Each boolean represents wether or not a card is chosen by the current player
+	public boolean[] choices;
+
+	// Inner array is null if the player with the given ID/index is out of the game
+	// TODO: add an ID in the Player class to be able to put null here
+	public List<List<ICard>> getAllPlayerCards() {
+		Player[] players = getPlayers();
+		List<List<ICard>> result = new ArrayList<>();
+		for (int i = 0; i < players.length; i++) {
+			result.add(players[i].getCards());
+		}
+		return result;
+	}
+
+	public int getPlayersLeft() {
+		return players.playersLeft();
+	}
+
+	// Current player
+	public int getCurrentPlayer() {
+		return players.getCurrent().getPlayer().getId();
 	}
 
     public void reverse(){
@@ -138,8 +173,12 @@ public class Game implements IActOnGame {
             current.giveCardToPlayer(deck.drawCard());
             current.giveCardToPlayer(deck.drawCard());
             current.giveCardToPlayer(deck.drawCard());
+            publisher.publish(this);
         }else if (players.IsPlayerOutOfCards(current) ) {
-            if (choices.size() > 1 || current.getPlayer().uno()) players.playerFinished(current);
+            if (choices.size() > 1 || current.getPlayer().uno()){
+                players.playerFinished(current);
+                publisher.publish(this);
+            }
         }
     }
 
@@ -178,8 +217,25 @@ public class Game implements IActOnGame {
         return deck;
     }
 
-    public PlayerCircle getPlayers(){
+    public PlayerCircle getPlayerCircle(){
         return players;
+    }
+
+    public Player[] getPlayers(){
+        return players.getPlayers();
+    }
+
+    public Player getPlayerWithId(int id){
+        for (Player p:getPlayers()) {
+            if (p.getId() == id){
+                return p;
+            }
+        }
+        return null;
+    }
+
+    public ICard getTopCard(){
+        return discarded.getTop();
     }
 
     /**
@@ -187,7 +243,7 @@ public class Game implements IActOnGame {
       */
     public void simulatePlayerChoosingCard() {
         Random rand = new Random();
-        IPlayer<ICard> currentPlayer = players.getCurrent().getPlayer();
+        Player currentPlayer = players.getCurrent().getPlayer();
         int randomIndex = rand.nextInt(currentPlayer.numOfCards());
         ICard randomCard = currentPlayer.getCards().get(randomIndex);
         currentPlayer.selectCard(randomCard);
