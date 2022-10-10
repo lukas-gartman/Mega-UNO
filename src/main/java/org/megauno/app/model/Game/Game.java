@@ -118,11 +118,11 @@ public class Game implements IActOnGame {
 
             checkPlayersProgress(current, currentHasOnlyOneCard, choices);
         }
-        /*else {
+        else {
             for (int i = 0; i < choices.size(); i++) {
                 players.giveCardToPlayer(choices.get(i));
             }
-        }*/
+        }
     }
 
     /**
