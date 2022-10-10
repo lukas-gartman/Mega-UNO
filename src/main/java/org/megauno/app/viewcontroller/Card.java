@@ -1,5 +1,8 @@
 package org.megauno.app.viewcontroller;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import org.lwjgl.system.CallbackI;
 import org.megauno.app.model.Cards.ICard;
 import org.megauno.app.utility.dataFetching.DataFetcher;
 import org.megauno.app.utility.dataFetching.PathDataFetcher;
@@ -14,13 +17,22 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 
 public class Card extends Actor {
-	static DataFetcher<String,Sprite> spriteFetcher = new PathDataFetcher(new SpriteLoader(),"assets/");
-	static Sprite red = spriteFetcher.tryGetDataUnSafe("RedCard.png");
+
+	static DataFetcher<String,Sprite> spriteFetcher = new PathDataFetcher<Sprite>(
+			(key) ->  {
+		return new Sprite(new Texture(key));
+	},"assets/");
+
+	Sprite red = spriteFetcher.tryGetDataUnSafe("RedCard.png");
+
 	static Sprite blue = spriteFetcher.tryGetDataUnSafe("BlueCard.png");
 	static Sprite yellow = spriteFetcher.tryGetDataUnSafe("YellowCard.png");
 	static Sprite green = spriteFetcher.tryGetDataUnSafe("GreenCard.png");
 	static Sprite nonColored = spriteFetcher.tryGetDataUnSafe("WhiteCard.png");
-	static DataFetcher<String,BitmapFont> fontFetcher = new PathDataFetcher<>(new FontLoader(),"assets/");
+	static DataFetcher<String,BitmapFont> fontFetcher = new PathDataFetcher<BitmapFont>(
+			(key) ->  {
+				return new BitmapFont(Gdx.files.internal(key));
+			},"assets/");
 	static BitmapFont fnt = fontFetcher.tryGetDataUnSafe("minecraft.fnt");
 
 	public boolean selected = false;
@@ -58,12 +70,12 @@ public class Card extends Actor {
 	public void draw(Batch batch, float alpha) {
 		// Draw card, with a tint if unselected
 		if (!selected) {
-			System.out.println("Not Selected draw");
+			//System.out.println("Not Selected draw");
 			batch.setColor(new Color(0.7f, 0.7f, 0.7f, 0.7f));   // A bit greyed out
 			batch.draw(sprite, getX(), getY());
 			batch.setColor(Color.WHITE);
 		} else {
-			System.out.println("Selected draw");
+			//System.out.println("Selected draw");
 			batch.draw(sprite, getX(), getY());
 		}
 		// Draw number if number card
