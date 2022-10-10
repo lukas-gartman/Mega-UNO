@@ -55,9 +55,9 @@ public class GameTest extends TestCase {
 
     // Try that wrong cards cannot be stacked on top of each other.
     private void addSelectedCards(int nCards) {
-        Player currentPlayer = game.getPlayers().getCurrent().getPlayer();
-        for (ICard card : currentPlayer.getCards()) {
-            currentPlayer.selectCard(card);
+        IPlayer currentPlayer = game.getPlayers().getCurrent().getPlayer();
+        for (Object c : currentPlayer.getCards()) {
+            currentPlayer.selectCard(c);
         }
     }
 

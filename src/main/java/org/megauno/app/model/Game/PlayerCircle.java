@@ -27,13 +27,9 @@ public class PlayerCircle<c> {
         winners = new ArrayList<>();
     }
 
-<<<<<<< Updated upstream
-    public PlayerCircle(List<Player> players){
-        for (Player p : players) {
-=======
+
     public PlayerCircle(List<IPlayer> players){
         for (IPlayer p : players) {
->>>>>>> Stashed changes
             addNode(p);
         }
         this.direction = Rotation.CLOCKWISE;
@@ -115,26 +111,22 @@ public class PlayerCircle<c> {
      * give current player an item
      * @param item is the item to give to the player
      */
-<<<<<<< Updated upstream
-    public void giveCardToCurrentPlayer(ICard card){
-        currentPlayer.giveCardToPlayer(card);
-=======
-    public void giveCardToPlayer(c item){
+
+    public void giveCardToCurrentPlayer(c item) {
         currentPlayer.giveCardToPlayer(item);
->>>>>>> Stashed changes
     }
 
     public Node<c> getCurrent(){
         return currentPlayer;
     }
 
-    public Node getNextPlayerNode(){
+    public Node<c> getNextPlayerNode(){
         if (direction == Rotation.CLOCKWISE) return currentPlayer.nextNode;
         else return currentPlayer.previousNode;
     }
 
-    public void giveCardToPlayer(ICard c, Node p){
-        p.giveCardToPlayer(c);
+    public void giveCardToPlayer(c item, Node p){
+        p.giveCardToPlayer(item);
     }
 
     /**
