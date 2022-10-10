@@ -1,5 +1,4 @@
 package org.megauno.app.model.Game;
-import org.megauno.app.model.Player.Player;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -149,7 +148,7 @@ public class PlayerCircle<c> {
 
     public IPlayer[] getPlayers(){
         Node<c> next = currentPlayer.nextNode;
-        IPlayer[] out = new Player[numPlayers];
+        IPlayer[] out = new IPlayer[numPlayers];
         out[0] = currentPlayer.getPlayer();
         for (int i = 1; i < numPlayers; i++){
             out[i] = (next.getPlayer());

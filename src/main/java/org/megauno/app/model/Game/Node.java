@@ -1,8 +1,5 @@
 package org.megauno.app.model.Game;
 
-import org.megauno.app.model.Cards.ICard;
-import org.megauno.app.model.Player.Player;
-
 import java.util.List;
 
 // Nodes are players and their neighbours
