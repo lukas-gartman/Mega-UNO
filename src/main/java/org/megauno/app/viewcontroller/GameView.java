@@ -1,5 +1,6 @@
 package org.megauno.app.viewcontroller;
 
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
 import java.util.ArrayList;
@@ -12,7 +13,7 @@ import org.megauno.app.model.Player.Player;
 import static org.megauno.app.utility.CardMethoodes.cardsDifference;
 
 // For now, GameView parses deltas from Game and calls the appropriate
-public class GameView extends Stage {
+public class GameView implements IDrawable {
 	private int playerID;
 	private Game game;
 
@@ -25,21 +26,16 @@ public class GameView extends Stage {
 		this.playerID = playerID;
 		List<List<ICard>> allPlayerCards = game.getAllPlayerCards();   // All the different players' cards
 		thisPlayer = new ThisPlayer(playerID, allPlayerCards.get(playerID), game, this);
-		System.out.println("NUMBER OF cards: " + allPlayerCards.get(playerID).size());
-		addActor(thisPlayer);
-
 
 		// Add all other players
 		// TODO: make the positions make sense regarding actual placing in the list
 		int playerAmount = game.getPlayersLeft();
-		System.out.println("NUMBER OF PLAYERS: " + Integer.toString(playerAmount));
 		for (int id = 0; id < playerAmount; id++) {
 			if (!(id == playerID)) {
 				OtherPlayer otherPlayer = new OtherPlayer(id, playerAmount);
-				otherPlayer.setY(400);
-				otherPlayer.setX(id * 200);
+				otherPlayer.y = 400;
+				otherPlayer.x = id * 200;
 				otherPlayers.add(otherPlayer);
-				addActor(otherPlayer);
 				//TODO: add position, do a top-row of OtherPlayers
 			}
 		}
@@ -47,24 +43,14 @@ public class GameView extends Stage {
 
 	//TODO: when a card is detected to be rmoved from hand, remove card from stage.
 	// Deltas on game are checked here, called every frame by parent
-	public void update() {
-		thisPlayerHandCHnages();
-
+	@Override
+	public void draw(float delta, Batch batch) {
+		thisPlayer.draw(delta, batch);
 		for (OtherPlayer op: otherPlayers) {
 			otherPlayerHandChanges(op);
+			op.draw(delta, batch);
 		}
 	}
-
-	//Deals with teh changes to the players hand
-	private void thisPlayerHandCHnages(){
-		Player player = game.getPlayerWithId(playerID);
-		List<ICard> newCards = player.getCards();
-		List<ICard> currentCards = thisPlayer.getCards();
-		thisPlayer.addCards(cardsDifference(currentCards,newCards));
-		thisPlayer.removeCards(cardsDifference(newCards,currentCards));
-	}
-
-
 
 	private void otherPlayerHandChanges(OtherPlayer otherPlayer){
 		Player[] players = game.getPlayers();
@@ -83,9 +69,5 @@ public class GameView extends Stage {
 			}
 		}
 	}
-
-
-	
-
 }
 

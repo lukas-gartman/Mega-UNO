@@ -17,6 +17,8 @@ import org.lwjgl.opengl.GL20;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
 import org.megauno.app.utility.Subscriber;
 import org.megauno.app.viewcontroller.datafetching.FontLoader;
 import org.megauno.app.viewcontroller.datafetching.SpriteLoader;
@@ -24,6 +26,7 @@ import org.megauno.app.viewcontroller.datafetching.SpriteLoader;
 // The outer class managing views and controllers
 public class ViewController {
 	private Game game;
+	private Batch batch;
 
 	private GameView currentGameView;
 	private List<GameView> gameViews = new ArrayList<GameView>();
@@ -37,7 +40,9 @@ public class ViewController {
 			gameViews.add(new GameView(game, i));
 		}
 		currentGameView = gameViews.get(game.getCurrentPlayer());
-		Gdx.input.setInputProcessor(currentGameView);
+		// Gdx.input.setInputProcessor(currentGameView);
+
+		batch = new SpriteBatch();
 
 		// DummyActor dummyActor = new DummyActor();
 		// stage.addActor(dummyActor);
@@ -52,20 +57,21 @@ public class ViewController {
 
 	// NOTE: the Application is supposed to call this every frame
 	// where delta is the time it took between the last frame and the current
+
 	public void draw() {
 		// Clear screen
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		gameViews.get(game.getCurrentPlayer()).draw();
-		// stage.act(Gdx.graphics.getDeltaTime());
-		// stage.draw();
+
+		// Draw a game view
+		batch.begin();
+		gameViews.get(game.getCurrentPlayer()).draw(Gdx.graphics.getDeltaTime(), batch);
+		batch.end();
 	}
 
 	// NOTE: called by Application
 	// Application is supposed to call this when the game is about to quit
 	public void teardown() {
 	}
-
-
 
 	public class DummyActor extends Actor {
 		static Sprite sprite = new SpriteLoader().retrieveData("yay.jpg");
@@ -88,8 +94,6 @@ public class ViewController {
 						}
 					});
 		}
-
-
 
 		@Override
 		protected void positionChanged() {

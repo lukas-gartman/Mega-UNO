@@ -14,7 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 import static org.megauno.app.utility.CardMethoodes.copyCards;
 
-public class ThisPlayer extends Image {
+public class ThisPlayer implements IDrawable {
 	private int playerID;
 	// Model cards
 	private List<ICard> cards;
@@ -25,7 +25,7 @@ public class ThisPlayer extends Image {
 
 	private GameView gv;
 
-	public ThisPlayer(int playerID, List<ICard> cards, Game game,GameView gv) {
+	public ThisPlayer(int playerID, List<ICard> cards, Game game, GameView gv) {
 		this.playerID = playerID;
 		this.cards = cards;
 		this.game = game;
@@ -33,79 +33,46 @@ public class ThisPlayer extends Image {
 		addCards(cards);
 	}
 
-
-
-	void addCards(List<ICard> cards){
+	void addCards(List<ICard> cards) {
 		for (int i = 0; i < cards.size(); i++) {
 			ICard card = cards.get(i);
-			Card vCard = new Card(card);
-			vCard.setX(i * 50);
-			vCard.setY(100);
+			// Note, cardID is just the index in the list of cards
+			Card vCard = new Card(card, game, playerID, i);
+			vCard.x = i * 50;
+			vCard.y = 100;
 			// Add controller for card
-			vCard.addListener(new CardListener(i, game));
-			gv.addActor(vCard);
-			//vCards.add(vCard);
+			// vCard.addListener(new CardListener(i, game));
+			vCards.add(vCard);
 		}
 
 	}
 
-	//Removes all the view cards from the player which are equal to the argumnet cards
-	void removeCards(List<ICard> cards){
+	// Removes all the view cards from the player which are equal to the argumnet
+	// cards
+	void removeCards(List<ICard> cards) {
 		List<Card> toRemove = new ArrayList<>();
-		for(ICard card : cards){
-			for(Card visualCard : vCards){
-				if(visualCard.getCard().equals(card)){
+		for (ICard card : cards) {
+			for (Card visualCard : vCards) {
+				if (visualCard.getCard().equals(card)) {
 					toRemove.add(visualCard);
 				}
 			}
 		}
-		for(Card visualCard: toRemove){
-			visualCard.remove();
+		for (Card visualCard : toRemove) {
+			//TODO: update id:s on cards when cards are moved around/removed/added
 			vCards.remove(visualCard);
 		}
 	}
 
-	public List<ICard> getCards() {
-		return copyCards(cards);
-	}
-
-	public List<Card> getVisualCards(){
-		return vCards;
-	}
-
-	//@Override
- 	public void drawwwww(Batch batch, float parentAlpha) {
+	// For now, card's positions don't get updated when a player's hand changes,
+	// they are just drawn in order in the list every frame
+	@Override
+	public void draw(float delta, Batch batch) {
 		for (int i = 0; i < vCards.size(); i++) {
-			Card vCard = vCards.get(i);
-			vCard.setX(i * 50);
-			vCard.setY(100);
-			vCard.draw(batch, parentAlpha);
-		}
-	}
-
-	public List<Card> getVCards() {
-		return vCards;
-	}
-
-	// Controller attached to cards
-	public class CardListener extends ClickListener {
-		private int cardID;
-		private Game game;
-		public CardListener(int cardID, Game game) {
-			this.cardID = cardID;
-			this.game = game;
-		}
-		@Override
-		public void clicked(InputEvent event, float x, float y) {
-			System.out.println("Clicked card with ID: " + Integer.toString(cardID));
-			// Flip card selection in model and visually
-			//game.choices[cardID] = !game.choices[cardID];
-			if(!vCards.get(cardID).selected){
-				game.getPlayerWithId(playerID).selectCard(vCards.get(cardID).getCard());
-			}else {
-				game.getPlayerWithId(playerID).unSelectCard(vCards.get(cardID).getCard());
-			}
-			vCards.get(cardID).selected = !vCards.get(cardID).selected;
+			Card c = vCards.get(i);
+			c.x = i * 50;
+			c.y = 100;
+			c.draw(delta, batch);
 		}
 	}
 }
