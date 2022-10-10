@@ -3,13 +3,11 @@ package org.megauno.app.model.Game;
 import org.megauno.app.model.Cards.ICard;
 import org.megauno.app.model.Deck;
 import org.megauno.app.model.Pile;
-import org.megauno.app.model.Player.Player;
-
 import java.util.List;
 import java.util.Random;
 
 public class Game implements IActOnGame {
-    PlayerCircle players;
+    PlayerCircle<ICard> players;
     Deck deck;
     Pile discarded;
     private int drawCount = 0;
@@ -20,7 +18,7 @@ public class Game implements IActOnGame {
      * @param players is the circle of players
      * @param numCards is the number of cards a hand is initially dealt
      */
-    public Game(PlayerCircle players, int numCards) {
+    public Game(PlayerCircle<ICard> players, int numCards) {
         discarded = new Pile();
         this.players = players;
 
@@ -35,11 +33,11 @@ public class Game implements IActOnGame {
     public Game(){
         this.discarded = new Pile();
         this.deck = new Deck();
-        players = new PlayerCircle();
+        players = new PlayerCircle<>();
     }
 
     // For testing purposes
-    public Game(PlayerCircle players) {
+    public Game(PlayerCircle<ICard> players) {
         this.discarded = new Pile();
         this.deck = new Deck();
         this.players = players;
@@ -87,7 +85,7 @@ public class Game implements IActOnGame {
         if (drawCount > 2){
             return false;
         } else {
-            Node current = players.getCurrent();
+            Node<ICard> current = players.getCurrent();
             current.giveCardToPlayer(deck.drawCard());
             drawCount++;
             return true;
@@ -99,8 +97,7 @@ public class Game implements IActOnGame {
      * attempt to play those cards and discard on pile if successful
      */
     public void try_play() {
-        ICard top = discarded.getTop();
-        Node current = players.getCurrent();
+        Node<ICard> current = players.getCurrent();
         List<ICard> choices = players.currentMakeTurn();
         boolean currentHasOnlyOneCard = current.getPlayer().numOfCards() == 1;
 
@@ -132,7 +129,7 @@ public class Game implements IActOnGame {
      * @param currentHasOnlyOneCard is true if current player has only one card
      * @param choices is the set of cards the current player has tried to play
      */
-    private void checkPlayersProgress(Node current, boolean currentHasOnlyOneCard, List<ICard> choices){
+    private void checkPlayersProgress(Node<ICard> current, boolean currentHasOnlyOneCard, List<ICard> choices){
         if (currentHasOnlyOneCard && !current.getPlayer().uno()) {
             //penalise: draw 3 cards.
             current.giveCardToPlayer(deck.drawCard());
@@ -148,12 +145,12 @@ public class Game implements IActOnGame {
      * check that the cards attempted to be played can be played given the top of the discard pile.
      * If a card has been drawn by the current player on this turn, then only this card can be played.
      * @param choices is the set of cards attempted to be played
-     * @param current
+     * @param current is the player whose turn it currently is
      * @return true if playing chosen cards is a valid move
      */
-    private boolean validPlay(List<ICard> choices, Node current){
+    private boolean validPlay(List<ICard> choices, Node<ICard> current){
         List<ICard> hand = current.getPlayer().getCards();
-        int lastCardIndex = current.getPlayer().getCards().size() - 1;
+        int lastCardIndex = hand.size() - 1;
         return validPlayedCards(choices) &&
                 (drawCount < 1 ||
                         (choices.size() == 1 && choices.get(0).equals(hand.get(lastCardIndex))));
@@ -178,7 +175,7 @@ public class Game implements IActOnGame {
         return deck;
     }
 
-    public PlayerCircle getPlayers(){
+    public PlayerCircle<ICard> getPlayers(){
         return players;
     }
 
@@ -194,7 +191,7 @@ public class Game implements IActOnGame {
     }
 
     public boolean tryPlayTest() {
-        Node current = players.getCurrent();
+        Node<ICard> current = players.getCurrent();
         simulatePlayerChoosingCard();
         List<ICard> choices = players.currentMakeTurn();
         boolean currentHasOnlyOneCard = current.getPlayer().numOfCards() == 1;
