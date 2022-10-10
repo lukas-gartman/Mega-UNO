@@ -11,8 +11,8 @@ public class TakeTwoAction implements IAction {
     @Override
     public boolean execute(IActOnGame g) {
         PlayerCircle players = g.getPlayers();
-        players.giveCardToPlayer(g.getDeck().drawCard(), players.getNextPlayerNode());
-        players.giveCardToPlayer(g.getDeck().drawCard(), players.getNextPlayerNode());
+        players.giveCardToPlayer(g.draw(), players.getNextPlayerNode());
+        players.giveCardToPlayer(g.draw(), players.getNextPlayerNode());
 
         return true;
     }

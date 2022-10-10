@@ -165,9 +165,13 @@ public class Game implements IActOnGame {
      * method to hand over the turn to next player
      * resets drawCount for the next turn.
      */
-    private void nextTurn(){
+    public void nextTurn(){
         drawCount = 0;
         players.moveOnToNextTurn();
+    }
+
+    public ICard draw(){
+        return deck.drawCard();
     }
 
 

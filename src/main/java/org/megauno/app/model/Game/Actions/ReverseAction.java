@@ -10,7 +10,7 @@ public class ReverseAction implements IAction {
 
     @Override
     public boolean execute(IActOnGame g) {
-        g.getPlayers().changeRotation();
+        g.reverse();
        // Something in the likes of: game.changeRoatation()
        // The question here is, should the action directly modify the game state as if they existed
        // inside the game class. These actions basically replicates this behavior, but does it in a more abstracted

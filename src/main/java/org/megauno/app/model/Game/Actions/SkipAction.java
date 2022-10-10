@@ -10,7 +10,7 @@ public class SkipAction implements IAction {
 
     @Override
     public boolean execute(IActOnGame g) {
-        g.getPlayers().moveOnToNextTurn();
+        g.nextTurn();
         return true;
     }
 }
