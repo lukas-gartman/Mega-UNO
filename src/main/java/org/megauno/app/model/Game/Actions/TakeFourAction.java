@@ -6,8 +6,7 @@ import org.megauno.app.model.Game.IActOnGame;
 import org.megauno.app.model.Game.PlayerCircle;
 
 public class TakeFourAction implements IAction {
-    Deck deck;
-    PlayerCircle players;
+
 
     public TakeFourAction(){
 
@@ -15,10 +14,11 @@ public class TakeFourAction implements IAction {
 
     @Override
     public boolean execute(IActOnGame g){
-        players.getNextPlayer().addCard(deck.drawCard());
-        players.getNextPlayer().addCard(deck.drawCard());
-        players.getNextPlayer().addCard(deck.drawCard());
-        players.getNextPlayer().addCard(deck.drawCard());
+        g.getPlayers().getNextPlayer().addCard(g.getDeck().drawCard());
+        g.getPlayers().getNextPlayer().addCard(g.getDeck().drawCard());
+        g.getPlayers().getNextPlayer().addCard(g.getDeck().drawCard());
+        g.getPlayers().getNextPlayer().addCard(g.getDeck().drawCard());
+
         return true;
     }
 }

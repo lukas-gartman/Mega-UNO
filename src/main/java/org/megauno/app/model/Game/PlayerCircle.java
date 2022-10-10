@@ -107,7 +107,7 @@ public class PlayerCircle {
      * give current player a card
      * @param card is the card to give
      */
-    void giveCardToPlayer(ICard card){
+    public void giveCardToPlayer(ICard card){
         currentPlayer.giveCardToPlayer(card);
     }
 
