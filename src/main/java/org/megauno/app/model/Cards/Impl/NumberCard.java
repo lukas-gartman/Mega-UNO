@@ -133,8 +133,5 @@ public class NumberCard extends AbstractCard {
         return nc.getValue() == this.getValue();
     }
     
-    @Override
-    public Integer getNumber() {
-        return value;
-    }
+
 }

@@ -30,6 +30,7 @@ public class Application extends ApplicationAdapter {
 		game = new Game(playerCircle, 7,publisher);
 		viewController = new ViewController(game);
 		publisher.addSubscriber(viewController);
+
 	}
 
 	@Override

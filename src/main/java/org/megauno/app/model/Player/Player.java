@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 //
-public class Player implements IPlayer<ICard> {
+public class Player {
 	private int id;
     //Bool for if the player has said uno this round
     private boolean saidUno = false;
@@ -71,9 +71,10 @@ public class Player implements IPlayer<ICard> {
         hand.add(card.copyCard());
     }
 
+
     public void addCards(List<ICard> cards) {
         for (ICard card: cards) {
-            addCard(card);
+            this.addCard(card);
         }
     }
     private void removeSelectedCardsFromHand() {

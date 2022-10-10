@@ -2,22 +2,15 @@ package org.megauno.app.viewcontroller;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import org.megauno.app.model.Cards.ICard;
 import org.megauno.app.model.Game.Game;
-import org.megauno.app.model.Player.Player;
-import org.megauno.app.utility.dataFetching.PathDataFetcher;
 import org.megauno.app.viewcontroller.datafetching.SpriteLoader;
-
-import static org.megauno.app.utility.CardMethoodes.cardsDifference;
 
 // For now, GameView parses deltas from Game and calls the appropriate
 public class GameView implements IDrawable {
@@ -80,7 +73,6 @@ public class GameView implements IDrawable {
 	}
 
 	private void otherPlayerHandChanges (OtherPlayer otherPlayer){
-
 		int newCards = game.getPlayerWithId(otherPlayer.getPlayerID()).numOfCards();
 		//System.out.println(otherPlayer.getPlayerID() + " has " + newCards);
 

@@ -8,7 +8,7 @@ import java.util.HashMap;
 public class Server implements IServer, Runnable {
     private ServerSocket server;
     private HashMap<ClientHandler, Integer> clientHandlers = new HashMap<>();
-    private static int cid = 1;
+    private static int cid = 0;
 
     public Server(int port) {
         try {

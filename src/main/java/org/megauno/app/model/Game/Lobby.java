@@ -22,6 +22,8 @@ public class Lobby {
         Server server = new Server(1337); // Game host holds the server object
         new Thread(server).start(); // Start the server on a new thread to prevent blocking
         Client client = new Client("localhost", 1337); // Create client for the host
+        new Client("localhost", 1337);
+        new Client("localhost", 1337);
 
         // Searching for new connections
         new Thread(() -> {
@@ -52,7 +54,7 @@ public class Lobby {
 
             // Create the players
             for (int id : clientHandlers.values()) {
-                Player p = new Player();
+                Player p = new Player(id);
                 players.addNode(p);
                 playersWithID.put(id, p);
             }

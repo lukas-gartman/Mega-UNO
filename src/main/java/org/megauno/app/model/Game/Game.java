@@ -11,10 +11,11 @@ import java.util.List;
 import java.util.Random;
 
 public class Game implements IActOnGame {
-    PlayerCircle players;
-    Deck deck;
-    Pile discarded;
+    private PlayerCircle players;
+    private Deck deck;
+    private Pile discarded;
     private int drawCount = 0;
+    private Publisher<Game> publisher;
 
 
     /**
@@ -22,6 +23,11 @@ public class Game implements IActOnGame {
      * @param players is the circle of players
      * @param numCards is the number of cards a hand is initially dealt
      */
+
+    public Game(PlayerCircle players, int numCards){
+        this(players,numCards,new Publisher<Game>());
+    }
+
     public Game(PlayerCircle players, int numCards, Publisher<Game> publisher) {
         this.players = players;
         this.discarded = new Pile();
@@ -54,11 +60,9 @@ public class Game implements IActOnGame {
 	public boolean commence_forth = false;
 	public void update() {
 		if (commence_forth) {
-            System.out.println("commence_forth");
 			try_play();
             commence_forth = false;
 		}
-        //System.out.println("hej");
 	}
 
 	// Basic API for ViewController, potentially tests as well
@@ -172,9 +176,9 @@ public class Game implements IActOnGame {
             publisher.publish(this);
         }else if (players.IsPlayerOutOfCards(current) ) {
             if (choices.size() > 1 || current.getPlayer().uno()){
-                layers.playerFinished(current);
+                players.playerFinished(current);
                 publisher.publish(this);
-            } p
+            }
         }
     }
 
@@ -227,7 +231,6 @@ public class Game implements IActOnGame {
                 return p;
             }
         }
-
         return null;
     }
 
@@ -240,7 +243,7 @@ public class Game implements IActOnGame {
       */
     public void simulatePlayerChoosingCard() {
         Random rand = new Random();
-        IPlayer<ICard> currentPlayer = players.getCurrent().getPlayer();
+        Player currentPlayer = players.getCurrent().getPlayer();
         int randomIndex = rand.nextInt(currentPlayer.numOfCards());
         ICard randomCard = currentPlayer.getCards().get(randomIndex);
         currentPlayer.selectCard(randomCard);
