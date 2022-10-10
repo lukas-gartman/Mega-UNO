@@ -27,6 +27,10 @@ public class OtherPlayer extends Image {
 		addCards(nCards);
 	}
 
+	public int getPlayerID() {
+		return playerID;
+	}
+
 	//Adds cards to the player
 	public void addCards(int newCards){
 		for(int i = 0; i < newCards; i++){
@@ -50,6 +54,7 @@ public class OtherPlayer extends Image {
 	@Override
  	public void draw(Batch batch, float parentAlpha) {
 		super.draw(batch, parentAlpha);
+		//System.out.println(playerID + " has " + cards.size() + " cards");
 		for (int i = 0; i < cards.size(); i++) {
 			Sprite card = cards.get(i);
 			card.setX(getX() + i * 20);

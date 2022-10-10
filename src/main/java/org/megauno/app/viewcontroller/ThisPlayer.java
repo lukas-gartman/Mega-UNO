@@ -16,8 +16,6 @@ import static org.megauno.app.utility.CardMethoodes.copyCards;
 
 public class ThisPlayer extends Image {
 	private int playerID;
-	// Model cards
-	private List<ICard> cards;
 	// Visual cards
 	private List<Card> vCards = new ArrayList<>();
 	// Game
@@ -27,7 +25,6 @@ public class ThisPlayer extends Image {
 
 	public ThisPlayer(int playerID, List<ICard> cards, Game game,GameView gv) {
 		this.playerID = playerID;
-		this.cards = cards;
 		this.game = game;
 		this.gv = gv;
 		addCards(cards);
@@ -44,9 +41,8 @@ public class ThisPlayer extends Image {
 			// Add controller for card
 			vCard.addListener(new CardListener(i, game));
 			gv.addActor(vCard);
-			//vCards.add(vCard);
+			vCards.add(vCard);
 		}
-
 	}
 
 	//Removes all the view cards from the player which are equal to the argumnet cards
@@ -66,6 +62,10 @@ public class ThisPlayer extends Image {
 	}
 
 	public List<ICard> getCards() {
+		List<ICard> cards = new ArrayList<>();
+		for(Card vCard:vCards){
+			cards.add(vCard.getCard());
+		}
 		return copyCards(cards);
 	}
 
@@ -83,9 +83,6 @@ public class ThisPlayer extends Image {
 		}
 	}
 
-	public List<Card> getVCards() {
-		return vCards;
-	}
 
 	// Controller attached to cards
 	public class CardListener extends ClickListener {

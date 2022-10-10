@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Player {
-	public int id;
+	private int id;
     //Bool for if the player has said uno this round
     private boolean saidUno = false;
 
@@ -15,12 +15,18 @@ public class Player {
     private List<ICard> hand;
     //The selected card
 
-    public Player() {
+    public Player(int id) {
         this.hand = new ArrayList<>();
+        this.id = id;
     }
 
-    public Player(List<ICard> hand) {
+    public Player(int id, List<ICard> hand) {
         this.hand = hand;
+        this.id = id;
+    }
+
+    public int getId(){
+        return id;
     }
 
     public void selectCard(ICard c){
@@ -28,6 +34,11 @@ public class Player {
             selectedCards.add(c);
         }
     }
+
+    public List<ICard> getSelectedCards(){
+        return copyCards(selectedCards);
+    }
+
     public void unSelectCard(ICard c){
         selectedCards.remove(c);
     }

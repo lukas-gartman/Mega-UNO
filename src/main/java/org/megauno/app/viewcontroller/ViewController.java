@@ -17,13 +17,14 @@ import org.lwjgl.opengl.GL20;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import org.megauno.app.model.Player.Player;
 import org.megauno.app.utility.Subscriber;
 import org.megauno.app.viewcontroller.datafetching.FontLoader;
 import org.megauno.app.viewcontroller.datafetching.SpriteLoader;
 
 // The outer class managing views and controllers
-public class ViewController {
-	private Game game;
+public class ViewController implements Subscriber<Game>{
+
 
 	private GameView currentGameView;
 	private List<GameView> gameViews = new ArrayList<GameView>();
@@ -31,7 +32,6 @@ public class ViewController {
 	// TODO: have empty constructor, get IGame from either controller (client)
 	// or "Lobby" object of model (server) (subscribe to an event of "GameStarting")
 	public ViewController(Game game) {
-		this.game = game;
 		// Create all game views, stored in gameViews
 		for (int i = 0; i < game.getPlayersLeft(); i++) {
 			gameViews.add(new GameView(game, i));
@@ -42,6 +42,7 @@ public class ViewController {
 		// DummyActor dummyActor = new DummyActor();
 		// stage.addActor(dummyActor);
 		// stage.setKeyboardFocus(dummyActor);
+
 	}
 
 	// Necessary call from top level window handler (Application),
@@ -55,7 +56,11 @@ public class ViewController {
 	public void draw() {
 		// Clear screen
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		gameViews.get(game.getCurrentPlayer()).draw();
+		currentGameView.update();
+		currentGameView.draw();
+
+
+
 		// stage.act(Gdx.graphics.getDeltaTime());
 		// stage.draw();
 	}
@@ -65,6 +70,16 @@ public class ViewController {
 	public void teardown() {
 	}
 
+	@Override
+	public void delivery(Game game) {
+		for(GameView gameView: gameViews){
+			if(gameView.getPlayerID() == game.getCurrentPlayer()){
+				currentGameView = gameView;
+			}
+		}
+		Gdx.input.setInputProcessor(currentGameView);
+		currentGameView.update();
+	}
 
 
 	public class DummyActor extends Actor {

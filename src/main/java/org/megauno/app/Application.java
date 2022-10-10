@@ -7,6 +7,7 @@ import org.megauno.app.model.Game.Game;
 import com.badlogic.gdx.ApplicationAdapter;
 import org.megauno.app.model.Game.PlayerCircle;
 import org.megauno.app.model.Player.Player;
+import org.megauno.app.utility.Publisher;
 import org.megauno.app.viewcontroller.ViewController;
 
 public class Application extends ApplicationAdapter {
@@ -19,28 +20,28 @@ public class Application extends ApplicationAdapter {
 		//TODO: discuss proper place to initalize the player objects/assumptions
 		// about ID:s when creating Game
 
-		// Add players
-		Player p1 = new Player();
-		p1.id = 0;
-		Player p2 = new Player();
-		p2.id = 1;
-		Player p3 = new Player();
-		p3.id = 2;
 
+
+		// Add players
 		List<Player> tmpList = new ArrayList<>();
-		tmpList.add(p1);
-		tmpList.add(p1);
-		tmpList.add(p1);
+		for (int i = 0; i <3; i++){
+			tmpList.add(new Player(i));
+		}
+
 		PlayerCircle players = new PlayerCircle(tmpList);
 
-		game = new Game(players, 3);
+
+		Publisher<Game> publisher = new Publisher<>();
+
+		game = new Game(players, 7,publisher);
 		viewController = new ViewController(game);
+		publisher.addSubscriber(viewController);
 	}
 
 	@Override
 	public void render() {
-		viewController.draw();
 		game.update();
+		viewController.draw();
 	}
 
 	@Override
