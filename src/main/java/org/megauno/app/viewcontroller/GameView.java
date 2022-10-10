@@ -48,9 +48,7 @@ public class GameView implements IDrawable {
 			}
 		}
 
-		endTurnButton = new EndTurnButton();
-		endTurnButton.setX(200);
-		endTurnButton.setX(200);
+		endTurnButton = new EndTurnButton(200, 200);
 	}
 
 	public int getPlayerID(){
@@ -76,6 +74,9 @@ public class GameView implements IDrawable {
 			otherPlayerHandChanges(op);
 			op.draw(delta, batch);
 		}
+
+		// Draw end turn button
+		endTurnButton.draw(delta, batch);
 	}
 
 	private void otherPlayerHandChanges (OtherPlayer otherPlayer){
@@ -91,6 +92,7 @@ public class GameView implements IDrawable {
 		}
 	}
 
+	// TODO: YES
 	class EndTurnListener extends ClickListener {
 		@Override
 		public void clicked(InputEvent event, float x, float y) {
@@ -100,19 +102,28 @@ public class GameView implements IDrawable {
 		}
 	}
 
-	class EndTurnButton extends Actor {
+	class EndTurnButton implements IDrawable {
+		public float x;
+		public float y;
+
+		private Clickable clickable;
 
 		static private Sprite sprite = new SpriteLoader().retrieveData("assets/Tomte.png");
 
-		public EndTurnButton() {
-			setBounds(sprite.getX(), sprite.getY(), sprite.getWidth(), sprite.getHeight());
-			setTouchable(Touchable.enabled);
-			this.addListener(new EndTurnListener());
+		public EndTurnButton(float x, float y) {
+			this.x = x;
+			this.y = y;
+
+			clickable = new Clickable(sprite.getWidth(), sprite.getHeight());
 		}
 
 		@Override
-		public void draw(Batch batch, float alpha) {
-			batch.draw(sprite, getX(), getY());
+		public void draw(float delta, Batch batch) {
+			if (clickable.wasClicked(x, y)) {
+				game.commence_forth = true;
+			}
+
+			batch.draw(sprite, x, y);
 		}
 	}
 }
