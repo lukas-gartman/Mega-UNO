@@ -1,5 +1,8 @@
 package org.megauno.app;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.megauno.app.model.Game.Game;
 import com.badlogic.gdx.ApplicationAdapter;
 import org.megauno.app.model.Game.Lobby;
@@ -7,6 +10,8 @@ import org.megauno.app.model.Game.PlayerCircle;
 import org.megauno.app.model.Player.Player;
 
 import java.util.HashMap;
+import org.megauno.app.utility.Publisher;
+import org.megauno.app.viewcontroller.ViewController;
 
 public class Application extends ApplicationAdapter {
 	private Lobby lobby;
@@ -21,23 +26,24 @@ public class Application extends ApplicationAdapter {
 		PlayerCircle playerCircle = lobby.getPlayerCircle();
 		HashMap<Integer, Player> playersWithID = lobby.getPlayersWithID();
 
-		game = new Game(playerCircle);
+		Publisher<Game> publisher = new Publisher<>();
+		game = new Game(playerCircle, 7,publisher);
 		viewController = new ViewController(game);
+		publisher.addSubscriber(viewController);
 	}
 
 	@Override
-	public void render () {
-		viewController.draw();
+	public void render() {
 		game.update();
+		viewController.draw();
 	}
 
 	@Override
-	public void dispose () {
-
+	public void dispose() {
 		viewController.teardown();
 	}
 
-	public static void testFunc () {
+	public static void testFunc() {
 		System.out.println("Wow!");
 	}
 }
