@@ -50,6 +50,10 @@ public class OtherPlayer implements IDrawable {
 		return cards.size();
 	}
 
+	public int getPlayerID() {
+		return playerID;
+	}
+
 	@Override
 	public void draw(float delta, Batch batch) {
 		for (int i = 0; i < cards.size(); i++) {

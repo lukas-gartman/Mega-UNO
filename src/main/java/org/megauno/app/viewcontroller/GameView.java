@@ -26,6 +26,7 @@ public class GameView implements IDrawable {
 	private Card top;
 	private ThisPlayer thisPlayer;
 	private List<OtherPlayer> otherPlayers = new ArrayList<>();
+	private EndTurnButton endTurnButton;
 	
 	public GameView(Game game, int playerID) {
 		this.game = game;
@@ -47,12 +48,9 @@ public class GameView implements IDrawable {
 			}
 		}
 
-		EndTurnButton endTurnButton = new EndTurnButton();
+		endTurnButton = new EndTurnButton();
 		endTurnButton.setX(200);
 		endTurnButton.setX(200);
-		addActor(endTurnButton);
-
-
 	}
 
 	public int getPlayerID(){
@@ -64,31 +62,21 @@ public class GameView implements IDrawable {
 	@Override
 	public void draw(float delta, Batch batch) {
 		thisPlayer.draw(delta, batch);
-	}
-	public void update () {
-		top.remove();
-		top = new Card(game.getTopCard());
-		top.setX(300);
-		top.setY(250);
-		addActor(top);
+
+		// TODO: fix ID
+		top = new Card(game.getTopCard(), game, playerID, -1);
+		top.x = 300;
+		top.y = 250;
+		top.draw(delta, batch);
+
 		//System.out.println(game.getPlayerWithId(game.getCurrentPlayer()).numOfCards());
-		thisPlayerHandCHnages();
+		thisPlayer.thisPlayerHandCHnages();
 
 		for (OtherPlayer op : otherPlayers) {
 			otherPlayerHandChanges(op);
 			op.draw(delta, batch);
 		}
 	}
-
-	//Deals with teh changes to the players hand
-	private void thisPlayerHandCHnages() {
-		Player player = game.getPlayerWithId(playerID);
-		List<ICard> newCards = player.getCards();
-		List<ICard> currentCards = thisPlayer.getCards();
-		thisPlayer.addCards(cardsDifference(currentCards, newCards));
-		thisPlayer.removeCards(cardsDifference(newCards, currentCards));
-	}
-
 
 	private void otherPlayerHandChanges (OtherPlayer otherPlayer){
 

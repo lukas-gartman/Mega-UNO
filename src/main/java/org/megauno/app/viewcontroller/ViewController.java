@@ -34,6 +34,7 @@ public class ViewController implements Subscriber<Game>{
 	// TODO: have empty constructor, get IGame from either controller (client)
 	// or "Lobby" object of model (server) (subscribe to an event of "GameStarting")
 	public ViewController(Game game) {
+		this.game = game;
 		// Create all game views, stored in gameViews
 		for (int i = 0; i < game.getPlayersLeft(); i++) {
 			gameViews.add(new GameView(game, i));
@@ -66,7 +67,6 @@ public class ViewController implements Subscriber<Game>{
 		batch.begin();
 		gameViews.get(game.getCurrentPlayer()).draw(Gdx.graphics.getDeltaTime(), batch);
 		batch.end();
-		currentGameView.update();
 	}
 
 	// NOTE: called by Application
@@ -81,8 +81,6 @@ public class ViewController implements Subscriber<Game>{
 				currentGameView = gameView;
 			}
 		}
-		Gdx.input.setInputProcessor(currentGameView);
-		currentGameView.update();
 	}
 
 

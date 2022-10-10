@@ -5,12 +5,14 @@ import java.util.List;
 
 import org.megauno.app.model.Cards.ICard;
 import org.megauno.app.model.Game.Game;
+import org.megauno.app.model.Player.Player;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import static org.megauno.app.utility.CardMethoodes.cardsDifference;
 
 import static org.megauno.app.utility.CardMethoodes.copyCards;
 
@@ -28,6 +30,24 @@ public class ThisPlayer implements IDrawable {
 		this.game = game;
 		this.gv = gv;
 		addCards(cards);
+	}
+
+	// Rethink this
+	public List<ICard> getCards() {
+        List<ICard> cards = new ArrayList<>();
+        for(Card vCard:vCards){
+            cards.add(vCard.getCard());
+        }
+        return copyCards(cards);
+    }
+
+	//Deals with the changes to the players hand
+	void thisPlayerHandCHnages() {
+		Player player = game.getPlayerWithId(playerID);
+		List<ICard> newCards = player.getCards();
+		List<ICard> currentCards = getCards();
+		addCards(cardsDifference(currentCards, newCards));
+		removeCards(cardsDifference(newCards, currentCards));
 	}
 
 	void addCards(List<ICard> cards) {
