@@ -120,7 +120,7 @@ public class Game implements IActOnGame {
         }
         else {
             for (int i = 0; i < choices.size(); i++) {
-                players.giveCardToPlayer(choices.get(i));
+                players.giveCardToPlayer(choices.get(i), current);
             }
         }
     }
