@@ -200,8 +200,9 @@ public class Game implements IActOnGame {
      *
      * @return
      */
-    private <A> void prettyPrintList(List<A> list) {
+    private <A> void prettyPrintList(List<A> list) throws InterruptedException {
         for (int i = 0; i < list.size(); i++) {
+            Thread.sleep(500);
             System.out.println((i+1) + ": " + list.get(i).toString());
         }
     }
@@ -212,28 +213,34 @@ public class Game implements IActOnGame {
         List<ICard> availableCards = current.getPlayer().getCards();
 
         System.out.println("Current player: " + current.getPlayer().hashCode());
+        Thread.sleep(500);
         System.out.println("Top card: " + discarded.getTop());
+        Thread.sleep(500);
 
         // Display cards
         System.out.println("Available cards to choose from: ");
+        Thread.sleep(500);
         prettyPrintList(availableCards);
 
         // Check that the player can actually play, otherwise make them draw cards
         while (!canPlayerPlay(availableCards)) {
             if (!playerDraws()) {
-                Thread.sleep(10000);
-                System.out.println("You have no playable cards on hand, a card is drawn");
-                Thread.sleep(10000);
+                Thread.sleep(500);
+                System.out.println(">>>You have no playable cards on hand, a card is drawn<<<");
+                Thread.sleep(2000);
                 // Update the available cards such that the draw card is included
                 availableCards = current.getPlayer().getCards();
                 nextTurn();
                 System.out.println("You didn't draw any playable cards, though luck.");
-                System.out.println("\n|||||||||| New round |||||||||| \n");
+                Thread.sleep(1000);
                 return !current.equals(players.getCurrent());
             }
-            System.out.println("You have no playable cards on hand, a card is drawn");
+            Thread.sleep(500);
+            System.out.println(">>>You have no playable cards on hand, a card is drawn<<<");
+            Thread.sleep(2000);
             availableCards = current.getPlayer().getCards();
             System.out.println("Available cards to choose from: ");
+            Thread.sleep(500);
             prettyPrintList(availableCards);
         }
 
@@ -267,6 +274,7 @@ public class Game implements IActOnGame {
                 choice.activate(this);
             }
             System.out.println("-------------<Successfully played>-------------");
+            Thread.sleep(700);
             System.out.println(choices + " was played on " + discarded.getTop());
 
             // discard played card
@@ -280,6 +288,7 @@ public class Game implements IActOnGame {
                 if (currentHasOnlyOneCard && !current.getPlayer().uno()) {
                     //penalise: draw 3 cards.
                     System.out.println("-------------<Didn't say UNO>-------------");
+                    Thread.sleep(500);
                     System.out.println("Penalty applied, three cards added to your hand");
                     current.giveCardToPlayer(deck.drawCard());
                     current.giveCardToPlayer(deck.drawCard());
@@ -300,7 +309,6 @@ public class Game implements IActOnGame {
             }
             players.moveOnToNextTurn();
         }
-        System.out.println("\n|||||||||| New round |||||||||| \n");
         return !current.equals(players.getCurrent());
     }
 

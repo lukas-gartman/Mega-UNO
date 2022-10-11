@@ -48,6 +48,8 @@ public class Main {
         while(game.getPlayers().getPlayers().length > 1) {
             game.tryPlayTest();
             Thread.sleep(1000);
+            System.out.println("\n|||||||||| New round |||||||||| \n");
+            Thread.sleep(1000);
         }
     }
 
