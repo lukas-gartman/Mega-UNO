@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 //
-public class Player implements IPlayer<ICard> {
-
+public class Player {
+	private int id;
     //Bool for if the player has said uno this round
     private boolean saidUno = false;
     private List<ICard> selectedCards = new ArrayList<>();
@@ -16,12 +16,18 @@ public class Player implements IPlayer<ICard> {
     private List<ICard> hand;
     //The selected card
 
-    public Player() {
+    public Player(int id) {
         this.hand = new ArrayList<>();
+        this.id = id;
     }
 
-    public Player(List<ICard> hand) {
+    public Player(int id, List<ICard> hand) {
         this.hand = hand;
+        this.id = id;
+    }
+
+    public int getId(){
+        return id;
     }
 
     // Bug, since the same card can be picked several times
@@ -31,6 +37,11 @@ public class Player implements IPlayer<ICard> {
             selectedCards.add(c);
         }
     }
+
+    public List<ICard> getSelectedCards(){
+        return copyCards(selectedCards);
+    }
+
     public void unSelectCard(ICard c){
         selectedCards.remove(c);
     }
@@ -60,9 +71,10 @@ public class Player implements IPlayer<ICard> {
         hand.add(card.copyCard());
     }
 
+
     public void addCards(List<ICard> cards) {
         for (ICard card: cards) {
-            addCard(card);
+            this.addCard(card);
         }
     }
     private void removeSelectedCardsFromHand() {

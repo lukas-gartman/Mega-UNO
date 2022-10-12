@@ -23,9 +23,9 @@ public class PlayerTest extends TestCase {
         cards.add(new NumberCard(Color.GREEN,8));
     }
     @Before
-    public void makePlayer() {
-        emptyPlayer = new Player();
-        cardsPlayer = new Player();
+    public void makePlayer(){
+        emptyPlayer = new Player(0);
+        cardsPlayer = new Player(1);
 
         for (ICard c:cards) {
             cardsPlayer.addCard(c);

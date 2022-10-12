@@ -13,5 +13,7 @@ public interface IPlayer<c> {
     List<c> getCards();
 
     void selectCard(c item);
+    
+    int getId();
 
 }

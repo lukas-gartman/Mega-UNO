@@ -1,7 +1,6 @@
 package org.megauno.app.model.Game;
 
 import junit.framework.TestCase;
-import org.lwjgl.system.CallbackI;
 import org.megauno.app.model.Cards.ICard;
 import org.megauno.app.model.Deck;
 import org.megauno.app.model.GameFactory;
@@ -22,7 +21,7 @@ public class GameTest extends TestCase {
     public List<Player> generatePlayers(int n) {
         List<Player> playerList = new ArrayList<>();
         for (int i = 0; i < n; i++) {
-            playerList.add(new Player(deck.dealHand(3)));
+            playerList.add(new Player(0));
         }
         return playerList;
     }
@@ -36,7 +35,7 @@ public class GameTest extends TestCase {
 
     public void testTry_play() {
         Random rand = new Random();
-        IPlayer currentPlayer = players.getCurrent().getPlayer();
+        Player currentPlayer = players.getCurrent().getPlayer();
         int randomIndex = rand.nextInt(currentPlayer.numOfCards());
         currentPlayer.selectCard(currentPlayer.getCards().get(randomIndex));
         game.try_play();
@@ -55,8 +54,8 @@ public class GameTest extends TestCase {
 
     // Try that wrong cards cannot be stacked on top of each other.
     private void addSelectedCards(int nCards) {
-        IPlayer currentPlayer = game.getPlayers().getCurrent().getPlayer();
-        for (Object c : currentPlayer.getCards()) {
+        Player currentPlayer = game.getPlayerCircle().getCurrent().getPlayer();
+        for (ICard c : currentPlayer.getCards()) {
             currentPlayer.selectCard(c);
         }
     }
