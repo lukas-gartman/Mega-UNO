@@ -1,17 +1,15 @@
 package org.megauno.app;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.megauno.app.model.Game.Game;
 import com.badlogic.gdx.ApplicationAdapter;
 import org.megauno.app.model.Game.Lobby;
 import org.megauno.app.model.Game.PlayerCircle;
 import org.megauno.app.model.Player.Player;
-
-import java.util.HashMap;
 import org.megauno.app.utility.Publisher;
 import org.megauno.app.viewcontroller.ViewController;
+
+import java.util.HashMap;
+import java.util.concurrent.Phaser;
 
 public class Application extends ApplicationAdapter {
 	private Lobby lobby;
@@ -19,9 +17,15 @@ public class Application extends ApplicationAdapter {
 	private ViewController viewController;
 
 	@Override
-	public void create () {
-		lobby = new Lobby(); // Create the lobby
-		while (lobby.isSearchingForPlayers()) {} // Wait for the host to start the game
+	public void create() {
+		Phaser phaser = new Phaser(1); // Used to signal when the lobby is done searching for players
+		lobby = new Lobby(phaser); // Create the lobby
+		try {
+			phaser.awaitAdvance(0); // Wait for the host to start the game (blocking call)
+		} catch (IllegalStateException ex) {
+			System.out.println("The lobby was closed");
+		}
+
 		System.out.println("Starting game!");
 		PlayerCircle playerCircle = lobby.getPlayerCircle();
 		HashMap<Integer, Player> playersWithID = lobby.getPlayersWithID();

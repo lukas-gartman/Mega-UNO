@@ -5,14 +5,18 @@ import org.megauno.app.model.Player.Player;
 import org.megauno.app.network.Client;
 import org.megauno.app.network.ClientHandler;
 import org.megauno.app.network.Server;
+import org.megauno.app.utility.Publisher;
 
 import java.util.*;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.Phaser;
 
 public class Lobby {
     private volatile HashMap<ClientHandler,Integer> clientHandlers;
     private volatile PlayerCircle players = new PlayerCircle();
     HashMap<Integer, Player> playersWithID = new HashMap<>();
     private volatile boolean searchingForPlayers = true;
+    private Phaser phaser;
 
     public Lobby() {
         try {
@@ -21,6 +25,11 @@ public class Lobby {
             System.out.println(ex.getMessage());
             searchingForPlayers = false;
         }
+    }
+
+    public Lobby(Phaser phaser) {
+        this();
+        this.phaser = phaser;
     }
 
     private void host() throws Exception {
@@ -65,15 +74,14 @@ public class Lobby {
             }
 
             this.searchingForPlayers = false; // Tell the loop to stop searching for players
+            this.phaser.arrive(); // The task is finished
         }).start();
     }
 
     private void join() {
+        this.phaser.register(); // Indicate the user is not ready to play
         // todo: implement logic for joining a lobby
-    }
-
-    public boolean isSearchingForPlayers() {
-        return this.searchingForPlayers;
+        this.phaser.arrive(); // Indicate the user is now ready to play
     }
 
     public PlayerCircle getPlayerCircle() {
