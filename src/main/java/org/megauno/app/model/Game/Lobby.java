@@ -1,21 +1,19 @@
 package org.megauno.app.model.Game;
 
-import org.json.JSONObject;
 import org.megauno.app.model.Player.Player;
 import org.megauno.app.network.Client;
 import org.megauno.app.network.ClientHandler;
+import org.megauno.app.network.IServer;
 import org.megauno.app.network.Server;
-import org.megauno.app.utility.Publisher;
+import org.megauno.app.utility.Tuple;
 
 import java.util.*;
-import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Phaser;
 
-public class Lobby {
+public class Lobby implements IServer.Observer {
     private volatile HashMap<ClientHandler,Integer> clientHandlers;
     private volatile PlayerCircle players = new PlayerCircle();
     HashMap<Integer, Player> playersWithID = new HashMap<>();
-    private volatile boolean searchingForPlayers = true;
     private Phaser phaser;
 
     public Lobby() {
@@ -23,7 +21,6 @@ public class Lobby {
             host();
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
-            searchingForPlayers = false;
         }
     }
 
@@ -32,32 +29,25 @@ public class Lobby {
         this.phaser = phaser;
     }
 
+    @Override
+    public void update(Tuple<ClientHandler, Integer> event) {
+        ClientHandler clientHandler = event.l;
+        int id = event.r;
+        if (clientHandlers.containsKey(clientHandler))
+            clientHandlers.remove(clientHandler);
+        else
+            clientHandlers.put(clientHandler, id);
+    }
+
     private void host() throws Exception {
         Server server = new Server(1337); // Game host holds the server object
         new Thread(server).start(); // Start the server on a new thread to prevent blocking
+        clientHandlers = server.getClientHandlers();
+        server.addObserver(event -> { });
+
         Client client = new Client("localhost", 1337); // Create client for the host
         new Client("localhost", 1337);
         new Client("localhost", 1337);
-
-        // Searching for new connections
-        new Thread(() -> {
-            HashMap<ClientHandler,Integer> chs = new HashMap<>(); // The old clientHandler HashMap
-
-            // Continue searching until host starts the game
-            while (this.searchingForPlayers) {
-                clientHandlers = server.getClientHandlers(); // Get the latest clientHandlers from the server
-                // Check if there is a change in size (issue: a new player can join while another disconnects...)
-                if (clientHandlers.size() != chs.size()) {
-                    chs = new HashMap<>(clientHandlers);
-                }
-
-                try { // Check once every 100 milliseconds
-                    Thread.sleep(100);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        }).start();
 
         // *** TEMPORARY *** //
         new Thread(() -> {
@@ -73,7 +63,6 @@ public class Lobby {
                 playersWithID.put(id, p);
             }
 
-            this.searchingForPlayers = false; // Tell the loop to stop searching for players
             this.phaser.arrive(); // The task is finished
         }).start();
     }
