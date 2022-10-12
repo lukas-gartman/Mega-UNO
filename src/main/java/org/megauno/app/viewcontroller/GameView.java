@@ -10,6 +10,7 @@ import java.util.List;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import org.megauno.app.model.Cards.ICard;
 import org.megauno.app.model.Game.Game;
+import org.megauno.app.model.Player.Player;
 import org.megauno.app.viewcontroller.datafetching.SpriteLoader;
 
 // For now, GameView parses deltas from Game and calls the appropriate
@@ -25,19 +26,20 @@ public class GameView implements IDrawable {
 		this.game = game;
 		// Add this view's player
 		this.playerID = playerID;
-		List<List<ICard>> allPlayerCards = game.getAllPlayerCards();   // All the different players' cards
-		thisPlayer = new ThisPlayer(playerID, allPlayerCards.get(playerID), game, this);
+
+		thisPlayer = new ThisPlayer(playerID, game, this);
 
 		// Add all other players
 		// TODO: make the positions make sense regarding actual placing in the list
-		int playerAmount = game.getPlayersLeft();
-		for (int id = 0; id < playerAmount; id++) {
-			if (!(id == playerID)) {
-				OtherPlayer otherPlayer = new OtherPlayer(id, playerAmount);
+		int offset = 0;
+		for (Player p: game.getPlayers()) {
+			if (!(p.getId() == playerID)) {
+				OtherPlayer otherPlayer = new OtherPlayer(p.getId(), game.getPlayersLeft());
 				otherPlayer.y = 400;
-				otherPlayer.x = id * 200;
+				otherPlayer.x = offset * 200;
 				otherPlayers.add(otherPlayer);
 				//TODO: add position, do a top-row of OtherPlayers
+				offset++;
 			}
 		}
 

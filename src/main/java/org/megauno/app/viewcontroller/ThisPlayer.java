@@ -22,10 +22,11 @@ public class ThisPlayer implements IDrawable {
 
 	private GameView gv;
 
-	public ThisPlayer(int playerID, List<ICard> cards, Game game, GameView gv) {
+	public ThisPlayer(int playerID,  Game game, GameView gv) {
 		this.playerID = playerID;
 		this.game = game;
 		this.gv = gv;
+		List<ICard> cards = game.getPlayerWithId(game.getCurrentPlayer()).getCards();
 		addCards(cards);
 	}
 

@@ -29,6 +29,9 @@ public class Game implements IActOnGame {
     }
 
     public Game(PlayerCircle players, int numCards, Publisher<Game> publisher) {
+
+
+
         this.players = players;
         this.discarded = new Pile();
 		this.deck = new Deck();
@@ -66,20 +69,7 @@ public class Game implements IActOnGame {
 	}
 
 	// Basic API for ViewController, potentially tests as well
-	
-	// Each boolean represents wether or not a card is chosen by the current player
-	public boolean[] choices;
 
-	// Inner array is null if the player with the given ID/index is out of the game
-	// TODO: add an ID in the Player class to be able to put null here
-	public List<List<ICard>> getAllPlayerCards() {
-		Player[] players = getPlayers();
-		List<List<ICard>> result = new ArrayList<>();
-		for (int i = 0; i < players.length; i++) {
-			result.add(players[i].getCards());
-		}
-		return result;
-	}
 
 	public int getPlayersLeft() {
 		return players.playersLeft();

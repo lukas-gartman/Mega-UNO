@@ -86,7 +86,7 @@ public class ActionCard extends AbstractCard {
 
    @Override
    public boolean canBeStackedUnder(ActionCard ac) {
-      return ac.action == this.action;
+      return ac.getType() == this.getType();
    }
 
    @Override

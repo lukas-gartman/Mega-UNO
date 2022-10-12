@@ -19,6 +19,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+import org.megauno.app.model.Player.Player;
 import org.megauno.app.utility.Subscriber;
 import org.megauno.app.viewcontroller.datafetching.FontLoader;
 import org.megauno.app.viewcontroller.datafetching.SpriteLoader;
@@ -36,8 +37,8 @@ public class ViewController implements Subscriber<Game>{
 	public ViewController(Game game) {
 		this.game = game;
 		// Create all game views, stored in gameViews
-		for (int i = 0; i < game.getPlayersLeft(); i++) {
-			gameViews.add(new GameView(game, i));
+		for (Player p: game.getPlayers()) {
+			gameViews.add(new GameView(game, p.getId()));
 		}
 		currentGameView = gameViews.get(game.getCurrentPlayer());
 		// Gdx.input.setInputProcessor(currentGameView);
