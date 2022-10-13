@@ -116,6 +116,7 @@ public class Card implements IDrawable {
 		// TODO: type image
 	}
 
+	// Gets corresponding filename of card
 	private String getTypeInString(){
 		String special = null;
 		switch (card.getType()){
