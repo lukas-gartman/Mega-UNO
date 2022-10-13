@@ -3,18 +3,20 @@ package org.megauno.app.model.Game;
 import org.megauno.app.model.Player.Player;
 import org.megauno.app.network.Client;
 import org.megauno.app.network.ClientHandler;
-import org.megauno.app.network.IServer;
 import org.megauno.app.network.Server;
+import org.megauno.app.utility.Publisher;
+import org.megauno.app.utility.Subscriber;
 import org.megauno.app.utility.Tuple;
 
 import java.util.*;
 import java.util.concurrent.Phaser;
 
-public class Lobby implements IServer.Observer {
+public class Lobby implements Subscriber<Tuple<ClientHandler, Integer>> {
     private volatile HashMap<ClientHandler,Integer> clientHandlers;
     private volatile PlayerCircle players = new PlayerCircle();
     private HashMap<Integer, Player> playersWithID = new HashMap<>();
     private Phaser phaser;
+    private final Publisher<Tuple<ClientHandler, Integer>> serverPublisher = new Publisher<>();
 
     public Lobby() {
         try {
@@ -30,7 +32,7 @@ public class Lobby implements IServer.Observer {
     }
 
     @Override
-    public void update(Tuple<ClientHandler, Integer> event) {
+    public void delivery(Tuple<ClientHandler, Integer> event) {
         ClientHandler clientHandler = event.l;
         int id = event.r;
         if (clientHandlers.containsKey(clientHandler))
@@ -40,14 +42,14 @@ public class Lobby implements IServer.Observer {
     }
 
     private void host() throws Exception {
-        Server server = new Server(1337); // Game host holds the server object
+        Server server = new Server(1337, serverPublisher); // Game host holds the server object
+        serverPublisher.addSubscriber(this); // subscribe self to changes to client handlers
         new Thread(server).start(); // Start the server on a new thread to prevent blocking
-        clientHandlers = server.getClientHandlers();
-        server.addObserver(event -> { });
+        clientHandlers = server.getClientHandlers(); // initialise the map of clientHandlers
 
         Client client = new Client("localhost", 1337); // Create client for the host
-        new Client("localhost", 1337);
-        new Client("localhost", 1337);
+        new Client("localhost", 1337); // dummy client
+        new Client("localhost", 1337); // dummy client
 
         // *** TEMPORARY *** //
         new Thread(() -> {
