@@ -1,5 +1,6 @@
 package org.megauno.app.model.Game;
 
+import org.megauno.app.model.Cards.Color;
 import org.megauno.app.model.Cards.ICard;
 import org.megauno.app.model.Deck;
 import org.megauno.app.model.Pile;
@@ -16,6 +17,7 @@ public class Game implements IActOnGame {
     private Pile discarded;
     private int drawCount = 0;
     private Publisher<Game> publisher;
+    private Color wildCardColor;
 
 
     /**
@@ -141,16 +143,17 @@ public class Game implements IActOnGame {
         if (!currentHasOnlyOneCard) current.getPlayer().unsayUno();
 
         if (validPlay(choices, current)) {
+            // discard successfully played cards
+            for (ICard c: choices) {
+                discarded.discard(c);
+            }
             for (ICard choice : choices) {
                 choice.activate(this);
             }
             // change currentPlayer to next in line:
             nextTurn();
 
-            // discard successfully played cards
-            for (ICard c: choices) {
-                discarded.discard(c);
-            }
+
 
             checkPlayersProgress(current, currentHasOnlyOneCard, choices);
         }
@@ -213,6 +216,9 @@ public class Game implements IActOnGame {
         return deck.drawCard();
     }
 
+    public Color getChosenColor(){
+        return wildCardColor;
+    }
 
     public Deck getDeck(){
         return deck;
