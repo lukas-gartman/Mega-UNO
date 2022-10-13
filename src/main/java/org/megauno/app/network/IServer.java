@@ -1,7 +1,5 @@
 package org.megauno.app.network;
 
-import org.megauno.app.utility.Tuple;
-
 import java.util.HashMap;
 
 public interface IServer {
