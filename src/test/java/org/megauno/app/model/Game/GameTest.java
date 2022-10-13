@@ -42,12 +42,14 @@ public class GameTest extends TestCase {
         game.try_play();
     }
 
-    public void testPlayRandomTurn() {
+    /*
+    public void testPlayRandomTurn() throws InterruptedException {
         for (int i = 0; i < 40; i++) {
             game.tryPlayTest();
         }
         //assert(game.tryPlayTest());
     }
+    */
 
     public void testCanBeStackedOn() {
         //assertFalse(game.validPlayedCards());
@@ -61,7 +63,7 @@ public class GameTest extends TestCase {
         }
     }
 
-    public void testTryPlaySelectedCards() {
+    public void testTryPlaySelectedCards() throws InterruptedException {
         addSelectedCards(3);
         game.tryPlayTest(); // an error expected
     }

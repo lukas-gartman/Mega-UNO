@@ -185,34 +185,39 @@ public class Game implements IActOnGame {
         return players;
     }
 
-    /**
-     * Used for testing purposes, simulates a player choosing a card
-      */
-    public void simulatePlayerChoosingCard() {
-        Random rand = new Random();
-        Player currentPlayer = players.getCurrent().getPlayer();
-        int randomIndex = rand.nextInt(currentPlayer.numOfCards());
-        ICard randomCard = currentPlayer.getCards().get(randomIndex);
-        currentPlayer.selectCard(randomCard);
+    private void sayUno(Player player) {
+        player.sayUno();
     }
 
-    /**
-     *
-     * @return
-     */
+    private boolean hasSaidUno(Player player) {
+        return player.uno();
+    }
+
     private <A> void prettyPrintList(List<A> list) throws InterruptedException {
         for (int i = 0; i < list.size(); i++) {
-            Thread.sleep(500);
+            Thread.sleep(300);
             System.out.println((i+1) + ": " + list.get(i).toString());
         }
+    }
+
+    // Check that they input indices are valid
+    private boolean validIndices(List<ICard> hand, List<Integer> indices) {
+        indices = indices.stream().distinct().toList();
+        for (Integer index : indices) {
+            if (index < 0 || index > hand.size()) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public boolean tryPlayTest() throws InterruptedException {
         Scanner input = new Scanner(System.in);
         Node current = players.getCurrent();
-        List<ICard> availableCards = current.getPlayer().getCards();
+        Player currentPlayer = current.getPlayer();
+        List<ICard> availableCards = currentPlayer.getCards();
 
-        System.out.println("Current player: " + current.getPlayer().hashCode());
+        System.out.println("Current player: " + currentPlayer.hashCode());
         Thread.sleep(500);
         System.out.println("Top card: " + discarded.getTop());
         Thread.sleep(500);
@@ -229,7 +234,7 @@ public class Game implements IActOnGame {
                 System.out.println(">>>You have no playable cards on hand, a card is drawn<<<");
                 Thread.sleep(2000);
                 // Update the available cards such that the draw card is included
-                availableCards = current.getPlayer().getCards();
+                availableCards = currentPlayer.getCards();
                 nextTurn();
                 System.out.println("You didn't draw any playable cards, though luck.");
                 Thread.sleep(1000);
@@ -238,7 +243,7 @@ public class Game implements IActOnGame {
             Thread.sleep(500);
             System.out.println(">>>You have no playable cards on hand, a card is drawn<<<");
             Thread.sleep(2000);
-            availableCards = current.getPlayer().getCards();
+            availableCards = currentPlayer.getCards();
             System.out.println("Available cards to choose from: ");
             Thread.sleep(500);
             prettyPrintList(availableCards);
@@ -248,7 +253,10 @@ public class Game implements IActOnGame {
         System.out.println("Say UNO? -> ");
         String maybeUno = input.nextLine();
         // Check that uno was said
-        if (maybeUno.equals("UNO")) current.getPlayer().sayUno();
+        if (maybeUno.equals("UNO")) {
+            sayUno(currentPlayer);
+            System.out.println("Player has said UNO: " + hasSaidUno(currentPlayer));
+        }
 
         // For player to choose cards
         int chosenIndex = -1;
@@ -258,11 +266,11 @@ public class Game implements IActOnGame {
             chosenIndex = input.nextInt();
         }
         // Choose the card
-        current.getPlayer().selectCard(availableCards.get(chosenIndex - 1));
+        currentPlayer.selectCard(availableCards.get(chosenIndex - 1));
 
         //simulatePlayerChoosingCard();
         // Play the chosen card(s)
-        boolean currentHasOnlyOneCard = current.getPlayer().numOfCards() == 1;
+        boolean currentHasOnlyOneCard = currentPlayer.numOfCards() == 1;
         // Important that this comes after the previous line, since
         // make turn removes the cards from the hand
         List<ICard> choices = players.currentMakeTurn();
@@ -285,14 +293,14 @@ public class Game implements IActOnGame {
             // check if the player has run out of cards
             if (players.IsPlayerOutOfCards(current)) {
                 // if the player only had one card, and never said uno,
-                if (currentHasOnlyOneCard && !current.getPlayer().uno()) {
+                if (currentHasOnlyOneCard && !hasSaidUno(currentPlayer)) {
                     //penalise: draw 3 cards.
                     System.out.println("-------------<Didn't say UNO>-------------");
                     Thread.sleep(500);
                     System.out.println("Penalty applied, three cards added to your hand");
-                    current.giveCardToPlayer(deck.drawCard());
-                    current.giveCardToPlayer(deck.drawCard());
-                    current.giveCardToPlayer(deck.drawCard());
+                    for (int i = 0; i < 3; i++) {
+                        current.giveCardToPlayer(deck.drawCard());
+                    }
                 } else {
                     // removes player
                     players.playerFinished(current);
@@ -301,13 +309,15 @@ public class Game implements IActOnGame {
                 }
             }
             // change currentPlayer to next in line depending on game direction and position in circle:
-            players.moveOnToNextTurn();
+            nextTurn();
         }
+        // Player has valid cards to play, but chose not to play them
         else {
+            System.out.println("You chose to play a card that cannot be played, too bad");
             for (ICard choice : choices) {
                 players.giveCardToCurrentPlayer(choice);
             }
-            players.moveOnToNextTurn();
+            nextTurn();
         }
         return !current.equals(players.getCurrent());
     }

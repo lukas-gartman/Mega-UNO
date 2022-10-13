@@ -72,7 +72,7 @@ public class Player {
 
     //To get the card a player wants to play
     public List<ICard> play(){
-        saidUno = false;
+        //saidUno = false; don't understand why this is desired behaviour
         removeSelectedCardsFromHand();
         List<ICard> out = copyCards(selectedCards);
         discardAllSelectedCards();

@@ -11,4 +11,6 @@ public interface IActOnGame {
     void reverse();
 
     void nextTurn();
+
+    // getTheWildCardColor() <----
 }
