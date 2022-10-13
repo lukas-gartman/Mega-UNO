@@ -1,15 +1,14 @@
-package org.megauno.app.viewcontroller;
+package org.megauno.app.viewcontroller.players.thisPlayer;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.megauno.app.model.Cards.ICard;
-import org.megauno.app.model.Game.Game;
-import org.megauno.app.model.Player.Player;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
-
-import static org.megauno.app.utility.CardMethoodes.cardsDifference;
+import org.megauno.app.viewcontroller.GamePublishers;
+import org.megauno.app.viewcontroller.datafetching.IDrawable;
+import org.megauno.app.viewcontroller.players.GameView;
 
 import static org.megauno.app.utility.CardMethoodes.copyCards;
 
@@ -18,16 +17,21 @@ public class ThisPlayer implements IDrawable {
 	// Visual cards
 	private List<Card> vCards = new ArrayList<>();
 	// Game
-	private Game game;
 
 	private GameView gv;
 
-	public ThisPlayer(int playerID,  Game game, GameView gv) {
+	public ThisPlayer(int playerID,  GamePublishers publishers) {
 		this.playerID = playerID;
-		this.game = game;
-		this.gv = gv;
-		List<ICard> cards = game.getPlayerWithId(game.getCurrentPlayer()).getCards();
-		addCards(cards);
+
+		publishers.onCardsAddedToId().addSubscriberWithCondition(
+				(np) -> addCards(np.r),
+				(np) -> np.l == playerID
+		);
+
+		publishers.onCardsRemovedAtId().addSubscriberWithCondition(
+				(np) -> removeCards(np.r),
+				(np) -> np.l == playerID
+		);
 	}
 
 	// Rethink this
@@ -39,20 +43,13 @@ public class ThisPlayer implements IDrawable {
         return copyCards(cards);
     }
 
-	//Deals with the changes to the players hand
-	void thisPlayerHandCHnages() {
-		Player player = game.getPlayerWithId(playerID);
-		List<ICard> newCards = player.getCards();
-		List<ICard> currentCards = getCards();
-		addCards(cardsDifference(currentCards, newCards));
-		removeCards(cardsDifference(newCards, currentCards));
-	}
+
 
 	void addCards(List<ICard> cards) {
 		for (int i = 0; i < cards.size(); i++) {
 			ICard card = cards.get(i);
 			// Note, cardID is just the index in the list of cards
-			Card vCard = new Card(card, game, playerID, i);
+			Card vCard = new Card(card);
 			vCard.x = i * 50;
 			vCard.y = 100;
 			// Add controller for card
@@ -89,4 +86,5 @@ public class ThisPlayer implements IDrawable {
 			c.draw(delta, batch);
 		}
 	}
+
 }

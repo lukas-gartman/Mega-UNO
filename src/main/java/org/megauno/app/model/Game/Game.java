@@ -4,19 +4,22 @@ import org.megauno.app.model.Cards.ICard;
 import org.megauno.app.model.Deck;
 import org.megauno.app.model.Pile;
 import org.megauno.app.model.Player.Player;
-import org.megauno.app.utility.Publisher;
+import org.megauno.app.utility.Publisher.condition.ConPublisher;
+import org.megauno.app.utility.Publisher.normal.Publisher;
+import org.megauno.app.utility.Tuple;
+import org.megauno.app.viewcontroller.GamePublishers;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class Game implements IActOnGame {
+public class Game implements IActOnGame, GamePublishers {
     private PlayerCircle players;
     private Deck deck;
     private Pile discarded;
     private int drawCount = 0;
-    private Publisher<Game> publisher;
 
+    //Publisher for the new top card in the discrad pile
+    public Publisher<ICard> onNewTopCard = new Publisher<>();
 
     /**
      *
@@ -24,18 +27,13 @@ public class Game implements IActOnGame {
      * @param numCards is the number of cards a hand is initially dealt
      */
 
-    public Game(PlayerCircle players, int numCards){
-        this(players,numCards,new Publisher<Game>());
-    }
-
-    public Game(PlayerCircle players, int numCards, Publisher<Game> publisher) {
+    public Game(PlayerCircle players, int numCards) {
 
 
 
         this.players = players;
         this.discarded = new Pile();
 		this.deck = new Deck();
-        this.publisher = publisher;
 
         int p = 0;
         while (p < players.playersLeft() * numCards) {
@@ -76,9 +74,13 @@ public class Game implements IActOnGame {
 	}
 
 	// Current player
-	public int getCurrentPlayer() {
-		return players.getCurrent().getPlayer().getId();
+	public int getCurrentPlayersId() {
+		return getCurrentPlayer().getId();
 	}
+
+    public Player getCurrentPlayer(){
+        return players.getCurrent().getPlayer();
+    }
 
     public void reverse(){
         players.changeRotation();
@@ -124,7 +126,6 @@ public class Game implements IActOnGame {
      * attempt to play those cards and discard on pile if successful
      */
     public void try_play() {
-        ICard top = discarded.getTop();
         Node current = players.getCurrent();
         List<ICard> choices = players.currentMakeTurn();
         boolean currentHasOnlyOneCard = current.getPlayer().numOfCards() == 1;
@@ -140,6 +141,7 @@ public class Game implements IActOnGame {
             for (ICard c: choices) {
                 discarded.discard(c);
             }
+            onNewTopCard.publish(getTopCard());
 
             checkPlayersProgress(current, currentHasOnlyOneCard, choices);
         }
@@ -163,11 +165,9 @@ public class Game implements IActOnGame {
             current.giveCardToPlayer(deck.drawCard());
             current.giveCardToPlayer(deck.drawCard());
             current.giveCardToPlayer(deck.drawCard());
-            publisher.publish(this);
         }else if (players.IsPlayerOutOfCards(current) ) {
             if (choices.size() > 1 || current.getPlayer().uno()){
                 players.playerFinished(current);
-                publisher.publish(this);
             }
         }
     }
@@ -295,4 +295,25 @@ public class Game implements IActOnGame {
         System.out.println("\n|||||||||| New round |||||||||| \n");
         return !current.equals(players.getCurrent());
     }
+
+
+    @Override
+    public Publisher<int> onNewPlayer() {
+        return getPlayerCircle().onNewPlayer();
+    }
+
+    @Override
+    public Publisher<ICard> onNewTopCard() {
+        return onNewTopCard;
+    }
+    @Override
+    public ConPublisher<Tuple<int, List<ICard>>> onCardsAddedToId() {
+        return getCurrentPlayer().getOnCardsAddedToId();
+    }
+
+    @Override
+    public ConPublisher<Tuple<int, List<ICard>>> onCardsRemovedAtId() {
+        return getCurrentPlayer().getOnCardsRemovedAtId();
+    }
+
 }

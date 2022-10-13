@@ -1,24 +1,17 @@
-package org.megauno.app.viewcontroller;
+package org.megauno.app.viewcontroller.players.thisPlayer;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import org.lwjgl.system.CallbackI;
-import org.megauno.app.model.Cards.CardType;
 import org.megauno.app.model.Cards.ICard;
-import org.megauno.app.model.Game.Game;
 import org.megauno.app.utility.dataFetching.DataFetcher;
 import org.megauno.app.utility.dataFetching.PathDataFetcher;
-import org.megauno.app.viewcontroller.datafetching.FontLoader;
-import org.megauno.app.viewcontroller.datafetching.SpriteLoader;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Touchable;
+import org.megauno.app.viewcontroller.Clickable;
+import org.megauno.app.viewcontroller.datafetching.IDrawable;
 
 public class Card implements IDrawable {
 	static DataFetcher<String,Sprite> spriteFetcher = new PathDataFetcher<Sprite>(
@@ -37,21 +30,15 @@ public class Card implements IDrawable {
 			},"assets/");
 	static BitmapFont fnt = fontFetcher.tryGetDataUnSafe("minecraft.fnt");
 
-	public int cardID;
 	public float x;
 	public float y;
 	public boolean selected = false;
 
 	private Sprite sprite;
 	private ICard card;
-	private int playerID;
-	private Game game;
 	private Clickable clickable;
 
-	public Card(ICard card, Game game, int playerID, int cardID) {
-		this.playerID = playerID;
-		this.cardID = cardID;
-		this.game = game;
+	public Card(ICard card) {
 		switch (card.getColor()) {
 			case RED:
 				sprite = red;
@@ -85,7 +72,6 @@ public class Card implements IDrawable {
 		if (clickable.wasClicked(x, y)) {
 			System.out.println("Clicked card with ID: " + Integer.toString(cardID));
 			// Flip card selection in model and visually
-			// game.choices[cardID] = !game.choices[cardID];
 			selected = !selected;
 			if (selected) {
 				game.getPlayerWithId(playerID).selectCard(card);

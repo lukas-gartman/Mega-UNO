@@ -1,6 +1,5 @@
 package org.megauno.app.viewcontroller;
 
-import org.megauno.app.model.Game.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -20,13 +19,13 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import org.megauno.app.model.Player.Player;
-import org.megauno.app.utility.Subscriber;
 import org.megauno.app.viewcontroller.datafetching.FontLoader;
 import org.megauno.app.viewcontroller.datafetching.SpriteLoader;
+import org.megauno.app.viewcontroller.players.GameView;
 
 // The outer class managing views and controllers
-public class ViewController implements Subscriber<Game>{
-	private Game game;
+public class ViewController{
+	private GamePublishers publishers;
 	private Batch batch;
 
 	private GameView currentGameView;
@@ -34,21 +33,25 @@ public class ViewController implements Subscriber<Game>{
 
 	// TODO: have empty constructor, get IGame from either controller (client)
 	// or "Lobby" object of model (server) (subscribe to an event of "GameStarting")
-	public ViewController(Game game) {
-		this.game = game;
+	public ViewController(int[] ids,GamePublishers publishers) {
+		this.publishers = gamePublishers;
 		// Create all game views, stored in gameViews
-		for (Player p: game.getPlayers()) {
-			gameViews.add(new GameView(game, p.getId()));
+		for (int id : ids) {
+			int[] otherplayers = new int[ids.length-1];
+			int i = 0;
+			for (int innerId :ids) {
+				if(id != innerId){
+					otherplayers[i] = innerId;
+					i++;
+				}
+			}
+			gameViews.add(new GameView(id,otherplayers,publishers));
 		}
-		currentGameView = gameViews.get(game.getCurrentPlayer());
-		// Gdx.input.setInputProcessor(currentGameView);
-
 		batch = new SpriteBatch();
 
-		// DummyActor dummyActor = new DummyActor();
-		// stage.addActor(dummyActor);
-		// stage.setKeyboardFocus(dummyActor);
-
+		publishers.onNewPlayer().addSubscriber(
+				(id) -> newPlayerId(id)
+		);
 	}
 
 	// Necessary call from top level window handler (Application),
@@ -66,7 +69,7 @@ public class ViewController implements Subscriber<Game>{
 
 		// Draw a game view
 		batch.begin();
-		gameViews.get(game.getCurrentPlayer()).draw(Gdx.graphics.getDeltaTime(), batch);
+		gameViews.get(game.getCurrentPlayersId()).draw(Gdx.graphics.getDeltaTime(), batch);
 		batch.end();
 	}
 
@@ -75,10 +78,10 @@ public class ViewController implements Subscriber<Game>{
 	public void teardown() {
 	}
 
-	@Override
-	public void delivery(Game game) {
+
+	public void newPlayerId(int id) {
 		for(GameView gameView: gameViews){
-			if(gameView.getPlayerID() == game.getCurrentPlayer()){
+			if(gameView.getPlayerID() == id){
 				currentGameView = gameView;
 			}
 		}

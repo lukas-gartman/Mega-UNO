@@ -2,6 +2,7 @@ package org.megauno.app.model.Game;
 
 import org.megauno.app.model.Cards.ICard;
 import org.megauno.app.model.Player.Player;
+import org.megauno.app.utility.Publisher.normal.Publisher;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +16,8 @@ public class PlayerCircle {
     private Node head = null;
     private Node tail = null;
     private Node currentPlayer = null;
+    //Publisher for when current player changes
+    private Publisher<int> onNewPlayer = new Publisher<int>();
     Rotation direction;
 
     public List<Player> winners;
@@ -77,6 +80,7 @@ public class PlayerCircle {
     public void moveOnToNextTurn(){
         if (direction == Rotation.CLOCKWISE) currentPlayer = currentPlayer.nextNode;
         else currentPlayer = currentPlayer.previousNode;
+        onNewPlayer.publish(currentPlayer.getPlayer().getId());
     }
 
     public Player getNextPlayer(){
@@ -152,6 +156,10 @@ public class PlayerCircle {
             next = next.nextNode;
         }
         return out;
+    }
+
+    public Publisher<int> onNewPlayer() {
+        return onNewPlayer;
     }
 
 }

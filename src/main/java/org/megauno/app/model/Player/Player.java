@@ -1,7 +1,8 @@
 package org.megauno.app.model.Player;
 
 import org.megauno.app.model.Cards.ICard;
-import org.megauno.app.model.Game.IPlayer;
+import org.megauno.app.utility.Publisher.condition.ConPublisher;
+import org.megauno.app.utility.Tuple;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +16,11 @@ public class Player {
     //The hand of the player, has the cards
     private List<ICard> hand;
     //The selected card
+    //Publisher for when cards are added to a player
+    private ConPublisher<Tuple<int, List<ICard>>> onCardsAddedToId = new ConPublisher<>();
+
+    //Publisher for when cards are added to a player
+    private ConPublisher<Tuple<int, List<ICard>>> onCardsRemovedAtId = new ConPublisher<>();
 
     public Player(int id) {
         this.hand = new ArrayList<>();
@@ -68,6 +74,9 @@ public class Player {
     }
 
     public void addCard(ICard card){
+        ArrayList<ICard> l = new ArrayList<>();
+        l.add(card);
+        onCardsAddedToId.publish(new Tuple<int,List<ICard>>(id,l));
         hand.add(card.copyCard());
     }
 
@@ -81,6 +90,7 @@ public class Player {
         for (ICard c: selectedCards) {
             hand.remove(c);
         }
+        onCardsRemovedAtId.publish(new Tuple<int,List<ICard>>(id,selectedCards));
     }
 
     //To get the card a player wants to play
@@ -100,5 +110,11 @@ public class Player {
         return copy;
     }
 
+    public ConPublisher<Tuple<int, List<ICard>>> getOnCardsAddedToId() {
+        return onCardsAddedToId;
+    }
 
+    public ConPublisher<Tuple<int, List<ICard>>> getOnCardsRemovedAtId() {
+        return onCardsRemovedAtId;
+    }
 }
