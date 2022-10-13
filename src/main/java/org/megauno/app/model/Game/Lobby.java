@@ -13,7 +13,7 @@ import java.util.concurrent.Phaser;
 public class Lobby implements IServer.Observer {
     private volatile HashMap<ClientHandler,Integer> clientHandlers;
     private volatile PlayerCircle players = new PlayerCircle();
-    HashMap<Integer, Player> playersWithID = new HashMap<>();
+    private HashMap<Integer, Player> playersWithID = new HashMap<>();
     private Phaser phaser;
 
     public Lobby() {

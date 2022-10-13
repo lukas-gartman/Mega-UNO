@@ -8,6 +8,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.Semaphore;
 
 public class Server implements IServer, Runnable {
     public interface Observer {
@@ -17,6 +18,7 @@ public class Server implements IServer, Runnable {
     private final List<Observer> observers = new ArrayList<>();
     private ServerSocket server;
     private HashMap<ClientHandler, Integer> clientHandlers = new HashMap<>();
+    private final Semaphore semaphore = new Semaphore(1);
     private static int cid = 0;
 
     public Server(int port) throws Exception {
@@ -42,11 +44,13 @@ public class Server implements IServer, Runnable {
         try {
             while (true) {
                 Socket client = server.accept();
+                try { semaphore.acquire(); } catch (InterruptedException ex) { }
                 int id = cid++;
                 ClientHandler clientHandler = new ClientHandler(client, id, this);
                 clientHandlers.put(clientHandler, id);
                 updateClientHandlers(); // update the ClientHandlers in ClientHandler
                 notifyObservers(clientHandler, id);
+                semaphore.release();
                 new Thread(clientHandler).start();
 
                 System.out.println("client connected");
@@ -57,11 +61,13 @@ public class Server implements IServer, Runnable {
     }
 
     public void disconnect(ClientHandler client) {
+        try { semaphore.acquire(); } catch (InterruptedException ex) { }
         this.clientHandlers.remove(client);
         cid--;
         updateClientHandlers();
         notifyObservers(client, -1);
         System.out.println("client disconnected");
+        semaphore.release();
     }
 
     // Make it the server's responsibility to keep track of ClientHandlers
