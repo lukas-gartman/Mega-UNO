@@ -55,6 +55,10 @@ public class Player {
         saidUno = true;
     }
 
+    public void unsayUno(){
+        saidUno = false;
+    }
+
     public boolean uno() {
         return saidUno;
     }

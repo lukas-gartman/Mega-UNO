@@ -138,6 +138,7 @@ public class Game implements IActOnGame {
         Node current = players.getCurrent();
         List<ICard> choices = players.currentMakeTurn();
         boolean currentHasOnlyOneCard = current.getPlayer().numOfCards() == 1;
+        if (!currentHasOnlyOneCard) current.getPlayer().unsayUno();
 
         if (validPlay(choices, current)) {
             for (ICard choice : choices) {
