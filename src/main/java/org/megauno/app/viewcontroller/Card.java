@@ -110,6 +110,15 @@ public class Card implements IDrawable {
 				}
 			}
 		}
+		// Check if any cardOption was selected
+		if (colorOptions != null) {
+			for (ColorOption colorOption : colorOptions) {
+				if (colorOption.wasSelected) {
+					onColorSelected(colorOption.color);
+				}
+			}
+		}
+
 
 		// Draw card, with a tint if unselected
 		if (!selected) {
@@ -139,12 +148,19 @@ public class Card implements IDrawable {
 		}
 	}
 
+	// What happens when a color for a wildcard is slected
+	private void onColorSelected(Color color) {
+		//TODO: select color in Game
+		game.getPlayerWithId(playerID).selectCard(card);
+		hideColorOptions();
+	}
+
 	private void showColorOptions() {
 		Color[] allColors = { Color.RED, Color.BLUE, Color.GREEN, Color.YELLOW };
 		colorOptions = new ArrayList<>();
 		for (int i = 0; i < allColors.length; i++) {
 			Color c = allColors[i];
-			colorOptions.add(new ColorOption(c, x + (40*i), y + 30));
+			colorOptions.add(new ColorOption(c, x + (40*i) - 60, y + 50));
 		}
 	}
 
@@ -175,11 +191,16 @@ public class Card implements IDrawable {
 
 	// Visual class for representing a color picked when playing a wildcard
 	class ColorOption implements IDrawable {
+		// Used by parent card, could use an event here
+		public boolean wasSelected = false;
+		public Color color;
+
 		private float x;
 		private float y;
 		private Clickable clickable;
 		private Sprite sprite;
 		public ColorOption(Color color, float x, float y) {
+			this.color = color;
 			this.sprite = chooseSprite(color);
 			this.x = x;
 			this.y = y;
@@ -189,7 +210,7 @@ public class Card implements IDrawable {
 		public void draw(float delta, Batch batch) {
 			// Check if clicked
 			if (clickable.wasClicked(x, y)) {
-				
+				wasSelected = true;
 			}
 
 			// Draw
