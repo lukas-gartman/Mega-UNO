@@ -1,17 +1,14 @@
 package org.megauno.app.network;
 
 import org.json.JSONObject;
-import org.megauno.app.viewcontroller.Root;
 
 import java.io.*;
 import java.net.Socket;
-
 
 public class Client {
     private String nickname;
     private final String hostname;
     private final int port;
-
     private Socket server;
     private BufferedReader br;
     private BufferedWriter bw;

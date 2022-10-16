@@ -16,15 +16,17 @@ import java.util.Scanner;
 public class ClientApplication extends ApplicationAdapter implements GameController {
     private final Client client;
     private Root root = null;
+
     public ClientApplication() {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Host name: ");
+        System.out.print("Nickname: ");
+        String nickname = scanner.nextLine();
+        System.out.print("Host name: ");
         String hostName = scanner.nextLine();
-        System.out.println("Port: ");
+        System.out.print("Port (0-65535): ");
         int port = scanner.nextInt();
-        this.client = new Client(hostName,port, (o) -> respondToJSON(o));
+        this.client = new Client(nickname, hostName, port, this::respondToJSON);
     }
-
 
     void respondToJSON(JSONObject o){
         String type = o.getString("Type");
@@ -49,7 +51,7 @@ public class ClientApplication extends ApplicationAdapter implements GameControl
                 for (int i = 0; i < otherPlayers.length; i++) {
                     otherPlayers[i] = (int) jsonArray.get(i);
                 }
-                this.root = new Root(o.getInt("PlayerId"),otherPlayers,this);
+                this.root = new Root(o.getInt("PlayerId"), otherPlayers, this);
             }
         }
     }

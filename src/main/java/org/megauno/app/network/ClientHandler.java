@@ -5,7 +5,6 @@ import org.megauno.app.utility.BiHashMap;
 
 import java.io.*;
 import java.net.Socket;
-import java.util.HashMap;
 
 public class ClientHandler implements Runnable {
     private IServer server;
@@ -16,7 +15,7 @@ public class ClientHandler implements Runnable {
     private final int id;
     private JSONReader jsonReader;
 
-    public ClientHandler(Socket client, int id, IServer server,JSONReader jsonReader) {
+    public ClientHandler(Socket client, int id, IServer server, JSONReader jsonReader) {
         this.client = client;
         this.id = id;
         this.server = server;
@@ -31,7 +30,6 @@ public class ClientHandler implements Runnable {
     }
 
     public void send(JSONObject json){
-
         try {
             bw.write(json.toString());
             bw.newLine();

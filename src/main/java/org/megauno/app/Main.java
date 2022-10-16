@@ -9,7 +9,7 @@ import java.util.Scanner;
 public class Main {
     public static void main( String[] args ) {
         Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
-//        config.setMaximized(true);
-        new Lwjgl3Application(new Application(), config);
+//      config.setMaximized(true);
+        new Lwjgl3Application(new ModelApplication(), config);
     }
 }

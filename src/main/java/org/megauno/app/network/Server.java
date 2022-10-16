@@ -1,26 +1,14 @@
 package org.megauno.app.network;
 
 import org.json.JSONObject;
-import org.megauno.app.model.Cards.ICard;
 import org.megauno.app.utility.BiHashMap;
-import org.megauno.app.utility.Tuple;
-
-import javax.sql.rowset.BaseRowSet;
-import java.io.IOException;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.util.List;
-import org.megauno.app.utility.Publisher;
+import org.megauno.app.utility.Publisher.normal.Publisher;
 import org.megauno.app.utility.Tuple;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.HashMap;
 import java.util.concurrent.Semaphore;
-
-
-
 
 public class Server implements IServer, Runnable {
     private ServerSocket server;
@@ -49,7 +37,7 @@ public class Server implements IServer, Runnable {
                 // set up the client connection (critical section)
                 try { semaphore.acquire(); } catch (InterruptedException ex) { }
                 int id = cid++; // acquire the next available client ID
-                ClientHandler clientHandler = new ClientHandler(client, id, this);
+                ClientHandler clientHandler = new ClientHandler(client, id, this, jsonReader);
                 this.publisher.publish(new Tuple<>(clientHandler, id)); // notify Lobby
                 this.clientHandlers.put(clientHandler, id);
                 updateClientHandlers(); // update the ClientHandlers in ClientHandler
@@ -66,7 +54,7 @@ public class Server implements IServer, Runnable {
     public void disconnect(ClientHandler client) {
         // disconnect the client (critical section)
         try { this.semaphore.acquire(); } catch (InterruptedException ex) { }
-        this.clientHandlers.remove(client);
+        this.clientHandlers.removeLeft(client);
         this.cid--; // free up the client ID
         updateClientHandlers(); // notify all other clients that client disconnected
         this.publisher.publish(new Tuple<>(client, -1)); // notify Lobby
@@ -84,8 +72,7 @@ public class Server implements IServer, Runnable {
         return this.clientHandlers;
     }
 
-
-    public void broadcast(JSONObject json){
+    public void broadcast(JSONObject json) {
         for (ClientHandler ch:clientHandlers.getLeftKeys()) {
             ch.send(json);
         }

@@ -2,11 +2,13 @@ package org.megauno.app.network;
 
 import org.json.JSONObject;
 import org.megauno.app.model.Cards.ICard;
+import org.megauno.app.utility.Publisher.normal.Publisher;
+import org.megauno.app.utility.Tuple;
 
 public class UnoServer extends Server implements SendInfoToClients{
 
-    public UnoServer(int port,JSONReader jsonReader) {
-        super(port,jsonReader);
+    public UnoServer(int port, Publisher<Tuple<ClientHandler, Integer>> publisher, JSONReader jsonReader) throws IllegalAccessException {
+        super(port, publisher, jsonReader);
     }
 
     @Override

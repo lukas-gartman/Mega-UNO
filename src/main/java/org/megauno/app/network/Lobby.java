@@ -1,16 +1,9 @@
 package org.megauno.app.network;
 
-import org.json.JSONObject;
-import org.lwjgl.system.CallbackI;
-import org.megauno.app.model.Cards.ICard;
 import org.megauno.app.model.Game.PlayerCircle;
 import org.megauno.app.model.Player.Player;
-import org.megauno.app.network.Client;
-import org.megauno.app.network.ClientHandler;
-import org.megauno.app.network.Server;
 import org.megauno.app.utility.BiHashMap;
-import org.megauno.app.utility.Publisher;
-import org.megauno.app.utility.Subscriber;
+import org.megauno.app.utility.Publisher.normal.Publisher;
 import org.megauno.app.utility.Tuple;
 
 import java.util.*;
@@ -20,34 +13,31 @@ public class Lobby {
     private volatile BiHashMap<ClientHandler, Integer> clientHandlers;
     private volatile PlayerCircle players = new PlayerCircle();
     private BiHashMap<Integer, Player> playersWithID = new BiHashMap<>();
-    private volatile boolean searchingForPlayers = true;
     private volatile UnoServer server;
     private Phaser phaser;
     private final Publisher<Tuple<ClientHandler, Integer>> serverPublisher = new Publisher<>();
 
     public Lobby(Phaser phaser) {
-        this();
         this.phaser = phaser;
     }
-
 
     public void delivery(Tuple<ClientHandler, Integer> event) {
         ClientHandler clientHandler = event.l;
         int id = event.r;
-        if (clientHandlers.containsKey(clientHandler))
-            clientHandlers.remove(clientHandler);
+        if (clientHandlers.getLeftKeys().contains(clientHandler))
+            clientHandlers.removeLeft(clientHandler);
         else
             clientHandlers.put(clientHandler, id);
     }
 
-    public void host(JSONReader jsonReader) throws IllegalAccessException{
-        server = new UnoServer(1337,serverPublisher,jsonReader); // Game host holds the server object
-          serverPublisher.addSubscriber((np)-> delivery(np)); // subscribe self to changes to client handlers
+    public void host(JSONReader jsonReader) throws IllegalAccessException {
+        server = new UnoServer(1337, serverPublisher, jsonReader); // Game host holds the server object
+        serverPublisher.addSubscriber(this::delivery); // subscribe self to changes to client handlers
         new Thread(server).start(); // Start the server on a new thread to prevent blocking
         clientHandlers = server.getClientHandlers(); // initialise the map of clientHandlers
-        Client client = new Client("Host","localhost", 1337,o->{}); // Create client for the host
-        new Client("player 1","localhost", 1337,o->{}); // dummy client
-        new Client("player 2","localhost", 1337,o->{}); // dummy client
+        Client client = new Client("Host","localhost", 1337, jsonReader); // Create client for the host
+        new Client("player 1","localhost", 1337, jsonReader); // dummy client
+        new Client("player 2","localhost", 1337, jsonReader); // dummy client
 
         //Waiting for host to start
         new Thread(() -> {

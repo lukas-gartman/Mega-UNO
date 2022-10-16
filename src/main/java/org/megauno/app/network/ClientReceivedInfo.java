@@ -5,7 +5,7 @@ import org.megauno.app.utility.Tuple;
 
 import java.util.List;
 
-public interface ClinetRecivedInfo {
+public interface ClientReceivedInfo {
     int currentPlayerNewId();
 
     ICard newTopCardOfPile();

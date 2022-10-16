@@ -12,6 +12,7 @@ import org.megauno.app.model.Player.Player;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.Phaser;
 
 import org.megauno.app.utility.BiHashMap;
 import org.megauno.app.utility.Publisher.normal.Publisher;
@@ -22,34 +23,37 @@ public class ModelApplication extends ApplicationAdapter {
 	private Lobby lobby;
 	private Game game;
 	private int lastCardId = 0;
+	BiHashMap<Integer, ICard> cardsWithID = new BiHashMap<>();
+	BiHashMap<Integer, Player> playersWithID;
 
 	@Override
 	public void create () {
-
-		lobby = new Lobby(); // Create the lobby
-		while (lobby.isSearchingForPlayers()) {} // Wait for the host to start the game
+		Phaser phaser = new Phaser(1); // Used to signal when the lobby is done searching for players
+		lobby = new Lobby(phaser); // Create the lobby
+		try {
+			phaser.awaitAdvance(0); // Wait for the host to start the game (blocking call)
+		} catch (IllegalStateException ex) {
+			System.out.println("The lobby was closed");
+		}
 		System.out.println("Starting game!");
 		PlayerCircle playerCircle = lobby.getPlayerCircle();
-		BiHashMap<Integer, Player> playersWithID = lobby.getPlayersWithID();
+		playersWithID = lobby.getPlayersWithID();
 
-		List<Integer> tmp = playersWithID.getLeftKeys().stream().toList();
-		int[] playerIds = new int[tmp.size()];
-		for (int i = 0; i < playerIds.length; i++) {
-			playerIds[i] = tmp.get(i);
-		}
 		game = new Game(playerCircle, 7);
 
-		BiHashMap<Integer, ICard> cardsWithID = new BiHashMap<>();
 
-		addLobbySubscriptions(game,lobby.getInfoSender(),playersWithID,cardsWithID);
+		addLobbySubscriptions(game, lobby.getInfoSender());
 
-		lobby.host(jsonObject -> readJson(jsonObject, cardsWithID, playersWithID, game));
+		try {
+			lobby.host(jsonObject -> readJson(jsonObject, game));
+		} catch (IllegalAccessException e) {
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		}
+
 	}
 
-	private void readJson(JSONObject object,
-						  BiHashMap<Integer, ICard> cardsWithID,
-						  BiHashMap<Integer, Player> playersWithID,
-						  IGameImputs gameInputs)
+	private void readJson(JSONObject object, IGameImputs gameInputs)
 	{
 		String type = object.getString("Type");
 		int clientId = object.getInt("ClientId");
@@ -81,19 +85,19 @@ public class ModelApplication extends ApplicationAdapter {
 
 
 
-	private void addCards(List<ICard> cards, BiHashMap<Integer, ICard> cardsWithID){
+	private void addCards(List<ICard> cards, BiHashMap<Integer, ICard> cardsWithID) {
 		for(ICard card : cards){
 			lastCardId++;
 			cardsWithID.put(lastCardId,card);
 		}
 	}
-	private void removeCards(List<ICard> cards, BiHashMap<Integer, ICard> cardsWithID){
+	private void removeCards(List<ICard> cards, BiHashMap<Integer, ICard> cardsWithID) {
 		for(ICard card : cards){
 			cardsWithID.removeRight(card);
 		}
 	}
 
-	private List<IdCard> getIdCards(List<ICard> cards, BiHashMap<Integer, ICard> cardsWithID){
+	private List<IdCard> getIdCards(List<ICard> cards, BiHashMap<Integer, ICard> cardsWithID) {
 		List<IdCard> cardTuples = new ArrayList<>();
 		for (ICard card: cards) {
 			cardTuples.add(new IdCard(cardsWithID.getLeft(card),card));
@@ -101,8 +105,7 @@ public class ModelApplication extends ApplicationAdapter {
 		return cardTuples;
 	}
 
-	private void addLobbySubscriptions(GamePublishers game, SendInfoToClients infoSender, BiHashMap<Integer, Player> playersWithID,
-									   BiHashMap<Integer, ICard> cardsWithID){
+	private void addLobbySubscriptions(GamePublishers game, SendInfoToClients infoSender) {
 		game.onCardsAddedToPlayer().addSubscriber((t) -> {
 			addCards(t.r,cardsWithID);
 			int id = playersWithID.getLeft(t.l);
