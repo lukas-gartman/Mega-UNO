@@ -1,6 +1,7 @@
 package org.megauno.app.network;
 
 import org.json.JSONObject;
+import org.megauno.app.utility.BiHashMap;
 
 import java.io.*;
 import java.net.Socket;
@@ -8,17 +9,19 @@ import java.util.HashMap;
 
 public class ClientHandler implements Runnable {
     private IServer server;
-    private HashMap<ClientHandler, Integer> clientHandlers;
+    private BiHashMap<ClientHandler, Integer> clientHandlers;
     private final Socket client;
     private BufferedReader br;
     private BufferedWriter bw;
     private final int id;
+    private JSONReader jsonReader;
 
-    public ClientHandler(Socket client, int id, IServer server) {
+    public ClientHandler(Socket client, int id, IServer server,JSONReader jsonReader) {
         this.client = client;
         this.id = id;
         this.server = server;
-        this.clientHandlers = new HashMap<>();
+        this.jsonReader = jsonReader;
+        this.clientHandlers = new BiHashMap<>();
         try {
             this.bw = new BufferedWriter(new OutputStreamWriter(client.getOutputStream()));
             this.br = new BufferedReader(new InputStreamReader(client.getInputStream()));
@@ -27,9 +30,20 @@ public class ClientHandler implements Runnable {
         }
     }
 
+    public void send(JSONObject json){
+
+        try {
+            bw.write(json.toString());
+            bw.newLine();
+            bw.flush();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
     private void broadcast(JSONObject json) {
-        for (ClientHandler ch : clientHandlers.keySet()) {
-            if (clientHandlers.get(ch) == this.id)
+        for (ClientHandler ch : clientHandlers.getLeftKeys()) {
+            if (clientHandlers.getRight(ch) == this.id)
                 continue;
 
             try {
@@ -42,7 +56,7 @@ public class ClientHandler implements Runnable {
         }
     }
 
-    public void updateClientHandlers(HashMap<ClientHandler, Integer> clientHandlers) {
+    public void updateClientHandlers(BiHashMap<ClientHandler, Integer> clientHandlers) {
         this.clientHandlers = clientHandlers;
     }
 
@@ -60,7 +74,7 @@ public class ClientHandler implements Runnable {
             try {
                 message = br.readLine();
                 JSONObject json = new JSONObject(message);
-                // todo: do something with json object
+                jsonReader.read(json.put("ClientId",id));
             } catch (IOException ex) {
                 try {
                     br.close();

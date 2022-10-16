@@ -1,8 +1,11 @@
 package org.megauno.app.network;
 
 import org.json.JSONObject;
+import org.megauno.app.viewcontroller.Root;
+
 import java.io.*;
 import java.net.Socket;
+
 
 public class Client {
     private final String hostname;
@@ -11,10 +14,12 @@ public class Client {
     private Socket server;
     private BufferedReader br;
     private BufferedWriter bw;
+    private JSONReader jsonReader;
 
-    public Client(String hostname, int port) {
+    public Client(String hostname, int port, JSONReader jsonReader){
         this.hostname = hostname;
         this.port = port;
+        this.jsonReader = jsonReader;
         if (connect())
             listen();
     }
@@ -38,7 +43,7 @@ public class Client {
                 try {
                     message = this.br.readLine();
                     JSONObject json = new JSONObject(message);
-                    // todo: do something with json object
+                    jsonReader.read(json);
                 } catch (IOException ex) {
                     System.out.println("Client lost connection to server @ " + this.hostname + ":" + this.port);
                     break;

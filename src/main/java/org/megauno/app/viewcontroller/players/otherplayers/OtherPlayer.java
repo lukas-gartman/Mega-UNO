@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import org.megauno.app.utility.dataFetching.DataFetcher;
 import org.megauno.app.utility.dataFetching.PathDataFetcher;
 import org.megauno.app.viewcontroller.GamePublishers;
+import org.megauno.app.viewcontroller.ViewPublisher;
 import org.megauno.app.viewcontroller.datafetching.FontLoader;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -26,16 +27,16 @@ public class OtherPlayer implements IDrawable {
 	public float x;
 	public float y;
 
-	public OtherPlayer(int playerID, GamePublishers publishers) {
+	public OtherPlayer(int playerID, ViewPublisher publishers) {
 		this.playerID = playerID;
-		publishers.onCardsAddedToId().addSubscriberWithCondition(
-				(np) -> addCards(np.r.size()),
-				(np) -> np.l == playerID
+		publishers.onCardsAddedToPlayer().addSubscriberWithCondition(
+				(np) -> addCards(np.getCards().size()),
+				(np) -> np.getId() == playerID
 		);
 
-		publishers.onCardsRemovedAtId().addSubscriberWithCondition(
-				(np) -> removeCards(np.r.size()),
-				(np) -> np.l == playerID
+		publishers.onCardsRemovedByPlayer().addSubscriberWithCondition(
+				(np) -> removeCards(np.getCards().size()),
+				(np) -> np.getId() == playerID
 		);
 	}
 

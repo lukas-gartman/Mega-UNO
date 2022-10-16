@@ -11,6 +11,8 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import org.megauno.app.viewcontroller.Clickable;
+import org.megauno.app.viewcontroller.GameController;
+import org.megauno.app.viewcontroller.GamePublishers;
 import org.megauno.app.viewcontroller.datafetching.IDrawable;
 
 public class Card implements IDrawable {
@@ -37,8 +39,12 @@ public class Card implements IDrawable {
 	private Sprite sprite;
 	private ICard card;
 	private Clickable clickable;
+	private GameController gameController;
+	private int cardId;
 
-	public Card(ICard card) {
+	public Card(ICard card, int cardId, GameController gameController) {
+		this.gameController = gameController;
+		this.cardId = cardId;
 		switch (card.getColor()) {
 			case RED:
 				sprite = red;
@@ -62,6 +68,10 @@ public class Card implements IDrawable {
 		// setTouchable(Touchable.enabled);
 	}
 
+	public int getCardId(){
+		return cardId;
+	}
+
 	public ICard getCard() {
 		return card.copyCard();
 	}
@@ -70,13 +80,13 @@ public class Card implements IDrawable {
 	public void draw(float delta, Batch batch) {
 		// Check if clicked
 		if (clickable.wasClicked(x, y)) {
-			System.out.println("Clicked card with ID: " + Integer.toString(cardID));
+
 			// Flip card selection in model and visually
 			selected = !selected;
 			if (selected) {
-				game.getPlayerWithId(playerID).selectCard(card);
+				gameController.selectCard(cardId);
 			} else {
-				game.getPlayerWithId(playerID).unSelectCard(card);
+				gameController.unSelectCard(cardId);
 			}
 		}
 

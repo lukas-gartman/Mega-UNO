@@ -21,7 +21,7 @@ public class GameTest extends TestCase {
     public List<Player> generatePlayers(int n) {
         List<Player> playerList = new ArrayList<>();
         for (int i = 0; i < n; i++) {
-            playerList.add(new Player(0));
+            playerList.add(new Player());
         }
         return playerList;
     }

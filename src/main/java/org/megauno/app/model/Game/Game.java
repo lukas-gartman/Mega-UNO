@@ -9,10 +9,11 @@ import org.megauno.app.utility.Publisher.normal.Publisher;
 import org.megauno.app.utility.Tuple;
 import org.megauno.app.viewcontroller.GamePublishers;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-public class Game implements IActOnGame, GamePublishers {
+public class Game implements IActOnGame, GamePublishers, IGameImputs {
     private PlayerCircle players;
     private Deck deck;
     private Pile discarded;
@@ -74,9 +75,7 @@ public class Game implements IActOnGame, GamePublishers {
 	}
 
 	// Current player
-	public int getCurrentPlayersId() {
-		return getCurrentPlayer().getId();
-	}
+
 
     public Player getCurrentPlayer(){
         return players.getCurrent().getPlayer();
@@ -215,15 +214,6 @@ public class Game implements IActOnGame, GamePublishers {
         return players.getPlayers();
     }
 
-    public Player getPlayerWithId(int id){
-        for (Player p:getPlayers()) {
-            if (p.getId() == id){
-                return p;
-            }
-        }
-        return null;
-    }
-
     public ICard getTopCard(){
         return discarded.getTop();
     }
@@ -298,7 +288,7 @@ public class Game implements IActOnGame, GamePublishers {
 
 
     @Override
-    public Publisher<int> onNewPlayer() {
+    public Publisher<Player> onNewPlayer() {
         return getPlayerCircle().onNewPlayer();
     }
 
@@ -307,13 +297,40 @@ public class Game implements IActOnGame, GamePublishers {
         return onNewTopCard;
     }
     @Override
-    public ConPublisher<Tuple<int, List<ICard>>> onCardsAddedToId() {
-        return getCurrentPlayer().getOnCardsAddedToId();
+    public Publisher<Tuple<Player, List<ICard>>> onCardsAddedToPlayer() {
+        return getCurrentPlayer().getOnCardsAddedByPlayer();
     }
 
     @Override
-    public ConPublisher<Tuple<int, List<ICard>>> onCardsRemovedAtId() {
-        return getCurrentPlayer().getOnCardsRemovedAtId();
+    public Publisher<Tuple<Player, List<ICard>>> onCardsRemovedByPlayer() {
+        return getCurrentPlayer().getOnCardRemovedByPlayer();
     }
 
+    @Override
+    public void selectCard(Player player, ICard card) {
+        if(player == getCurrentPlayer()){
+            player.selectCard(card);
+        }
+    }
+
+    @Override
+    public void unSelectCard(Player player, ICard card) {
+        if(player == getCurrentPlayer()){
+            player.unSelectCard(card);
+        }
+    }
+
+    @Override
+    public void commenceForth(Player player) {
+        if(player == getCurrentPlayer()){
+            commence_forth = true;
+        }
+    }
+
+    @Override
+    public void sayUno(Player player) {
+        if(player == getCurrentPlayer()){
+            player.sayUno();
+        }
+    }
 }

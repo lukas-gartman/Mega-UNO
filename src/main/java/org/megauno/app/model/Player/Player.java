@@ -2,6 +2,7 @@ package org.megauno.app.model.Player;
 
 import org.megauno.app.model.Cards.ICard;
 import org.megauno.app.utility.Publisher.condition.ConPublisher;
+import org.megauno.app.utility.Publisher.normal.Publisher;
 import org.megauno.app.utility.Tuple;
 
 import java.util.ArrayList;
@@ -9,7 +10,6 @@ import java.util.List;
 
 //
 public class Player {
-	private int id;
     //Bool for if the player has said uno this round
     private boolean saidUno = false;
     private List<ICard> selectedCards = new ArrayList<>();
@@ -17,23 +17,17 @@ public class Player {
     private List<ICard> hand;
     //The selected card
     //Publisher for when cards are added to a player
-    private ConPublisher<Tuple<int, List<ICard>>> onCardsAddedToId = new ConPublisher<>();
+    private Publisher<Tuple<Player, List<ICard>>> onCardsAddedByPlayer = new Publisher<>();
 
     //Publisher for when cards are added to a player
-    private ConPublisher<Tuple<int, List<ICard>>> onCardsRemovedAtId = new ConPublisher<>();
+    private Publisher<Tuple<Player, List<ICard>>> onCardsRemovedByPlayer = new Publisher<>();
 
-    public Player(int id) {
+    public Player() {
         this.hand = new ArrayList<>();
-        this.id = id;
     }
 
-    public Player(int id, List<ICard> hand) {
+    public Player(List<ICard> hand) {
         this.hand = hand;
-        this.id = id;
-    }
-
-    public int getId(){
-        return id;
     }
 
     // Bug, since the same card can be picked several times
@@ -76,7 +70,7 @@ public class Player {
     public void addCard(ICard card){
         ArrayList<ICard> l = new ArrayList<>();
         l.add(card);
-        onCardsAddedToId.publish(new Tuple<int,List<ICard>>(id,l));
+        onCardsAddedByPlayer.publish(new Tuple<Player,List<ICard>>(this,l));
         hand.add(card.copyCard());
     }
 
@@ -90,7 +84,7 @@ public class Player {
         for (ICard c: selectedCards) {
             hand.remove(c);
         }
-        onCardsRemovedAtId.publish(new Tuple<int,List<ICard>>(id,selectedCards));
+        onCardsRemovedByPlayer.publish(new Tuple<Player,List<ICard>>(this,selectedCards));
     }
 
     //To get the card a player wants to play
@@ -110,11 +104,11 @@ public class Player {
         return copy;
     }
 
-    public ConPublisher<Tuple<int, List<ICard>>> getOnCardsAddedToId() {
-        return onCardsAddedToId;
+    public Publisher<Tuple<Player, List<ICard>>> getOnCardsAddedByPlayer() {
+        return onCardsAddedByPlayer;
     }
 
-    public ConPublisher<Tuple<int, List<ICard>>> getOnCardsRemovedAtId() {
-        return onCardsRemovedAtId;
+    public Publisher<Tuple<Player, List<ICard>>> getOnCardRemovedByPlayer() {
+        return onCardsRemovedByPlayer;
     }
 }

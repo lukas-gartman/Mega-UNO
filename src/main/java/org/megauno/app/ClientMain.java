@@ -6,10 +6,10 @@ import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 
 import java.util.Scanner;
 
-public class Main {
+public class ClientMain {
     public static void main( String[] args ) {
         Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
         config.setMaximized(true);
-        new Lwjgl3Application(new ModelApplication(), config);
+        new Lwjgl3Application(new ClientApplication(), config);
     }
 }

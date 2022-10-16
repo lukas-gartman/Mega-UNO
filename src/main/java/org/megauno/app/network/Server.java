@@ -1,16 +1,24 @@
 package org.megauno.app.network;
 
+import org.json.JSONObject;
+import org.megauno.app.model.Cards.ICard;
+import org.megauno.app.utility.BiHashMap;
+import org.megauno.app.utility.Tuple;
+
+import javax.sql.rowset.BaseRowSet;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.HashMap;
+import java.util.List;
 
 public class Server implements IServer, Runnable {
     private ServerSocket server;
-    private HashMap<ClientHandler, Integer> clientHandlers = new HashMap<>();
+    private BiHashMap<ClientHandler, Integer> clientHandlers = new BiHashMap<>();
     private static int cid = 0;
+    private JSONReader jsonReader;
 
-    public Server(int port) {
+    public Server(int port,JSONReader jsonReader) {
+        this.jsonReader = jsonReader;
         try {
             this.server = new ServerSocket(port);
         } catch (IOException ex) {
@@ -25,7 +33,7 @@ public class Server implements IServer, Runnable {
             while (true) {
                 Socket client = server.accept();
                 int id = cid++;
-                ClientHandler clientHandler = new ClientHandler(client, id, this);
+                ClientHandler clientHandler = new ClientHandler(client, id, this,jsonReader);
                 clientHandlers.put(clientHandler, id);
                 updateClientHandlers();
                 new Thread(clientHandler).start();
@@ -38,23 +46,31 @@ public class Server implements IServer, Runnable {
     }
 
     public void disconnect(ClientHandler client) {
-        this.clientHandlers.remove(client);
+        this.clientHandlers.removeLeft(client);
         cid--;
         updateClientHandlers();
         System.out.println("client disconnected");
     }
 
     private void updateClientHandlers() {
-        for (ClientHandler ch : clientHandlers.keySet())
+        for (ClientHandler ch : clientHandlers.getLeftKeys())
             ch.updateClientHandlers(clientHandlers);
     }
 
-    public HashMap<ClientHandler, Integer> getClientHandlers() {
+    public BiHashMap<ClientHandler, Integer> getClientHandlers() {
         return this.clientHandlers;
+    }
+
+
+    public void broadcast(JSONObject json){
+        for (ClientHandler ch:clientHandlers.getLeftKeys()) {
+            ch.send(json);
+        }
     }
 
     @Override
     public void run() {
         acceptConnections();
     }
+
 }

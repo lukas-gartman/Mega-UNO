@@ -1,6 +1,7 @@
 package org.megauno.app.viewcontroller;
 
 import org.megauno.app.model.Cards.ICard;
+import org.megauno.app.model.Player.Player;
 import org.megauno.app.utility.Publisher.condition.ConPublisher;
 import org.megauno.app.utility.Publisher.normal.Publisher;
 import org.megauno.app.utility.Tuple;
@@ -8,11 +9,11 @@ import org.megauno.app.utility.Tuple;
 import java.util.List;
 
 public interface GamePublishers {
-    Publisher<int> onNewPlayer();
+    Publisher<Player> onNewPlayer();
 
     Publisher<ICard> onNewTopCard();
 
-    ConPublisher<Tuple<int,List<ICard>>> onCardsAddedToId();
+    Publisher<Tuple<Player,List<ICard>>> onCardsAddedToPlayer();
 
-    ConPublisher<Tuple<int,List<ICard>>> onCardsRemovedAtId();
+    Publisher<Tuple<Player,List<ICard>>> onCardsRemovedByPlayer();
 }

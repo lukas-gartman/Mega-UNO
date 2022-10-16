@@ -19,7 +19,7 @@ public class ICardTest {
 
     @Before
     public void setUp() throws Exception {
-        Player p = new Player(0);
+        Player p = new Player(new ArrayList<>());
         List<Player> players = new ArrayList<>();
         players.add(p);
         g = new Game(new PlayerCircle());

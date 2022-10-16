@@ -2,8 +2,14 @@ package org.megauno.app.viewcontroller;
 
 import org.megauno.app.model.Cards.ICard;
 
-public interface GameController {
-    void selectCardofPlayer(ICard card, int id);
 
-    void unSelectCardofPlayer(ICard card, int id);
+//When these methodes are triggered
+public interface GameController {
+    void selectCard(int cardId);
+
+    void unSelectCard(int cardId);
+
+    void commenceForth();
+
+    void sayUno();
 }

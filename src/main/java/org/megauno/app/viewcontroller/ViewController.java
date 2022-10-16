@@ -25,7 +25,7 @@ import org.megauno.app.viewcontroller.players.GameView;
 
 // The outer class managing views and controllers
 public class ViewController{
-	private GamePublishers publishers;
+	private ViewPublisher publishers;
 	private Batch batch;
 
 	private GameView currentGameView;
@@ -33,8 +33,8 @@ public class ViewController{
 
 	// TODO: have empty constructor, get IGame from either controller (client)
 	// or "Lobby" object of model (server) (subscribe to an event of "GameStarting")
-	public ViewController(int[] ids,GamePublishers publishers) {
-		this.publishers = gamePublishers;
+	public ViewController(int[] ids,ViewPublisher publishers,GameController gameController) {
+		this.publishers = publishers;
 		// Create all game views, stored in gameViews
 		for (int id : ids) {
 			int[] otherplayers = new int[ids.length-1];
@@ -45,7 +45,7 @@ public class ViewController{
 					i++;
 				}
 			}
-			gameViews.add(new GameView(id,otherplayers,publishers));
+			gameViews.add(new GameView(id,otherplayers,publishers,gameController));
 		}
 		batch = new SpriteBatch();
 
@@ -69,7 +69,7 @@ public class ViewController{
 
 		// Draw a game view
 		batch.begin();
-		gameViews.get(game.getCurrentPlayersId()).draw(Gdx.graphics.getDeltaTime(), batch);
+		currentGameView.draw(Gdx.graphics.getDeltaTime(), batch);
 		batch.end();
 	}
 

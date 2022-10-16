@@ -1,8 +1,8 @@
 package org.megauno.app.network;
 
-import java.util.HashMap;
+import org.megauno.app.utility.BiHashMap;
 
 public interface IServer {
-    public HashMap<ClientHandler, Integer> getClientHandlers();
+    public BiHashMap<ClientHandler, Integer> getClientHandlers();
     void disconnect(ClientHandler client);
 }
