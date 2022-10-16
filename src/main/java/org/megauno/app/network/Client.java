@@ -5,6 +5,7 @@ import java.io.*;
 import java.net.Socket;
 
 public class Client {
+    private String nickname;
     private final String hostname;
     private final int port;
 
@@ -12,7 +13,8 @@ public class Client {
     private BufferedReader br;
     private BufferedWriter bw;
 
-    public Client(String hostname, int port) {
+    public Client(String nickname, String hostname, int port) {
+        this.nickname = nickname;
         this.hostname = hostname;
         this.port = port;
         if (connect())
@@ -55,5 +57,9 @@ public class Client {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+    }
+
+    public String getNickname() {
+        return this.nickname;
     }
 }

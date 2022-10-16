@@ -16,18 +16,14 @@ public class Server implements IServer, Runnable {
     private final Semaphore semaphore = new Semaphore(1);
     private static int cid = 0;
 
-    public Server(int port) throws Exception {
+    public Server(int port, Publisher<Tuple<ClientHandler, Integer>> publisher) throws IllegalAccessException {
         try {
             this.server = new ServerSocket(port);
         } catch (IOException ex) {
-            throw new Exception("A server is already running on port " + port);
+            throw new IllegalAccessException("A server is already running on port " + port);
         } catch (IllegalArgumentException ex) {
             System.out.println("Unable to create server on port " + port + ". Please use a port within the range 0-65535.");
         }
-    }
-
-    public Server(int port, Publisher<Tuple<ClientHandler, Integer>> publisher) throws Exception {
-        this(port);
         this.publisher = publisher;
     }
 
@@ -71,6 +67,14 @@ public class Server implements IServer, Runnable {
 
     public HashMap<ClientHandler, Integer> getClientHandlers() {
         return this.clientHandlers;
+    }
+
+    public void close() {
+        try {
+            server.close();
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+        }
     }
 
     @Override

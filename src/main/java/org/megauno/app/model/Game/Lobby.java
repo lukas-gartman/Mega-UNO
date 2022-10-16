@@ -41,15 +41,15 @@ public class Lobby implements Subscriber<Tuple<ClientHandler, Integer>> {
             clientHandlers.put(clientHandler, id);
     }
 
-    private void host() throws Exception {
+    private void host() throws IllegalAccessException {
         Server server = new Server(1337, serverPublisher); // Game host holds the server object
         serverPublisher.addSubscriber(this); // subscribe self to changes to client handlers
         new Thread(server).start(); // Start the server on a new thread to prevent blocking
         clientHandlers = server.getClientHandlers(); // initialise the map of clientHandlers
 
-        Client client = new Client("localhost", 1337); // Create client for the host
-        new Client("localhost", 1337); // dummy client
-        new Client("localhost", 1337); // dummy client
+        Client client = new Client("Host", "localhost", 1337); // Create client for the host
+        new Client("player 1", "localhost", 1337); // dummy client
+        new Client("player 2", "localhost", 1337); // dummy client
 
         // *** TEMPORARY *** //
         new Thread(() -> {
