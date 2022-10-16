@@ -1,16 +1,16 @@
 package org.megauno.app.viewcontroller;
-
 import org.megauno.app.network.IdCard;
 import org.megauno.app.network.PlayersCards;
-import org.megauno.app.utility.Publisher.condition.ConPublisher;
-import org.megauno.app.utility.Publisher.normal.Publisher;
+import org.megauno.app.utility.Publisher.IPublisher;
+import org.megauno.app.utility.Publisher.condition.IConPublisher;
 
 public interface ViewPublisher {
-    Publisher<Integer> onNewPlayer();
+    IPublisher<Integer> onNewPlayer();
 
-    Publisher<IdCard> onNewTopCard();
-    ConPublisher<PlayersCards> onCardsAddedToPlayer();
+    IPublisher<IdCard> onNewTopCard();
 
-    ConPublisher<PlayersCards> onCardsRemovedByPlayer();
+    IConPublisher<PlayersCards> onCardsAddedToPlayer();
+
+    IConPublisher<PlayersCards> onCardsRemovedByPlayer();
 
 }

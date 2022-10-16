@@ -1,6 +1,7 @@
 package org.megauno.app.model.Player;
 
 import org.megauno.app.model.Cards.ICard;
+import org.megauno.app.utility.Publisher.IPublisher;
 import org.megauno.app.utility.Publisher.condition.ConPublisher;
 import org.megauno.app.utility.Publisher.normal.Publisher;
 import org.megauno.app.utility.Tuple;
@@ -104,11 +105,11 @@ public class Player {
         return copy;
     }
 
-    public Publisher<Tuple<Player, List<ICard>>> getOnCardsAddedByPlayer() {
+    public IPublisher<Tuple<Player, List<ICard>>> getOnCardsAddedByPlayer() {
         return onCardsAddedByPlayer;
     }
 
-    public Publisher<Tuple<Player, List<ICard>>> getOnCardRemovedByPlayer() {
+    public IPublisher<Tuple<Player, List<ICard>>> getOnCardRemovedByPlayer() {
         return onCardsRemovedByPlayer;
     }
 }

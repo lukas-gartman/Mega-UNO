@@ -5,7 +5,7 @@ import org.megauno.app.utility.Publisher.normal.Subscriber;
 
 import java.util.HashMap;
 
-public class ConPublisher<newsPaper> implements IPublisher<newsPaper> {
+public class ConPublisher<newsPaper> implements IConPublisher<newsPaper> {
     private HashMap<Subscriber<newsPaper>, DataCon<newsPaper>> conDict = new HashMap<Subscriber<newsPaper>,DataCon<newsPaper>>();
 
 

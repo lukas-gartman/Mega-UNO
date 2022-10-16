@@ -4,6 +4,7 @@ import org.megauno.app.model.Cards.ICard;
 import org.megauno.app.model.Deck;
 import org.megauno.app.model.Pile;
 import org.megauno.app.model.Player.Player;
+import org.megauno.app.utility.Publisher.IPublisher;
 import org.megauno.app.utility.Publisher.condition.ConPublisher;
 import org.megauno.app.utility.Publisher.normal.Publisher;
 import org.megauno.app.utility.Tuple;
@@ -21,6 +22,10 @@ public class Game implements IActOnGame, GamePublishers, IGameImputs {
 
     //Publisher for the new top card in the discrad pile
     public Publisher<ICard> onNewTopCard = new Publisher<>();
+    //Publisher for when cards are added to a player
+    private Publisher<Tuple<Player, List<ICard>>> onCardsAddedByPlayer = new Publisher<>();
+    //Publisher for when cards are added to a player
+    private Publisher<Tuple<Player, List<ICard>>> onCardsRemovedByPlayer = new Publisher<>();
 
     /**
      *
@@ -29,9 +34,6 @@ public class Game implements IActOnGame, GamePublishers, IGameImputs {
      */
 
     public Game(PlayerCircle players, int numCards) {
-
-
-
         this.players = players;
         this.discarded = new Pile();
 		this.deck = new Deck();
@@ -41,6 +43,18 @@ public class Game implements IActOnGame, GamePublishers, IGameImputs {
             players.giveCardToCurrentPlayer(deck.drawCard());
             players.moveOnToNextTurn();
             p++;
+        }
+
+
+    }
+    private void addSubscriptionToPlayers(Player[] players){
+        for (Player player:players) {
+            player.getOnCardsAddedByPlayer().addSubscriber(
+                    np -> onCardsAddedByPlayer.publish(np)
+            );
+            player.getOnCardRemovedByPlayer().addSubscriber(
+                    np -> onCardsRemovedByPlayer.publish(np)
+            );
         }
     }
     public Game(){
@@ -298,12 +312,12 @@ public class Game implements IActOnGame, GamePublishers, IGameImputs {
     }
 
     @Override
-    public Publisher<Tuple<Player, List<ICard>>> onCardsAddedToPlayer() {
+    public IPublisher<Tuple<Player, List<ICard>>> onCardsAddedToPlayer() {
         return getCurrentPlayer().getOnCardsAddedByPlayer();
     }
 
     @Override
-    public Publisher<Tuple<Player, List<ICard>>> onCardsRemovedByPlayer() {
+    public IPublisher<Tuple<Player, List<ICard>>> onCardsRemovedByPlayer() {
         return getCurrentPlayer().getOnCardRemovedByPlayer();
     }
 
