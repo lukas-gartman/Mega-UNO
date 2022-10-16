@@ -28,7 +28,7 @@ public class ClientApplication extends ApplicationAdapter implements GameControl
 
     void respondToJSON(JSONObject o){
         String type = o.getString("Type");
-        if(root != null){
+        if (root != null) {
             switch (type) {
                 case "AddCards":
                     root.onCardsAddedToPlayer().publish(parsePlayerCards(o));
@@ -41,11 +41,9 @@ public class ClientApplication extends ApplicationAdapter implements GameControl
                     break;
                 case "NewTopCard":
                     root.onNewTopCard().publish((IdCard)o.get("Card"));
-
             }
-
-        }else {
-            if(type == "Start"){
+        } else {
+            if (type.equals("Start")) {
                 List<Object> jsonArray = o.getJSONArray("OtherPlayers").toList();
                 int[] otherPlayers = new int[jsonArray.size()];
                 for (int i = 0; i < otherPlayers.length; i++) {
@@ -56,13 +54,12 @@ public class ClientApplication extends ApplicationAdapter implements GameControl
         }
     }
 
-    private static PlayersCards parsePlayerCards(JSONObject o){
+    private static PlayersCards parsePlayerCards(JSONObject o) {
         int playerID = o.getInt("PlayerId");
         JSONArray jsonArray = o.getJSONArray("Cards");
         List<IdCard> cards = new ArrayList<>();
         for (Object object : jsonArray) {
             cards.add((IdCard) object);
-
         }
         return new PlayersCards(playerID, cards);
     }

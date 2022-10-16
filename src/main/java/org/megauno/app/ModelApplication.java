@@ -43,36 +43,36 @@ public class ModelApplication extends ApplicationAdapter {
 
 		addLobbySubscriptions(game,lobby.getInfoSender(),playersWithID,cardsWithID);
 
-		lobby.host(jsonObject -> readJson(jsonObject,cardsWithID,playersWithID,game));
+		lobby.host(jsonObject -> readJson(jsonObject, cardsWithID, playersWithID, game));
 	}
 
 	private void readJson(JSONObject object,
 						  BiHashMap<Integer, ICard> cardsWithID,
 						  BiHashMap<Integer, Player> playersWithID,
-						  IGameImputs gameImputs)
+						  IGameImputs gameInputs)
 	{
 		String type = object.getString("Type");
 		int clientId = object.getInt("ClientId");
 		Player player = playersWithID.getRight(clientId);
-		switch (type){
+		switch (type) {
 			case "SelectCard": {
 				int cardId = object.getInt("CardId");
 				if (player != null) {
-					gameImputs.selectCard(player,cardsWithID.getRight(cardId));
+					gameInputs.selectCard(player,cardsWithID.getRight(cardId));
 				}
 				break;
 			}
 			case "UnSelectCard": {
 				int cardId = object.getInt("CardId");
 				if (player != null) {
-					gameImputs.unSelectCard(player,cardsWithID.getRight(cardId));
+					gameInputs.unSelectCard(player,cardsWithID.getRight(cardId));
 				}
 			}
 			case "CommenceForth":{
-				gameImputs.commenceForth(player);
+				gameInputs.commenceForth(player);
 			}
 			case "Uno":{
-				gameImputs.sayUno(player);
+				gameInputs.sayUno(player);
 			}
 		}
 	}
@@ -103,32 +103,25 @@ public class ModelApplication extends ApplicationAdapter {
 
 	private void addLobbySubscriptions(GamePublishers game, SendInfoToClients infoSender, BiHashMap<Integer, Player> playersWithID,
 									   BiHashMap<Integer, ICard> cardsWithID){
-		game.onCardsAddedToPlayer().addSubscriber(
-				(t) -> {
-					addCards(t.r,cardsWithID);
-					int id = playersWithID.getLeft(t.l);
-					infoSender.playerWithIdAddedCards(new PlayersCards(id,getIdCards(t.r,cardsWithID)));
-				}
-		);
-		game.onCardsRemovedByPlayer().addSubscriber(
-				(t) -> {
-					removeCards(t.r,cardsWithID);
-					int id = playersWithID.getLeft(t.l);
-					infoSender.playerWithIdRemovedCards(new PlayersCards(id,getIdCards(t.r,cardsWithID)));
-				}
-		);
-		game.onNewPlayer().addSubscriber(
-				(player) -> infoSender.currentPlayerNewId(playersWithID.getLeft(player))
-		);
-		game.onNewTopCard().addSubscriber(
-				(newTopCard) -> infoSender.newTopCardOfPile(newTopCard)
-		);
+		game.onCardsAddedToPlayer().addSubscriber((t) -> {
+			addCards(t.r,cardsWithID);
+			int id = playersWithID.getLeft(t.l);
+			infoSender.playerWithIdAddedCards(new PlayersCards(id,getIdCards(t.r,cardsWithID)));
+		});
+
+		game.onCardsRemovedByPlayer().addSubscriber((t) -> {
+			removeCards(t.r, cardsWithID);
+			int id = playersWithID.getLeft(t.l);
+			infoSender.playerWithIdRemovedCards(new PlayersCards(id, getIdCards(t.r, cardsWithID)));
+		});
+
+		game.onNewPlayer().addSubscriber( (player) -> infoSender.currentPlayerNewId(playersWithID.getLeft(player)) );
+		game.onNewTopCard().addSubscriber( (newTopCard) -> infoSender.newTopCardOfPile(newTopCard) );
 	}
 
 	@Override
 	public void render() {
 		game.update();
-
 	}
 
 	//@Override

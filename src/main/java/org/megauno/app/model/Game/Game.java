@@ -296,6 +296,7 @@ public class Game implements IActOnGame, GamePublishers, IGameImputs {
     public Publisher<ICard> onNewTopCard() {
         return onNewTopCard;
     }
+
     @Override
     public Publisher<Tuple<Player, List<ICard>>> onCardsAddedToPlayer() {
         return getCurrentPlayer().getOnCardsAddedByPlayer();
@@ -308,28 +309,28 @@ public class Game implements IActOnGame, GamePublishers, IGameImputs {
 
     @Override
     public void selectCard(Player player, ICard card) {
-        if(player == getCurrentPlayer()){
+        if (player == getCurrentPlayer()) {
             player.selectCard(card);
         }
     }
 
     @Override
     public void unSelectCard(Player player, ICard card) {
-        if(player == getCurrentPlayer()){
+        if (player == getCurrentPlayer()) {
             player.unSelectCard(card);
         }
     }
 
     @Override
     public void commenceForth(Player player) {
-        if(player == getCurrentPlayer()){
+        if (player == getCurrentPlayer()) {
             commence_forth = true;
         }
     }
 
     @Override
     public void sayUno(Player player) {
-        if(player == getCurrentPlayer()){
+        if (player == getCurrentPlayer()) {
             player.sayUno();
         }
     }

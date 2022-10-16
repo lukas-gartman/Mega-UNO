@@ -76,12 +76,12 @@ public class Player {
 
 
     public void addCards(List<ICard> cards) {
-        for (ICard card: cards) {
+        for (ICard card : cards) {
             this.addCard(card);
         }
     }
     private void removeSelectedCardsFromHand() {
-        for (ICard c: selectedCards) {
+        for (ICard c : selectedCards) {
             hand.remove(c);
         }
         onCardsRemovedByPlayer.publish(new Tuple<Player,List<ICard>>(this,selectedCards));
