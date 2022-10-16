@@ -9,49 +9,47 @@ import org.megauno.app.network.Client;
 import org.megauno.app.network.ClientHandler;
 import org.megauno.app.network.Server;
 import org.megauno.app.utility.BiHashMap;
+import org.megauno.app.utility.Publisher;
+import org.megauno.app.utility.Subscriber;
 import org.megauno.app.utility.Tuple;
 
 import java.util.*;
+import java.util.concurrent.Phaser;
 
-public class Lobby{
+public class Lobby {
     private volatile BiHashMap<ClientHandler, Integer> clientHandlers;
     private volatile PlayerCircle players = new PlayerCircle();
     private BiHashMap<Integer, Player> playersWithID = new BiHashMap<>();
     private volatile boolean searchingForPlayers = true;
     private volatile UnoServer server;
+    private Phaser phaser;
+    private final Publisher<Tuple<ClientHandler, Integer>> serverPublisher = new Publisher<>();
 
-
-    public Lobby(){
+    public Lobby(Phaser phaser) {
+        this();
+        this.phaser = phaser;
     }
 
-    public void host(JSONReader jsonReader) {
-        server = new UnoServer(1337,jsonReader); // Game host holds the server object
+
+    public void delivery(Tuple<ClientHandler, Integer> event) {
+        ClientHandler clientHandler = event.l;
+        int id = event.r;
+        if (clientHandlers.containsKey(clientHandler))
+            clientHandlers.remove(clientHandler);
+        else
+            clientHandlers.put(clientHandler, id);
+    }
+
+    public void host(JSONReader jsonReader) throws IllegalAccessException{
+        server = new UnoServer(1337,serverPublisher,jsonReader); // Game host holds the server object
+          serverPublisher.addSubscriber((np)-> delivery(np)); // subscribe self to changes to client handlers
         new Thread(server).start(); // Start the server on a new thread to prevent blocking
-        Client client = new Client("localhost", 1337,o->{}); // Create client for the host
-        new Client("localhost", 1337,o->{});
-        new Client("localhost", 1337,o->{});
+        clientHandlers = server.getClientHandlers(); // initialise the map of clientHandlers
+        Client client = new Client("Host","localhost", 1337,o->{}); // Create client for the host
+        new Client("player 1","localhost", 1337,o->{}); // dummy client
+        new Client("player 2","localhost", 1337,o->{}); // dummy client
 
-        // Searching for new connections
-        new Thread(() -> {
-            BiHashMap<ClientHandler,Integer> chs = new BiHashMap<>(); // The old clientHandler HashMap
-
-            // Continue searching until host starts the game
-            while (this.searchingForPlayers) {
-                clientHandlers = server.getClientHandlers(); // Get the latest clientHandlers from the server
-                // Check if there is a change in size (issue: a new player can join while another disconnects...)
-                if (clientHandlers.size() != chs.size()) {
-                    chs = new BiHashMap<ClientHandler, Integer>(clientHandlers);
-                }
-
-                try { // Check once every 100 milliseconds
-                    Thread.sleep(100);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        }).start();
-
-        // *** TEMPORARY *** //
+        //Waiting for host to start
         new Thread(() -> {
             Scanner scanner = new Scanner(System.in); // Get input from console
             System.out.print("enter: ");
@@ -65,16 +63,15 @@ public class Lobby{
                 playersWithID.put(id, p);
             }
 
-            this.searchingForPlayers = false; // Tell the loop to stop searching for players
+            this.phaser.arrive(); // The task is finished
         }).start();
+
     }
 
     private void join() {
+        this.phaser.register(); // Indicate the user is not ready to play
         // todo: implement logic for joining a lobby
-    }
-
-    public boolean isSearchingForPlayers() {
-        return this.searchingForPlayers;
+        this.phaser.arrive(); // Indicate the user is now ready to play
     }
 
     public PlayerCircle getPlayerCircle() {

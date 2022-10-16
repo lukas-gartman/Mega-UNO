@@ -8,6 +8,7 @@ import java.net.Socket;
 
 
 public class Client {
+    private String nickname;
     private final String hostname;
     private final int port;
 
@@ -16,7 +17,8 @@ public class Client {
     private BufferedWriter bw;
     private JSONReader jsonReader;
 
-    public Client(String hostname, int port, JSONReader jsonReader){
+    public Client(String nickname, String hostname, int port, JSONReader jsonReader) {
+        this.nickname = nickname;
         this.hostname = hostname;
         this.port = port;
         this.jsonReader = jsonReader;
@@ -60,5 +62,9 @@ public class Client {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+    }
+
+    public String getNickname() {
+        return this.nickname;
     }
 }
