@@ -4,6 +4,9 @@ import org.json.JSONObject;
 import org.megauno.app.model.Cards.ICard;
 import org.megauno.app.utility.Publisher.normal.Publisher;
 import org.megauno.app.utility.Tuple;
+import org.megauno.app.viewcontroller.players.GameView;
+
+import java.util.Set;
 
 public class UnoServer extends Server implements SendInfoToClients{
 
@@ -41,9 +44,23 @@ public class UnoServer extends Server implements SendInfoToClients{
 
 
     @Override
-    public void playerIdsAtStart(int playerId, int[] ids) {
-        broadcast(new JSONObject().put("Type","Start").
-                put("PlayerId",playerId).
-                put("OtherPlayers",ids));
+    public void start() {
+        Set<Integer> ids = getClientHandlers().getRightKeys();
+        for (Integer id: ids) {
+            int[] otherplayers = new int[ids.size()-1];
+            int i = 0;
+            for (int innerId :ids) {
+                if(id != innerId){
+                    otherplayers[i] = innerId;
+                    i++;
+                }
+            }
+            JSONObject json = new JSONObject();
+            json.put("Type","Start");
+            json.put("PlayerID",id);
+            json.put("OtherPlayers",otherplayers);
+            getClientHandlers().getLeft(id).send(json);
+        }
     }
+
 }

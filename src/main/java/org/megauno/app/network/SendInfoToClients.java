@@ -14,7 +14,7 @@ public interface SendInfoToClients {
 
     void playerWithIdRemovedCards(PlayersCards pc);
 
-    void playerIdsAtStart(int playerId,int[] ids);
+    void start();
 
 
 }
