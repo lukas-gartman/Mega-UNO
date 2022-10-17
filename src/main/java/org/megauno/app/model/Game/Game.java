@@ -130,13 +130,13 @@ public class Game implements IActOnGame {
      * @param choices is the set of cards the current player has tried to play
      */
     private void checkPlayersProgress(Node<ICard> current, boolean currentHasOnlyOneCard, List<ICard> choices){
-        if (currentHasOnlyOneCard && !current.getPlayer().uno()) {
+        if (currentHasOnlyOneCard && !current.uno()) {
             //penalise: draw 3 cards.
             current.giveCardToPlayer(deck.drawCard());
             current.giveCardToPlayer(deck.drawCard());
             current.giveCardToPlayer(deck.drawCard());
         }else if (players.IsPlayerOutOfCards(current) ) {
-            if (choices.size() > 1 || current.getPlayer().uno()) players.playerFinished(current);
+            if (choices.size() > 1 || current.uno()) players.playerFinished(current);
         }
     }
 
@@ -149,7 +149,7 @@ public class Game implements IActOnGame {
      * @return true if playing chosen cards is a valid move
      */
     private boolean validPlay(List<ICard> choices, Node<ICard> current){
-        List<ICard> hand = current.getPlayer().getCards();
+        List<ICard> hand = current.getHand();
         int lastCardIndex = hand.size() - 1;
         return validPlayedCards(choices) &&
                 (drawCount < 1 ||
