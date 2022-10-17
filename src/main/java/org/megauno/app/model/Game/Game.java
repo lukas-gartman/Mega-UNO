@@ -263,6 +263,8 @@ public class Game implements IActOnGame {
         int randomIndex = rand.nextInt(current.getHandSize());
         ICard randomCard = current.getHand().get(randomIndex);
         current.selectCard(randomCard);
+    }
+
     private void sayUno(Player player) {
         player.sayUno();
     }
