@@ -1,6 +1,7 @@
 package org.megauno.app.model.Player;
 
 import junit.framework.TestCase;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.megauno.app.model.Cards.Color;
@@ -12,13 +13,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class PlayerTest extends TestCase {
+public class PlayerTest {
     Player empltyPlayer;
     Player cardsPlayer;
     List<ICard> cards = new ArrayList<>();
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
+    //setUp();
+    //makePlayer();
+    @Before
+    public void setUp() throws Exception {
         cards.add(new NumberCard(Color.GREEN,5));
         cards.add(new NumberCard(Color.BLUE,5));
         cards.add(new NumberCard(Color.GREEN,8));
@@ -26,9 +28,10 @@ public class PlayerTest extends TestCase {
 
     }
     @Before
-    public void makePlayer(){
+    public void makePlayer() throws Exception {
         empltyPlayer = new Player();
         cardsPlayer = new Player();
+        setUp();
 
         for (ICard c:cards) {
             cardsPlayer.addCard(c);
@@ -39,12 +42,12 @@ public class PlayerTest extends TestCase {
     @Test
     public void testUnSelectedAllCardsWithNoCards(){
         empltyPlayer.discardAllSelectedCards();
-        assertTrue(empltyPlayer.play().size() == 0);
+        Assert.assertTrue(empltyPlayer.play().size() == 0);
     }
     @Test
     public void testUnSelectAllWithCardsSomeCards(){
         cardsPlayer.discardAllSelectedCards();
-        assertTrue(cardsPlayer.play().size() == 0);
+        Assert.assertTrue(cardsPlayer.play().size() == 0);
     }
 
 
@@ -54,7 +57,7 @@ public class PlayerTest extends TestCase {
             empltyPlayer.addCard(c);
             empltyPlayer.selectCard(c);
         }
-        assertTrue(empltyPlayer.play().containsAll(cards));
+        Assert.assertTrue(empltyPlayer.play().containsAll(cards));
     }
 
 
