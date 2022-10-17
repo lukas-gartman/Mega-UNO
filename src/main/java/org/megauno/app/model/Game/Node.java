@@ -35,6 +35,14 @@ public class Node {
         return player.uno();
     }
 
+    public void sayUno(){
+        player.sayUno();
+    }
+
+    public void unsayUno(){
+        player.unsayUno();
+    }
+
     public List<ICard> getHand(){
         return player.getCards();
     }
