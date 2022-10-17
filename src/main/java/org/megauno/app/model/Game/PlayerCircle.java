@@ -154,4 +154,8 @@ public class PlayerCircle {
         return out;
     }
 
+    public int getCurrentId(){
+        return currentPlayer.getId();
+    }
+
 }
