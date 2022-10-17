@@ -6,6 +6,10 @@ import org.megauno.app.utility.BiHashMap;
 import java.io.*;
 import java.net.Socket;
 
+/**
+ * Extension of Server that handles client connections.
+ * @author Lukas Gartman
+ */
 public class ClientHandler implements Runnable {
     private IServer server;
     private BiHashMap<ClientHandler, Integer> clientHandlers;
@@ -15,6 +19,13 @@ public class ClientHandler implements Runnable {
     private final int id;
     private JSONReader jsonReader;
 
+    /**
+     * Store the client information and set up readers and writers
+     * @param client the client's socket
+     * @param id the client ID
+     * @param server the server interface
+     * @param jsonReader an interface used for reading JSON
+     */
     public ClientHandler(Socket client, int id, IServer server, JSONReader jsonReader) {
         this.client = client;
         this.id = id;
@@ -29,7 +40,11 @@ public class ClientHandler implements Runnable {
         }
     }
 
-    public void send(JSONObject json){
+    /**
+     * Send a JSON object to the client
+     * @param json the object to send
+     */
+    public void send(JSONObject json) {
         try {
             bw.write(json.toString());
             bw.newLine();
@@ -39,6 +54,10 @@ public class ClientHandler implements Runnable {
         }
     }
 
+    /**
+     * Send a JSON object from one client to all other clients
+     * @param json the object to send
+     */
     private void broadcast(JSONObject json) {
         for (ClientHandler ch : clientHandlers.getLeftKeys()) {
             if (clientHandlers.getRight(ch) == this.id)
@@ -54,6 +73,10 @@ public class ClientHandler implements Runnable {
         }
     }
 
+    /**
+     * Update the map of ClientHandlers
+     * @param clientHandlers the map of ClientHandlers to update
+     */
     public void updateClientHandlers(BiHashMap<ClientHandler, Integer> clientHandlers) {
         this.clientHandlers = clientHandlers;
     }

@@ -30,6 +30,11 @@ public class Server implements IServer, Runnable {
         this.publisher = publisher;
     }
 
+    @Override
+    public void run() {
+        acceptConnections();
+    }
+
     private void acceptConnections() {
         try {
             while (true) {
@@ -51,6 +56,7 @@ public class Server implements IServer, Runnable {
         } catch (NullPointerException ex) {} // server was not set up properly, ignore...
     }
 
+    @Override
     public void disconnect(ClientHandler client) {
         // disconnect the client (critical section)
         try { this.semaphore.acquire(); } catch (InterruptedException ex) { }
@@ -68,27 +74,15 @@ public class Server implements IServer, Runnable {
             ch.updateClientHandlers(clientHandlers);
     }
 
+    @Override
     public BiHashMap<ClientHandler, Integer> getClientHandlers() {
         return this.clientHandlers;
     }
 
+    @Override
     public void broadcast(JSONObject json) {
-        for (ClientHandler ch:clientHandlers.getLeftKeys()) {
+        for (ClientHandler ch : clientHandlers.getLeftKeys()) {
             ch.send(json);
         }
     }
-
-    public void close() {
-        try {
-            server.close();
-        } catch (IOException ex) {
-            System.out.println(ex.getMessage());
-        }
-    }
-
-    @Override
-    public void run() {
-        acceptConnections();
-    }
-
 }

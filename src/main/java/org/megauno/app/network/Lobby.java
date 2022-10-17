@@ -1,7 +1,5 @@
 package org.megauno.app.network;
 
-import org.megauno.app.model.Game.PlayerCircle;
-import org.megauno.app.model.Player.Player;
 import org.megauno.app.utility.BiHashMap;
 import org.megauno.app.utility.Publisher.normal.Publisher;
 import org.megauno.app.utility.Tuple;
@@ -9,17 +7,25 @@ import org.megauno.app.utility.Tuple;
 import java.util.*;
 import java.util.concurrent.Phaser;
 
+/**
+ * A lobby that is used to host a game server which accepts incoming clients
+ * @author Lukas Gartman
+ */
 public class Lobby {
     private volatile BiHashMap<ClientHandler, Integer> clientHandlers;
     private volatile UnoServer server;
     private Phaser phaser;
     private final Publisher<Tuple<ClientHandler, Integer>> serverPublisher = new Publisher<>();
 
+    /**
+     * Creates a lobby
+     * @param phaser a synchronisation barrier used to signal when the lobby is finished
+     */
     public Lobby(Phaser phaser) {
         this.phaser = phaser;
     }
 
-    public void delivery(Tuple<ClientHandler, Integer> event) {
+    private void delivery(Tuple<ClientHandler, Integer> event) {
         ClientHandler clientHandler = event.l;
         int id = event.r;
         if (clientHandlers.getLeftKeys().contains(clientHandler))
@@ -28,6 +34,12 @@ public class Lobby {
             clientHandlers.put(clientHandler, id);
     }
 
+    /**
+     * Creates a server and watches for incoming clients
+     * @param jsonReaderCreator factory that creates JsonReaders
+     * @return a list of client IDs
+     * @throws IllegalAccessException when a server is already running
+     */
     public List<Integer> host(JsonReaderCreator jsonReaderCreator) throws IllegalAccessException {
         server = new UnoServer(1337, serverPublisher, jsonReaderCreator); // Game host holds the server object
         serverPublisher.addSubscriber(this::delivery); // subscribe self to changes to client handlers
@@ -55,6 +67,10 @@ public class Lobby {
         this.phaser.arrive(); // Indicate the user is now ready to play
     }
 
+    /**
+     * Get the info sender (server)
+     * @return the info sender
+     */
     public SendInfoToClients getInfoSender(){
         return server;
     }
