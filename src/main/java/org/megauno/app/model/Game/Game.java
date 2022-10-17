@@ -139,8 +139,8 @@ public class Game implements IActOnGame {
         ICard top = discarded.getTop();
         Node current = players.getCurrent();
         List<ICard> choices = players.currentMakeTurn();
-        boolean currentHasOnlyOneCard = current.getPlayer().numOfCards() == 1;
-        if (!currentHasOnlyOneCard) current.getPlayer().unsayUno();
+        boolean currentHasOnlyOneCard = current.getHandSize() == 1;
+        if (!currentHasOnlyOneCard) current.unsayUno();
 
         if (validPlay(choices, current)) {
             // discard successfully played cards
@@ -172,14 +172,14 @@ public class Game implements IActOnGame {
      * @param choices is the set of cards the current player has tried to play
      */
     private void checkPlayersProgress(Node current, boolean currentHasOnlyOneCard, List<ICard> choices){
-        if (currentHasOnlyOneCard && !current.getPlayer().uno()) {
+        if (currentHasOnlyOneCard && !current.uno()) {
             //penalise: draw 3 cards.
             current.giveCardToPlayer(deck.drawCard());
             current.giveCardToPlayer(deck.drawCard());
             current.giveCardToPlayer(deck.drawCard());
             publisher.publish(this);
         }else if (players.IsPlayerOutOfCards(current) ) {
-            if (choices.size() > 1 || current.getPlayer().uno()){
+            if (choices.size() > 1 || current.uno()){
                 players.playerFinished(current);
                 publisher.publish(this);
             }
@@ -195,8 +195,8 @@ public class Game implements IActOnGame {
      * @return true if playing chosen cards is a valid move
      */
     private boolean validPlay(List<ICard> choices, Node current){
-        List<ICard> hand = current.getPlayer().getCards();
-        int lastCardIndex = current.getPlayer().getCards().size() - 1;
+        List<ICard> hand = current.getHand();
+        int lastCardIndex = hand.size() - 1;
         return validPlayedCards(choices) &&
                 (drawCount < 1 ||
                         (choices.size() == 1 && choices.get(0).equals(hand.get(lastCardIndex))));
