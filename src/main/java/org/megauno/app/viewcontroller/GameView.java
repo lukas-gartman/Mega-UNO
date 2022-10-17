@@ -20,6 +20,7 @@ public class GameView implements IDrawable {
 	private ThisPlayer thisPlayer;
 	private List<OtherPlayer> otherPlayers = new ArrayList<>();
 	private EndTurnButton endTurnButton;
+	private SayUnoButton sayUnoButton;
 
 	public GameView(Game game, int playerID) {
 		this.game = game;
@@ -42,6 +43,7 @@ public class GameView implements IDrawable {
 		}
 
 		endTurnButton = new EndTurnButton(200, 200, game);
+		sayUnoButton = new SayUnoButton(500, 30, game);
 	}
 
 	public int getPlayerID() {
@@ -70,6 +72,8 @@ public class GameView implements IDrawable {
 
 		// Draw end turn button
 		endTurnButton.draw(delta, batch);
+		// Draw say uno button
+		sayUnoButton.draw(delta, batch);
 	}
 
 	private void otherPlayerHandChanges(OtherPlayer otherPlayer) {
