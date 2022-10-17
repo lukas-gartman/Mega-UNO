@@ -216,9 +216,16 @@ public class Game implements IActOnGame {
         return deck.drawCard();
     }
 
+	// Setter and getter for setting  the color of chosen wildcards
+	// during the current turn, this means there is no way of choosing
+	// different colors for different wildcards if multiple is played
     public Color getChosenColor(){
         return wildCardColor;
     }
+
+	public void setColor(Color color) {
+		wildCardColor = color;
+	}
 
     public Deck getDeck(){
         return deck;

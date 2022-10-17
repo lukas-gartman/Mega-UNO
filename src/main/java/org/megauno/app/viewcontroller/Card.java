@@ -151,6 +151,7 @@ public class Card implements IDrawable {
 	// What happens when a color for a wildcard is slected
 	private void onColorSelected(Color color) {
 		//TODO: select color in Game
+		game.setColor(color);
 		game.getPlayerWithId(playerID).selectCard(card);
 		hideColorOptions();
 	}
