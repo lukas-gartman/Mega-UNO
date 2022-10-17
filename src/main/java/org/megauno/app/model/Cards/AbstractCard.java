@@ -5,7 +5,7 @@ import org.megauno.app.model.Cards.Impl.NumberCard;
 import org.megauno.app.model.Game.IActOnGame;
 
 /**
- * The common methods that a every type of card extends.
+ * The common methods that every type of card extends.
  */
 public abstract class AbstractCard implements ICard {
 

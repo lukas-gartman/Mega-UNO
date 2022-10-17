@@ -6,8 +6,29 @@ import org.megauno.app.model.Game.IActOnGame;
 import javax.lang.model.type.TypeKind;
 import java.util.Objects;
 
+/**
+ * Specifies an action/special card in UNO. An action card has an action which it can execute,
+ * has a color and a type, which specifies what specific action card it is upon creation.
+ */
 public class ActionCard extends AbstractCard {
    private final IAction action;
+
+   /**
+    * The only constructor of an action card.
+    * The constructor validates the card, i.e. checks that the given arguments
+    * are valid for an action card.
+    * @param action The action which the card can execute.
+    * @param color The color of the card.
+    * @param type The specific type of action card.
+    */
+   public ActionCard(IAction action, Color color, CardType type) {
+      super(color, type);
+      CardValidation.validateColor(color);
+      CardValidation.validateType(type);
+      //validate action
+      // check that type and action correlates
+      this.action = action;
+   }
 
    public IAction getAction() {
       return this.action;
@@ -22,17 +43,6 @@ public class ActionCard extends AbstractCard {
               '}';
    }
 
-   public ActionCard(IAction action, Color color, CardType type) {
-      super(color, type);
-      CardValidation.validateColor(color);
-      CardValidation.validateType(type);
-      //validate action
-      // check that type and action correlates
-      this.action = action;
-   }
-
-   // getClass such that an overriden method in Actions isn't needed
-   //public void getAction();
    @Override
    public boolean equals(Object o) {
       if (this == o) return true;
@@ -50,19 +60,16 @@ public class ActionCard extends AbstractCard {
       return action.execute(g);
    }
 
-   // Uses visitor pattern to dynamically determine the type of the parameter
    @Override
    public boolean canBePlayed(ICard c) {
       return c.canBePlayedOnMe(this);
    }
 
-      //return c.visit(this);
    @Override
    public boolean canBePlayedOnMe(NumberCard c) {
      return this.getColor() == c.getColor();
    }
 
-   //This can probably be abstracted in the abstract class
    @Override
    public boolean canBePlayedOnMe(ActionCard c) {
      return c.getColor() == Color.NONE || c.getColor() == this.getColor() || c.getType() == this.getType();
@@ -73,21 +80,6 @@ public class ActionCard extends AbstractCard {
    public ICard copyCard() {
       return new ActionCard(this.action, this.getColor(), this.getType());
    }
-
-   // The visit methods checks that the given card can be placed on themselves
-   /*
-   @Override
-   public boolean visit(ActionCard ac) {
-      return ac.getType() == CardType.WILDCARD || ac.getColor() == this.getColor() || ac.getType() == this.getType();
-   }
-    */
-
-   /*
-   @Override
-   public boolean visit(NumberCard nc) {
-      return this.getColor() == nc.getColor();
-   }
-    */
 
    @Override
    public boolean canBeStacked(ICard c) {

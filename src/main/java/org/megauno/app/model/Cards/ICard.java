@@ -20,7 +20,7 @@ public interface ICard extends ICardVisitor {
      * @param card  The card that is played on.
      * @return If the card can be played or not.
      */
-    boolean canBePlayed(ICard card); // This is the "accept" method
+    boolean canBePlayed(ICard card);
 
     /**
      * Visitor Pattern. Checks that the given card can be played on this card.

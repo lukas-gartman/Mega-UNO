@@ -13,6 +13,8 @@ public class NumberCard extends AbstractCard {
 
     /**
      * The only constructor for NumberCard, has default card type NUMBERCARD.
+     * The constructor validates the card, i.e. checks that the given values are
+     * correct.
      * @param color Color of the card.
      * @param value Numeric value of the card.
      */
@@ -54,67 +56,29 @@ public class NumberCard extends AbstractCard {
                 '}';
     }
 
-    // what to do with NONE type?
-    // Why it isn't a good idea to use visitor interface is because Card is both the
-    // acceptor and the visitor, which means that they cannot be under the same interface
-    // and at the same time be under separate interfaces (Visitor, accepter (element))
-
-    /**
-     * Checks that this card can be played on the given card.
-     * @param c  The card that is played on.
-     * @return If the card can be played or not.
-     */
     @Override
     public boolean canBePlayed(ICard c) {
         return c.canBePlayedOnMe(this);
     }
 
-    /**
-     * Visitor Pattern. Checks that the given card can be played on this card.
-     * @param numberCard The card that wants to be played on this card
-     * @return Weather it can be played on this or not.
-     */
     @Override
     public boolean canBePlayedOnMe(NumberCard numberCard) {
         return this.getColor() == numberCard.getColor() || this.value == numberCard.getValue();
     }
 
-    /**
-     * Visitor Pattern. Checks that the given card can be played on this card.
-     * @param actionCard The card that wants to be played on this card
-     * @return Weather it can be played on this or not.
-     */
     @Override
     public boolean canBePlayedOnMe(ActionCard actionCard) {
         return this.getColor() == actionCard.getColor();
     }
 
-    // Shallow copy, no need for deep copy since the attributes are immutable.
+    /**
+     * Shallow of a card, no need for deep copy since the attributes are immutable.
+     * @return A copy of this card.
+     */
     @Override
     public ICard copyCard() {
         return new NumberCard(this.getColor(), this.getValue());
     }
-
-    // This is equivalent to canBePlayedOnMe
-
-    /**
-     * Visitor Pattern. Checks that the given card can be played on this card.
-     * @param ac The card that wants to be played on this card
-     * @return Weather it can be played on this or not.
-     */
-    /*
-    @Override
-    public boolean visit(ActionCard ac) {
-        return this.getColor() == ac.getColor();
-    }
-     */
-
-/*
-    @Override
-    public boolean visit(NumberCard nc) {
-        return this.getColor() == nc.getColor() || this.value == nc.getValue();
-    }
-*/
 
     @Override
     public boolean activate(IActOnGame g) {
