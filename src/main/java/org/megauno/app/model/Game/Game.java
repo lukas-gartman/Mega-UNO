@@ -88,7 +88,7 @@ public class Game implements IActOnGame {
 	}
 
 	// Current player
-	public int getCurrentPlayer() {
+	public int getCurrentPlayerId() {
 		return players.getCurrentId();
 	}
 
