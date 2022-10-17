@@ -39,7 +39,7 @@ public class ViewController implements Subscriber<Game>{
 		for (int i = 0; i < game.getPlayersLeft(); i++) {
 			gameViews.add(new GameView(game, i));
 		}
-		currentGameView = gameViews.get(game.getCurrentPlayer());
+		currentGameView = gameViews.get(game.getCurrentPlayerId());
 		// Gdx.input.setInputProcessor(currentGameView);
 
 		batch = new SpriteBatch();
@@ -65,7 +65,7 @@ public class ViewController implements Subscriber<Game>{
 
 		// Draw a game view
 		batch.begin();
-		gameViews.get(game.getCurrentPlayer()).draw(Gdx.graphics.getDeltaTime(), batch);
+		gameViews.get(game.getCurrentPlayerId()).draw(Gdx.graphics.getDeltaTime(), batch);
 		batch.end();
 	}
 
@@ -77,7 +77,7 @@ public class ViewController implements Subscriber<Game>{
 	@Override
 	public void delivery(Game game) {
 		for(GameView gameView: gameViews){
-			if(gameView.getPlayerID() == game.getCurrentPlayer()){
+			if(gameView.getPlayerID() == game.getCurrentPlayerId()){
 				currentGameView = gameView;
 			}
 		}
