@@ -1,4 +1,8 @@
 package org.megauno.app.model.Game;
+
+import org.megauno.app.model.Cards.ICard;
+import org.megauno.app.model.Player.Player;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,42 +11,36 @@ import java.util.List;
  * Circular doubly linked list to keep track of players and turns
  * dependency on Node class
  */
-public class PlayerCircle<c> {
-    private Node<c> head = null;
-    private Node<c> tail = null;
-    private Node<c> currentPlayer = null;
-    IPlayer player;
+public class PlayerCircle {
+    private Node head = null;
+    private Node tail = null;
+    private Node currentPlayer = null;
     Rotation direction;
 
-    public List<IPlayer> winners;
+    public List<Player> winners;
 
-    private int numPlayers = 0;
+    private int numPlayers;
 
-    public PlayerCircle(IPlayer p){
-        this.player = p;
-
+    public PlayerCircle(){
         // starts with clockwise as default
         direction = Rotation.CLOCKWISE;
         winners = new ArrayList<>();
     }
 
-
-    public PlayerCircle(List<IPlayer> players){
-        for (IPlayer p : players) {
+    public PlayerCircle(List<Player> players){
+        for (Player p : players) {
             addNode(p);
         }
         this.direction = Rotation.CLOCKWISE;
         this.winners = new ArrayList<>();
     }
 
-    public PlayerCircle(){
-    }
     /**
      * Adding a new node to the circle
-     * @param p is the object that the new node will hold
+     * @param p is the Player object that the new node will hold
      */
-    public void addNode(IPlayer p) {
-        Node<c> newNode = new Node<c>(p);
+    public void addNode(Player p) {
+        Node newNode = new Node(p);
         if (head == null) {
             head = newNode;
 
@@ -65,9 +63,9 @@ public class PlayerCircle<c> {
      * Removes a node from the circle, connecting the previous and next node to each other
      * @param toRemove the node that needs to be removed
      */
-    private void removeNode(Node<c> toRemove){
-        Node<c> next = toRemove.nextNode;
-        Node<c> prev = toRemove.previousNode;
+    private void removeNode(Node toRemove){
+        Node next = toRemove.nextNode;
+        Node prev = toRemove.previousNode;
         prev.nextNode = next;
         next.previousNode = prev;
         numPlayers--;
@@ -81,7 +79,7 @@ public class PlayerCircle<c> {
         else currentPlayer = currentPlayer.previousNode;
     }
 
-    public IPlayer getNextPlayer(){
+    public Player getNextPlayer(){
         if (direction == Rotation.CLOCKWISE) return currentPlayer.nextNode.getPlayer();
         else return currentPlayer.previousNode.getPlayer();
     }
@@ -90,8 +88,8 @@ public class PlayerCircle<c> {
      * let the current player try to play a set of cards
      * @return the set of cards the player has chosen
      */
-    public List<c> currentMakeTurn(){
-       return currentPlayer.play();
+    public List<ICard> currentMakeTurn(){
+        return currentPlayer.play();
     }
 
     /**
@@ -107,25 +105,24 @@ public class PlayerCircle<c> {
     }
 
     /**
-     * give current player an item
-     * @param item is the item to give to the player
+     * give current player a card
+     * @param card is the card to give
      */
-
-    public void giveCardToCurrentPlayer(c item) {
-        currentPlayer.giveCardToPlayer(item);
+    public void giveCardToCurrentPlayer(ICard card){
+        currentPlayer.giveCardToPlayer(card);
     }
 
-    public Node<c> getCurrent(){
+    public Node getCurrent(){
         return currentPlayer;
     }
 
-    public Node<c> getNextPlayerNode(){
+    public Node getNextPlayerNode(){
         if (direction == Rotation.CLOCKWISE) return currentPlayer.nextNode;
         else return currentPlayer.previousNode;
     }
 
-    public void giveCardToPlayer(c item, Node p){
-        p.giveCardToPlayer(item);
+    public void giveCardToPlayer(ICard c, Node p){
+        p.giveCardToPlayer(c);
     }
 
     /**
@@ -133,7 +130,7 @@ public class PlayerCircle<c> {
      * @param n the node that holds the player to be checked
      * @return true if the player have run out of cards
      */
-    boolean IsPlayerOutOfCards(Node<c> n){
+    boolean IsPlayerOutOfCards(Node n){
         return n.getPlayer().numOfCards() == 0;
     }
 
@@ -141,14 +138,14 @@ public class PlayerCircle<c> {
      * when a player has finished the game, their node is removed and placed in the list of winners
      * @param n is the node holding the player
      */
-    void playerFinished(Node<c> n){
+    void playerFinished(Node n){
         winners.add(n.getPlayer());
         removeNode(n);
     }
 
-    public IPlayer[] getPlayers(){
-        Node<c> next = currentPlayer.nextNode;
-        IPlayer[] out = new IPlayer[numPlayers];
+    public Player[] getPlayers(){
+        Node next = currentPlayer.nextNode;
+        Player[] out = new Player[numPlayers];
         out[0] = currentPlayer.getPlayer();
         for (int i = 1; i < numPlayers; i++){
             out[i] = (next.getPlayer());

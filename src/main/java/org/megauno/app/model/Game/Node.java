@@ -1,25 +1,30 @@
 package org.megauno.app.model.Game;
 
 import org.megauno.app.model.Cards.ICard;
+import org.megauno.app.model.Player.Player;
 
 import java.util.List;
 
 // Nodes are players and their neighbours
-public class Node<c> {
-    private IPlayer player;
+public class Node {
+    private Player player;
     public Node nextNode;
     public Node previousNode;
 
-    public Node(IPlayer p) {
+    public Node(Player p) {
         this.player = p;
     }
 
-    public List<c> play(){
+    public List<ICard> play(){
         return player.play();
     }
 
-    void giveCardToPlayer(c item){
-        player.addCard(item);
+    void giveCardToPlayer(ICard card){
+        player.addCard(card);
+    }
+
+    public Player getPlayer(){
+        return player;
     }
 
     public int getHandSize(){
@@ -32,9 +37,5 @@ public class Node<c> {
 
     public List<ICard> getHand(){
         return player.getCards();
-    }
-
-    public IPlayer getPlayer(){
-        return player;
     }
 }

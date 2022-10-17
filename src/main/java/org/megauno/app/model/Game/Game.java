@@ -1,16 +1,24 @@
 package org.megauno.app.model.Game;
 
+import org.megauno.app.model.Cards.Color;
 import org.megauno.app.model.Cards.ICard;
 import org.megauno.app.model.Deck;
 import org.megauno.app.model.Pile;
+import org.megauno.app.model.Player.Player;
+import org.megauno.app.utility.Publisher;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.Flow;
 
 public class Game implements IActOnGame {
-    PlayerCircle<ICard> players;
-    Deck deck;
-    Pile discarded;
+    private PlayerCircle players;
+    private Deck deck;
+    private Pile discarded;
     private int drawCount = 0;
+    private Flow.Publisher<Game> publisher;
+    private Color wildCardColor;
 
 
     /**
@@ -18,9 +26,16 @@ public class Game implements IActOnGame {
      * @param players is the circle of players
      * @param numCards is the number of cards a hand is initially dealt
      */
-    public Game(PlayerCircle<ICard> players, int numCards) {
-        discarded = new Pile();
+
+    public Game(PlayerCircle players, int numCards){
+        this(players,numCards,new Publisher<Game>());
+    }
+
+    public Game(PlayerCircle players, int numCards, Publisher<Game> publisher) {
         this.players = players;
+        this.discarded = new Pile();
+        this.deck = new Deck();
+        this.publisher = publisher;
 
         int p = 0;
         while (p < players.playersLeft() * numCards) {
@@ -28,30 +43,55 @@ public class Game implements IActOnGame {
             players.moveOnToNextTurn();
             p++;
         }
-        discarded = new Pile();
     }
     public Game(){
         this.discarded = new Pile();
         this.deck = new Deck();
-        players = new PlayerCircle<ICard>();
+        players = new PlayerCircle();
     }
 
     // For testing purposes
-    public Game(PlayerCircle<ICard> players) {
+    public Game(PlayerCircle players) {
         this.discarded = new Pile();
         this.deck = new Deck();
         this.players = players;
     }
 
-	// TODO: move method to a more general class (general class representing the model)
-	// commence_forth: set by a controller (or test) to signal that the player has chosen.
-	// tests should remember to call update
-	public boolean commence_forth = false;
-	public void update() {
-		if (commence_forth) {
-			try_play();
-		}
-	}
+    // TODO: move method to a more general class (general class representing the model)
+    // commence_forth: set by a controller (or test) to signal that the player has chosen.
+    // tests should remember to call update
+    public boolean commence_forth = false;
+    public void update() {
+        if (commence_forth) {
+            try_play();
+            commence_forth = false;
+        }
+    }
+
+    // Basic API for ViewController, potentially tests as well
+
+    // Each boolean represents wether or not a card is chosen by the current player
+    public boolean[] choices;
+
+    // Inner array is null if the player with the given ID/index is out of the game
+    // TODO: add an ID in the Player class to be able to put null here
+    public List<List<ICard>> getAllPlayerCards() {
+        Player[] players = getPlayers();
+        List<List<ICard>> result = new ArrayList<>();
+        for (int i = 0; i < players.length; i++) {
+            result.add(players[i].getCards());
+        }
+        return result;
+    }
+
+    public int getPlayersLeft() {
+        return players.playersLeft();
+    }
+
+    // Current player
+    public int getCurrentPlayer() {
+        return players.getCurrent().getPlayer().getId();
+    }
 
     public void reverse(){
         players.changeRotation();
@@ -85,7 +125,7 @@ public class Game implements IActOnGame {
         if (drawCount > 2){
             return false;
         } else {
-            Node<ICard> current = players.getCurrent();
+            Node current = players.getCurrent();
             current.giveCardToPlayer(deck.drawCard());
             drawCount++;
             return true;
@@ -97,29 +137,32 @@ public class Game implements IActOnGame {
      * attempt to play those cards and discard on pile if successful
      */
     public void try_play() {
-        Node<ICard> current = players.getCurrent();
+        ICard top = discarded.getTop();
+        Node current = players.getCurrent();
         List<ICard> choices = players.currentMakeTurn();
-        boolean currentHasOnlyOneCard = current.getHandSize() == 1;
+        boolean currentHasOnlyOneCard = current.getPlayer().numOfCards() == 1;
+        if (!currentHasOnlyOneCard) current.getPlayer().unsayUno();
 
         if (validPlay(choices, current)) {
+            // discard successfully played cards
+            for (ICard c: choices) {
+                discarded.discard(c);
+            }
             for (ICard choice : choices) {
                 choice.activate(this);
             }
             // change currentPlayer to next in line:
             nextTurn();
 
-            // discard successfully played cards
-            for (ICard c: choices) {
-                discarded.discard(c);
-            }
+
 
             checkPlayersProgress(current, currentHasOnlyOneCard, choices);
         }
-        /*else {
+        else {
             for (int i = 0; i < choices.size(); i++) {
-                players.giveCardToPlayer(choices.get(i));
+                players.giveCardToPlayer(choices.get(i), current);
             }
-        }*/
+        }
     }
 
     /**
@@ -129,7 +172,7 @@ public class Game implements IActOnGame {
      * @param currentHasOnlyOneCard is true if current player has only one card
      * @param choices is the set of cards the current player has tried to play
      */
-    private void checkPlayersProgress(Node<ICard> current, boolean currentHasOnlyOneCard, List<ICard> choices){
+    private void checkPlayersProgress(Node current, boolean currentHasOnlyOneCard, List<ICard> choices){
         if (currentHasOnlyOneCard && !current.uno()) {
             //penalise: draw 3 cards.
             current.giveCardToPlayer(deck.drawCard());
@@ -145,12 +188,12 @@ public class Game implements IActOnGame {
      * check that the cards attempted to be played can be played given the top of the discard pile.
      * If a card has been drawn by the current player on this turn, then only this card can be played.
      * @param choices is the set of cards attempted to be played
-     * @param current is the player whose turn it currently is
+     * @param current
      * @return true if playing chosen cards is a valid move
      */
-    private boolean validPlay(List<ICard> choices, Node<ICard> current){
-        List<ICard> hand = current.getHand();
-        int lastCardIndex = hand.size() - 1;
+    private boolean validPlay(List<ICard> choices, Node current){
+        List<ICard> hand = current.getPlayer().getCards();
+        int lastCardIndex = current.getPlayer().getCards().size() - 1;
         return validPlayedCards(choices) &&
                 (drawCount < 1 ||
                         (choices.size() == 1 && choices.get(0).equals(hand.get(lastCardIndex))));
@@ -170,28 +213,55 @@ public class Game implements IActOnGame {
         return deck.drawCard();
     }
 
+    // Setter and getter for setting  the color of chosen wildcards
+    // during the current turn, this means there is no way of choosing
+    // different colors for different wildcards if multiple is played
+    public Color getChosenColor(){
+        return wildCardColor;
+    }
+
+    public void setColor(Color color) {
+        wildCardColor = color;
+    }
 
     public Deck getDeck(){
         return deck;
     }
 
-    public PlayerCircle<ICard> getPlayers(){
+    public PlayerCircle getPlayerCircle(){
         return players;
+    }
+
+    public Player[] getPlayers(){
+        return players.getPlayers();
+    }
+
+    public Player getPlayerWithId(int id){
+        for (Player p:getPlayers()) {
+            if (p.getId() == id){
+                return p;
+            }
+        }
+        return null;
+    }
+
+    public ICard getTopCard(){
+        return discarded.getTop();
     }
 
     /**
      * Used for testing purposes, simulates a player choosing a card
-      */
+     */
     public void simulatePlayerChoosingCard() {
         Random rand = new Random();
-        IPlayer<ICard> currentPlayer = players.getCurrent().getPlayer();
+        Player currentPlayer = players.getCurrent().getPlayer();
         int randomIndex = rand.nextInt(currentPlayer.numOfCards());
         ICard randomCard = currentPlayer.getCards().get(randomIndex);
         currentPlayer.selectCard(randomCard);
     }
 
     public boolean tryPlayTest() {
-        Node<ICard> current = players.getCurrent();
+        Node current = players.getCurrent();
         simulatePlayerChoosingCard();
         List<ICard> choices = players.currentMakeTurn();
         boolean currentHasOnlyOneCard = current.getPlayer().numOfCards() == 1;
