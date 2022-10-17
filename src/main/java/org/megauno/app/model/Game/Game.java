@@ -89,7 +89,7 @@ public class Game implements IActOnGame {
 
 	// Current player
 	public int getCurrentPlayer() {
-		return players.getCurrent().getPlayer().getId();
+		return players.getCurrentId();
 	}
 
     public void reverse(){
@@ -250,10 +250,10 @@ public class Game implements IActOnGame {
       */
     public void simulatePlayerChoosingCard() {
         Random rand = new Random();
-        Player currentPlayer = players.getCurrent().getPlayer();
-        int randomIndex = rand.nextInt(currentPlayer.numOfCards());
-        ICard randomCard = currentPlayer.getCards().get(randomIndex);
-        currentPlayer.selectCard(randomCard);
+        Node current = players.getCurrent();
+        int randomIndex = rand.nextInt(current.getHandSize());
+        ICard randomCard = current.getHand().get(randomIndex);
+        current.selectCard(randomCard);
     }
 
     public boolean tryPlayTest() {
