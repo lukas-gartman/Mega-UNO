@@ -41,12 +41,6 @@ public abstract class AbstractCard implements ICard {
     public abstract ICard copyCard();
 
     @Override
-    public abstract boolean visit(ActionCard ac);
-
-    @Override
-    public abstract boolean visit(NumberCard nc);
-
-    @Override
     public abstract boolean activate(IActOnGame g);
 
     public void setColor(Color c){

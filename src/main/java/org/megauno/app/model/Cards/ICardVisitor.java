@@ -6,7 +6,7 @@ import org.megauno.app.model.Cards.Impl.NumberCard;
 // Defines some object that wants to interact with cards in some way
 public interface ICardVisitor {
 
-    boolean visit(ActionCard ac);
+    boolean canBePlayedOnMe(ActionCard actionCard);
 
-    boolean visit(NumberCard nc);
+    boolean canBePlayedOnMe(NumberCard numberCard);
 }

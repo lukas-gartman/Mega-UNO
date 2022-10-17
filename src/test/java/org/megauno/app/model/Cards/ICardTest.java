@@ -63,6 +63,8 @@ public class ICardTest {
        assert (nc.canBePlayed(nc2));
        assert(nc2.canBePlayed(nc));
        assert(ac3.canBePlayed(ac4));
+       assert(nc.canBePlayed(ac1));
+       assert(ac1.canBePlayed(nc));
     }
 
     @Test
@@ -99,6 +101,7 @@ public class ICardTest {
     @Test
     public void testGetNumber() {
         assert(nc.getNumber().equals(3));
+        Assert.assertNull(ac1.getNumber());
     }
 
     @Test
@@ -131,4 +134,10 @@ public class ICardTest {
         Assert.assertFalse(ac1.canBeStacked(ac3));
         Assert.assertFalse(ac2.canBeStacked(nc));
     }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testColorIndex() {
+        Color.getFromIndex(28);
+    }
+
 }

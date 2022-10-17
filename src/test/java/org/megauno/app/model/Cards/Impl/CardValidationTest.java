@@ -31,8 +31,4 @@ public class CardValidationTest {
         CardValidation.validateColorNc(Color.NONE);
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void testColorIndex() {
-        Color.getFromIndex(28);
-    }
 }

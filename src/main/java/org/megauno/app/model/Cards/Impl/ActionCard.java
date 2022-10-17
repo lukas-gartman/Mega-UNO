@@ -50,6 +50,7 @@ public class ActionCard extends AbstractCard {
       return action.execute(g);
    }
 
+   // Uses visitor pattern to dynamically determine the type of the parameter
    @Override
    public boolean canBePlayed(ICard c) {
       return c.canBePlayedOnMe(this);
@@ -74,15 +75,19 @@ public class ActionCard extends AbstractCard {
    }
 
    // The visit methods checks that the given card can be placed on themselves
+   /*
    @Override
    public boolean visit(ActionCard ac) {
       return ac.getType() == CardType.WILDCARD || ac.getColor() == this.getColor() || ac.getType() == this.getType();
    }
+    */
 
+   /*
    @Override
    public boolean visit(NumberCard nc) {
       return this.getColor() == nc.getColor();
    }
+    */
 
    @Override
    public boolean canBeStacked(ICard c) {
