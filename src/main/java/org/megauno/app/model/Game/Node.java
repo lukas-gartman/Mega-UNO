@@ -46,4 +46,12 @@ public class Node {
     public List<ICard> getHand(){
         return player.getCards();
     }
+
+    public void selectCard(ICard c){
+        player.selectCard(c);
+    }
+
+    public int getId(){
+        return player.getId();
+    }
 }
