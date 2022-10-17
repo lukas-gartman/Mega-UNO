@@ -10,14 +10,13 @@ import org.megauno.app.utility.Publisher;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.concurrent.Flow;
 
 public class Game implements IActOnGame {
     private PlayerCircle players;
     private Deck deck;
     private Pile discarded;
     private int drawCount = 0;
-    private Flow.Publisher<Game> publisher;
+    private Publisher<Game> publisher;
     private Color wildCardColor;
 
 
@@ -34,7 +33,7 @@ public class Game implements IActOnGame {
     public Game(PlayerCircle players, int numCards, Publisher<Game> publisher) {
         this.players = players;
         this.discarded = new Pile();
-        this.deck = new Deck();
+		this.deck = new Deck();
         this.publisher = publisher;
 
         int p = 0;
@@ -57,41 +56,41 @@ public class Game implements IActOnGame {
         this.players = players;
     }
 
-    // TODO: move method to a more general class (general class representing the model)
-    // commence_forth: set by a controller (or test) to signal that the player has chosen.
-    // tests should remember to call update
-    public boolean commence_forth = false;
-    public void update() {
-        if (commence_forth) {
-            try_play();
+	// TODO: move method to a more general class (general class representing the model)
+	// commence_forth: set by a controller (or test) to signal that the player has chosen.
+	// tests should remember to call update
+	public boolean commence_forth = false;
+	public void update() {
+		if (commence_forth) {
+			try_play();
             commence_forth = false;
-        }
-    }
+		}
+	}
 
-    // Basic API for ViewController, potentially tests as well
+	// Basic API for ViewController, potentially tests as well
+	
+	// Each boolean represents wether or not a card is chosen by the current player
+	public boolean[] choices;
 
-    // Each boolean represents wether or not a card is chosen by the current player
-    public boolean[] choices;
+	// Inner array is null if the player with the given ID/index is out of the game
+	// TODO: add an ID in the Player class to be able to put null here
+	public List<List<ICard>> getAllPlayerCards() {
+		Player[] players = getPlayers();
+		List<List<ICard>> result = new ArrayList<>();
+		for (int i = 0; i < players.length; i++) {
+			result.add(players[i].getCards());
+		}
+		return result;
+	}
 
-    // Inner array is null if the player with the given ID/index is out of the game
-    // TODO: add an ID in the Player class to be able to put null here
-    public List<List<ICard>> getAllPlayerCards() {
-        Player[] players = getPlayers();
-        List<List<ICard>> result = new ArrayList<>();
-        for (int i = 0; i < players.length; i++) {
-            result.add(players[i].getCards());
-        }
-        return result;
-    }
+	public int getPlayersLeft() {
+		return players.playersLeft();
+	}
 
-    public int getPlayersLeft() {
-        return players.playersLeft();
-    }
-
-    // Current player
-    public int getCurrentPlayer() {
-        return players.getCurrent().getPlayer().getId();
-    }
+	// Current player
+	public int getCurrentPlayer() {
+		return players.getCurrent().getPlayer().getId();
+	}
 
     public void reverse(){
         players.changeRotation();
@@ -173,13 +172,17 @@ public class Game implements IActOnGame {
      * @param choices is the set of cards the current player has tried to play
      */
     private void checkPlayersProgress(Node current, boolean currentHasOnlyOneCard, List<ICard> choices){
-        if (currentHasOnlyOneCard && !current.uno()) {
+        if (currentHasOnlyOneCard && !current.getPlayer().uno()) {
             //penalise: draw 3 cards.
             current.giveCardToPlayer(deck.drawCard());
             current.giveCardToPlayer(deck.drawCard());
             current.giveCardToPlayer(deck.drawCard());
+            publisher.publish(this);
         }else if (players.IsPlayerOutOfCards(current) ) {
-            if (choices.size() > 1 || current.uno()) players.playerFinished(current);
+            if (choices.size() > 1 || current.getPlayer().uno()){
+                players.playerFinished(current);
+                publisher.publish(this);
+            }
         }
     }
 
@@ -213,15 +216,8 @@ public class Game implements IActOnGame {
         return deck.drawCard();
     }
 
-    // Setter and getter for setting  the color of chosen wildcards
-    // during the current turn, this means there is no way of choosing
-    // different colors for different wildcards if multiple is played
     public Color getChosenColor(){
         return wildCardColor;
-    }
-
-    public void setColor(Color color) {
-        wildCardColor = color;
     }
 
     public Deck getDeck(){
@@ -251,7 +247,7 @@ public class Game implements IActOnGame {
 
     /**
      * Used for testing purposes, simulates a player choosing a card
-     */
+      */
     public void simulatePlayerChoosingCard() {
         Random rand = new Random();
         Player currentPlayer = players.getCurrent().getPlayer();

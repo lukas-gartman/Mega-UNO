@@ -31,8 +31,9 @@ public class CardFactory {
         switch (type) {
             case NUMBERCARD -> null;
             case REVERSECARD -> new ActionCard(new ReverseAction(), color, type);
-            case WILDCARD -> new ActionCard(new TakeFourAction(), color, type);
             case TAKETWO -> new ActionCard(new TakeTwoAction(), color, type);
+            case TAKEFOUR -> new ActionCard(new TakeFourAction(), color, type);
+            case WILDCARD -> new ActionCard(new WildCardAction(),color,type);
         };
     }
 }

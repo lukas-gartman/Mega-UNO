@@ -7,6 +7,7 @@ public enum CardType {
     REVERSECARD("ActionCard"),
     WILDCARD("ActionCard"),
     TAKETWO("ActionCard"),
+    TAKEFOUR("ActionCard"),
     ;
     private final String typeOf;
     CardType(String typeOf) {

@@ -5,7 +5,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.megauno.app.model.Cards.Color;
 import org.megauno.app.model.Cards.ICard;
-import org.megauno.app.model.Cards.Impl.ActionCard;
 import org.megauno.app.model.Cards.Impl.NumberCard;
 
 import java.util.ArrayList;
@@ -13,22 +12,20 @@ import java.util.List;
 
 
 public class PlayerTest extends TestCase {
-    Player empltyPlayer;
-    Player cardsPlayer;
-    List<ICard> cards = new ArrayList<>();
+    private Player emptyPlayer;
+    private Player cardsPlayer;
+    private List<ICard> cards = new ArrayList<>();
     @Override
     protected void setUp() throws Exception {
         super.setUp();
         cards.add(new NumberCard(Color.GREEN,5));
         cards.add(new NumberCard(Color.BLUE,5));
         cards.add(new NumberCard(Color.GREEN,8));
-
-
     }
     @Before
     public void makePlayer(){
-        empltyPlayer = new Player();
-        cardsPlayer = new Player();
+        emptyPlayer = new Player(0);
+        cardsPlayer = new Player(1);
 
         for (ICard c:cards) {
             cardsPlayer.addCard(c);
@@ -37,25 +34,23 @@ public class PlayerTest extends TestCase {
     }
 
     @Test
-    public void testUnSelectedAllCardsWithNoCards(){
-        empltyPlayer.discardAllSelectedCards();
-        assertTrue(empltyPlayer.play().size() == 0);
+    public void testUnSelectedAllCardsWithNoCards() {
+        emptyPlayer.discardAllSelectedCards();
+        assertTrue(emptyPlayer.play().size() == 0);
     }
+
     @Test
-    public void testUnSelectAllWithCardsSomeCards(){
+    public void testUnSelectAllWithCardsSomeCards() {
         cardsPlayer.discardAllSelectedCards();
         assertTrue(cardsPlayer.play().size() == 0);
     }
 
-
     @Test
-    public void testSelectingCardWithCardSomeCards(){
-        for (ICard c:cards) {
-            empltyPlayer.addCard(c);
-            empltyPlayer.selectCard(c);
+    public void testSelectingCardWithCardSomeCards() {
+        for (ICard c : cards) {
+            emptyPlayer.addCard(c);
+            emptyPlayer.selectCard(c);
         }
-        assertTrue(empltyPlayer.play().containsAll(cards));
+        assertTrue(emptyPlayer.play().containsAll(cards));
     }
-
-
 }
