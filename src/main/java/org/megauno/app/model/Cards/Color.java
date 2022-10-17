@@ -21,6 +21,6 @@ public enum Color {
             if (ct.getIndex() == index)
                 return ct;
         }
-        throw new IllegalArgumentException();
+        throw new IllegalArgumentException("Index out of bounds");
     }
 }

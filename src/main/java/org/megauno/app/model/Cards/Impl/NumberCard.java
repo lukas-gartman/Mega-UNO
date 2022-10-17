@@ -66,24 +66,28 @@ public class NumberCard extends AbstractCard {
      */
     @Override
     public boolean canBePlayed(ICard c) {
-        return c.visit(this);
-        //return c.canBePlayedOnMe(this);
+        return c.canBePlayedOnMe(this);
     }
 
+    /**
+     * Visitor Pattern. Checks that the given card can be played on this card.
+     * @param numberCard The card that wants to be played on this card
+     * @return Weather it can be played on this or not.
+     */
     @Override
-    public boolean canBePlayedOnMe(NumberCard c) {
-        return this.getColor() == c.getColor() || this.value == c.getValue();
+    public boolean canBePlayedOnMe(NumberCard numberCard) {
+        return this.getColor() == numberCard.getColor() || this.value == numberCard.getValue();
     }
 
+    /**
+     * Visitor Pattern. Checks that the given card can be played on this card.
+     * @param actionCard The card that wants to be played on this card
+     * @return Weather it can be played on this or not.
+     */
     @Override
-    public boolean canBePlayedOnMe(ActionCard c) {
-        return this.getColor() == c.getColor();
+    public boolean canBePlayedOnMe(ActionCard actionCard) {
+        return this.getColor() == actionCard.getColor();
     }
-
-    /*@Override
-    public boolean canBePlayed(NumberCard nc) {
-        return this.getColor() == nc.getColor() || this.value == nc.getValue();
-    }*/
 
     // Shallow copy, no need for deep copy since the attributes are immutable.
     @Override
@@ -98,24 +102,24 @@ public class NumberCard extends AbstractCard {
      * @param ac The card that wants to be played on this card
      * @return Weather it can be played on this or not.
      */
+    /*
     @Override
     public boolean visit(ActionCard ac) {
         return this.getColor() == ac.getColor();
     }
+     */
 
+/*
     @Override
     public boolean visit(NumberCard nc) {
         return this.getColor() == nc.getColor() || this.value == nc.getValue();
     }
+*/
 
     @Override
     public boolean activate(IActOnGame g) {
         return true;
     }
-
-
-
-
 
 
     @Override

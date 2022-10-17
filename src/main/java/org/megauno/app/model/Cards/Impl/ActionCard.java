@@ -9,6 +9,10 @@ import java.util.Objects;
 public class ActionCard extends AbstractCard {
    private final IAction action;
 
+   public IAction getAction() {
+      return this.action;
+   }
+
    @Override
    public String toString() {
       return "ActionCard{" +
@@ -27,12 +31,13 @@ public class ActionCard extends AbstractCard {
       this.action = action;
    }
 
+   // getClass such that an overriden method in Actions isn't needed
    //public void getAction();
    @Override
    public boolean equals(Object o) {
       if (this == o) return true;
       if (!(o instanceof ActionCard that)) return false;
-      return action.equals(that.action) && this.getColor() == that.getColor();
+      return action.getClass() == ((ActionCard) o).getAction().getClass() && this.getColor() == that.getColor();
    }
 
    @Override
@@ -45,6 +50,7 @@ public class ActionCard extends AbstractCard {
       return action.execute(g);
    }
 
+   // Uses visitor pattern to dynamically determine the type of the parameter
    @Override
    public boolean canBePlayed(ICard c) {
       return c.canBePlayedOnMe(this);
@@ -69,15 +75,19 @@ public class ActionCard extends AbstractCard {
    }
 
    // The visit methods checks that the given card can be placed on themselves
+   /*
    @Override
    public boolean visit(ActionCard ac) {
       return ac.getType() == CardType.WILDCARD || ac.getColor() == this.getColor() || ac.getType() == this.getType();
    }
+    */
 
+   /*
    @Override
    public boolean visit(NumberCard nc) {
       return this.getColor() == nc.getColor();
    }
+    */
 
    @Override
    public boolean canBeStacked(ICard c) {
@@ -86,7 +96,7 @@ public class ActionCard extends AbstractCard {
 
    @Override
    public boolean canBeStackedUnder(ActionCard ac) {
-      return ac.action == this.action;
+      return ac.getAction().getClass() == action.getClass();
    }
 
    @Override

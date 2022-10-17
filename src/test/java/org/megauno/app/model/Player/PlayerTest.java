@@ -1,56 +1,86 @@
 package org.megauno.app.model.Player;
 
 import junit.framework.TestCase;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.megauno.app.model.Cards.Color;
 import org.megauno.app.model.Cards.ICard;
+import org.megauno.app.model.Cards.Impl.ActionCard;
 import org.megauno.app.model.Cards.Impl.NumberCard;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class PlayerTest extends TestCase {
-    private Player emptyPlayer;
-    private Player cardsPlayer;
-    private List<ICard> cards = new ArrayList<>();
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
+public class PlayerTest {
+    Player emptyPlayer;
+    Player  player;
+    List<ICard> cards = new ArrayList<>();
+
+    @Before
+    public void setUp() throws Exception {
         cards.add(new NumberCard(Color.GREEN,5));
         cards.add(new NumberCard(Color.BLUE,5));
         cards.add(new NumberCard(Color.GREEN,8));
-    }
-    @Before
-    public void makePlayer(){
-        emptyPlayer = new Player(0);
-        cardsPlayer = new Player(1);
-
-        for (ICard c:cards) {
-            cardsPlayer.addCard(c);
-            cardsPlayer.selectCard(c);
-        }
+        emptyPlayer = new Player();
+        player = new Player();
+        player.addCards(cards);
     }
 
     @Test
-    public void testUnSelectedAllCardsWithNoCards() {
+    public void testUnSelectedAllCardsWithNoCards(){
         emptyPlayer.discardAllSelectedCards();
-        assertTrue(emptyPlayer.play().size() == 0);
+        assert(emptyPlayer.play().size() == 0);
     }
 
     @Test
-    public void testUnSelectAllWithCardsSomeCards() {
-        cardsPlayer.discardAllSelectedCards();
-        assertTrue(cardsPlayer.play().size() == 0);
+    public void testUnSelectAllWithCardsSomeCards(){
+        player.discardAllSelectedCards();
+        assert(player.play().size() == 0);
     }
 
+
     @Test
-    public void testSelectingCardWithCardSomeCards() {
-        for (ICard c : cards) {
+    public void testSelectingCardWithCardSomeCards(){
+        for (ICard c:cards) {
             emptyPlayer.addCard(c);
             emptyPlayer.selectCard(c);
         }
-        assertTrue(emptyPlayer.play().containsAll(cards));
+        assert(emptyPlayer.play().containsAll(cards));
     }
+
+    @Test
+    public void testUnSelectCard() {
+        for (ICard c : cards) {
+            player.selectCard(c);
+        }
+
+        int selectedCardsBefore = player.getSelectedCards().size();
+        player.unSelectCard(cards.get(0));
+        assert(player.getSelectedCards().size() == (selectedCardsBefore - 1));
+    }
+
+    @Test
+    public void testGetCards() {
+        List<ICard> collectedCards = player.getCards();
+        for (int i = 0; i < collectedCards.size(); i++) {
+            assert(collectedCards.get(i).equals(cards.get(i)));
+        }
+        assert(collectedCards.size() == cards.size());
+        //assert(collectedCards.size() == cardsPlayer.numOfCards());
+    }
+
+    @Test
+    public void testConstructor() {
+        Player playerWithCards = new Player(cards);
+        assert(playerWithCards.numOfCards() == cards.size());
+    }
+
+    @Test
+    public void testUno() {
+        player.sayUno();
+        assert(player.uno());
+    }
+
 }

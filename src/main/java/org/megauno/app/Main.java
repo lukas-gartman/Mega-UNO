@@ -9,4 +9,5 @@ public class Main {
 //        config.setMaximized(true);
         new Lwjgl3Application(new Application(), config);
     }
+
 }

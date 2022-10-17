@@ -5,7 +5,7 @@ import org.megauno.app.model.Cards.ICard;
 import org.megauno.app.model.Deck;
 
 public interface IActOnGame {
-    PlayerCircle getPlayerCircle();
+    PlayerCircle getPlayers();
     Deck getDeck();
     ICard draw();
 
