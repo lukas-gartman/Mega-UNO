@@ -42,7 +42,7 @@ public class ViewlessGame {
     public static void simulateGame() throws InterruptedException {
         Scanner input = new Scanner(System.in);
         System.out.println("Starting the game");
-        while(game.getPlayers().getPlayers().length > 1) {
+        while(game.getPlayerCircle().getPlayers().length > 1) {
             game.tryPlayTest();
             Thread.sleep(1000);
             System.out.println("\n|||||||||| New round |||||||||| \n");
@@ -53,7 +53,7 @@ public class ViewlessGame {
     public static List<Player> generatePlayers(int n) {
         List<Player> playerList = new ArrayList<>();
         for (int i = 0; i < n; i++) {
-            playerList.add(new Player(deck.dealHand(1)));
+            playerList.add(new Player(2,deck.dealHand(1)));
         }
         return playerList;
     }
