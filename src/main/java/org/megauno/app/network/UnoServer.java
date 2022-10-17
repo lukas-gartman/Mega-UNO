@@ -10,8 +10,8 @@ import java.util.Set;
 
 public class UnoServer extends Server implements SendInfoToClients{
 
-    public UnoServer(int port, Publisher<Tuple<ClientHandler, Integer>> publisher, JSONReader jsonReader) throws IllegalAccessException {
-        super(port, publisher, jsonReader);
+    public UnoServer(int port, Publisher<Tuple<ClientHandler, Integer>> publisher, JsonReaderCreator jsonReaderCreator) throws IllegalAccessException {
+        super(port, publisher, jsonReaderCreator);
     }
 
     @Override

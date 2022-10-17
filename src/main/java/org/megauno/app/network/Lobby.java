@@ -11,8 +11,6 @@ import java.util.concurrent.Phaser;
 
 public class Lobby {
     private volatile BiHashMap<ClientHandler, Integer> clientHandlers;
-    private volatile PlayerCircle players = new PlayerCircle();
-    private BiHashMap<Integer, Player> playersWithID = new BiHashMap<>();
     private volatile UnoServer server;
     private Phaser phaser;
     private final Publisher<Tuple<ClientHandler, Integer>> serverPublisher = new Publisher<>();
@@ -30,14 +28,14 @@ public class Lobby {
             clientHandlers.put(clientHandler, id);
     }
 
-    public void host(JSONReader jsonReader) throws IllegalAccessException {
-        server = new UnoServer(1337, serverPublisher, jsonReader); // Game host holds the server object
+    public List<Integer> host(JsonReaderCreator jsonReaderCreator) throws IllegalAccessException {
+        server = new UnoServer(1337, serverPublisher, jsonReaderCreator); // Game host holds the server object
         serverPublisher.addSubscriber(this::delivery); // subscribe self to changes to client handlers
         new Thread(server).start(); // Start the server on a new thread to prevent blocking
         clientHandlers = server.getClientHandlers(); // initialise the map of clientHandlers
-        Client client = new Client("Host","localhost", 1337, jsonReader); // Create client for the host
-        new Client("player 1","localhost", 1337, jsonReader); // dummy client
-        new Client("player 2","localhost", 1337, jsonReader); // dummy client
+        //Client client = new Client("Host","localhost", 1337, o->{}); // Create client for the host
+        //new Client("player 1","localhost", 1337, o->{}); // dummy client
+        //new Client("player 2","localhost", 1337, o->{}); // dummy client
 
         //Waiting for host to start
         new Thread(() -> {
@@ -46,30 +44,15 @@ public class Lobby {
             while (!scanner.nextLine().equals("start")) // Start the game by typing "start"
                 System.out.print("enter: ");
 
-            // Create the players
-            for (int id : clientHandlers.getRightKeys()) {
-                Player p = new Player();
-                players.addNode(p);
-                playersWithID.put(id, p);
-            }
-
             this.phaser.arrive(); // The task is finished
         }).start();
-
+        return clientHandlers.getRightKeys().stream().toList();
     }
 
     private void join() {
         this.phaser.register(); // Indicate the user is not ready to play
         // todo: implement logic for joining a lobby
         this.phaser.arrive(); // Indicate the user is now ready to play
-    }
-
-    public PlayerCircle getPlayerCircle() {
-        return this.players;
-    }
-
-    public BiHashMap<Integer, Player> getPlayersWithID() {
-        return this.playersWithID;
     }
 
     public SendInfoToClients getInfoSender(){

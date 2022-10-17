@@ -18,8 +18,8 @@ public class Server implements IServer, Runnable {
     private static int cid = 0;
     private JSONReader jsonReader;
         
-    public Server(int port, Publisher<Tuple<ClientHandler, Integer>> publisher, JSONReader jsonReader) throws IllegalAccessException {
-        this.jsonReader = jsonReader;
+    public Server(int port, Publisher<Tuple<ClientHandler, Integer>> publisher, JsonReaderCreator jsonReaderCreator) throws IllegalAccessException {
+        this.jsonReader = jsonReaderCreator.createReader(clientHandlers.getRightKeys().stream().toList());
         try {
             this.server = new ServerSocket(port);
         } catch (IOException ex) {
