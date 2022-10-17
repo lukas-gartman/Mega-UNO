@@ -20,6 +20,10 @@ public class Node<c> {
         player.addCard(item);
     }
 
+    public int getHandSize(){
+        return player.numOfCards();
+    }
+
     public IPlayer getPlayer(){
         return player;
     }

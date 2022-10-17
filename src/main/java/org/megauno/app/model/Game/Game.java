@@ -99,7 +99,7 @@ public class Game implements IActOnGame {
     public void try_play() {
         Node<ICard> current = players.getCurrent();
         List<ICard> choices = players.currentMakeTurn();
-        boolean currentHasOnlyOneCard = current.getPlayer().numOfCards() == 1;
+        boolean currentHasOnlyOneCard = current.getHandSize() == 1;
 
         if (validPlay(choices, current)) {
             for (ICard choice : choices) {
