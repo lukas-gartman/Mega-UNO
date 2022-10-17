@@ -23,8 +23,8 @@ public class PlayerTest {
         cards.add(new NumberCard(Color.GREEN,5));
         cards.add(new NumberCard(Color.BLUE,5));
         cards.add(new NumberCard(Color.GREEN,8));
-        emptyPlayer = new Player();
-        player = new Player();
+        emptyPlayer = new Player(10);
+        player = new Player(20);
         player.addCards(cards);
     }
 
@@ -73,7 +73,7 @@ public class PlayerTest {
 
     @Test
     public void testConstructor() {
-        Player playerWithCards = new Player(cards);
+        Player playerWithCards = new Player(33, cards);
         assert(playerWithCards.numOfCards() == cards.size());
     }
 
