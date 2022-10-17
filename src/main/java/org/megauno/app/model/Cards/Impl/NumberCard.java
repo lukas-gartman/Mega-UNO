@@ -122,10 +122,6 @@ public class NumberCard extends AbstractCard {
     }
 
 
-
-
-
-
     @Override
     public boolean canBeStacked(ICard c) {
         return c.canBeStackedUnder(this);

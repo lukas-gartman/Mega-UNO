@@ -54,6 +54,10 @@ public class Player {
     public List<ICard> getCards(){
         return copyCards(hand);
     }
+
+    public List<ICard> getSelectedCards() {
+        return selectedCards;
+    }
     public void addCard(ICard card){
         hand.add(card.copyCard());
     }

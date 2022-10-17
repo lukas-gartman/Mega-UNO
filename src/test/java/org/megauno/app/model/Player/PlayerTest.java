@@ -14,51 +14,72 @@ import java.util.List;
 
 
 public class PlayerTest {
-    Player empltyPlayer;
-    Player cardsPlayer;
+    Player emptyPlayer;
+    Player  player;
     List<ICard> cards = new ArrayList<>();
-    //setUp();
-    //makePlayer();
+
     @Before
     public void setUp() throws Exception {
         cards.add(new NumberCard(Color.GREEN,5));
         cards.add(new NumberCard(Color.BLUE,5));
         cards.add(new NumberCard(Color.GREEN,8));
-
-
-    }
-    @Before
-    public void makePlayer() throws Exception {
-        empltyPlayer = new Player();
-        cardsPlayer = new Player();
-        setUp();
-
-        for (ICard c:cards) {
-            cardsPlayer.addCard(c);
-            cardsPlayer.selectCard(c);
-        }
+        emptyPlayer = new Player();
+        player = new Player();
+        player.addCards(cards);
     }
 
     @Test
     public void testUnSelectedAllCardsWithNoCards(){
-        empltyPlayer.discardAllSelectedCards();
-        Assert.assertTrue(empltyPlayer.play().size() == 0);
+        emptyPlayer.discardAllSelectedCards();
+        assert(emptyPlayer.play().size() == 0);
     }
     @Test
     public void testUnSelectAllWithCardsSomeCards(){
-        cardsPlayer.discardAllSelectedCards();
-        Assert.assertTrue(cardsPlayer.play().size() == 0);
+        player.discardAllSelectedCards();
+        assert(player.play().size() == 0);
     }
 
 
     @Test
     public void testSelectingCardWithCardSomeCards(){
         for (ICard c:cards) {
-            empltyPlayer.addCard(c);
-            empltyPlayer.selectCard(c);
+            emptyPlayer.addCard(c);
+            emptyPlayer.selectCard(c);
         }
-        Assert.assertTrue(empltyPlayer.play().containsAll(cards));
+        assert(emptyPlayer.play().containsAll(cards));
     }
 
+    @Test
+    public void testUnSelectCard() {
+        for (ICard c : cards) {
+            player.selectCard(c);
+        }
+
+        int selectedCardsBefore = player.getSelectedCards().size();
+        player.unSelectCard(cards.get(0));
+        assert(player.getSelectedCards().size() == (selectedCardsBefore - 1));
+    }
+
+    @Test
+    public void testGetCards() {
+        List<ICard> collectedCards = player.getCards();
+        for (int i = 0; i < collectedCards.size(); i++) {
+            assert(collectedCards.get(i).equals(cards.get(i)));
+        }
+        assert(collectedCards.size() == cards.size());
+        //assert(collectedCards.size() == cardsPlayer.numOfCards());
+    }
+
+    @Test
+    public void testConstructor() {
+        Player playerWithCards = new Player(cards);
+        assert(playerWithCards.numOfCards() == cards.size());
+    }
+
+    @Test
+    public void testUno() {
+        player.sayUno();
+        assert(player.uno());
+    }
 
 }
