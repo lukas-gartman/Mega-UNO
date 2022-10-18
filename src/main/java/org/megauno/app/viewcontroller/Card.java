@@ -123,21 +123,10 @@ public class Card implements IDrawable {
 		// Draw card, with a tint if unselected
 		if (!selected) {
 			batch.setColor(new com.badlogic.gdx.graphics.Color(0.7f, 0.7f, 0.7f, 0.7f));   // A bit greyed out
-			batch.draw(sprite, x, y);
+			drawAll(batch);
 			batch.setColor(com.badlogic.gdx.graphics.Color.WHITE);
 		} else {
-			batch.draw(sprite, x, y);
-		}
-		// Draw number if number card
-		if (card.getNumber() != null) {
-			fnt.draw(batch, card.getNumber().toString(), x, y + sprite.getHeight());
-		}
-
-		// Draw type of card, reverse, take 2 etc.
-		String type = getTypeInString();
-
-		if (type != null){
-			batch.draw(spriteFetcher.tryGetDataUnSafe(type), x, y);
+			drawAll(batch);
 		}
 
 		// Draw color options if a clicked wildcard
@@ -145,6 +134,22 @@ public class Card implements IDrawable {
 			for (ColorOption colorOption : colorOptions) {
 				colorOption.draw(delta, batch);
 			}
+		}
+	}
+
+	// Card and every sub-element, not color options
+	private void drawAll(Batch batch) {
+		batch.draw(sprite, x, y);
+		// Draw number if number card
+		if (card.getNumber() != null) {
+			fnt.draw(batch, card.getNumber().toString(), x + 5, y + sprite.getHeight() - 5);
+		}
+
+		// Draw type of card, reverse, take 2 etc.
+		String type = getTypeInString();
+
+		if (type != null){
+			batch.draw(spriteFetcher.tryGetDataUnSafe(type), x, y);
 		}
 	}
 
@@ -161,7 +166,7 @@ public class Card implements IDrawable {
 		colorOptions = new ArrayList<>();
 		for (int i = 0; i < allColors.length; i++) {
 			Color c = allColors[i];
-			colorOptions.add(new ColorOption(c, x + (40*i) - 60, y + 50));
+			colorOptions.add(new ColorOption(c, x + (40*i), y + 50));
 		}
 	}
 
