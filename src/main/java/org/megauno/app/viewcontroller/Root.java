@@ -10,19 +10,17 @@ import org.megauno.app.utility.Publisher.condition.ConPublisher;
 import org.megauno.app.utility.Publisher.normal.Publisher;
 import org.megauno.app.viewcontroller.players.GameView;
 
-import java.util.Arrays;
-
-public class Root {
-
+public class Root implements ViewPublisher {
+    private Publisher<Integer> onNewPlayer = new Publisher<>();
+    private Publisher<IdCard> onNewTopCard = new Publisher<>();
+    private ConPublisher<PlayersCards>onCardsAddedToPlayer = new ConPublisher<>();
+    private ConPublisher<PlayersCards> onCardsRemovedByPlayer = new ConPublisher<>();
 
     private GameView gameView;
-    private  ViewController vc;
-    private Batch batch;
-    public Root(int playerID, int[] otherPlayersIds, GameController gameController, ViewPublisher viewPublisher) {
-
-        //vc = new ViewController(playerID,otherPlayersIds,viewPublisher,gameController);
-        gameView = new GameView(playerID, otherPlayersIds, viewPublisher, gameController);
+    private SpriteBatch batch;
+    public Root(int playerID, int[] otherPlayersIds, GameController gameController) {
         batch = new SpriteBatch();
+        gameView = new GameView(playerID,otherPlayersIds,this, gameController);
     }
 
     public void draw(){
@@ -33,5 +31,24 @@ public class Root {
         batch.end();
     }
 
+    @Override
+    public Publisher<Integer> onNewPlayer() {
+        return onNewPlayer;
+    }
+
+    @Override
+    public Publisher<IdCard> onNewTopCard() {
+        return onNewTopCard;
+    }
+
+    @Override
+    public ConPublisher<PlayersCards> onCardsAddedToPlayer() {
+        return onCardsAddedToPlayer;
+    }
+
+    @Override
+    public ConPublisher<PlayersCards> onCardsRemovedByPlayer() {
+        return onCardsRemovedByPlayer;
+    }
 
 }

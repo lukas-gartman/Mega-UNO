@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.megauno.app.ClientApplication;
 import org.megauno.app.model.Cards.ICard;
 import org.megauno.app.viewcontroller.Clickable;
 import org.megauno.app.viewcontroller.GameController;
@@ -90,11 +89,9 @@ public class GameView implements IDrawable {
 
 		private Clickable clickable;
 
-		private Sprite sprite;
+		private Sprite sprite = new Sprite(new Texture("assets\\Tomte.png"));
 
 		public EndTurnButton(float x, float y) {
-
-			sprite = ClientApplication.spriteFetcher.tryGetDataUnSafe("Tomte.png");
 			this.x = x;
 			this.y = y;
 

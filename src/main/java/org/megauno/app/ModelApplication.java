@@ -44,6 +44,7 @@ public class ModelApplication extends ApplicationAdapter {
 			Player p = new Player();
 			playersWithID.put(id,p);
 		}
+		System.out.println(ids);
 		PlayerCircle pc = new PlayerCircle(playersWithID.getRightKeys().stream().toList());
 		game = new Game(pc);
 	}

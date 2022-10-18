@@ -33,13 +33,25 @@ public class ViewController{
 
 	// TODO: have empty constructor, get IGame from either controller (client)
 	// or "Lobby" object of model (server) (subscribe to an event of "GameStarting")
-	public ViewController(int playerId, int[] ids,ViewPublisher publishers,GameController gameController) {
+	public ViewController(int[] ids,ViewPublisher publishers,GameController gameController) {
 		this.publishers = publishers;
 		// Create all game views, stored in gameViews
-
+		for (int id : ids) {
+			int[] otherplayers = new int[ids.length-1];
+			int i = 0;
+			for (int innerId :ids) {
+				if(id != innerId){
+					otherplayers[i] = innerId;
+					i++;
+				}
+			}
+			gameViews.add(new GameView(id,otherplayers,publishers,gameController));
+		}
 		batch = new SpriteBatch();
-		currentGameView = new GameView(playerId,ids,publishers,gameController);
 
+		publishers.onNewPlayer().addSubscriber(
+				(id) -> newPlayerId(id)
+		);
 	}
 
 	// Necessary call from top level window handler (Application),

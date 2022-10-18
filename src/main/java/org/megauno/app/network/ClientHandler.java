@@ -43,10 +43,6 @@ public class ClientHandler implements Runnable {
      * @param json the object to send
      */
     public void send(JSONObject json) {
-<<<<<<< Updated upstream
-=======
-        System.out.println("Send to: " + id + " " + json.toString());
->>>>>>> Stashed changes
         try {
             bw.write(json.toString());
             bw.newLine();
@@ -54,7 +50,6 @@ public class ClientHandler implements Runnable {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
-        System.out.println("done with send");
     }
 
     public void disconnect() {

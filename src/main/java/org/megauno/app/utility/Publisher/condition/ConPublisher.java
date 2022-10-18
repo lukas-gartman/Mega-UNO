@@ -16,8 +16,7 @@ public class ConPublisher<newsPaper> implements IConPublisher<newsPaper> {
 
     @Override
     public void addSubscriber(Subscriber<newsPaper> sub) {
-        addSubscriberWithCondition(sub,(np) ->
-        {return true;});
+        addSubscriberWithCondition(sub,(np) -> {return true;});
     }
 
     @Override
@@ -31,9 +30,7 @@ public class ConPublisher<newsPaper> implements IConPublisher<newsPaper> {
 
     public void publish(newsPaper np){
         for (Subscriber<newsPaper> sub : conDict.keySet()){
-            if(conDict.get(sub).isOk(np)){
-                sub.delivery(np);
-            }
+            sub.delivery(np);
         }
     }
 }
