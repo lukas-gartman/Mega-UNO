@@ -11,6 +11,7 @@ import org.megauno.app.ClientApplication;
 import org.megauno.app.model.Cards.ICard;
 import org.megauno.app.viewcontroller.Clickable;
 import org.megauno.app.viewcontroller.GameController;
+import org.megauno.app.viewcontroller.LoadedData;
 import org.megauno.app.viewcontroller.ViewPublisher;
 import org.megauno.app.viewcontroller.datafetching.IDrawable;
 import org.megauno.app.viewcontroller.players.otherplayers.OtherPlayer;
@@ -90,14 +91,14 @@ public class GameView implements IDrawable {
 
 		private Clickable clickable;
 
-		private Sprite sprite;
+		private Sprite sprite = ClientApplication.Tomte;
 
 		public EndTurnButton(float x, float y) {
 
-			sprite = ClientApplication.spriteFetcher.tryGetDataUnSafe("Tomte.png");
+
 			this.x = x;
 			this.y = y;
-
+			//sprite = ClientApplication.Tomte;
 			clickable = new Clickable(sprite.getWidth(), sprite.getHeight());
 		}
 

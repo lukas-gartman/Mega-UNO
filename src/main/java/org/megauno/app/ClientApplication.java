@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.megauno.app.model.Cards.AbstractCard;
 import org.megauno.app.model.Cards.CardType;
 import org.megauno.app.model.Cards.Color;
 import org.megauno.app.model.Cards.ICard;
@@ -21,29 +20,41 @@ import org.megauno.app.network.Client;
 import org.megauno.app.network.IdCard;
 import org.megauno.app.network.PlayersCards;
 import org.megauno.app.utility.Publisher.condition.ConPublisher;
-import org.megauno.app.utility.Publisher.dataFetching.DataFetcher;
-import org.megauno.app.utility.Publisher.dataFetching.PathDataFetcher;
 import org.megauno.app.utility.Publisher.normal.Publisher;
+import org.megauno.app.utility.dataFetching.DataFetcher;
+import org.megauno.app.utility.dataFetching.PathDataFetcher;
 import org.megauno.app.viewcontroller.GameController;
+import org.megauno.app.viewcontroller.LoadedData;
 import org.megauno.app.viewcontroller.Root;
 import org.megauno.app.viewcontroller.ViewPublisher;
+import org.megauno.app.viewcontroller.datafetching.FontLoader;
 
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Scanner;
 
 public class ClientApplication extends ApplicationAdapter implements GameController, ViewPublisher {
+    static public Sprite BlueCard;
+    static public Sprite BackSideOfCard;
+    static public Sprite GreenCard;
+    static public Sprite RedCard;
+    static public Sprite Reverse;
+    static public Sprite Take2;
+    static public Sprite Take4;
+    static public Sprite Tomte;
+    static public Sprite WhiteCard;
+    static public Sprite WildCard;
+    static public Sprite YellowCard;
+    static public BitmapFont Minecraft;
+
     private Publisher<Integer> onNewPlayer = new Publisher<>();
     private Publisher<IdCard> onNewTopCard = new Publisher<>();
     private ConPublisher<PlayersCards> onCardsAddedToPlayer = new ConPublisher<>();
     private ConPublisher<PlayersCards> onCardsRemovedByPlayer = new ConPublisher<>();
     private Client client;
-    private Root root = null;
-    public static DataFetcher<String, Sprite> spriteFetcher;
-    public static DataFetcher<String, BitmapFont> bitmapFontFetcher;
-    public Texture t = new Texture("assets/Tomte.png");
+    private Root root;
+    public static LoadedData LOADEDDATA;
 
 
 
@@ -53,7 +64,31 @@ public class ClientApplication extends ApplicationAdapter implements GameControl
 
     @Override
     public void create() {
+        DataFetcher<String, Sprite> spriteDataFetcher = new PathDataFetcher<>(
+                key -> new Sprite(new Texture(key)), "assets/"
+        );
+        DataFetcher<String, BitmapFont> bitmapFontDataFetcher = new PathDataFetcher<>(
+                key -> new BitmapFont(Gdx.files.internal(key)), "assets/"
+        );
 
+        this.BlueCard = spriteDataFetcher.tryGetDataUnSafe("BlueCard.png");
+        this.BackSideOfCard = spriteDataFetcher.tryGetDataUnSafe("Card.png");
+        this.GreenCard = spriteDataFetcher.tryGetDataUnSafe("GreenCard.png");
+        this.RedCard= spriteDataFetcher.tryGetDataUnSafe("RedCard.png");
+        this.Reverse= spriteDataFetcher.tryGetDataUnSafe("Reverse.png");
+        this.Take2= spriteDataFetcher.tryGetDataUnSafe("Take2.png");
+        this.Take4= spriteDataFetcher.tryGetDataUnSafe("Take4.png");
+        this.Tomte= spriteDataFetcher.tryGetDataUnSafe("Tomte.png");
+        this.WhiteCard= spriteDataFetcher.tryGetDataUnSafe("WhiteCard.png");
+        this.WildCard= spriteDataFetcher.tryGetDataUnSafe("WildCard.png");
+        this.YellowCard= spriteDataFetcher.tryGetDataUnSafe("YellowCard.png");
+        this.Minecraft = bitmapFontDataFetcher.tryGetDataUnSafe("minecraft.fnt");
+
+
+        root = new Root();
+
+
+        System.out.println("");
         Scanner scanner = new Scanner(System.in);
         System.out.print("Nickname: ");
         //String nickname = scanner.nextLine();
@@ -61,6 +96,7 @@ public class ClientApplication extends ApplicationAdapter implements GameControl
         //String hostName = scanner.nextLine();
         System.out.print("Port (0-65535): ");
         //int port = scanner.nextInt();
+
         client = new Client("dude","localhost",1337,o->
         {
             if(o.getString("Type").equals("Start")){
@@ -69,25 +105,17 @@ public class ClientApplication extends ApplicationAdapter implements GameControl
                 for (int i = 0; i < otherPlayers.length; i++) {
                     otherPlayers[i] = (int) jsonArray.get(i);
                 }
-                root = new Root(o.getInt("PlayerId"),otherPlayers,this,this);
+                root.start(o.getInt("PlayerId"),otherPlayers,this,this);
             }else {
                 respondToJSON(o);
             }
         });
-        spriteFetcher = new PathDataFetcher<>(
-                (key) ->  {
-                    return new Sprite(new Texture(key));
-                },"./assets/");
-        bitmapFontFetcher = new PathDataFetcher<BitmapFont>(
-                (key) ->  {
-                    return new BitmapFont(Gdx.files.internal(key));
-                },"./assets/");
+
     }
 
     @Override
     public void render() {
-        if (root != null)
-            root.draw();
+        root.draw();
     }
 
      void respondToJSON(JSONObject o) {
@@ -126,7 +154,6 @@ public class ClientApplication extends ApplicationAdapter implements GameControl
                  for (int i = 0; i < otherPlayers.length; i++) {
                      otherPlayers[i] = (int) jsonArray.get(i);
                  }
-                 root = new Root(o.getInt("PlayerId"),otherPlayers,this,this);
              }
 
          }

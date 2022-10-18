@@ -17,11 +17,11 @@ import java.util.List;
 import java.util.Scanner;
 
 public class ClientMain {
+    public Texture t = new Texture("assets/Tomte.png");
     public static void main( String[] args ) {
-        ClientApplication app = new ClientApplication();
         Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
         //config.setMaximized(true);
-        new Lwjgl3Application(app, config);
+        new Lwjgl3Application(new ClientApplication(), config);
 
     }
 

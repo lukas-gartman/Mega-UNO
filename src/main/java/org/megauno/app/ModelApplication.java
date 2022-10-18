@@ -30,7 +30,7 @@ public class ModelApplication extends ApplicationAdapter {
 			countDownLatch.await(); // Wait for the host to start the game (blocking call)
 			createGame(lobby.getIds());
 			addLobbySubscriptions(game, lobby.getInfoSender(), cardsWithID, playersWithID);
-//			lobby.getInfoSender().start();
+			lobby.getInfoSender().start();
 			game.addCardsToAllPlayers(7);
 			System.out.println("Starting game!");
 		} catch (IllegalAccessException | InterruptedException e) {

@@ -2,9 +2,10 @@ package org.megauno.app.viewcontroller.players.thisPlayer;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import org.megauno.app.ClientApplication;
 import org.megauno.app.model.Cards.ICard;
-import org.megauno.app.utility.Publisher.dataFetching.DataFetcher;
-import org.megauno.app.utility.Publisher.dataFetching.PathDataFetcher;
+import org.megauno.app.utility.dataFetching.DataFetcher;
+import org.megauno.app.utility.dataFetching.PathDataFetcher;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -12,24 +13,23 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import org.megauno.app.viewcontroller.Clickable;
 import org.megauno.app.viewcontroller.GameController;
+import org.megauno.app.viewcontroller.LoadedData;
 import org.megauno.app.viewcontroller.datafetching.IDrawable;
 
 public class Card implements IDrawable {
-	static DataFetcher<String,Sprite> spriteFetcher = new PathDataFetcher<Sprite>(
-			(key) ->  {
-		return new Sprite(new Texture(key));
-	},"./assets/");
 
-	Sprite red = spriteFetcher.tryGetDataUnSafe("RedCard.png");
-	static Sprite blue = spriteFetcher.tryGetDataUnSafe("BlueCard.png");
-	static Sprite yellow = spriteFetcher.tryGetDataUnSafe("YellowCard.png");
-	static Sprite green = spriteFetcher.tryGetDataUnSafe("GreenCard.png");
-	static Sprite nonColored = spriteFetcher.tryGetDataUnSafe("WhiteCard.png");
-	static DataFetcher<String,BitmapFont> fontFetcher = new PathDataFetcher<BitmapFont>(
-			(key) ->  {
-				return new BitmapFont(Gdx.files.internal(key));
-			},"./assets/");
-	static BitmapFont fnt = fontFetcher.tryGetDataUnSafe("minecraft.fnt");
+
+	static Sprite red = ClientApplication.RedCard;
+	static Sprite blue = ClientApplication.BlueCard;
+	static Sprite yellow = ClientApplication.YellowCard;
+	static Sprite green = ClientApplication.GreenCard;
+	static Sprite nonColored = ClientApplication.WhiteCard;
+	static BitmapFont fnt = ClientApplication.Minecraft;
+	static Sprite whiteCard = ClientApplication.WhiteCard;
+	static Sprite reverse = ClientApplication.Reverse;
+	static Sprite takeTwo = ClientApplication.Take2;
+	static Sprite takeFour = ClientApplication.Take4;
+
 
 	public float x;
 	public float y;
@@ -102,29 +102,29 @@ public class Card implements IDrawable {
 			fnt.draw(batch, card.getNumber().toString(), x, y + sprite.getHeight());
 		}
 
-		String type = getTypeInString();
+		Sprite type = getTypeInString();
 
 		if (type != null){
-			batch.draw(spriteFetcher.tryGetDataUnSafe(type), x, y);
+			batch.draw(type, x, y);
 		}
 
 		// TODO: type image
 	}
 
-	private String getTypeInString(){
-		String special = null;
+	private Sprite getTypeInString(){
+		Sprite special = null;
 		switch (card.getType()){
 			case WILDCARD -> {
-				special = "WildCard.png";
+				special = whiteCard;
 			}
 			case REVERSECARD -> {
-				special = "Reverse.png";
+				special = reverse;
 			}
 			case TAKETWO-> {
-				special = "Take2.png";
+				special = takeTwo;
 			}
 			case TAKEFOUR -> {
-				special = "Take4.png";
+				special = takeFour;
 			}
 		}
 		return special;

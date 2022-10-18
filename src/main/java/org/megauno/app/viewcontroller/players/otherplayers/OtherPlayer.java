@@ -3,8 +3,10 @@ package org.megauno.app.viewcontroller.players.otherplayers;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import org.megauno.app.utility.Publisher.dataFetching.DataFetcher;
-import org.megauno.app.utility.Publisher.dataFetching.PathDataFetcher;
+import org.megauno.app.ClientApplication;
+import org.megauno.app.utility.dataFetching.DataFetcher;
+import org.megauno.app.utility.dataFetching.PathDataFetcher;
+import org.megauno.app.viewcontroller.LoadedData;
 import org.megauno.app.viewcontroller.ViewPublisher;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -16,16 +18,10 @@ import java.util.List;
 
 // Graphical element to represent another player
 public class OtherPlayer implements IDrawable {
-	static DataFetcher<String, BitmapFont> fontFetcher = new PathDataFetcher<>(
-			(key) ->  {
-				return new BitmapFont(Gdx.files.internal(key));
-			},"./assets/");
-	static BitmapFont font = new BitmapFont(Gdx.files.internal("./assets/minecraft.fnt"));
-	static DataFetcher<String, Sprite> spriteLoader = new PathDataFetcher<>(
-			(key) ->  {
-				return new Sprite(new Texture(key));
-			},"./assets/");
-	static Sprite cardBack = spriteLoader.tryGetDataSafe("Card.png");
+
+	static BitmapFont font = ClientApplication.Minecraft;
+
+	static Sprite cardBack = ClientApplication.BackSideOfCard;
 	private int playerID;
 	private List<Sprite> cards = new ArrayList<>();
 

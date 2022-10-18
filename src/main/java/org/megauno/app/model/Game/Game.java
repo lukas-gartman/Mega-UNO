@@ -35,6 +35,7 @@ public class Game implements IActOnGame, GamePublishers, IGameImputs {
     public Game(PlayerCircle players, int numCards) {
         this.players = players;
         this.discarded = new Pile();
+        onNewTopCard.publish(getTopCard());
 		this.deck = new Deck();
 
         addSubscriptionToPlayers(players.getPlayers());
@@ -65,6 +66,7 @@ public class Game implements IActOnGame, GamePublishers, IGameImputs {
     // For testing purposes
     public Game(PlayerCircle players) {
         this.discarded = new Pile();
+        onNewTopCard.publish(getTopCard());
         this.deck = new Deck();
         this.players = players;
 

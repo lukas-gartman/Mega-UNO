@@ -1,4 +1,4 @@
-package org.megauno.app.utility.Publisher.dataFetching;
+package org.megauno.app.utility.dataFetching;
 
 import java.util.ArrayList;
 import java.util.List;
