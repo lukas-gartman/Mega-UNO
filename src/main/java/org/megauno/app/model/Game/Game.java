@@ -267,8 +267,12 @@ public class Game implements IActOnGame {
         current.selectCard(randomCard);
     }
 
-    private void sayUno(Player player) {
+    public void sayUno(Player player) {
         player.sayUno();
+    }
+
+    public void unsayUno(Player player){
+        player.unsayUno();
     }
 
     private boolean hasSaidUno(Player player) {
