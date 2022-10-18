@@ -24,7 +24,6 @@ public class CardMethoodes {
                     ICard card = newCards.get(i);
                     if (oldCard.equals(card)){
                         newCards.remove(card);
-						break;
                     }
                 }
             }
