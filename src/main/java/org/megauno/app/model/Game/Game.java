@@ -124,7 +124,7 @@ public class Game implements IActOnGame {
      */
     public boolean playerDraws(){
         if (drawCount > 2){
-            players.moveOnToNextTurn();
+            nextTurn();
             return false;
         } else {
             Node current = players.getCurrent();
