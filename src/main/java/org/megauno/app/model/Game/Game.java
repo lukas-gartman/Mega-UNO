@@ -143,7 +143,7 @@ public class Game implements IActOnGame {
         ICard top = discarded.getTop();
         Node current = players.getCurrent();
         List<ICard> choices = players.currentMakeTurn();
-        boolean currentHasOnlyOneCard = current.getHandSize() == 1;
+        boolean currentHasOnlyOneCard = (current.getHandSize() - choices.size()) == 1;
         if (!currentHasOnlyOneCard) current.unsayUno();
 
         if (validPlay(choices, current)) {
@@ -157,10 +157,8 @@ public class Game implements IActOnGame {
             // change currentPlayer to next in line:
             nextTurn();
 
-
-
-            checkPlayersProgress(current, currentHasOnlyOneCard, choices);
             current.removeSelected();
+            checkPlayersProgress(current, currentHasOnlyOneCard, choices);
 
         }
         /*else {
