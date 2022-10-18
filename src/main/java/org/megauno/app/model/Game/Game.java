@@ -1,5 +1,6 @@
 package org.megauno.app.model.Game;
 
+import org.lwjgl.system.CallbackI;
 import org.megauno.app.model.Cards.ICard;
 import org.megauno.app.model.Deck;
 import org.megauno.app.model.Pile;
@@ -38,19 +39,25 @@ public class Game implements IActOnGame, GamePublishers, IGameImputs {
         this.discarded = new Pile();
 		this.deck = new Deck();
 
-        int p = 0;
-        while (p < players.playersLeft() * numCards) {
-            players.giveCardToCurrentPlayer(deck.drawCard());
-            players.moveOnToNextTurn();
-            p++;
-        }
+        addSubscriptionToPlayers(players.getPlayers());
 
-
+        addCardsToAllPlayers(numCards);
     }
+
+    public void addCardsToAllPlayers(int numCards){
+        for(Player player: getPlayers()){
+            player.addCards(deck.dealHand(numCards));
+        }
+    }
+
     private void addSubscriptionToPlayers(Player[] players){
         for (Player player:players) {
+            System.out.println("player subed: " + player);
             player.getOnCardsAddedByPlayer().addSubscriber(
-                    np -> onCardsAddedByPlayer.publish(np)
+                    np -> {
+                        System.out.println("hej");
+                        onCardsAddedByPlayer.publish(np);
+                    }
             );
             player.getOnCardRemovedByPlayer().addSubscriber(
                     np -> onCardsRemovedByPlayer.publish(np)
@@ -61,6 +68,7 @@ public class Game implements IActOnGame, GamePublishers, IGameImputs {
         this.discarded = new Pile();
         this.deck = new Deck();
         players = new PlayerCircle();
+
     }
 
     // For testing purposes
@@ -68,6 +76,8 @@ public class Game implements IActOnGame, GamePublishers, IGameImputs {
         this.discarded = new Pile();
         this.deck = new Deck();
         this.players = players;
+
+        addSubscriptionToPlayers(players.getPlayers());
     }
 
 	// TODO: move method to a more general class (general class representing the model)
@@ -313,12 +323,12 @@ public class Game implements IActOnGame, GamePublishers, IGameImputs {
 
     @Override
     public IPublisher<Tuple<Player, List<ICard>>> onCardsAddedToPlayer() {
-        return getCurrentPlayer().getOnCardsAddedByPlayer();
+        return onCardsAddedByPlayer;
     }
 
     @Override
     public IPublisher<Tuple<Player, List<ICard>>> onCardsRemovedByPlayer() {
-        return getCurrentPlayer().getOnCardRemovedByPlayer();
+        return onCardsRemovedByPlayer;
     }
 
     @Override

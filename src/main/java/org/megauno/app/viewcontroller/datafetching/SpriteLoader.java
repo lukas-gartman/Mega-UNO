@@ -2,7 +2,7 @@ package org.megauno.app.viewcontroller.datafetching;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import org.megauno.app.utility.dataFetching.IDataRetriever;
+import org.megauno.app.utility.Publisher.dataFetching.IDataRetriever;
 
 public class SpriteLoader implements IDataRetriever<String, Sprite> {
     @Override

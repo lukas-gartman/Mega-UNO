@@ -11,28 +11,37 @@ import org.megauno.app.viewcontroller.Root;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class ClientApplication extends ApplicationAdapter implements GameController {
-    private final Client client;
+    private Client client;
     private Root root = null;
+    private int id;
+    private int[] ids;
+
 
     public ClientApplication() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Nickname: ");
-        String nickname = scanner.nextLine();
-        System.out.print("Host name: ");
-        String hostName = scanner.nextLine();
-        System.out.print("Port (0-65535): ");
-        int port = scanner.nextInt();
-        this.client = new Client(nickname, hostName, port, this::respondToJSON);
+
     }
 
-    void respondToJSON(JSONObject o){
+    @Override
+    public void create() {
+        this.root = new Root(id, ids, this);
+
+    }
+
+    @Override
+    public void render() {
+        if (root != null)
+            root.draw();
+    }
+
+     void respondToJSON(JSONObject o) {
         String type = o.getString("Type");
+        System.out.println("type: "+ type);
         if (root != null) {
             switch (type) {
                 case "AddCards":
+                    System.out.println("Add cards");
                     root.onCardsAddedToPlayer().publish(parsePlayerCards(o));
                     break;
                 case "RemoveCards":
@@ -51,17 +60,21 @@ public class ClientApplication extends ApplicationAdapter implements GameControl
                 for (int i = 0; i < otherPlayers.length; i++) {
                     otherPlayers[i] = (int) jsonArray.get(i);
                 }
-                this.root = new Root(o.getInt("PlayerId"), otherPlayers, this);
+                this.id = o.getInt("PlayerId");
+                this.ids = otherPlayers;
             }
         }
     }
 
     private static PlayersCards parsePlayerCards(JSONObject o) {
         int playerID = o.getInt("PlayerId");
+
         JSONArray jsonArray = o.getJSONArray("Cards");
         List<IdCard> cards = new ArrayList<>();
+        System.out.println("My id: " + playerID);
         for (Object object : jsonArray) {
             cards.add((IdCard) object);
+            System.out.println(((IdCard) object).toString());
         }
         return new PlayersCards(playerID, cards);
     }

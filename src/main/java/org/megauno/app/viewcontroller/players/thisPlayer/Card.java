@@ -3,8 +3,8 @@ package org.megauno.app.viewcontroller.players.thisPlayer;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import org.megauno.app.model.Cards.ICard;
-import org.megauno.app.utility.dataFetching.DataFetcher;
-import org.megauno.app.utility.dataFetching.PathDataFetcher;
+import org.megauno.app.utility.Publisher.dataFetching.DataFetcher;
+import org.megauno.app.utility.Publisher.dataFetching.PathDataFetcher;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -12,14 +12,13 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import org.megauno.app.viewcontroller.Clickable;
 import org.megauno.app.viewcontroller.GameController;
-import org.megauno.app.viewcontroller.GamePublishers;
 import org.megauno.app.viewcontroller.datafetching.IDrawable;
 
 public class Card implements IDrawable {
 	static DataFetcher<String,Sprite> spriteFetcher = new PathDataFetcher<Sprite>(
 			(key) ->  {
 		return new Sprite(new Texture(key));
-	},"assets/");
+	},"./assets/");
 
 	Sprite red = spriteFetcher.tryGetDataUnSafe("RedCard.png");
 	static Sprite blue = spriteFetcher.tryGetDataUnSafe("BlueCard.png");
@@ -29,7 +28,7 @@ public class Card implements IDrawable {
 	static DataFetcher<String,BitmapFont> fontFetcher = new PathDataFetcher<BitmapFont>(
 			(key) ->  {
 				return new BitmapFont(Gdx.files.internal(key));
-			},"assets/");
+			},"./assets/");
 	static BitmapFont fnt = fontFetcher.tryGetDataUnSafe("minecraft.fnt");
 
 	public float x;

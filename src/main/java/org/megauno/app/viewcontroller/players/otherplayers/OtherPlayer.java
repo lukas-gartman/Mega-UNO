@@ -1,25 +1,30 @@
 package org.megauno.app.viewcontroller.players.otherplayers;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import org.megauno.app.utility.dataFetching.DataFetcher;
-import org.megauno.app.utility.dataFetching.PathDataFetcher;
-import org.megauno.app.viewcontroller.GamePublishers;
+import org.megauno.app.utility.Publisher.dataFetching.DataFetcher;
+import org.megauno.app.utility.Publisher.dataFetching.PathDataFetcher;
 import org.megauno.app.viewcontroller.ViewPublisher;
-import org.megauno.app.viewcontroller.datafetching.FontLoader;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import org.megauno.app.viewcontroller.datafetching.IDrawable;
-import org.megauno.app.viewcontroller.datafetching.SpriteLoader;
 
 import java.util.ArrayList;
 import java.util.List;
 
 // Graphical element to represent another player
 public class OtherPlayer implements IDrawable {
-	static DataFetcher<String, BitmapFont> fontFetcher = new PathDataFetcher<BitmapFont>(new FontLoader(), "assets/");
-	static BitmapFont font = fontFetcher.tryGetDataUnSafe("minecraft.fnt");
-	static DataFetcher<String, Sprite> spriteLoader = new PathDataFetcher<Sprite>(new SpriteLoader(), "assets/");
+	static DataFetcher<String, BitmapFont> fontFetcher = new PathDataFetcher<>(
+			(key) ->  {
+				return new BitmapFont(Gdx.files.internal(key));
+			},"./assets/");
+	static BitmapFont font = new BitmapFont(Gdx.files.internal("./assets/minecraft.fnt"));
+	static DataFetcher<String, Sprite> spriteLoader = new PathDataFetcher<>(
+			(key) ->  {
+				return new Sprite(new Texture(key));
+			},"./assets/");
 	static Sprite cardBack = spriteLoader.tryGetDataSafe("Card.png");
 	private int playerID;
 	private List<Sprite> cards = new ArrayList<>();

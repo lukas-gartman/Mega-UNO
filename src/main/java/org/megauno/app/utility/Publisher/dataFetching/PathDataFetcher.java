@@ -1,6 +1,4 @@
-package org.megauno.app.utility.dataFetching;
-
-import org.megauno.app.viewcontroller.datafetching.SpriteLoader;
+package org.megauno.app.utility.Publisher.dataFetching;
 
 import java.util.List;
 

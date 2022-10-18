@@ -28,6 +28,7 @@ public class Player {
     }
 
     public Player(List<ICard> hand) {
+        onCardsAddedByPlayer.publish(new Tuple<Player,List<ICard>>(this,hand));
         this.hand = hand;
     }
 

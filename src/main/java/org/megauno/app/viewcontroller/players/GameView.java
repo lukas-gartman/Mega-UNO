@@ -1,21 +1,17 @@
 package org.megauno.app.viewcontroller.players;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import org.megauno.app.model.Cards.ICard;
-import org.megauno.app.model.Player.Player;
 import org.megauno.app.viewcontroller.Clickable;
 import org.megauno.app.viewcontroller.GameController;
-import org.megauno.app.viewcontroller.GamePublishers;
 import org.megauno.app.viewcontroller.ViewPublisher;
 import org.megauno.app.viewcontroller.datafetching.IDrawable;
-import org.megauno.app.viewcontroller.datafetching.SpriteLoader;
 import org.megauno.app.viewcontroller.players.otherplayers.OtherPlayer;
 import org.megauno.app.viewcontroller.players.thisPlayer.Card;
 import org.megauno.app.viewcontroller.players.thisPlayer.ThisPlayer;
@@ -50,8 +46,7 @@ public class GameView implements IDrawable {
 		}
 
 		endTurnButton = new EndTurnButton(200, 200);
-		top.x = 300;
-		top.y = 250;
+
 
 		publishers.onNewTopCard().addSubscriber(
 				(np) -> updateTopCard(np.getCard(),np.getId())
@@ -64,6 +59,9 @@ public class GameView implements IDrawable {
 
 	private void updateTopCard(ICard newTop, int id){
 		top = new Card(newTop,id, gameController);
+		top.x = 300;
+		top.y = 250;
+
 	}
 
 	//TODO: when a card is detected to be rmoved from hand, remove card from stage.
@@ -72,7 +70,8 @@ public class GameView implements IDrawable {
 	public void draw(float delta, Batch batch) {
 		thisPlayer.draw(delta, batch);
 
-		top.draw(delta, batch);
+		if(top != null)
+			top.draw(delta, batch);
 
 		for (OtherPlayer op : otherPlayers) {
 			op.draw(delta, batch);
@@ -90,7 +89,7 @@ public class GameView implements IDrawable {
 
 		private Clickable clickable;
 
-		static private Sprite sprite = new SpriteLoader().retrieveData("assets/Tomte.png");
+		private Sprite sprite = new Sprite(new Texture("assets\\Tomte.png"));
 
 		public EndTurnButton(float x, float y) {
 			this.x = x;

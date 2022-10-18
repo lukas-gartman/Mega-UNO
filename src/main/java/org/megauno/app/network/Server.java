@@ -18,8 +18,8 @@ public class Server implements IServer, Runnable {
     private static int cid = 0;
     private JSONReader jsonReader;
         
-    public Server(int port, Publisher<Tuple<ClientHandler, Integer>> publisher, JsonReaderCreator jsonReaderCreator) throws IllegalAccessException {
-        this.jsonReader = jsonReaderCreator.createReader(clientHandlers.getRightKeys().stream().toList());
+    public Server(int port, Publisher<Tuple<ClientHandler, Integer>> publisher, JSONReader jsonReader) throws IllegalAccessException {
+        this.jsonReader = jsonReader;
         try {
             this.server = new ServerSocket(port);
         } catch (IOException ex) {
@@ -42,10 +42,11 @@ public class Server implements IServer, Runnable {
                 // set up the client connection (critical section)
                 try { semaphore.acquire(); } catch (InterruptedException ex) { }
                 int id = cid++; // acquire the next available client ID
-                ClientHandler clientHandler = new ClientHandler(client, id, this, jsonReader);
+                ClientHandler clientHandler = new ClientHandler(client, id, this, o -> {});
                 this.publisher.publish(new Tuple<>(clientHandler, id)); // notify Lobby
                 this.clientHandlers.put(clientHandler, id);
                 updateClientHandlers(); // update the ClientHandlers in ClientHandler
+
                 this.semaphore.release(); // end of critical section
                 new Thread(clientHandler).start();
 
@@ -56,7 +57,16 @@ public class Server implements IServer, Runnable {
         } catch (NullPointerException ex) {} // server was not set up properly, ignore...
     }
 
+<<<<<<< Updated upstream
     @Override
+=======
+    private void updateAllClientsJsonReaders(JSONReader jr){
+        for(ClientHandler ch: clientHandlers.getLeftKeys()){
+            ch.uppdateJsonReader(jr);
+        }
+    }
+
+>>>>>>> Stashed changes
     public void disconnect(ClientHandler client) {
         // disconnect the client (critical section)
         try { this.semaphore.acquire(); } catch (InterruptedException ex) { }

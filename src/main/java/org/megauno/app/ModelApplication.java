@@ -26,41 +26,37 @@ public class ModelApplication extends ApplicationAdapter {
 	private BiHashMap<Integer, Player> playersWithID = new BiHashMap<>();
 
 	@Override
-	public void create () {
+	public void create() {
 		Phaser phaser = new Phaser(1); // Used to signal when the lobby is done searching for players
-		Lobby lobby = new Lobby(phaser); // Create the lobby
+		Lobby lobby;
 		try {
+			// Create the lobby
+			lobby = new Lobby(phaser, (o -> readJson(o)));
 			phaser.awaitAdvance(0); // Wait for the host to start the game (blocking call)
+			createGame(lobby.getIds());
+			addLobbySubscriptions(game, lobby.getInfoSender(),cardsWithID,playersWithID);
+			lobby.getInfoSender().start();
+			game.addCardsToAllPlayers(7);
+			System.out.println("Starting game!");
 		} catch (IllegalStateException ex) {
 			System.out.println("The lobby was closed");
-		}
-		System.out.println("Starting game!");
-
-
-
-		try {
-			lobby.host((ids) -> {
-				createGame(ids);
-				return (o -> readJson(o, game));});
 		} catch (IllegalAccessException e) {
-			System.out.println(e.getMessage());
 			e.printStackTrace();
 		}
-
-		addLobbySubscriptions(game, lobby.getInfoSender(),cardsWithID,playersWithID);
 	}
 
-	private void createGame(List<Integer> ids){
-		for (Integer id: ids) {
+	private void createGame(List<Integer> ids) {
+		playersWithID = new BiHashMap<>();
+		for (int id : ids) {
 			Player p = new Player();
 			playersWithID.put(id,p);
 		}
+		System.out.println(ids);
 		PlayerCircle pc = new PlayerCircle(playersWithID.getRightKeys().stream().toList());
 		game = new Game(pc);
 	}
 
-	private void readJson(JSONObject object, IGameImputs gameInputs)
-	{
+	private void readJson(JSONObject object) {
 		String type = object.getString("Type");
 		int clientId = object.getInt("ClientId");
 		Player player = playersWithID.getRight(clientId);
@@ -68,37 +64,37 @@ public class ModelApplication extends ApplicationAdapter {
 			case "SelectCard": {
 				int cardId = object.getInt("CardId");
 				if (player != null) {
-					gameInputs.selectCard(player,cardsWithID.getRight(cardId));
+					game.selectCard(player,cardsWithID.getRight(cardId));
 				}
 				break;
 			}
 			case "UnSelectCard": {
 				int cardId = object.getInt("CardId");
 				if (player != null) {
-					gameInputs.unSelectCard(player,cardsWithID.getRight(cardId));
+					game.unSelectCard(player,cardsWithID.getRight(cardId));
 				}
+				break;
 			}
-			case "CommenceForth":{
-				gameInputs.commenceForth(player);
+			case "CommenceForth": {
+				game.commenceForth(player);
+				break;
 			}
-			case "Uno":{
-				gameInputs.sayUno(player);
+			case "Uno": {
+				game.sayUno(player);
+				break;
 			}
 		}
 	}
-
-
-
-
 
 	private void addCards(List<ICard> cards, BiHashMap<Integer, ICard> cardsWithID) {
-		for(ICard card : cards){
+		for (ICard card : cards) {
 			lastCardId++;
-			cardsWithID.put(lastCardId,card);
+			cardsWithID.put(lastCardId, card);
 		}
 	}
+
 	private void removeCards(List<ICard> cards, BiHashMap<Integer, ICard> cardsWithID) {
-		for(ICard card : cards){
+		for (ICard card : cards) {
 			cardsWithID.removeRight(card);
 		}
 	}
@@ -114,10 +110,13 @@ public class ModelApplication extends ApplicationAdapter {
 	private void addLobbySubscriptions(GamePublishers game, SendInfoToClients infoSender,
 									   BiHashMap<Integer, ICard> cardsWithID,
 									   BiHashMap<Integer, Player> playersWithID) {
+
 		game.onCardsAddedToPlayer().addSubscriber((t) -> {
+
 			addCards(t.r,cardsWithID);
 			int id = playersWithID.getLeft(t.l);
-			infoSender.playerWithIdAddedCards(new PlayersCards(id,getIdCards(t.r,cardsWithID)));
+			System.out.println("Cards added sent" + id);
+			infoSender.playerWithIdAddedCards(new PlayersCards(id, getIdCards(t.r, cardsWithID)));
 		});
 
 		game.onCardsRemovedByPlayer().addSubscriber((t) -> {
@@ -127,7 +126,8 @@ public class ModelApplication extends ApplicationAdapter {
 		});
 
 		game.onNewPlayer().addSubscriber( (player) -> infoSender.currentPlayerNewId(playersWithID.getLeft(player)) );
-		game.onNewTopCard().addSubscriber( (newTopCard) -> infoSender.newTopCardOfPile(newTopCard) );
+		game.onNewTopCard().addSubscriber(infoSender::newTopCardOfPile);
+//		game.onNewTopCard().addSubscriber( (newTopCard) -> infoSender.newTopCardOfPile(newTopCard) );
 	}
 
 	@Override
@@ -135,6 +135,7 @@ public class ModelApplication extends ApplicationAdapter {
 		game.update();
 	}
 
+	// todo: gracefully shut down application
 	//@Override
 	//public void dispose() {
 	//	viewController.teardown();

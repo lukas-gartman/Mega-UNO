@@ -10,8 +10,8 @@ import java.util.Set;
 
 public class UnoServer extends Server implements SendInfoToClients{
 
-    public UnoServer(int port, Publisher<Tuple<ClientHandler, Integer>> publisher, JsonReaderCreator jsonReaderCreator) throws IllegalAccessException {
-        super(port, publisher, jsonReaderCreator);
+    public UnoServer(int port, Publisher<Tuple<ClientHandler, Integer>> publisher,JSONReader jsonReader) throws IllegalAccessException {
+        super(port, publisher, jsonReader);
     }
 
     @Override
@@ -26,10 +26,13 @@ public class UnoServer extends Server implements SendInfoToClients{
 
     @Override
     public void playerWithIdAddedCards(PlayersCards pc) {
+
         JSONObject object = new JSONObject();
         object.put("Type","AddCards");
         object.put("PlayerId",pc.getId());
         object.put("Cards",pc.getCards());
+        System.out.println("Added cards server uno " + pc.getId());
+        System.out.println(object.toString());
         broadcast(object);
     }
 
@@ -57,7 +60,7 @@ public class UnoServer extends Server implements SendInfoToClients{
             }
             JSONObject json = new JSONObject();
             json.put("Type","Start");
-            json.put("PlayerID",id);
+            json.put("PlayerId",id);
             json.put("OtherPlayers",otherplayers);
             getClientHandlers().getLeft(id).send(json);
         }

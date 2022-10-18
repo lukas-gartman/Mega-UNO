@@ -1,5 +1,11 @@
 package org.megauno.app.network;
 
+<<<<<<< Updated upstream
+=======
+import org.lwjgl.system.CallbackI;
+import org.megauno.app.model.Game.PlayerCircle;
+import org.megauno.app.model.Player.Player;
+>>>>>>> Stashed changes
 import org.megauno.app.utility.BiHashMap;
 import org.megauno.app.utility.Publisher.normal.Publisher;
 import org.megauno.app.utility.Tuple;
@@ -17,12 +23,17 @@ public class Lobby {
     private Phaser phaser;
     private final Publisher<Tuple<ClientHandler, Integer>> serverPublisher = new Publisher<>();
 
+<<<<<<< Updated upstream
     /**
      * Creates a lobby
      * @param phaser a synchronisation barrier used to signal when the lobby is finished
      */
     public Lobby(Phaser phaser) {
+=======
+    public Lobby(Phaser phaser,JSONReader jr) throws IllegalAccessException {
+>>>>>>> Stashed changes
         this.phaser = phaser;
+        host(jr);
     }
 
     private void delivery(Tuple<ClientHandler, Integer> event) {
@@ -34,6 +45,7 @@ public class Lobby {
             clientHandlers.put(clientHandler, id);
     }
 
+<<<<<<< Updated upstream
     /**
      * Creates a server and watches for incoming clients
      * @param jsonReaderCreator factory that creates JsonReaders
@@ -42,6 +54,10 @@ public class Lobby {
      */
     public List<Integer> host(JsonReaderCreator jsonReaderCreator) throws IllegalAccessException {
         server = new UnoServer(1337, serverPublisher, jsonReaderCreator); // Game host holds the server object
+=======
+    public void host(JSONReader jsonReader) throws IllegalAccessException {
+        server = new UnoServer(1337, serverPublisher, jsonReader); // Game host holds the server object
+>>>>>>> Stashed changes
         serverPublisher.addSubscriber(this::delivery); // subscribe self to changes to client handlers
         new Thread(server).start(); // Start the server on a new thread to prevent blocking
         clientHandlers = server.getClientHandlers(); // initialise the map of clientHandlers
@@ -54,11 +70,10 @@ public class Lobby {
             Scanner scanner = new Scanner(System.in); // Get input from console
             System.out.print("enter: ");
             while (!scanner.nextLine().equals("start")) // Start the game by typing "start"
-                System.out.print("enter: ");
+                System.out.print("enter start: ");
 
             this.phaser.arrive(); // The task is finished
         }).start();
-        return clientHandlers.getRightKeys().stream().toList();
     }
 
     private void join() {
@@ -74,5 +89,10 @@ public class Lobby {
     public SendInfoToClients getInfoSender(){
         return server;
     }
+
+    public List<Integer> getIds(){
+        return clientHandlers.getRightKeys().stream().toList();
+    }
+
 
 }
