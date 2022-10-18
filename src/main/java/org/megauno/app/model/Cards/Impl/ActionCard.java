@@ -72,7 +72,7 @@ public class ActionCard extends AbstractCard {
 
    @Override
    public boolean canBePlayedOnMe(ActionCard c) {
-     return c.getType() == CardType.WILDCARD || c.getColor() == this.getColor() || c.getType() == this.getType();
+     return c.getColor() == Color.NONE || c.getColor() == this.getColor() || c.getType() == this.getType();
    }
 
    // Shallow copy, no need for deep copy since the attributes are immutable.
