@@ -62,8 +62,13 @@ public class NumberCard extends AbstractCard {
     }
 
     @Override
+<<<<<<< Updated upstream
     public boolean canBePlayedOnMe(NumberCard numberCard) {
         return this.getColor() == numberCard.getColor() || this.value == numberCard.getValue();
+=======
+    public boolean canBePlayedOnMe(ActionCard c) {
+        return this.getColor() == c.getColor() || c.getType() == CardType.WILDCARD;
+>>>>>>> Stashed changes
     }
 
     @Override
