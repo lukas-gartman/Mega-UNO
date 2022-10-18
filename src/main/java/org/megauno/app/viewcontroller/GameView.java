@@ -45,7 +45,7 @@ public class GameView implements IDrawable {
 
 		endTurnButton = new EndTurnButton(200, 200, game);
 		sayUnoButton = new SayUnoButton(500, 30, game);
-		drawPile = new DrawPile(300, 200, game);
+		drawPile = new DrawPile(350, 250, game);
 	}
 
 	public int getPlayerID() {

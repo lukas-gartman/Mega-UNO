@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
 public class DrawPile {
-	static private Sprite sprite = new SpriteLoader().retrieveData("assets/SayUnoButton.png");
+	static private Sprite sprite = new SpriteLoader().retrieveData("assets/DrawPile.png");
 	private float x;
 	private float y;
 	private Game game;
