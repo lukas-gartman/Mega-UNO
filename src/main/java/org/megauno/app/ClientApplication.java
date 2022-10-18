@@ -91,51 +91,46 @@ public class ClientApplication extends ApplicationAdapter implements GameControl
     }
 
      void respondToJSON(JSONObject o) {
-        String type = o.getString("Type");
-<<<<<<< Updated upstream
-        if (root != null) {
-=======
-        System.out.println(type.equals("AddCards"));
+         String type = o.getString("Type");
 
-        if(type.equals("AddCards")){
-            System.out.println("c");
-        }
-         if(type.equals("Start")){
-             System.out.println("c");
+         if (root != null) {
+
+             System.out.println(type.equals("AddCards"));
+
+             if (type.equals("AddCards")) {
+                 System.out.println("c");
+             }
+             if (type.equals("Start")) {
+                 System.out.println("c");
+             }
+
+
+             switch (type) {
+                 case "AddCards":
+                     onCardsAddedToPlayer.publish(parsePlayerCards(o));
+                     break;
+                 case "RemoveCards":
+                     onCardsRemovedByPlayer.publish(parsePlayerCards(o));
+                     break;
+                 case "CurrentPlayerId":
+                     onNewPlayer.publish(o.getInt("PlayerId"));
+                     break;
+                 case "NewTopCard":
+                     onNewTopCard().publish((IdCard) o.get("Card"));
+                     break;
+             }
+         } else {
+             if (type.equals("Start")) {
+                 List<Object> jsonArray = o.getJSONArray("OtherPlayers").toList();
+                 int[] otherPlayers = new int[jsonArray.size()];
+                 for (int i = 0; i < otherPlayers.length; i++) {
+                     otherPlayers[i] = (int) jsonArray.get(i);
+                 }
+                 root = new Root(o.getInt("PlayerId"),otherPlayers,this,this);
+             }
+
          }
-
->>>>>>> Stashed changes
-            switch (type) {
-                case "AddCards":
-                    onCardsAddedToPlayer.publish(parsePlayerCards(o));
-                    break;
-                case "RemoveCards":
-                    onCardsRemovedByPlayer.publish(parsePlayerCards(o));
-                    break;
-                case "CurrentPlayerId":
-                    onNewPlayer.publish(o.getInt("PlayerId"));
-                    break;
-                case "NewTopCard":
-<<<<<<< Updated upstream
-                    root.onNewTopCard().publish((IdCard)o.get("Card"));
-                    break;
-            }
-        } else {
-            if (type.equals("Start")) {
-                List<Object> jsonArray = o.getJSONArray("OtherPlayers").toList();
-                int[] otherPlayers = new int[jsonArray.size()];
-                for (int i = 0; i < otherPlayers.length; i++) {
-                    otherPlayers[i] = (int) jsonArray.get(i);
-                }
-                this.id = o.getInt("PlayerId");
-                this.ids = otherPlayers;
-=======
-                    onNewTopCard.publish((IdCard)o.get("Card"));
->>>>>>> Stashed changes
-            }
-
-        }
-
+     }
 
     private static PlayersCards parsePlayerCards(JSONObject o) {
         int playerID = o.getInt("PlayerId");

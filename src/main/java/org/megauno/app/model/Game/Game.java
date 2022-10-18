@@ -47,27 +47,14 @@ public class Game implements IActOnGame, GamePublishers, IGameImputs {
         }
     }
 
-<<<<<<< Updated upstream
     private void addSubscriptionToPlayers(Player[] players) {
         for (Player player : players) {
-//            player.getOnCardsAddedByPlayer().addSubscriber(np -> onCardsAddedByPlayer.publish(np));
             player.getOnCardsAddedByPlayer().addSubscriber(onCardsAddedByPlayer::publish);
-//            player.getOnCardRemovedByPlayer().addSubscriber(np -> onCardsRemovedByPlayer.publish(np));
             player.getOnCardRemovedByPlayer().addSubscriber(onCardsRemovedByPlayer::publish);
-=======
-    private void addSubscriptionToPlayers(Player[] players){
-        for (Player player:players) {
-            player.getOnCardsAddedByPlayer().addSubscriber(
-                    np -> {
-                        onCardsAddedByPlayer.publish(np);
-                    }
-            );
-            player.getOnCardRemovedByPlayer().addSubscriber(
-                    np -> onCardsRemovedByPlayer.publish(np)
-            );
->>>>>>> Stashed changes
         }
     }
+
+
 
     public Game() {
         this.discarded = new Pile();
