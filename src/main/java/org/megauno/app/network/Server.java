@@ -8,12 +8,14 @@ import org.megauno.app.utility.Tuple;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.HashMap;
 import java.util.concurrent.Semaphore;
 
 public class Server implements IServer, Runnable {
     private ServerSocket server;
     private Publisher<Tuple<ClientHandler, Integer>> publisher;
     private BiHashMap<ClientHandler, Integer> clientHandlers = new BiHashMap<>();
+    private HashMap<ClientHandler, Thread> clientHandlerThreads = new HashMap<>();
     private final Semaphore semaphore = new Semaphore(1);
     private static int cid = 0;
     private JSONReader jsonReader;
@@ -45,42 +47,52 @@ public class Server implements IServer, Runnable {
                 ClientHandler clientHandler = new ClientHandler(client, id, this, o -> {});
                 this.publisher.publish(new Tuple<>(clientHandler, id)); // notify Lobby
                 this.clientHandlers.put(clientHandler, id);
-                updateClientHandlers(); // update the ClientHandlers in ClientHandler
 
                 this.semaphore.release(); // end of critical section
-                new Thread(clientHandler).start();
+                Thread chThread = new Thread(clientHandler);
+                clientHandlerThreads.put(clientHandler, chThread);
+                chThread.start();
 
                 System.out.println("client connected");
             }
         } catch (IOException ex) {
-            throw new RuntimeException("Server socket is closed");
+//            throw new RuntimeException("Server socket is closed");
         } catch (NullPointerException ex) {} // server was not set up properly, ignore...
     }
 
-
-
-    private void updateAllClientsJsonReaders(JSONReader jr){
-        for(ClientHandler ch: clientHandlers.getLeftKeys()){
-            ch.uppdateJsonReader(jr);
-        }
-    }
-
-
-    public void disconnect(ClientHandler client) {
+    public void disconnectClient(ClientHandler clientHandler) {
         // disconnect the client (critical section)
         try { this.semaphore.acquire(); } catch (InterruptedException ex) { }
-        this.clientHandlers.removeLeft(client);
-        this.cid--; // free up the client ID
-        updateClientHandlers(); // notify all other clients that client disconnected
-        this.publisher.publish(new Tuple<>(client, -1)); // notify Lobby
+
+        this.publisher.publish(new Tuple<>(clientHandler, -1)); // notify Lobby
+        this.clientHandlerThreads.get(clientHandler).interrupt();
+
+        clientHandler.disconnect();
+        this.clientHandlerThreads.remove(clientHandler);
+        this.clientHandlers.removeLeft(clientHandler);
+//        this.cid--; // free up the client ID
         System.out.println("client disconnected");
+
         this.semaphore.release(); // end of critical section
     }
 
-    // Make it the server's responsibility to keep track of ClientHandlers
-    private void updateClientHandlers() {
-        for (ClientHandler ch : clientHandlers.getLeftKeys())
-            ch.updateClientHandlers(clientHandlers);
+    public void close() {
+        BiHashMap<ClientHandler, Integer> clients = new BiHashMap(clientHandlers);
+        for (ClientHandler client : clients.getLeftKeys())
+            disconnectClient(client);
+
+        try {
+            this.server.close();
+            System.out.println("closed server");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    private void updateAllClientsJsonReaders(JSONReader jr){
+        for(ClientHandler ch: clientHandlers.getLeftKeys()){
+            ch.updateJsonReader(jr);
+        }
     }
 
     @Override

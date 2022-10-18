@@ -12,7 +12,6 @@ import java.net.Socket;
  */
 public class ClientHandler implements Runnable {
     private IServer server;
-    private BiHashMap<ClientHandler, Integer> clientHandlers;
     private final Socket client;
     private BufferedReader br;
     private BufferedWriter bw;
@@ -31,7 +30,6 @@ public class ClientHandler implements Runnable {
         this.id = id;
         this.server = server;
         this.jsonReader = jsonReader;
-        this.clientHandlers = new BiHashMap<>();
         try {
             this.bw = new BufferedWriter(new OutputStreamWriter(client.getOutputStream()));
             this.br = new BufferedReader(new InputStreamReader(client.getInputStream()));
@@ -54,45 +52,19 @@ public class ClientHandler implements Runnable {
         }
     }
 
-    /**
-     * Send a JSON object from one client to all other clients
-     * @param json the object to send
-     */
-    public void broadcast(JSONObject json) {
-        for (ClientHandler ch : clientHandlers.getLeftKeys()) {
-            if (clientHandlers.getRight(ch) == this.id)
-                continue;
-
-            try {
-                ch.bw.write(json.toString());
-                ch.bw.newLine();
-                ch.bw.flush();
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
-        }
-    }
-
-    /**
-     * Update the map of ClientHandlers
-     * @param clientHandlers the map of ClientHandlers to update
-     */
-    public void updateClientHandlers(BiHashMap<ClientHandler, Integer> clientHandlers) {
-        this.clientHandlers = clientHandlers;
-    }
-
-    private void disconnect() {
+    public void disconnect() {
         try {
             client.close();
-        } catch (IOException ex) {}
-        server.disconnect(this);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
 
     @Override
     public void run() {
         String message;
         while (true) {
-            try {
+             try {
                 message = br.readLine();
                 JSONObject json = new JSONObject(message);
                 jsonReader.read(json.put("ClientId", id));
@@ -100,7 +72,6 @@ public class ClientHandler implements Runnable {
             } catch (IOException ex) {
                 try {
                     br.close();
-                    disconnect();
                     break;
                 } catch (IOException e) { }
                 ex.printStackTrace();
@@ -108,7 +79,7 @@ public class ClientHandler implements Runnable {
         }
     }
 
-    public void uppdateJsonReader(JSONReader jr){
+    public void updateJsonReader(JSONReader jr) {
         this.jsonReader = jr;
     }
 }

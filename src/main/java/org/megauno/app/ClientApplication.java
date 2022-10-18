@@ -37,7 +37,6 @@ public class ClientApplication extends ApplicationAdapter implements GameControl
 
      void respondToJSON(JSONObject o) {
         String type = o.getString("Type");
-        System.out.println("type: "+ type);
         if (root != null) {
             switch (type) {
                 case "AddCards":
@@ -52,6 +51,7 @@ public class ClientApplication extends ApplicationAdapter implements GameControl
                     break;
                 case "NewTopCard":
                     root.onNewTopCard().publish((IdCard)o.get("Card"));
+                    break;
             }
         } else {
             if (type.equals("Start")) {

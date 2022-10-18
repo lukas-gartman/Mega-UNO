@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
 public class ModelApplication extends ApplicationAdapter {
+	private Lobby lobby;
 	private Game game;
 	private int lastCardId = 0;
 	private BiHashMap<Integer, ICard> cardsWithID = new BiHashMap<>();
@@ -23,7 +24,6 @@ public class ModelApplication extends ApplicationAdapter {
 	@Override
 	public void create() {
 		CountDownLatch countDownLatch = new CountDownLatch(1); // Used to signal when the lobby is done searching for players
-		Lobby lobby;
 		try {
 			// Create the lobby
 			lobby = new Lobby(countDownLatch, (this::readJson));
@@ -108,7 +108,6 @@ public class ModelApplication extends ApplicationAdapter {
 
 			addCards(t.r,cardsWithID);
 			int id = playersWithID.getLeft(t.l);
-			System.out.println("Cards added sent" + id);
 			infoSender.playerWithIdAddedCards(new PlayersCards(id, getIdCards(t.r, cardsWithID)));
 		});
 
@@ -129,10 +128,11 @@ public class ModelApplication extends ApplicationAdapter {
 	}
 
 	// todo: gracefully shut down application
-	//@Override
-	//public void dispose() {
-	//	viewController.teardown();
-	//}
+	@Override
+	public void dispose() {
+//		viewController.teardown();
+		lobby.close();
+	}
 
 	public static void testFunc() {
 		System.out.println("Wow!");

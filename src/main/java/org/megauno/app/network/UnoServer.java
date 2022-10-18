@@ -26,13 +26,11 @@ public class UnoServer extends Server implements SendInfoToClients{
 
     @Override
     public void playerWithIdAddedCards(PlayersCards pc) {
-
         JSONObject object = new JSONObject();
         object.put("Type","AddCards");
         object.put("PlayerId",pc.getId());
         object.put("Cards",pc.getCards());
-        System.out.println("Added cards server uno " + pc.getId());
-        System.out.println(object.toString());
+        System.out.println(object);
         broadcast(object);
     }
 

@@ -17,7 +17,6 @@ public class Lobby {
     private CountDownLatch countDownLatch;
     private final Publisher<Tuple<ClientHandler, Integer>> serverPublisher = new Publisher<>();
 
-
     /**
      * Creates a lobby
      * @param cdl a synchronisation barrier used to signal when the lobby is finished
@@ -65,6 +64,13 @@ public class Lobby {
 
     private void join() {
         // todo: implement logic for joining a lobby
+    }
+
+    /**
+     * Close the lobby
+     */
+    public void close() {
+        this.server.close();
     }
 
     /**

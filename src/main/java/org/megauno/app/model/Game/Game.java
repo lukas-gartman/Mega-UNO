@@ -20,12 +20,11 @@ public class Game implements IActOnGame, GamePublishers, IGameImputs {
     private Deck deck;
     private Pile discarded;
     private int drawCount = 0;
-
-    //Publisher for the new top card in the discrad pile
-    public Publisher<ICard> onNewTopCard = new Publisher<>();
-    //Publisher for when cards are added to a player
+    // Publisher for the new top card in the discard pile
+    private Publisher<ICard> onNewTopCard = new Publisher<>();
+    // Publisher for when cards are added to a player
     private Publisher<Tuple<Player, List<ICard>>> onCardsAddedByPlayer = new Publisher<>();
-    //Publisher for when cards are added to a player
+    // Publisher for when cards are added to a player
     private Publisher<Tuple<Player, List<ICard>>> onCardsRemovedByPlayer = new Publisher<>();
 
     /**
@@ -33,42 +32,34 @@ public class Game implements IActOnGame, GamePublishers, IGameImputs {
      * @param players is the circle of players
      * @param numCards is the number of cards a hand is initially dealt
      */
-
     public Game(PlayerCircle players, int numCards) {
         this.players = players;
         this.discarded = new Pile();
 		this.deck = new Deck();
 
         addSubscriptionToPlayers(players.getPlayers());
-
         addCardsToAllPlayers(numCards);
     }
 
-    public void addCardsToAllPlayers(int numCards){
-        for(Player player: getPlayers()){
+    public void addCardsToAllPlayers(int numCards) {
+        for (Player player : getPlayers()){
             player.addCards(deck.dealHand(numCards));
         }
     }
 
-    private void addSubscriptionToPlayers(Player[] players){
-        for (Player player:players) {
-            System.out.println("player subed: " + player);
-            player.getOnCardsAddedByPlayer().addSubscriber(
-                    np -> {
-                        System.out.println("hej");
-                        onCardsAddedByPlayer.publish(np);
-                    }
-            );
-            player.getOnCardRemovedByPlayer().addSubscriber(
-                    np -> onCardsRemovedByPlayer.publish(np)
-            );
+    private void addSubscriptionToPlayers(Player[] players) {
+        for (Player player : players) {
+//            player.getOnCardsAddedByPlayer().addSubscriber(np -> onCardsAddedByPlayer.publish(np));
+            player.getOnCardsAddedByPlayer().addSubscriber(onCardsAddedByPlayer::publish);
+//            player.getOnCardRemovedByPlayer().addSubscriber(np -> onCardsRemovedByPlayer.publish(np));
+            player.getOnCardRemovedByPlayer().addSubscriber(onCardsRemovedByPlayer::publish);
         }
     }
-    public Game(){
+
+    public Game() {
         this.discarded = new Pile();
         this.deck = new Deck();
         players = new PlayerCircle();
-
     }
 
     // For testing purposes

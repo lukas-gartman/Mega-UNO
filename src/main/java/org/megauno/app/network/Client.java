@@ -7,6 +7,7 @@ import java.net.Socket;
 
 /**
  * A client used to create a connection to a ServerSocket.
+ *
  * @author Lukas Gartman
  */
 public class Client {
@@ -20,9 +21,10 @@ public class Client {
 
     /**
      * Set up client connection and listen to incoming messages from the server
-     * @param nickname the nickname of the client
-     * @param hostname the hostname to connect to
-     * @param port the port to connect to
+     *
+     * @param nickname   the nickname of the client
+     * @param hostname   the hostname to connect to
+     * @param port       the port to connect to
      * @param jsonReader an interface used for reading JSON
      */
     public Client(String nickname, String hostname, int port, JSONReader jsonReader) {
@@ -51,9 +53,11 @@ public class Client {
         new Thread(() -> {
             String message;
             while (true) {
-                System.out.println("HEJ");
                 try {
                     message = this.br.readLine(); // Read input from server (blocking call)
+                    if (message == null)
+                        break;
+
                     JSONObject json = new JSONObject(message);
                     System.out.println(json);
                     jsonReader.read(json);
@@ -67,6 +71,7 @@ public class Client {
 
     /**
      * Send a JSON object to the server
+     *
      * @param json the object to send
      */
     public void sendJSON(JSONObject json) {
@@ -81,6 +86,7 @@ public class Client {
 
     /**
      * Get the client's nickname
+     *
      * @return the nickname
      */
     public String getNickname() {

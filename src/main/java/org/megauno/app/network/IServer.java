@@ -17,7 +17,7 @@ public interface IServer {
      * Disconnect the given client from the server
      * @param client the client to disconnect
      */
-    void disconnect(ClientHandler client);
+    void disconnectClient(ClientHandler client);
 
     /**
      * Send a JSON object to all connected clients
