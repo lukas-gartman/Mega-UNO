@@ -110,6 +110,7 @@ public class Game implements IActOnGame {
         }else if (!play.get(0).canBePlayed(top)){
             return false;
         }
+
         for(int i = 1; i < play.size(); i++){
             if(!play.get(i).canBeStacked(play.get(i-1))){
                 return false;
@@ -159,12 +160,14 @@ public class Game implements IActOnGame {
 
 
             checkPlayersProgress(current, currentHasOnlyOneCard, choices);
+            current.removeSelected();
+
         }
-        else {
+        /*else {
             for (int i = 0; i < choices.size(); i++) {
                 players.giveCardToPlayer(choices.get(i), current);
             }
-        }
+        }*/
     }
 
     /**

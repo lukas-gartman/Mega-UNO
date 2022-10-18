@@ -54,4 +54,8 @@ public class Node {
     public int getId(){
         return player.getId();
     }
+
+    public void removeSelected(){
+        player.removeSelectedCardsFromHand();
+    }
 }

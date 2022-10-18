@@ -81,7 +81,7 @@ public class Player {
             this.addCard(card);
         }
     }
-    private void removeSelectedCardsFromHand() {
+    public void removeSelectedCardsFromHand() {
         for (ICard c: selectedCards) {
             hand.remove(c);
         }
@@ -92,7 +92,6 @@ public class Player {
     //To get the card a player wants to play
     public List<ICard> play(){
         //saidUno = false; don't understand why this is desired behaviour
-        removeSelectedCardsFromHand();
         List<ICard> out = copyCards(selectedCards);
         discardAllSelectedCards();
         return out;
