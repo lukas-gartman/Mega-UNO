@@ -59,7 +59,6 @@ public class Client {
                         break;
 
                     JSONObject json = new JSONObject(message);
-                    System.out.println(json);
                     jsonReader.read(json);
                 } catch (IOException ex) { // Unable to read from server
                     System.out.println("Client lost connection to server @ " + this.hostname + ":" + this.port);
