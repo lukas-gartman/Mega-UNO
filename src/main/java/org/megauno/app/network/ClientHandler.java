@@ -5,8 +5,6 @@ import org.megauno.app.utility.BiHashMap;
 
 import java.io.*;
 import java.net.Socket;
-import java.sql.Time;
-import java.sql.Timestamp;
 
 /**
  * Extension of Server that handles client connections.
@@ -20,8 +18,6 @@ public class ClientHandler implements Runnable {
     private BufferedWriter bw;
     private final int id;
     private JSONReader jsonReader;
-    private Timestamp lasrSend;
-
 
     /**
      * Store the client information and set up readers and writers
@@ -42,8 +38,6 @@ public class ClientHandler implements Runnable {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
-
-        lasrSend = new Timestamp(System.currentTimeMillis());
     }
 
     /**
@@ -51,13 +45,6 @@ public class ClientHandler implements Runnable {
      * @param json the object to send
      */
     public void send(JSONObject json) {
-        try {
-           // Thread.sleep(1000);
-        }catch (Exception e){
-
-        }
-
-
         try {
             bw.write(json.toString());
             bw.newLine();
@@ -71,7 +58,7 @@ public class ClientHandler implements Runnable {
      * Send a JSON object from one client to all other clients
      * @param json the object to send
      */
-    private void broadcast(JSONObject json) {
+    public void broadcast(JSONObject json) {
         for (ClientHandler ch : clientHandlers.getLeftKeys()) {
             if (clientHandlers.getRight(ch) == this.id)
                 continue;
@@ -106,19 +93,16 @@ public class ClientHandler implements Runnable {
         String message;
         while (true) {
             try {
-
                 message = br.readLine();
                 JSONObject json = new JSONObject(message);
-                jsonReader.read(json.put("ClientId",id));
+                jsonReader.read(json.put("ClientId", id));
 
             } catch (IOException ex) {
                 try {
                     br.close();
                     disconnect();
                     break;
-                } catch (IOException e) {
-
-                }
+                } catch (IOException e) { }
                 ex.printStackTrace();
             }
         }

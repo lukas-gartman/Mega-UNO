@@ -1,15 +1,11 @@
 package org.megauno.app.network;
 
-import org.lwjgl.system.CallbackI;
-import org.megauno.app.model.Game.PlayerCircle;
-import org.megauno.app.model.Player.Player;
-
 import org.megauno.app.utility.BiHashMap;
 import org.megauno.app.utility.Publisher.normal.Publisher;
 import org.megauno.app.utility.Tuple;
 
 import java.util.*;
-import java.util.concurrent.Phaser;
+import java.util.concurrent.CountDownLatch;
 
 /**
  * A lobby that is used to host a game server which accepts incoming clients
@@ -18,20 +14,17 @@ import java.util.concurrent.Phaser;
 public class Lobby {
     private volatile BiHashMap<ClientHandler, Integer> clientHandlers;
     private volatile UnoServer server;
-    private Phaser phaser;
+    private CountDownLatch countDownLatch;
     private final Publisher<Tuple<ClientHandler, Integer>> serverPublisher = new Publisher<>();
 
 
     /**
      * Creates a lobby
-     * @param phaser a synchronisation barrier used to signal when the lobby is finished
+     * @param cdl a synchronisation barrier used to signal when the lobby is finished
+     * @param jr a JSONReader for interpreting JSON
      */
-    public Lobby(Phaser phaser) {
-
-    }
-    public Lobby(Phaser phaser,JSONReader jr) throws IllegalAccessException {
-
-        this.phaser = phaser;
+    public Lobby(CountDownLatch cdl, JSONReader jr) throws IllegalAccessException {
+        this.countDownLatch = cdl;
         host(jr);
     }
 
@@ -46,7 +39,7 @@ public class Lobby {
 
     /**
      * Creates a server and watches for incoming clients
-     * @param jsonReader a JsonReader
+     * @param jsonReader a JSONReader for interpreting JSON
      * @return a list of client IDs
      * @throws IllegalAccessException when a server is already running
      */
@@ -62,18 +55,16 @@ public class Lobby {
         //Waiting for host to start
         new Thread(() -> {
             Scanner scanner = new Scanner(System.in); // Get input from console
-            System.out.print("enter: ");
-            while (!scanner.nextLine().equals("start")) // Start the game by typing "start"
+            System.out.print("enter start: ");
+            while (!scanner.nextLine().equals("start") || clientHandlers.size() == 0) // Start the game by typing "start"
                 System.out.print("enter start: ");
 
-            this.phaser.arrive(); // The task is finished
+            this.countDownLatch.countDown(); // The task is finished
         }).start();
     }
 
     private void join() {
-        this.phaser.register(); // Indicate the user is not ready to play
         // todo: implement logic for joining a lobby
-        this.phaser.arrive(); // Indicate the user is now ready to play
     }
 
     /**

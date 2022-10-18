@@ -1,23 +1,18 @@
 package org.megauno.app;
 
+import com.badlogic.gdx.ApplicationAdapter;
 import org.json.JSONObject;
 import org.megauno.app.model.Cards.ICard;
 import org.megauno.app.model.Game.Game;
-import com.badlogic.gdx.ApplicationAdapter;
-import org.megauno.app.model.Game.IGameImputs;
 import org.megauno.app.network.*;
 import org.megauno.app.model.Game.PlayerCircle;
 import org.megauno.app.model.Player.Player;
+import org.megauno.app.utility.BiHashMap;
+import org.megauno.app.viewcontroller.GamePublishers;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.concurrent.Phaser;
-
-import org.megauno.app.utility.BiHashMap;
-import org.megauno.app.utility.Publisher.normal.Publisher;
-import org.megauno.app.utility.Tuple;
-import org.megauno.app.viewcontroller.GamePublishers;
+import java.util.concurrent.CountDownLatch;
 
 public class ModelApplication extends ApplicationAdapter {
 	private Game game;
@@ -27,21 +22,19 @@ public class ModelApplication extends ApplicationAdapter {
 
 	@Override
 	public void create() {
-		Phaser phaser = new Phaser(1); // Used to signal when the lobby is done searching for players
+		CountDownLatch countDownLatch = new CountDownLatch(1); // Used to signal when the lobby is done searching for players
 		Lobby lobby;
 		try {
 			// Create the lobby
-			lobby = new Lobby(phaser, (o -> readJson(o)));
-			phaser.awaitAdvance(0); // Wait for the host to start the game (blocking call)
+			lobby = new Lobby(countDownLatch, (this::readJson));
+			countDownLatch.await(); // Wait for the host to start the game (blocking call)
 			createGame(lobby.getIds());
-			addLobbySubscriptions(game, lobby.getInfoSender(),cardsWithID,playersWithID);
-			lobby.getInfoSender().start();
+			addLobbySubscriptions(game, lobby.getInfoSender(), cardsWithID, playersWithID);
+//			lobby.getInfoSender().start();
 			game.addCardsToAllPlayers(7);
 			System.out.println("Starting game!");
-		} catch (IllegalStateException ex) {
+		} catch (IllegalAccessException | InterruptedException e) {
 			System.out.println("The lobby was closed");
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
 		}
 	}
 
