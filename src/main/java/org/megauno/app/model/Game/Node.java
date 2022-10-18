@@ -57,5 +57,6 @@ public class Node {
 
     public void removeSelected(){
         player.removeSelectedCardsFromHand();
+        player.discardAllSelectedCards();
     }
 }

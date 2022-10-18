@@ -93,7 +93,7 @@ public class Player {
     public List<ICard> play(){
         //saidUno = false; don't understand why this is desired behaviour
         List<ICard> out = copyCards(selectedCards);
-        discardAllSelectedCards();
+
         return out;
     }
 
