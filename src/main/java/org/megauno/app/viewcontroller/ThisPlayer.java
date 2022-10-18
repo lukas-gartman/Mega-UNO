@@ -48,8 +48,10 @@ public class ThisPlayer implements IDrawable {
 	}
 
 	void addCards(List<ICard> cards) {
-		for (int i = 0; i < cards.size(); i++) {
-			ICard card = cards.get(i);
+		int cardIndex = 0;
+		int vCardSize = vCards.size();
+		for (int i = vCards.size(); i < vCardSize + cards.size(); i++) {
+			ICard card = cards.get(cardIndex);
 			// Note, cardID is just the index in the list of cards
 			Card vCard = new Card(card, game, playerID, i);
 			vCard.x = i * 50;
@@ -57,6 +59,7 @@ public class ThisPlayer implements IDrawable {
 			// Add controller for card
 			// vCard.addListener(new CardListener(i, game));
 			vCards.add(vCard);
+			cardIndex += 1;
 		}
 	}
 
@@ -73,7 +76,12 @@ public class ThisPlayer implements IDrawable {
 		}
 		for (Card visualCard : toRemove) {
 			//TODO: update id:s on cards when cards are moved around/removed/added
+			int index = visualCard.cardID;
 			vCards.remove(visualCard);
+			// Change ID of all preceding vCards
+			for (int i = index; i < vCards.size(); i++) {
+				vCards.get(i).cardID = i;
+			}
 		}
 	}
 
