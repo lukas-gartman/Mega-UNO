@@ -30,7 +30,10 @@ public class UnoServer extends Server implements SendInfoToClients{
         object.put("Type","AddCards");
         object.put("PlayerId",pc.getId());
         object.put("Cards",pc.getCards());
+<<<<<<< Updated upstream
         System.out.println(object);
+=======
+>>>>>>> Stashed changes
         broadcast(object);
     }
 
