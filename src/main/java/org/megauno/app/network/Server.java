@@ -57,16 +57,15 @@ public class Server implements IServer, Runnable {
         } catch (NullPointerException ex) {} // server was not set up properly, ignore...
     }
 
-<<<<<<< Updated upstream
-    @Override
-=======
+
+
     private void updateAllClientsJsonReaders(JSONReader jr){
         for(ClientHandler ch: clientHandlers.getLeftKeys()){
             ch.uppdateJsonReader(jr);
         }
     }
 
->>>>>>> Stashed changes
+
     public void disconnect(ClientHandler client) {
         // disconnect the client (critical section)
         try { this.semaphore.acquire(); } catch (InterruptedException ex) { }

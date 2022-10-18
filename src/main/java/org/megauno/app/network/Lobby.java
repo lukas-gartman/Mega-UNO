@@ -1,11 +1,9 @@
 package org.megauno.app.network;
 
-<<<<<<< Updated upstream
-=======
 import org.lwjgl.system.CallbackI;
 import org.megauno.app.model.Game.PlayerCircle;
 import org.megauno.app.model.Player.Player;
->>>>>>> Stashed changes
+
 import org.megauno.app.utility.BiHashMap;
 import org.megauno.app.utility.Publisher.normal.Publisher;
 import org.megauno.app.utility.Tuple;
@@ -23,15 +21,16 @@ public class Lobby {
     private Phaser phaser;
     private final Publisher<Tuple<ClientHandler, Integer>> serverPublisher = new Publisher<>();
 
-<<<<<<< Updated upstream
+
     /**
      * Creates a lobby
      * @param phaser a synchronisation barrier used to signal when the lobby is finished
      */
     public Lobby(Phaser phaser) {
-=======
+
+    }
     public Lobby(Phaser phaser,JSONReader jr) throws IllegalAccessException {
->>>>>>> Stashed changes
+
         this.phaser = phaser;
         host(jr);
     }
@@ -45,19 +44,14 @@ public class Lobby {
             clientHandlers.put(clientHandler, id);
     }
 
-<<<<<<< Updated upstream
     /**
      * Creates a server and watches for incoming clients
-     * @param jsonReaderCreator factory that creates JsonReaders
+     * @param jsonReader a JsonReader
      * @return a list of client IDs
      * @throws IllegalAccessException when a server is already running
      */
-    public List<Integer> host(JsonReaderCreator jsonReaderCreator) throws IllegalAccessException {
-        server = new UnoServer(1337, serverPublisher, jsonReaderCreator); // Game host holds the server object
-=======
     public void host(JSONReader jsonReader) throws IllegalAccessException {
         server = new UnoServer(1337, serverPublisher, jsonReader); // Game host holds the server object
->>>>>>> Stashed changes
         serverPublisher.addSubscriber(this::delivery); // subscribe self to changes to client handlers
         new Thread(server).start(); // Start the server on a new thread to prevent blocking
         clientHandlers = server.getClientHandlers(); // initialise the map of clientHandlers
