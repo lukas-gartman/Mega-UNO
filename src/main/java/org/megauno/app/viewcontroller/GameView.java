@@ -1,6 +1,5 @@
-package org.megauno.app.viewcontroller.players;
+package org.megauno.app.viewcontroller;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
@@ -13,10 +12,9 @@ import org.megauno.app.model.Cards.ICard;
 import org.megauno.app.model.Cards.Impl.NumberCard;
 import org.megauno.app.viewcontroller.Clickable;
 import org.megauno.app.viewcontroller.GameController;
-import org.megauno.app.viewcontroller.LoadedData;
 import org.megauno.app.viewcontroller.ViewPublisher;
 import org.megauno.app.viewcontroller.datafetching.IDrawable;
-import org.megauno.app.viewcontroller.players.otherplayers.OtherPlayer;
+import org.megauno.app.viewcontroller.OtherPlayer;
 import org.megauno.app.viewcontroller.players.thisPlayer.Card;
 import org.megauno.app.viewcontroller.players.thisPlayer.ThisPlayer;
 

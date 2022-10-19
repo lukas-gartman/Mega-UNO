@@ -18,10 +18,8 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-import org.megauno.app.model.Player.Player;
 import org.megauno.app.viewcontroller.datafetching.FontLoader;
 import org.megauno.app.viewcontroller.datafetching.SpriteLoader;
-import org.megauno.app.viewcontroller.players.GameView;
 
 // The outer class managing views and controllers
 public class ViewController{

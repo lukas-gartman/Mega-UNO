@@ -4,7 +4,6 @@ import org.json.JSONObject;
 import org.megauno.app.model.Cards.ICard;
 import org.megauno.app.utility.Publisher.normal.Publisher;
 import org.megauno.app.utility.Tuple;
-import org.megauno.app.viewcontroller.players.GameView;
 
 import java.util.Set;
 

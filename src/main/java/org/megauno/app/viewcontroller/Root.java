@@ -5,14 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import org.lwjgl.opengl.GL20;
 import org.megauno.app.ClientApplication;
-import org.megauno.app.network.IdCard;
-import org.megauno.app.network.PlayersCards;
-import org.megauno.app.utility.Publisher.condition.ConPublisher;
-import org.megauno.app.utility.Publisher.normal.Publisher;
 import org.megauno.app.viewcontroller.datafetching.IDrawable;
-import org.megauno.app.viewcontroller.players.GameView;
-
-import java.util.Arrays;
 
 public class Root {
 
