@@ -4,6 +4,7 @@ import org.megauno.app.model.Cards.Color;
 import org.megauno.app.model.Cards.ICard;
 import org.megauno.app.model.Deck;
 import org.megauno.app.model.IDeck;
+import org.megauno.app.model.IPile;
 import org.megauno.app.model.Pile;
 import org.megauno.app.model.Player.Player;
 import org.megauno.app.utility.Publisher;
@@ -16,7 +17,7 @@ import java.util.Scanner;
 public class Game implements IActOnGame {
     private PlayerCircle players;
     private IDeck deck;
-    private Pile discarded;
+    private IPile discarded;
     private int drawCount = 0;
     private Publisher<Game> publisher;
     private Color wildCardColor;
@@ -41,7 +42,6 @@ public class Game implements IActOnGame {
             players.moveOnToNextTurn();
             p++;
         }
-        discarded = new Pile();
     }
 
     public Game() {
