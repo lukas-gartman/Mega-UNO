@@ -25,7 +25,7 @@ public class Card implements IDrawable {
 	static Sprite green = ClientApplication.GreenCard;
 	static Sprite nonColored = ClientApplication.WhiteCard;
 	static BitmapFont fnt = ClientApplication.Minecraft;
-	static Sprite whiteCard = ClientApplication.WhiteCard;
+	static Sprite wildCard = ClientApplication.WildCard;
 	static Sprite reverse = ClientApplication.Reverse;
 	static Sprite takeTwo = ClientApplication.Take2;
 	static Sprite takeFour = ClientApplication.Take4;
@@ -115,7 +115,7 @@ public class Card implements IDrawable {
 		Sprite special = null;
 		switch (card.getType()){
 			case WILDCARD -> {
-				special = whiteCard;
+				special = wildCard;
 			}
 			case REVERSECARD -> {
 				special = reverse;
