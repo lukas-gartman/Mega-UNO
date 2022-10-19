@@ -10,6 +10,8 @@ import java.util.List;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import org.megauno.app.model.Cards.ICard;
 import org.megauno.app.model.Game.Game;
+import org.megauno.app.utility.dataFetching.DataFetcher;
+import org.megauno.app.utility.dataFetching.PathDataFetcher;
 import org.megauno.app.viewcontroller.datafetching.SpriteLoader;
 
 // For now, GameView parses deltas from Game and calls the appropriate
@@ -22,6 +24,8 @@ public class GameView implements IDrawable {
 	private EndTurnButton endTurnButton;
 	private SayUnoButton sayUnoButton;
 	private DrawPile drawPile;
+	static DataFetcher<String, Sprite> spriteLoader = new PathDataFetcher<Sprite>(new SpriteLoader(), "assets/");
+	static Sprite background = spriteLoader.tryGetDataSafe("Background.png");
 
 	public GameView(Game game, int playerID) {
 		this.game = game;
@@ -56,6 +60,9 @@ public class GameView implements IDrawable {
 	// Deltas on game are checked here, called every frame by parent
 	@Override
 	public void draw(float delta, Batch batch) {
+		// Draw background
+		batch.draw(background, 0, 0, 650, 500);
+
 		thisPlayer.draw(delta, batch);
 
 		// TODO: fix ID

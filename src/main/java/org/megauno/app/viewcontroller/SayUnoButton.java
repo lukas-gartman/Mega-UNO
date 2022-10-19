@@ -25,6 +25,7 @@ public class SayUnoButton implements IDrawable {
 	public void draw(float delta, Batch batch) {
 		if (clickable.wasClicked(x, y)) {
 			//TODO: add call to game
+			
 		}
 
 		batch.draw(sprite, x, y);
