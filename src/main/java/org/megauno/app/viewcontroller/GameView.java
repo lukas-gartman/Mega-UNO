@@ -10,6 +10,8 @@ import java.util.List;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import org.megauno.app.model.Cards.ICard;
 import org.megauno.app.model.Game.Game;
+import org.megauno.app.utility.dataFetching.DataFetcher;
+import org.megauno.app.utility.dataFetching.PathDataFetcher;
 import org.megauno.app.viewcontroller.datafetching.SpriteLoader;
 
 // For now, GameView parses deltas from Game and calls the appropriate
@@ -20,12 +22,16 @@ public class GameView implements IDrawable {
 	private ThisPlayer thisPlayer;
 	private List<OtherPlayer> otherPlayers = new ArrayList<>();
 	private EndTurnButton endTurnButton;
-	
+	private SayUnoButton sayUnoButton;
+	private DrawPile drawPile;
+	static DataFetcher<String, Sprite> spriteLoader = new PathDataFetcher<Sprite>(new SpriteLoader(), "assets/");
+	static Sprite background = spriteLoader.tryGetDataSafe("Background.png");
+
 	public GameView(Game game, int playerID) {
 		this.game = game;
 		// Add this view's player
 		this.playerID = playerID;
-		List<List<ICard>> allPlayerCards = game.getAllPlayerCards();   // All the different players' cards
+		List<List<ICard>> allPlayerCards = game.getAllPlayerCards(); // All the different players' cards
 		thisPlayer = new ThisPlayer(playerID, allPlayerCards.get(playerID), game, this);
 
 		// Add all other players
@@ -37,21 +43,26 @@ public class GameView implements IDrawable {
 				otherPlayer.y = 400;
 				otherPlayer.x = id * 200;
 				otherPlayers.add(otherPlayer);
-				//TODO: add position, do a top-row of OtherPlayers
+				// TODO: add position, do a top-row of OtherPlayers
 			}
 		}
 
-		endTurnButton = new EndTurnButton(200, 200);
+		endTurnButton = new EndTurnButton(200, 200, game);
+		sayUnoButton = new SayUnoButton(500, 30, game, playerID);
+		drawPile = new DrawPile(350, 250, game);
 	}
 
-	public int getPlayerID(){
+	public int getPlayerID() {
 		return playerID;
 	}
 
-	//TODO: when a card is detected to be rmoved from hand, remove card from stage.
+	// TODO: when a card is detected to be rmoved from hand, remove card from stage.
 	// Deltas on game are checked here, called every frame by parent
 	@Override
 	public void draw(float delta, Batch batch) {
+		// Draw background
+		batch.draw(background, 0, 0, 650, 500);
+
 		thisPlayer.draw(delta, batch);
 
 		// TODO: fix ID
@@ -60,7 +71,7 @@ public class GameView implements IDrawable {
 		top.y = 250;
 		top.draw(delta, batch);
 
-		//System.out.println(game.getPlayerWithId(game.getCurrentPlayer()).numOfCards());
+		// System.out.println(game.getPlayerWithId(game.getCurrentPlayer()).numOfCards());
 		thisPlayer.thisPlayerHandCHnages();
 
 		for (OtherPlayer op : otherPlayers) {
@@ -70,11 +81,15 @@ public class GameView implements IDrawable {
 
 		// Draw end turn button
 		endTurnButton.draw(delta, batch);
+		// Draw say uno button
+		sayUnoButton.draw(delta, batch);
+		// Draw draw pile
+		drawPile.draw(delta, batch);
 	}
 
-	private void otherPlayerHandChanges (OtherPlayer otherPlayer){
+	private void otherPlayerHandChanges(OtherPlayer otherPlayer) {
 		int newCards = game.getPlayerWithId(otherPlayer.getPlayerID()).numOfCards();
-		//System.out.println(otherPlayer.getPlayerID() + " has " + newCards);
+		// System.out.println(otherPlayer.getPlayerID() + " has " + newCards);
 
 		int nCards = otherPlayer.getNrOfCard();
 		if (nCards > newCards) {
@@ -83,42 +98,4 @@ public class GameView implements IDrawable {
 			otherPlayer.addCards(newCards - nCards);
 		}
 	}
-
-	// TODO: YES
-	class EndTurnListener extends ClickListener {
-		@Override
-		public void clicked(InputEvent event, float x, float y) {
-			System.out.println("placed card");
-			//System.out.println(game.getPlayerWithId(playerID).getSelectedCards().get(0).toString());
-			game.commence_forth = true;
-		}
-	}
-
-	class EndTurnButton implements IDrawable {
-		public float x;
-		public float y;
-
-		private Clickable clickable;
-
-		static private Sprite sprite = new SpriteLoader().retrieveData("assets/Tomte.png");
-
-		public EndTurnButton(float x, float y) {
-			this.x = x;
-			this.y = y;
-
-			clickable = new Clickable(sprite.getWidth(), sprite.getHeight());
-		}
-
-		@Override
-		public void draw(float delta, Batch batch) {
-			if (clickable.wasClicked(x, y)) {
-				game.commence_forth = true;
-			}
-
-			batch.draw(sprite, x, y);
-		}
-	}
 }
-
-
-

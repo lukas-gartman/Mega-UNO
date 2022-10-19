@@ -55,6 +55,10 @@ public class Player {
         saidUno = true;
     }
 
+    public void unsayUno(){
+        saidUno = false;
+    }
+
     public boolean uno() {
         return saidUno;
     }
@@ -77,18 +81,19 @@ public class Player {
             this.addCard(card);
         }
     }
-    private void removeSelectedCardsFromHand() {
+    public void removeSelectedCardsFromHand() {
         for (ICard c: selectedCards) {
             hand.remove(c);
         }
     }
 
+
+
     //To get the card a player wants to play
-    public List<ICard> play() {
-        saidUno = false;
-        removeSelectedCardsFromHand();
+    public List<ICard> play(){
+        //saidUno = false; don't understand why this is desired behaviour
         List<ICard> out = copyCards(selectedCards);
-        discardAllSelectedCards();
+
         return out;
     }
 

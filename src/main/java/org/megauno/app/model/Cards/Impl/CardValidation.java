@@ -9,14 +9,14 @@ import org.megauno.app.model.Cards.Color;
 public class CardValidation {
 
     public static void validateColor(Color color) {
-        if (color == null || !checkColor(color))
+        if (!checkColor(color))
             throw new IllegalArgumentException("Undefined color");
     }
 
     public static void validateColorNc(Color color) {
 		// This kills my compiler, sometimes
-        //if (color == null || color == Color.NONE || !checkColor(color))
-        //    throw new IllegalArgumentException("Undefined or wrong color");
+        if (color == Color.NONE || !checkColor(color))
+            throw new IllegalArgumentException("Undefined or wrong color");
     }
 
     private static boolean checkColor(Color color) {
@@ -39,11 +39,7 @@ public class CardValidation {
     }
 
     public static void validateType(CardType type) {
-        if (type == null || !checkType(type))
+        if (!checkType(type))
             throw new IllegalArgumentException("Undefined card type");
     }
-
-    // public static void validSpecialCard();
-
-
 }

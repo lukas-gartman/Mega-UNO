@@ -8,6 +8,9 @@ public class Clickable {
 	public float width;
 	public float height;
 
+	private static float TARGET_WINDOW_WIDTH = 640;
+	private static float TARGET_WINDOW_HEIGHT = 480;
+
 	public Clickable(float width, float height) {
 		this.width = width;
 		this.height = height;
@@ -16,13 +19,20 @@ public class Clickable {
 	public boolean wasClicked(float x, float y) {
 		if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
 			// Note that the input coordinate system is flipped in the y axis
-			float input_x = Gdx.input.getX();
-			float input_y = Gdx.graphics.getHeight() - Gdx.input.getY();
+			float screenWidth = Gdx.graphics.getWidth();
+			float screenHeight = Gdx.graphics.getHeight();
 
-			float xLeft = x;
-			float xRight = x + width;
-			float yBottom = y;
-			float yTop = y + height;
+			// Coordinates are translated to screen coordinates with this modifier
+			float widthMod = screenWidth / TARGET_WINDOW_WIDTH;
+			float heightMod = screenHeight / TARGET_WINDOW_HEIGHT;
+
+			float input_x = Gdx.input.getX();
+			float input_y = (Gdx.graphics.getHeight() - Gdx.input.getY());
+
+			float xLeft = x * widthMod;
+			float xRight = (x + width) * widthMod;
+			float yBottom = y * heightMod;
+			float yTop = (y + height) * heightMod;
 
 			return (input_x > xLeft && input_x < xRight) && (input_y > yBottom && input_y < yTop);
 		}

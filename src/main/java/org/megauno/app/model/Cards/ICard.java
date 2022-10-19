@@ -4,6 +4,9 @@ import org.megauno.app.model.Cards.Impl.ActionCard;
 import org.megauno.app.model.Cards.Impl.NumberCard;
 import org.megauno.app.model.Game.IActOnGame;
 
+/**
+ * Describes the behavior of a Card in the game of UNO.
+ */
 public interface ICard extends ICardVisitor {
 
     boolean equals(Object o);
@@ -12,11 +15,26 @@ public interface ICard extends ICardVisitor {
 
     String toString();
 
-    boolean canBePlayed(ICard c); // This is the "accept" method
+    /**
+     * Checks that this card can be played on the given card.
+     * @param card  The card that is played on.
+     * @return If the card can be played or not.
+     */
+    boolean canBePlayed(ICard card);
 
-    boolean canBePlayedOnMe(NumberCard nc);
+    /**
+     * Visitor Pattern. Checks that the given card can be played on this card.
+     * @param numberCard The card that wants to be played on this card
+     * @return Weather it can be played on this or not.
+     */
+    boolean canBePlayedOnMe(NumberCard numberCard);
 
-    boolean canBePlayedOnMe(ActionCard ac);
+    /**
+     * Visitor Pattern. Checks that the given card can be played on this card.
+     * @param actionCard The card that wants to be played on this card
+     * @return Weather it can be played on this or not.
+     */
+    boolean canBePlayedOnMe(ActionCard actionCard);
 
     CardType getType();
 
@@ -26,14 +44,35 @@ public interface ICard extends ICardVisitor {
 
 	Integer getNumber();
 
+    /**
+     * Propagates the changes a particular card has on the game.
+     * @param g An abstraction of a game.
+     * @return Weather the change was successfully done.
+     */
     boolean activate(IActOnGame g);
 
     void setColor(Color choice);
 
-    boolean canBeStacked(ICard c);
+    /**
+     * Checks weather a card can be stacked on another.
+     * This is relevant when multiple cards are chosen at once.
+     * @param card The card which this card wants to stack upon.
+     * @return If this card can be stacked on the given card.
+     */
+    boolean canBeStacked(ICard card);
 
-    boolean canBeStackedUnder(NumberCard c);
+    /**
+     * Visitor Pattern. Checks that the given card can be stacked on this card.
+     * @param numberCard The card that wants to be stacked on this card
+     * @return Weather it can be stacked on this or not.
+     */
+    boolean canBeStackedUnder(NumberCard numberCard);
 
-    boolean canBeStackedUnder(ActionCard c);
+    /**
+     * Visitor Pattern. Checks that the given card can be stacked on this card.
+     * @param actionCard The card that wants to be stacked on this card
+     * @return Weather it can be stacked on this or not.
+     */
+    boolean canBeStackedUnder(ActionCard actionCard);
 
 }
