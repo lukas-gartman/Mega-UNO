@@ -27,20 +27,19 @@ public class Game implements IActOnGame, GamePublishers, IGameImputs {
     // Publisher for when cards are added to a player
     private Publisher<Tuple<Player, List<ICard>>> onCardsRemovedByPlayer = new Publisher<>();
 
-    /**
-     *
-     * @param players is the circle of players
-     * @param numCards is the number of cards a hand is initially dealt
-     */
-    public Game(PlayerCircle players, int numCards) {
+
+    public Game(PlayerCircle players) {
         this.players = players;
+        addSubscriptionToPlayers(players.getPlayers());
+    }
+
+    public void start(int numCards) {
         this.discarded = new Pile();
         onNewTopCard.publish(getTopCard());
-		this.deck = new Deck();
-
-        addSubscriptionToPlayers(players.getPlayers());
+        this.deck = new Deck();
         addCardsToAllPlayers(numCards);
     }
+
 
     public void addCardsToAllPlayers(int numCards) {
         for (Player player : getPlayers()){
@@ -57,21 +56,7 @@ public class Game implements IActOnGame, GamePublishers, IGameImputs {
 
 
 
-    public Game() {
-        this.discarded = new Pile();
-        this.deck = new Deck();
-        players = new PlayerCircle();
-    }
 
-    // For testing purposes
-    public Game(PlayerCircle players) {
-        this.discarded = new Pile();
-        onNewTopCard.publish(getTopCard());
-        this.deck = new Deck();
-        this.players = players;
-
-        addSubscriptionToPlayers(players.getPlayers());
-    }
 
 	// TODO: move method to a more general class (general class representing the model)
 	// commence_forth: set by a controller (or test) to signal that the player has chosen.

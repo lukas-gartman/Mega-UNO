@@ -5,7 +5,7 @@ import org.megauno.app.model.Game.Game;
 
 public class ModelTest {
 
-    Game model = new Game();
+    //Game model = new Game();
 
     @Test
     public void testSystem() {

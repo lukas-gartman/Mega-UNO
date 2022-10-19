@@ -19,6 +19,7 @@ import org.megauno.app.model.Game.Actions.WildCardAction;
 import org.megauno.app.network.Client;
 import org.megauno.app.network.IdCard;
 import org.megauno.app.network.PlayersCards;
+import org.megauno.app.utility.Publisher.IPublisher;
 import org.megauno.app.utility.Publisher.condition.ConPublisher;
 import org.megauno.app.utility.Publisher.normal.Publisher;
 import org.megauno.app.utility.dataFetching.DataFetcher;
@@ -27,7 +28,6 @@ import org.megauno.app.viewcontroller.GameController;
 import org.megauno.app.viewcontroller.LoadedData;
 import org.megauno.app.viewcontroller.Root;
 import org.megauno.app.viewcontroller.ViewPublisher;
-import org.megauno.app.viewcontroller.datafetching.FontLoader;
 
 
 import java.util.ArrayList;
@@ -49,7 +49,7 @@ public class ClientApplication extends ApplicationAdapter implements GameControl
     static public BitmapFont Minecraft;
 
     private Publisher<Integer> onNewPlayer = new Publisher<>();
-    private Publisher<IdCard> onNewTopCard = new Publisher<>();
+    private Publisher<ICard> onNewTopCard = new Publisher<>();
     private ConPublisher<PlayersCards> onCardsAddedToPlayer = new ConPublisher<>();
     private ConPublisher<PlayersCards> onCardsRemovedByPlayer = new ConPublisher<>();
     private Client client;
@@ -120,17 +120,10 @@ public class ClientApplication extends ApplicationAdapter implements GameControl
 
      void respondToJSON(JSONObject o) {
          String type = o.getString("Type");
+         System.out.println(o);
 
          if (root != null) {
 
-             System.out.println(type.equals("AddCards"));
-
-             if (type.equals("AddCards")) {
-                 System.out.println("c");
-             }
-             if (type.equals("Start")) {
-                 System.out.println("c");
-             }
 
 
              switch (type) {
@@ -144,7 +137,8 @@ public class ClientApplication extends ApplicationAdapter implements GameControl
                      onNewPlayer.publish(o.getInt("PlayerId"));
                      break;
                  case "NewTopCard":
-                     onNewTopCard().publish((IdCard) o.get("Card"));
+                     //System.out.println(o.get("Card").getClass().getSimpleName());
+                     onNewTopCard.publish((iCardMaker(o.getJSONObject("Card"))));
                      break;
              }
          } else {
@@ -166,15 +160,16 @@ public class ClientApplication extends ApplicationAdapter implements GameControl
         List<IdCard> cards = new ArrayList<>();
         System.out.println("My id: " + playerID + jsonArray.toString());
         for (Object object : jsonArray) {
-            cards.add(idCardMaker(object));
+            JSONObject jsonObject = (JSONObject) object;
+            int id = jsonObject.getInt("id");
+            JSONObject card = jsonObject.getJSONObject("card");
+            cards.add(new IdCard(id, iCardMaker(card)));
         }
         return new PlayersCards(playerID, cards);
     }
 
-    static private IdCard idCardMaker(Object object){
-        JSONObject jsonObject = ((JSONObject )object);
-        int cardId = jsonObject.getInt("id");
-        jsonObject = jsonObject.getJSONObject("card");
+
+    static private ICard iCardMaker(JSONObject jsonObject){
         Color c = Color.NONE;
         switch (jsonObject.getString("color")){
             case "BLUE":{
@@ -221,7 +216,7 @@ public class ClientApplication extends ApplicationAdapter implements GameControl
                 break;
             }
         }
-        return new IdCard(cardId,icard);
+        return icard;
     }
 
     @Override
@@ -250,7 +245,7 @@ public class ClientApplication extends ApplicationAdapter implements GameControl
     }
 
     @Override
-    public Publisher<IdCard> onNewTopCard() {
+    public IPublisher<ICard> onNewTopCard() {
         return onNewTopCard;
     }
 

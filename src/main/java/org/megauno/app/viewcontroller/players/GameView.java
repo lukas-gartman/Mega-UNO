@@ -8,7 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.megauno.app.ClientApplication;
+import org.megauno.app.model.Cards.Color;
 import org.megauno.app.model.Cards.ICard;
+import org.megauno.app.model.Cards.Impl.NumberCard;
 import org.megauno.app.viewcontroller.Clickable;
 import org.megauno.app.viewcontroller.GameController;
 import org.megauno.app.viewcontroller.LoadedData;
@@ -49,9 +51,10 @@ public class GameView implements IDrawable {
 
 		endTurnButton = new EndTurnButton(200, 200);
 
+		top = new Card(new NumberCard(Color.NONE,0),-1,gameController);
 
 		publishers.onNewTopCard().addSubscriber(
-				(np) -> updateTopCard(np.getCard(),np.getId())
+				(np) -> updateTopCard(np)
 		);
 	}
 
@@ -59,11 +62,10 @@ public class GameView implements IDrawable {
 		return playerID;
 	}
 
-	private void updateTopCard(ICard newTop, int id){
-		top = new Card(newTop,id, gameController);
+	private void updateTopCard(ICard newTop){
+		top = new Card(newTop,-1, gameController);
 		top.x = 300;
 		top.y = 250;
-
 	}
 
 	//TODO: when a card is detected to be rmoved from hand, remove card from stage.
@@ -72,8 +74,7 @@ public class GameView implements IDrawable {
 	public void draw(float delta, Batch batch) {
 		thisPlayer.draw(delta, batch);
 
-		if(top != null)
-			top.draw(delta, batch);
+		top.draw(delta, batch);
 
 		for (OtherPlayer op : otherPlayers) {
 			op.draw(delta, batch);

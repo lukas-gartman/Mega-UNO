@@ -21,7 +21,8 @@ public class UnoServer extends Server implements SendInfoToClients{
 
     @Override
     public void newTopCardOfPile(ICard topCard) {
-        broadcast(new JSONObject().put("Type","NewTopCard").put("Card",topCard));
+        JSONObject card = new JSONObject(topCard);
+        broadcast(new JSONObject().put("Type","NewTopCard").put("Card",card));
     }
 
     @Override

@@ -12,6 +12,7 @@ import org.megauno.app.viewcontroller.GamePublishers;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 import java.util.concurrent.CountDownLatch;
 
 public class ModelApplication extends ApplicationAdapter {
@@ -28,10 +29,12 @@ public class ModelApplication extends ApplicationAdapter {
 			// Create the lobby
 			lobby = new Lobby(countDownLatch, (this::readJson));
 			countDownLatch.await(); // Wait for the host to start the game (blocking call)
+			System.out.println("How many cards?");
 			createGame(lobby.getIds());
 			addLobbySubscriptions(game, lobby.getInfoSender(), cardsWithID, playersWithID);
 			lobby.getInfoSender().start();
-			game.addCardsToAllPlayers(7);
+			int numcards = new Scanner(System.in).nextInt();
+			game.start(numcards);
 			System.out.println("Starting game!");
 		} catch (IllegalAccessException | InterruptedException e) {
 			System.out.println("The lobby was closed");
@@ -49,6 +52,7 @@ public class ModelApplication extends ApplicationAdapter {
 	}
 
 	private void readJson(JSONObject object) {
+		System.out.println(object);
 		String type = object.getString("Type");
 		int clientId = object.getInt("ClientId");
 		Player player = playersWithID.getRight(clientId);

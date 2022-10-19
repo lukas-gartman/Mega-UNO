@@ -14,9 +14,9 @@ public class GameTest extends TestCase {
 
     Deck deck = new Deck();
     PlayerCircle players = new PlayerCircle(generatePlayers(5));
-    Game game = new Game(players);
+    Game game = GameFactory.createGame(players);
 
-    GameFactory gameFactory = new GameFactory();
+
 
     public List<Player> generatePlayers(int n) {
         List<Player> playerList = new ArrayList<>();

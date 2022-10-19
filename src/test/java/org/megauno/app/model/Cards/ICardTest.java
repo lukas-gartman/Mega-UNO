@@ -10,6 +10,7 @@ import org.megauno.app.model.Game.Actions.ReverseAction;
 import org.megauno.app.model.Game.Game;
 import org.megauno.app.model.Game.IActOnGame;
 import org.megauno.app.model.Game.PlayerCircle;
+import org.megauno.app.model.GameFactory;
 import org.megauno.app.model.Player.Player;
 
 import java.util.ArrayList;
@@ -22,7 +23,7 @@ public class ICardTest {
         Player p = new Player(new ArrayList<>());
         List<Player> players = new ArrayList<>();
         players.add(p);
-        g = new Game(new PlayerCircle());
+        g = GameFactory.createGame(new PlayerCircle());
     }
 
     ICard nc = new NumberCard(Color.BLUE, 3);
