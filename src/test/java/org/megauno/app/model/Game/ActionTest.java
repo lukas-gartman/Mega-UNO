@@ -24,11 +24,13 @@ public class ActionTest {
         actionCards = new ArrayList<>();
         random = new Random();
         testGame = new Game();
-        CardType.stream().forEach(type -> actionCards.add(
-                cardFactory.createActionCard(
-                        Color.getFromIndex(random.nextInt(3)),
-                        type)
+        CardType.stream().filter(t -> t.getTypeOf().equals("ActionCard"))
+                .forEach(type -> actionCards.add(
+                    cardFactory.createActionCard(
+                            Color.getFromIndex(random.nextInt(3)),
+                            type)
         ));
+        System.out.println(actionCards.toString());
     }
 
     @Test

@@ -6,7 +6,7 @@ import org.megauno.app.model.Game.IActOnGame;
 import java.util.Objects;
 
 /**
- *
+ * A standard card in uno, that has a numeric value and no action attached to it.
  */
 public class NumberCard extends AbstractCard {
     private final int value;

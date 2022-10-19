@@ -14,6 +14,11 @@ import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
+/**
+ *  The endpoint of the model. Here is where all the smaller components are combined into
+ *  a functional logical representation of a UNO game.
+ *  The changes made in Game are published to anyone who is subscribed to Game.
+ */
 public class Game implements IActOnGame {
     private PlayerCircle players;
     private IDeck deck;

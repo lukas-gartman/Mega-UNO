@@ -4,9 +4,10 @@ import org.megauno.app.model.Cards.IAction;
 import org.megauno.app.model.Game.IActOnGame;
 import org.megauno.app.model.Game.PlayerCircle;
 
+/**
+ * This action skips the next player in line.
+ */
 public class SkipAction implements IAction {
-    public SkipAction(){
-    }
 
     @Override
     public boolean execute(IActOnGame g) {

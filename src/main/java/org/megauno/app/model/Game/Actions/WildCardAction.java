@@ -5,12 +5,11 @@ import org.megauno.app.model.Cards.IAction;
 import org.megauno.app.model.Cards.ICard;
 import org.megauno.app.model.Game.IActOnGame;
 
-
-// Wild card is a type not an actioncard.
+/**
+ * The action of a wildcard is that the player playing the wildcard can pick any color they like
+ * to be played next
+ */
 public class WildCardAction implements IAction{
-
-    public WildCardAction(){
-    }
 
     @Override
     public boolean execute(IActOnGame g) {
@@ -22,5 +21,5 @@ public class WildCardAction implements IAction{
     public void assignColor(Color choice, ICard c){
         c.setColor(choice);
     }
-
+    // Wild card is a type not an actioncard.
 }
