@@ -25,10 +25,12 @@ public class Pile implements IPile {
         return new NumberCard(color, number);
     }
 
+    @Override
     public void discard(ICard card) {
         cards.push(card);
     }
 
+    @Override
     public ICard getTop() {
         if (!cards.isEmpty())
             return cards.peek();

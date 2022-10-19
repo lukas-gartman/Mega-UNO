@@ -1,5 +1,8 @@
 package org.megauno.app.viewcontroller;
 
+import org.megauno.app.model.Game.Game;
+import org.megauno.app.model.Player.Player;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -52,6 +55,24 @@ public class ViewController{
 	public void draw() {
 		// Clear screen
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+		// Remove game view if player is gone
+		//Player[] allPlayers = game.getPlayers();
+		List<GameView> gameViewToRemove = new ArrayList<>();
+		for (GameView gameView : gameViews) {
+			boolean playersGameViewExists = false;
+			//for (Player player : allPlayers) {
+				//if (player.getId() == gameView.getPlayerID()) {
+				//	playersGameViewExists = true;
+				//}
+			//}
+			if (!playersGameViewExists) {
+				gameViewToRemove.add(gameView);
+			}
+		}
+		for (GameView gameView : gameViewToRemove) {
+			gameViews.remove(gameView);
+		}
 
 		// Draw a game view
 		batch.begin();

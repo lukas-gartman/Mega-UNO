@@ -14,6 +14,7 @@ public class WildCardAction implements IAction{
 
     @Override
     public boolean execute(IActOnGame g) {
+        assignColor(g.getChosenColor(), g.getTopCard());
         return true;
     }
 
@@ -21,4 +22,5 @@ public class WildCardAction implements IAction{
     public void assignColor(Color choice, ICard c){
         c.setColor(choice);
     }
+
 }

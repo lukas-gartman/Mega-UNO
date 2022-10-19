@@ -2,17 +2,23 @@ package org.megauno.app.model;
 
 import junit.framework.TestCase;
 import org.junit.Test;
+import org.megauno.app.model.Cards.CardType;
 import org.megauno.app.model.Cards.Color;
 import org.megauno.app.model.Cards.ICard;
 import org.megauno.app.model.Cards.Impl.ActionCard;
 import org.megauno.app.model.Cards.Impl.CardValidation;
 import org.megauno.app.model.Cards.Impl.NumberCard;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class DeckTest {
 
     Deck deck = new Deck();
+
+    HashMap<CardType, Integer> dist = new HashMap<>();
+
+    Deck deckWithDist = new Deck();
 
     // throws an exception if the invariant doesn't hold
     public boolean cardInvariant(ICard card) {
@@ -26,6 +32,13 @@ public class DeckTest {
             CardValidation.validateType(card.getType());
         }
         return true;
+    }
+
+    @Test
+    public void testDeckWithDistribution() {
+        HashMap<CardType, Integer> dist = new HashMap<>();
+
+        Deck deckWithDist = new Deck();
     }
 
     @Test

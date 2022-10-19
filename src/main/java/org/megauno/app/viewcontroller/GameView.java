@@ -7,10 +7,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.megauno.app.ClientApplication;
+import org.megauno.app.model.Cards.CardType;
 import org.megauno.app.model.Cards.Color;
 import org.megauno.app.model.Cards.ICard;
+import org.megauno.app.model.Cards.Impl.ActionCard;
 import org.megauno.app.model.Cards.Impl.NumberCard;
 import org.megauno.app.viewcontroller.datafetching.IDrawable;
+import org.megauno.app.model.Game.Game;
+import org.megauno.app.utility.dataFetching.DataFetcher;
+import org.megauno.app.utility.dataFetching.PathDataFetcher;
+import org.megauno.app.viewcontroller.datafetching.SpriteLoader;
 
 // For now, GameView parses deltas from Game and calls the appropriate
 public class GameView implements IDrawable {
@@ -21,6 +27,8 @@ public class GameView implements IDrawable {
 	private List<OtherPlayer> otherPlayers = new ArrayList<>();
 	private EndTurnButton endTurnButton;
 	private GameController gameController;
+	private SayUnoButton sayUnoButton;
+	private DrawPile drawPile;
 	
 	public GameView(int playerID, int[] otherPlayersIds, ViewPublisher publishers, GameController gameController) {
 		// Add this view's player
@@ -41,29 +49,38 @@ public class GameView implements IDrawable {
 			offset++;
 		}
 
-		endTurnButton = new EndTurnButton(200, 200);
+		endTurnButton = new EndTurnButton(200, 200, gameController);
+		sayUnoButton = new SayUnoButton(500, 30, gameController);
+		drawPile = new DrawPile(350, 250, gameController);
 
-		top = new Card(new NumberCard(Color.NONE,0),-1,gameController);
+		top = new Card(new ActionCard(o ->  true ,Color.NONE, CardType.WILDCARD),-1,gameController);
+		top.x = 300;
+		top.y = 250;
 
 		publishers.onNewTopCard().addSubscriber(
 				(np) -> updateTopCard(np)
 		);
+
+
+
 	}
 
-	public int getPlayerID(){
+	public int getPlayerID() {
 		return playerID;
 	}
 
 	private void updateTopCard(ICard newTop){
 		top = new Card(newTop,-1, gameController);
-		top.x = 300;
-		top.y = 250;
+
 	}
 
 	//TODO: when a card is detected to be rmoved from hand, remove card from stage.
 	// Deltas on game are checked here, called every frame by parent
 	@Override
 	public void draw(float delta, Batch batch) {
+		// Draw background
+		batch.draw(ClientApplication.Background, 0, 0, 650, 500);
+
 		thisPlayer.draw(delta, batch);
 
 		top.draw(delta, batch);
@@ -74,37 +91,11 @@ public class GameView implements IDrawable {
 
 		// Draw end turn button
 		endTurnButton.draw(delta, batch);
+		// Draw say uno button
+		sayUnoButton.draw(delta, batch);
+		// Draw draw pile
+		drawPile.draw(delta, batch);
 	}
 
-
-
-	class EndTurnButton implements IDrawable {
-		public float x;
-		public float y;
-
-		private Clickable clickable;
-
-		private Sprite sprite = ClientApplication.Tomte;
-
-		public EndTurnButton(float x, float y) {
-
-
-			this.x = x;
-			this.y = y;
-			//sprite = ClientApplication.Tomte;
-			clickable = new Clickable(sprite.getWidth(), sprite.getHeight());
-		}
-
-		@Override
-		public void draw(float delta, Batch batch) {
-			if (clickable.wasClicked(x, y)) {
-				gameController.commenceForth();
-			}
-
-			batch.draw(sprite, x, y);
-		}
-	}
+	
 }
-
-
-
