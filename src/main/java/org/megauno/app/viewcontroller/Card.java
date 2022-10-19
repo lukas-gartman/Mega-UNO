@@ -1,4 +1,4 @@
-package org.megauno.app.viewcontroller.players.thisPlayer;
+package org.megauno.app.viewcontroller;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;

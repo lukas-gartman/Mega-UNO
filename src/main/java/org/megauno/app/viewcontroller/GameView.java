@@ -10,13 +10,7 @@ import org.megauno.app.ClientApplication;
 import org.megauno.app.model.Cards.Color;
 import org.megauno.app.model.Cards.ICard;
 import org.megauno.app.model.Cards.Impl.NumberCard;
-import org.megauno.app.viewcontroller.Clickable;
-import org.megauno.app.viewcontroller.GameController;
-import org.megauno.app.viewcontroller.ViewPublisher;
 import org.megauno.app.viewcontroller.datafetching.IDrawable;
-import org.megauno.app.viewcontroller.OtherPlayer;
-import org.megauno.app.viewcontroller.players.thisPlayer.Card;
-import org.megauno.app.viewcontroller.players.thisPlayer.ThisPlayer;
 
 // For now, GameView parses deltas from Game and calls the appropriate
 public class GameView implements IDrawable {

@@ -1,4 +1,4 @@
-package org.megauno.app.viewcontroller.players.thisPlayer;
+package org.megauno.app.viewcontroller;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,8 +7,7 @@ import org.megauno.app.model.Cards.ICard;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import org.megauno.app.network.IdCard;
-import org.megauno.app.network.PlayersCards;
-import org.megauno.app.utility.Tuple;
+import org.megauno.app.viewcontroller.Card;
 import org.megauno.app.viewcontroller.GameController;
 import org.megauno.app.viewcontroller.ViewPublisher;
 import org.megauno.app.viewcontroller.datafetching.IDrawable;
