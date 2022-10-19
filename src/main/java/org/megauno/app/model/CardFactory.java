@@ -14,9 +14,10 @@ import org.megauno.app.model.Game.PlayerCircle;
 
 import java.lang.reflect.WildcardType;
 
+/**
+ * Handles all the details of creating cards. Here is where the action cards gets its action that it can execute.
+ */
 public class CardFactory {
-
-
 
     public ICard createNumberCard(Color color, int value) {
         return new NumberCard(color, value);
