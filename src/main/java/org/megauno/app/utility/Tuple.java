@@ -1,6 +1,6 @@
 package org.megauno.app.utility;
 
-public class Tuple<L, R> {
+public class Tuple<L,R> {
     public final L l;
     public final R r;
 

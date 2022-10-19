@@ -1,7 +1,5 @@
 package org.megauno.app.utility.dataFetching;
 
-import org.megauno.app.viewcontroller.datafetching.SpriteLoader;
-
 import java.util.List;
 
 public class PathDataFetcher<dataType> extends DataFetcher<String,dataType>{

@@ -21,13 +21,12 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-import org.megauno.app.utility.Subscriber;
 import org.megauno.app.viewcontroller.datafetching.FontLoader;
 import org.megauno.app.viewcontroller.datafetching.SpriteLoader;
 
 // The outer class managing views and controllers
-public class ViewController implements Subscriber<Game>{
-	private Game game;
+public class ViewController{
+	private ViewPublisher publishers;
 	private Batch batch;
 
 	private GameView currentGameView;
@@ -35,20 +34,12 @@ public class ViewController implements Subscriber<Game>{
 
 	// TODO: have empty constructor, get IGame from either controller (client)
 	// or "Lobby" object of model (server) (subscribe to an event of "GameStarting")
-	public ViewController(Game game) {
-		this.game = game;
+	public ViewController(int playerId, int[] ids,ViewPublisher publishers,GameController gameController) {
+		this.publishers = publishers;
 		// Create all game views, stored in gameViews
-		for (int i = 0; i < game.getPlayersLeft(); i++) {
-			gameViews.add(new GameView(game, i));
-		}
-		currentGameView = gameViews.get(game.getCurrentPlayerId());
-		// Gdx.input.setInputProcessor(currentGameView);
 
 		batch = new SpriteBatch();
-
-		// DummyActor dummyActor = new DummyActor();
-		// stage.addActor(dummyActor);
-		// stage.setKeyboardFocus(dummyActor);
+		currentGameView = new GameView(playerId,ids,publishers,gameController);
 
 	}
 
@@ -66,15 +57,15 @@ public class ViewController implements Subscriber<Game>{
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		// Remove game view if player is gone
-		Player[] allPlayers = game.getPlayers();
+		//Player[] allPlayers = game.getPlayers();
 		List<GameView> gameViewToRemove = new ArrayList<>();
 		for (GameView gameView : gameViews) {
 			boolean playersGameViewExists = false;
-			for (Player player : allPlayers) {
-				if (player.getId() == gameView.getPlayerID()) {
-					playersGameViewExists = true;
-				}
-			}
+			//for (Player player : allPlayers) {
+				//if (player.getId() == gameView.getPlayerID()) {
+				//	playersGameViewExists = true;
+				//}
+			//}
 			if (!playersGameViewExists) {
 				gameViewToRemove.add(gameView);
 			}
@@ -85,7 +76,7 @@ public class ViewController implements Subscriber<Game>{
 
 		// Draw a game view
 		batch.begin();
-		gameViews.get(game.getCurrentPlayerId()).draw(Gdx.graphics.getDeltaTime(), batch);
+		currentGameView.draw(Gdx.graphics.getDeltaTime(), batch);
 		batch.end();
 	}
 
@@ -94,10 +85,10 @@ public class ViewController implements Subscriber<Game>{
 	public void teardown() {
 	}
 
-	@Override
-	public void delivery(Game game) {
+
+	public void newPlayerId(int id) {
 		for(GameView gameView: gameViews){
-			if(gameView.getPlayerID() == game.getCurrentPlayerId()){
+			if(gameView.getPlayerID() == id){
 				currentGameView = gameView;
 			}
 		}

@@ -2,13 +2,17 @@ package org.megauno.app.viewcontroller;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import org.megauno.app.ClientApplication;
+import org.megauno.app.model.Cards.CardType;
+import org.megauno.app.model.Cards.Color;
 import org.megauno.app.model.Cards.ICard;
+import org.megauno.app.model.Cards.Impl.ActionCard;
+import org.megauno.app.model.Cards.Impl.NumberCard;
+import org.megauno.app.viewcontroller.datafetching.IDrawable;
 import org.megauno.app.model.Game.Game;
 import org.megauno.app.utility.dataFetching.DataFetcher;
 import org.megauno.app.utility.dataFetching.PathDataFetcher;
@@ -17,65 +21,73 @@ import org.megauno.app.viewcontroller.datafetching.SpriteLoader;
 // For now, GameView parses deltas from Game and calls the appropriate
 public class GameView implements IDrawable {
 	private int playerID;
-	private Game game;
+
 	private Card top;
 	private ThisPlayer thisPlayer;
 	private List<OtherPlayer> otherPlayers = new ArrayList<>();
 	private EndTurnButton endTurnButton;
+	private GameController gameController;
 	private SayUnoButton sayUnoButton;
 	private DrawPile drawPile;
-	static DataFetcher<String, Sprite> spriteLoader = new PathDataFetcher<Sprite>(new SpriteLoader(), "assets/");
-	static Sprite background = spriteLoader.tryGetDataSafe("Background.png");
-
-	public GameView(Game game, int playerID) {
-		this.game = game;
+	private int currentPlayerId;
+	
+	public GameView(int playerID, int[] otherPlayersIds, ViewPublisher publishers, GameController gameController) {
 		// Add this view's player
 		this.playerID = playerID;
-		List<List<ICard>> allPlayerCards = game.getAllPlayerCards(); // All the different players' cards
-		thisPlayer = new ThisPlayer(playerID, allPlayerCards.get(playerID), game, this);
+		this.gameController = gameController;
+
+		thisPlayer = new ThisPlayer(playerID, publishers,gameController);
 
 		// Add all other players
 		// TODO: make the positions make sense regarding actual placing in the list
-		int playerAmount = game.getPlayersLeft();
-		for (int id = 0; id < playerAmount; id++) {
-			if (!(id == playerID)) {
-				OtherPlayer otherPlayer = new OtherPlayer(id, playerAmount);
-				otherPlayer.y = 400;
-				otherPlayer.x = id * 200;
-				otherPlayers.add(otherPlayer);
-				// TODO: add position, do a top-row of OtherPlayers
-			}
+		int offset = 0;
+		for (int i: otherPlayersIds) {
+			OtherPlayer otherPlayer = new OtherPlayer(i, publishers);
+			otherPlayer.y = 400;
+			otherPlayer.x = offset * 200;
+			otherPlayers.add(otherPlayer);
+			//TODO: add position, do a top-row of OtherPlayers
+			offset++;
 		}
 
-		endTurnButton = new EndTurnButton(200, 200, game);
-		sayUnoButton = new SayUnoButton(500, 30, game, playerID);
-		drawPile = new DrawPile(350, 250, game);
+		endTurnButton = new EndTurnButton(200, 200, gameController,() -> currentPlayerId == playerID);
+		sayUnoButton = new SayUnoButton(500, 30, gameController);
+		drawPile = new DrawPile(350, 250, gameController);
+
+		top = new Card(new ActionCard(o ->  true ,Color.NONE, CardType.WILDCARD),-1,gameController);
+		top.x = 300;
+		top.y = 250;
+
+		publishers.onNewTopCard().addSubscriber(
+				(np) -> updateTopCard(np)
+		);
+		publishers.onNewPlayer().addSubscriber(
+				(np) -> {currentPlayerId = np;}
+		);
 	}
 
 	public int getPlayerID() {
 		return playerID;
 	}
 
-	// TODO: when a card is detected to be rmoved from hand, remove card from stage.
+	private void updateTopCard(ICard newTop){
+		top = new Card(newTop,-1, gameController);
+		top.x = 300;
+		top.y = 250;
+	}
+
+	//TODO: when a card is detected to be rmoved from hand, remove card from stage.
 	// Deltas on game are checked here, called every frame by parent
 	@Override
 	public void draw(float delta, Batch batch) {
 		// Draw background
-		batch.draw(background, 0, 0, 650, 500);
+		batch.draw(ClientApplication.Background, 0, 0, 650, 500);
 
 		thisPlayer.draw(delta, batch);
 
-		// TODO: fix ID
-		top = new Card(game.getTopCard(), game, playerID, -1);
-		top.x = 300;
-		top.y = 250;
 		top.draw(delta, batch);
 
-		// System.out.println(game.getPlayerWithId(game.getCurrentPlayer()).numOfCards());
-		thisPlayer.thisPlayerHandCHnages();
-
 		for (OtherPlayer op : otherPlayers) {
-			otherPlayerHandChanges(op);
 			op.draw(delta, batch);
 		}
 
@@ -87,15 +99,5 @@ public class GameView implements IDrawable {
 		drawPile.draw(delta, batch);
 	}
 
-	private void otherPlayerHandChanges(OtherPlayer otherPlayer) {
-		int newCards = game.getPlayerWithId(otherPlayer.getPlayerID()).numOfCards();
-		// System.out.println(otherPlayer.getPlayerID() + " has " + newCards);
-
-		int nCards = otherPlayer.getNrOfCard();
-		if (nCards > newCards) {
-			otherPlayer.removeCards(nCards - newCards);
-		} else if (nCards < newCards) {
-			otherPlayer.addCards(newCards - nCards);
-		}
-	}
+	
 }

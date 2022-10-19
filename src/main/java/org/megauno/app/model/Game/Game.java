@@ -1,5 +1,6 @@
 package org.megauno.app.model.Game;
 
+import org.lwjgl.system.CallbackI;
 import org.megauno.app.model.Cards.Color;
 import org.megauno.app.model.Cards.ICard;
 import org.megauno.app.model.Deck;
@@ -7,24 +8,31 @@ import org.megauno.app.model.IDeck;
 import org.megauno.app.model.IPile;
 import org.megauno.app.model.Pile;
 import org.megauno.app.model.Player.Player;
-import org.megauno.app.utility.Publisher;
+import org.megauno.app.utility.Publisher.IPublisher;
+import org.megauno.app.utility.Publisher.condition.ConPublisher;
+import org.megauno.app.utility.Publisher.normal.Publisher;
+import org.megauno.app.utility.Tuple;
+import org.megauno.app.viewcontroller.GamePublishers;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.Scanner;
+import java.util.*;
 
 /**
  *  The endpoint of the model. Here is where all the smaller components are combined into
  *  a functional logical representation of a UNO game.
  *  The changes made in Game are published to anyone who is subscribed to Game.
  */
-public class Game implements IActOnGame {
+public class Game implements IActOnGame, GamePublishers, IGameImputs {
     private PlayerCircle players;
     private IDeck deck;
     private IPile discarded;
     private int drawCount = 0;
-    private Publisher<Game> publisher;
+    // Publisher for the new top card in the discard pile
+    private Publisher<ICard> onNewTopCard = new Publisher<>();
+    // Publisher for when cards are added to a player
+    private Publisher<Tuple<Player, List<ICard>>> onCardsAddedByPlayer = new Publisher<>();
+    // Publisher for when cards are added to a player
+    private Publisher<Tuple<Player, List<ICard>>> onCardsRemovedByPlayer = new Publisher<>();
+
     private Color wildCardColor;
 
     public Game() {
@@ -33,33 +41,35 @@ public class Game implements IActOnGame {
         this.players = new PlayerCircle();
     }
 
-    /**
-     * @param players  is the circle of players
-     * @param numCards is the number of cards a hand is initially dealt
-     */
-    public Game(PlayerCircle players, int numCards) {
-        this(players, numCards, new Publisher<>());
+    public Game(PlayerCircle players) {
+        this.players = players;
+        addSubscriptionToPlayers(players.getPlayers());
     }
 
-    public Game(PlayerCircle players, int numCards, Publisher<Game> publisher) {
-        this();
-        this.players = players;
-        this.publisher = publisher;
+    public void start(int numCards) {
+        this.discarded = new Pile();
+        onNewTopCard.publish(getTopCard());
+        this.deck = new Deck();
+        addCardsToAllPlayers(numCards);
+    }
 
-        int p = 0;
-        while (p < players.playersLeft() * numCards) {
-            players.giveCardToCurrentPlayer(deck.drawCard());
-            players.moveOnToNextTurn();
-            p++;
+
+    public void addCardsToAllPlayers(int numCards) {
+        for (Player player : getPlayers()){
+            player.addCards(deck.dealHand(numCards));
         }
     }
 
-    // For testing purposes
-    public Game(PlayerCircle players) {
-        this.discarded = new Pile();
-        this.deck = new Deck();
-        this.players = players;
+    private void addSubscriptionToPlayers(Player[] players) {
+        for (Player player : players) {
+            player.getOnCardsAddedByPlayer().addSubscriber(onCardsAddedByPlayer::publish);
+            player.getOnCardRemovedByPlayer().addSubscriber(onCardsRemovedByPlayer::publish);
+        }
     }
+
+
+
+
 
     // TODO: move method to a more general class (general class representing the model)
     // commence_forth: set by a controller (or test) to signal that the player has chosen.
@@ -89,14 +99,13 @@ public class Game implements IActOnGame {
         return result;
     }
 
-    public int getPlayersLeft() {
-        return players.playersLeft();
+	// Current player
+
+
+    public Player getCurrentPlayer(){
+        return players.getCurrent().getPlayer();
     }
 
-    // Current player
-    public int getCurrentPlayerId() {
-        return players.getCurrentId();
-    }
 
     @Override
     public void reverse() {
@@ -145,7 +154,6 @@ public class Game implements IActOnGame {
      * attempt to play those cards and discard on pile if successful
      */
     public void try_play() {
-        ICard top = discarded.getTop();
         Node current = players.getCurrent();
         List<ICard> choices = players.currentMakeTurn();
         boolean currentHasOnlyOneCard = (current.getHandSize() - choices.size()) == 1;
@@ -156,6 +164,7 @@ public class Game implements IActOnGame {
             for (ICard c : choices) {
                 discarded.discard(c);
             }
+            onNewTopCard.publish(getTopCard());
             for (ICard choice : choices) {
                 choice.activate(this);
             }
@@ -166,11 +175,6 @@ public class Game implements IActOnGame {
             checkPlayersProgress(current, currentHasOnlyOneCard, choices);
 
         }
-        /*else {
-            for (int i = 0; i < choices.size(); i++) {
-                players.giveCardToPlayer(choices.get(i), current);
-            }
-        }*/
     }
 
     /**
@@ -187,11 +191,9 @@ public class Game implements IActOnGame {
             current.giveCardToPlayer(deck.drawCard());
             current.giveCardToPlayer(deck.drawCard());
             current.giveCardToPlayer(deck.drawCard());
-            publisher.publish(this);
-        } else if (players.IsPlayerOutOfCards(current)) {
-            if (choices.size() > 1 || current.uno()) {
+        }else if (players.IsPlayerOutOfCards(current) ) {
+            if (choices.size() > 1 || current.getPlayer().uno()){
                 players.playerFinished(current);
-                publisher.publish(this);
             }
         }
     }
@@ -237,8 +239,10 @@ public class Game implements IActOnGame {
     }
 
     @Override
-    public void setColor(Color color) {
-        wildCardColor = color;
+    public void setColor(Player player, Color color) {
+        if(player == getCurrentPlayer()){
+            wildCardColor = color;
+        }
     }
 
     @Override
@@ -256,18 +260,7 @@ public class Game implements IActOnGame {
         return players.getPlayers();
     }
 
-    @Override
-    public Player getPlayerWithId(int id) {
-        for (Player p : getPlayers()) {
-            if (p.getId() == id) {
-                return p;
-            }
-        }
-        return null;
-    }
-
-    @Override
-    public ICard getTopCard() {
+    public ICard getTopCard(){
         return discarded.getTop();
     }
 
@@ -282,10 +275,7 @@ public class Game implements IActOnGame {
         current.selectCard(randomCard);
     }
 
-    @Override
-    public void sayUno(Player player) {
-        player.sayUno();
-    }
+
 
     @Override
     public void unsayUno(Player player) {
@@ -425,6 +415,68 @@ public class Game implements IActOnGame {
         }
         System.out.println("\n|||||||||| New round |||||||||| \n");
         return !current.equals(players.getCurrent());
+    }
+
+
+    @Override
+    public Publisher<Player> onNewPlayer() {
+        return getPlayerCircle().onNewPlayer();
+    }
+
+    @Override
+    public Publisher<ICard> onNewTopCard() {
+        return onNewTopCard;
+    }
+
+    @Override
+    public IPublisher<Tuple<Player, List<ICard>>> onCardsAddedToPlayer() {
+        return onCardsAddedByPlayer;
+    }
+
+    @Override
+    public IPublisher<Tuple<Player, List<ICard>>> onCardsRemovedByPlayer() {
+        return onCardsRemovedByPlayer;
+    }
+
+    @Override
+    public void selectCard(Player player, ICard card) {
+        if (player == getCurrentPlayer()) {
+            System.out.println(player.getSelectedCards());
+            player.selectCard(card);
+        }
+    }
+
+    @Override
+    public void unSelectCard(Player player, ICard card) {
+        if (player == getCurrentPlayer()) {
+            player.unSelectCard(card);
+        }
+    }
+
+    @Override
+    public void commenceForth(Player player) {
+        if (player == getCurrentPlayer()) {
+            commence_forth = true;
+        }
+    }
+
+    @Override
+    public void sayUno(Player player) {
+        if (player == getCurrentPlayer()) {
+            player.sayUno();
+        }
+    }
+
+    @Override
+    public void drawCard(Player player) {
+        if(drawCount <= 2){
+            if (player == getCurrentPlayer()){
+                drawCount++;
+                player.addCard(deck.drawCard());
+            }
+        }else {
+            nextTurn();
+        }
     }
 
     private boolean canPlayerPlay(List<ICard> hand) {

@@ -56,7 +56,7 @@ public class ViewlessGame {
     public static List<Player> generatePlayers(int n) {
         List<Player> playerList = new ArrayList<>();
         for (int i = 0; i < n; i++) {
-            playerList.add(new Player(2, deck.dealHand(1)));
+            playerList.add(new Player());
         }
         return playerList;
     }

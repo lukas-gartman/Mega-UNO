@@ -11,8 +11,6 @@ public interface IActOnGame {
 
     Player[] getPlayers();
 
-    Player getPlayerWithId(int id);
-
     IDeck getDeck();
 
     ICard draw();
@@ -24,8 +22,6 @@ public interface IActOnGame {
     ICard getTopCard();
 
     Color getChosenColor();
-
-    void setColor(Color color);
 
     void sayUno(Player player);
 

@@ -4,12 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.megauno.app.model.Cards.ICard;
-import org.megauno.app.model.Game.Game;
-import org.megauno.app.model.Player.Player;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
-
-import static org.megauno.app.utility.CardMethoodes.cardsDifference;
+import org.megauno.app.network.IdCard;
+import org.megauno.app.viewcontroller.Card;
+import org.megauno.app.viewcontroller.GameController;
+import org.megauno.app.viewcontroller.ViewPublisher;
+import org.megauno.app.viewcontroller.datafetching.IDrawable;
 
 import static org.megauno.app.utility.CardMethoodes.copyCards;
 
@@ -17,43 +18,33 @@ public class ThisPlayer implements IDrawable {
 	private int playerID;
 	// Visual cards
 	private List<Card> vCards = new ArrayList<>();
-	// Game
-	private Game game;
 
-	private GameView gv;
+	private GameController gameController;
 
-	public ThisPlayer(int playerID, List<ICard> cards, Game game, GameView gv) {
+	public ThisPlayer(int playerID, ViewPublisher publishers, GameController gameController) {
 		this.playerID = playerID;
-		this.game = game;
-		this.gv = gv;
-		addCards(cards);
+		this.gameController = gameController;
+
+		publishers.onCardsAddedToPlayer().addSubscriberWithCondition(
+				(np) -> addCards(np.getCards()),
+				(np) -> np.getId() == playerID
+		);
+
+		publishers.onCardsRemovedByPlayer().addSubscriberWithCondition(
+				(np) -> removeCards(np.getCards()),
+				(np) -> np.getId() == playerID
+		);
 	}
 
-	// Rethink this
-	public List<ICard> getCards() {
-        List<ICard> cards = new ArrayList<>();
-        for(Card vCard:vCards){
-            cards.add(vCard.getCard());
-        }
-        return copyCards(cards);
-    }
 
-	//Deals with the changes to the players hand
-	void thisPlayerHandCHnages() {
-		Player player = game.getPlayerWithId(playerID);
-		List<ICard> newCards = player.getCards();
-		List<ICard> currentCards = getCards();
-		addCards(cardsDifference(currentCards, newCards));
-		removeCards(cardsDifference(newCards, currentCards));
-	}
 
-	void addCards(List<ICard> cards) {
+	void addCards(List<IdCard> cards) {
 		int cardIndex = 0;
 		int vCardSize = vCards.size();
 		for (int i = vCards.size(); i < vCardSize + cards.size(); i++) {
-			ICard card = cards.get(cardIndex);
+			IdCard card = cards.get(cardIndex);
 			// Note, cardID is just the index in the list of cards
-			Card vCard = new Card(card, game, playerID, i);
+			Card vCard = new Card(card.getCard(), card.getId(), gameController);
 			vCard.x = i * 50;
 			vCard.y = 100;
 			// Add controller for card
@@ -65,23 +56,18 @@ public class ThisPlayer implements IDrawable {
 
 	// Removes all the view cards from the player which are equal to the argumnet
 	// cards
-	void removeCards(List<ICard> cards) {
+	void removeCards(List<IdCard> cards) {
 		List<Card> toRemove = new ArrayList<>();
-		for (ICard card : cards) {
+		for (IdCard t : cards) {
+			int id = t.getId();
 			for (Card visualCard : vCards) {
-				if (visualCard.getCard().equals(card)) {
+				if (visualCard.getCardId() == id) {
 					toRemove.add(visualCard);
 				}
 			}
 		}
 		for (Card visualCard : toRemove) {
-			//TODO: update id:s on cards when cards are moved around/removed/added
-			int index = visualCard.cardID;
 			vCards.remove(visualCard);
-			// Change ID of all preceding vCards
-			for (int i = index; i < vCards.size(); i++) {
-				vCards.get(i).cardID = i;
-			}
 		}
 	}
 
@@ -96,4 +82,5 @@ public class ThisPlayer implements IDrawable {
 			c.draw(delta, batch);
 		}
 	}
+
 }

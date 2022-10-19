@@ -2,6 +2,7 @@ package org.megauno.app.viewcontroller;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import org.megauno.app.ClientApplication;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,54 +11,49 @@ import org.lwjgl.system.CallbackI;
 import org.megauno.app.model.Cards.CardType;
 import org.megauno.app.model.Cards.Color;
 import org.megauno.app.model.Cards.ICard;
-import org.megauno.app.model.Game.Game;
 import org.megauno.app.utility.dataFetching.DataFetcher;
 import org.megauno.app.utility.dataFetching.PathDataFetcher;
-import org.megauno.app.viewcontroller.datafetching.FontLoader;
-import org.megauno.app.viewcontroller.datafetching.SpriteLoader;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Touchable;
+import org.megauno.app.viewcontroller.Clickable;
+import org.megauno.app.viewcontroller.GameController;
+import org.megauno.app.viewcontroller.LoadedData;
+import org.megauno.app.viewcontroller.datafetching.IDrawable;
 
 public class Card implements IDrawable {
-	static DataFetcher<String,Sprite> spriteFetcher = new PathDataFetcher<Sprite>(
-			(key) ->  {
-		return new Sprite(new Texture(key));
-	},"assets/");
 
-	Sprite red = spriteFetcher.tryGetDataUnSafe("RedCard.png");
-	static Sprite blue = spriteFetcher.tryGetDataUnSafe("BlueCard.png");
-	static Sprite yellow = spriteFetcher.tryGetDataUnSafe("YellowCard.png");
-	static Sprite green = spriteFetcher.tryGetDataUnSafe("GreenCard.png");
-	static Sprite nonColored = spriteFetcher.tryGetDataUnSafe("WhiteCard.png");
-	static DataFetcher<String,BitmapFont> fontFetcher = new PathDataFetcher<BitmapFont>(
-			(key) ->  {
-				return new BitmapFont(Gdx.files.internal(key));
-			},"assets/");
-	static BitmapFont fnt = fontFetcher.tryGetDataUnSafe("minecraft.fnt");
 
-	public int cardID;
+	static Sprite red = ClientApplication.RedCard;
+	static Sprite blue = ClientApplication.BlueCard;
+	static Sprite yellow = ClientApplication.YellowCard;
+	static Sprite green = ClientApplication.GreenCard;
+	static Sprite nonColored = ClientApplication.WhiteCard;
+	static BitmapFont fnt = ClientApplication.Minecraft;
+	static Sprite wildCard = ClientApplication.WildCard;
+	static Sprite reverse = ClientApplication.Reverse;
+	static Sprite takeTwo = ClientApplication.Take2;
+	static Sprite takeFour = ClientApplication.Take4;
+
+
 	public float x;
 	public float y;
 	public boolean selected = false;
 
 	private Sprite sprite;
 	private ICard card;
-	private int playerID;
-	private Game game;
 	private Clickable clickable;
+	private GameController gameController;
+	private int cardId;
 	// Null means there are no color options, otherwise it is a filled array
 	private List<ColorOption> colorOptions = null;
 
-	public Card(ICard card, Game game, int playerID, int cardID) {
-		this.playerID = playerID;
-		this.cardID = cardID;
-		this.game = game;
+	public Card(ICard card, int cardId, GameController gameController) {
+		this.gameController = gameController;
+		this.cardId = cardId;
 		this.card = card;
 		this.sprite = chooseSprite(card.getColor());
 		this.clickable = new Clickable(sprite.getWidth(), sprite.getHeight());
@@ -66,6 +62,10 @@ public class Card implements IDrawable {
 		// setTouchable(Touchable.enabled);
 	}
 
+	public int getCardId(){
+		return cardId;
+	}
+	
 	private Sprite chooseSprite(Color color) {
 		switch (color) {
 			case RED:
@@ -91,7 +91,8 @@ public class Card implements IDrawable {
 	public void draw(float delta, Batch batch) {
 		// Check if clicked
 		if (clickable.wasClicked(x, y)) {
-			System.out.println("Clicked card with ID: " + Integer.toString(cardID));
+
+			System.out.println("Clicked card with ID: " + Integer.toString(cardId));
 			// If wildcard: show color-selector
 			if (card.getType() == CardType.WILDCARD) {
 				if (colorOptions == null)
@@ -104,10 +105,10 @@ public class Card implements IDrawable {
 			else {
 				selected = !selected;
 				if (selected) {
-					game.getPlayerWithId(playerID).selectCard(card);
-				} else {
-					game.getPlayerWithId(playerID).unSelectCard(card);
-				}
+				gameController.selectCard(cardId);
+			} else {
+				gameController.unSelectCard(cardId);
+			}
 			}
 		}
 		// Check if any cardOption was selected
@@ -146,18 +147,18 @@ public class Card implements IDrawable {
 		}
 
 		// Draw type of card, reverse, take 2 etc.
-		String type = getTypeInString();
+		Sprite type = getTypeInString();
 
 		if (type != null){
-			batch.draw(spriteFetcher.tryGetDataUnSafe(type), x, y);
+			batch.draw(type, x, y);
 		}
 	}
 
 	// What happens when a color for a wildcard is slected
 	private void onColorSelected(Color color) {
 		//TODO: select color in Game
-		game.setColor(color);
-		game.getPlayerWithId(playerID).selectCard(card);
+		gameController.setColor(color);
+		gameController.selectCard(cardId);
 		hideColorOptions();
 	}
 
@@ -176,20 +177,20 @@ public class Card implements IDrawable {
 	}
 
 	// Gets corresponding filename of card
-	private String getTypeInString(){
-		String special = null;
+	private Sprite getTypeInString(){
+		Sprite special = null;
 		switch (card.getType()){
 			case WILDCARD -> {
-				special = "WildCard.png";
+				special = wildCard;
 			}
 			case REVERSECARD -> {
-				special = "Reverse.png";
+				special = reverse;
 			}
 			case TAKETWO-> {
-				special = "Take2.png";
+				special = takeTwo;
 			}
 			case TAKEFOUR -> {
-				special = "Take4.png";
+				special = takeFour;
 			}
 		}
 		return special;
