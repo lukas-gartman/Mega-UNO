@@ -29,6 +29,7 @@ public class GameView implements IDrawable {
 	private GameController gameController;
 	private SayUnoButton sayUnoButton;
 	private DrawPile drawPile;
+	private int currentPlayerId;
 	
 	public GameView(int playerID, int[] otherPlayersIds, ViewPublisher publishers, GameController gameController) {
 		// Add this view's player
@@ -49,7 +50,7 @@ public class GameView implements IDrawable {
 			offset++;
 		}
 
-		endTurnButton = new EndTurnButton(200, 200, gameController);
+		endTurnButton = new EndTurnButton(200, 200, gameController,() -> currentPlayerId == playerID);
 		sayUnoButton = new SayUnoButton(500, 30, gameController);
 		drawPile = new DrawPile(350, 250, gameController);
 
@@ -60,9 +61,9 @@ public class GameView implements IDrawable {
 		publishers.onNewTopCard().addSubscriber(
 				(np) -> updateTopCard(np)
 		);
-
-
-
+		publishers.onNewPlayer().addSubscriber(
+				(np) -> {currentPlayerId = np;}
+		);
 	}
 
 	public int getPlayerID() {
@@ -71,7 +72,8 @@ public class GameView implements IDrawable {
 
 	private void updateTopCard(ICard newTop){
 		top = new Card(newTop,-1, gameController);
-
+		top.x = 300;
+		top.y = 250;
 	}
 
 	//TODO: when a card is detected to be rmoved from hand, remove card from stage.

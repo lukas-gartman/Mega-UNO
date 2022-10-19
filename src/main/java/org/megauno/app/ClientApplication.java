@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.lwjgl.system.CallbackI;
 import org.megauno.app.model.Cards.CardType;
 import org.megauno.app.model.Cards.Color;
 import org.megauno.app.model.Cards.ICard;
@@ -47,6 +48,10 @@ public class ClientApplication extends ApplicationAdapter implements GameControl
     static public Sprite WildCard;
     static public Sprite YellowCard;
     static public BitmapFont Minecraft;
+    static public Sprite Background;
+    static public Sprite CommenceForth;
+    static public Sprite DrawPile;
+    static public Sprite SayUnoButton;
 
     private Publisher<Integer> onNewPlayer = new Publisher<>();
     private Publisher<ICard> onNewTopCard = new Publisher<>();
@@ -54,8 +59,6 @@ public class ClientApplication extends ApplicationAdapter implements GameControl
     private ConPublisher<PlayersCards> onCardsRemovedByPlayer = new ConPublisher<>();
     private Client client;
     private Root root;
-    public static LoadedData LOADEDDATA;
-
 
 
     public ClientApplication() {
@@ -83,8 +86,10 @@ public class ClientApplication extends ApplicationAdapter implements GameControl
         this.WildCard= spriteDataFetcher.tryGetDataUnSafe("WildCard.png");
         this.YellowCard= spriteDataFetcher.tryGetDataUnSafe("YellowCard.png");
         this.Minecraft = bitmapFontDataFetcher.tryGetDataUnSafe("minecraft.fnt");
-
-
+        this.Background = spriteDataFetcher.tryGetDataUnSafe("Background.png");
+        this.CommenceForth = spriteDataFetcher.tryGetDataUnSafe("CommenceForth.png");
+        this.DrawPile = spriteDataFetcher.tryGetDataUnSafe("DrawPile.png");
+        this.SayUnoButton =  spriteDataFetcher.tryGetDataUnSafe("SayUnoButton.png");
         root = new Root();
 
 
@@ -120,11 +125,8 @@ public class ClientApplication extends ApplicationAdapter implements GameControl
 
      void respondToJSON(JSONObject o) {
          String type = o.getString("Type");
-         System.out.println(o);
 
          if (root != null) {
-
-
 
              switch (type) {
                  case "AddCards":
@@ -137,7 +139,6 @@ public class ClientApplication extends ApplicationAdapter implements GameControl
                      onNewPlayer.publish(o.getInt("PlayerId"));
                      break;
                  case "NewTopCard":
-                     //System.out.println(o.get("Card").getClass().getSimpleName());
                      onNewTopCard.publish((iCardMaker(o.getJSONObject("Card"))));
                      break;
              }
@@ -158,7 +159,6 @@ public class ClientApplication extends ApplicationAdapter implements GameControl
 
         JSONArray jsonArray = o.getJSONArray("Cards");
         List<IdCard> cards = new ArrayList<>();
-        System.out.println("My id: " + playerID + jsonArray.toString());
         for (Object object : jsonArray) {
             JSONObject jsonObject = (JSONObject) object;
             int id = jsonObject.getInt("id");
@@ -193,7 +193,7 @@ public class ClientApplication extends ApplicationAdapter implements GameControl
                 break;
             }
         }
-        ICard icard = new NumberCard(Color.NONE,2);
+        ICard icard = new NumberCard(Color.RED,2);
         switch (jsonObject.getString("type")){
             case "NUMBERCARD": {
                 icard = new NumberCard(c,(int)jsonObject.get("number"));
@@ -237,6 +237,17 @@ public class ClientApplication extends ApplicationAdapter implements GameControl
     @Override
     public void sayUno() {
         client.sendJSON(new JSONObject().put("Type","Uno"));
+    }
+
+    @Override
+    public void setColor(Color color) {
+        client.sendJSON(new JSONObject().put("Type", "SetColor").put("Color",color));
+    }
+
+    @Override
+    public void drawCard() {
+        System.out.println("drawing card");
+        client.sendJSON(new JSONObject().put("Type","DrawCard"));
     }
 
     @Override

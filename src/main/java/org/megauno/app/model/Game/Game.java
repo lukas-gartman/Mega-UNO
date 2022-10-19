@@ -170,11 +170,6 @@ public class Game implements IActOnGame, GamePublishers, IGameImputs {
             checkPlayersProgress(current, currentHasOnlyOneCard, choices);
 
         }
-        /*else {
-            for (int i = 0; i < choices.size(); i++) {
-                players.giveCardToPlayer(choices.get(i), current);
-            }
-        }*/
     }
 
     /**
@@ -441,6 +436,7 @@ public class Game implements IActOnGame, GamePublishers, IGameImputs {
     @Override
     public void selectCard(Player player, ICard card) {
         if (player == getCurrentPlayer()) {
+            System.out.println(player.getSelectedCards());
             player.selectCard(card);
         }
     }
@@ -468,8 +464,13 @@ public class Game implements IActOnGame, GamePublishers, IGameImputs {
 
     @Override
     public void drawCard(Player player) {
-        if (player == getCurrentPlayer()){
-            player.addCard(deck.drawCard());
+        if(drawCount <= 2){
+            if (player == getCurrentPlayer()){
+                drawCount++;
+                player.addCard(deck.drawCard());
+            }
+        }else {
+            nextTurn();
         }
     }
 

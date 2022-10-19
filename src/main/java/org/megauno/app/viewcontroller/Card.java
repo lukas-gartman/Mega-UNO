@@ -92,7 +92,6 @@ public class Card implements IDrawable {
 		// Check if clicked
 		if (clickable.wasClicked(x, y)) {
 
-		
 			System.out.println("Clicked card with ID: " + Integer.toString(cardId));
 			// If wildcard: show color-selector
 			if (card.getType() == CardType.WILDCARD) {

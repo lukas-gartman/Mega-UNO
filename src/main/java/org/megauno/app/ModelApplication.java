@@ -2,6 +2,7 @@ package org.megauno.app;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import org.json.JSONObject;
+import org.megauno.app.model.Cards.Color;
 import org.megauno.app.model.Cards.ICard;
 import org.megauno.app.model.Game.Game;
 import org.megauno.app.network.*;
@@ -42,7 +43,6 @@ public class ModelApplication extends ApplicationAdapter {
 	}
 
 	private void createGame(List<Integer> ids) {
-		playersWithID = new BiHashMap<>();
 		for (int id : ids) {
 			Player p = new Player();
 			playersWithID.put(id,p);
@@ -52,7 +52,7 @@ public class ModelApplication extends ApplicationAdapter {
 	}
 
 	private void readJson(JSONObject object) {
-		System.out.println(object);
+		System.out.println(object.toString());
 		String type = object.getString("Type");
 		int clientId = object.getInt("ClientId");
 		Player player = playersWithID.getRight(clientId);
@@ -78,6 +78,13 @@ public class ModelApplication extends ApplicationAdapter {
 			case "Uno": {
 				game.sayUno(player);
 				break;
+			}
+			case "DrawCard":{
+				game.drawCard(player);
+				break;
+			}
+			case "SetColor":{
+				game.setColor(player,object.getEnum(Color.class,"Color"));
 			}
 		}
 	}
@@ -115,9 +122,9 @@ public class ModelApplication extends ApplicationAdapter {
 		});
 
 		game.onCardsRemovedByPlayer().addSubscriber((t) -> {
-			removeCards(t.r, cardsWithID);
 			int id = playersWithID.getLeft(t.l);
 			infoSender.playerWithIdRemovedCards(new PlayersCards(id, getIdCards(t.r, cardsWithID)));
+			removeCards(t.r, cardsWithID);
 		});
 
 		game.onNewPlayer().addSubscriber( (player) -> infoSender.currentPlayerNewId(playersWithID.getLeft(player)) );

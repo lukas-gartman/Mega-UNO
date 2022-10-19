@@ -50,7 +50,6 @@ public class ClientHandler implements Runnable {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
-        System.out.println("done with send");
     }
 
     public void disconnect() {
@@ -66,6 +65,7 @@ public class ClientHandler implements Runnable {
         String message;
         while (true) {
              try {
+
                 message = br.readLine();
                 JSONObject json = new JSONObject(message);
                 jsonReader.read(json.put("ClientId", id));

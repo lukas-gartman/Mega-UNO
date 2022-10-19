@@ -44,7 +44,7 @@ public class Server implements IServer, Runnable {
                 // set up the client connection (critical section)
                 try { semaphore.acquire(); } catch (InterruptedException ex) { }
                 int id = cid++; // acquire the next available client ID
-                ClientHandler clientHandler = new ClientHandler(client, id, this, o -> {});
+                ClientHandler clientHandler = new ClientHandler(client, id, this, jsonReader);
                 this.publisher.publish(new Tuple<>(clientHandler, id)); // notify Lobby
                 this.clientHandlers.put(clientHandler, id);
 
