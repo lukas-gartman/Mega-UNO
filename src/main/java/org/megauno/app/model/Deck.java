@@ -68,6 +68,7 @@ public class Deck implements IDeck {
         return deck;
     }
 
+    @Override
     public ICard drawCard() {
         Random rand = new Random();
         int index = rand.nextInt(deck.size());
@@ -75,6 +76,7 @@ public class Deck implements IDeck {
         return randomCard.copyCard();
     }
 
+    @Override
     public List<ICard> dealHand(int sizeHand) {
         List<ICard> hand = new ArrayList<>();
         for (int i = 0; i < sizeHand; i++) {

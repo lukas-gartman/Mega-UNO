@@ -22,18 +22,23 @@ public class Game implements IActOnGame {
     private Publisher<Game> publisher;
     private Color wildCardColor;
 
+    public Game() {
+        this.discarded = new Pile();
+        this.deck = new Deck();
+        this.players = new PlayerCircle();
+    }
+
     /**
      * @param players  is the circle of players
      * @param numCards is the number of cards a hand is initially dealt
      */
     public Game(PlayerCircle players, int numCards) {
-        this(players, numCards, new Publisher<Game>());
+        this(players, numCards, new Publisher<>());
     }
 
     public Game(PlayerCircle players, int numCards, Publisher<Game> publisher) {
+        this();
         this.players = players;
-        this.discarded = new Pile();
-        this.deck = new Deck();
         this.publisher = publisher;
 
         int p = 0;
@@ -42,12 +47,6 @@ public class Game implements IActOnGame {
             players.moveOnToNextTurn();
             p++;
         }
-    }
-
-    public Game() {
-        this.discarded = new Pile();
-        this.deck = new Deck();
-        players = new PlayerCircle();
     }
 
     // For testing purposes
