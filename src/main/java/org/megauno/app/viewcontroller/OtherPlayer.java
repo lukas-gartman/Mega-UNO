@@ -12,9 +12,9 @@ import java.util.List;
 // Graphical element to represent another player
 public class OtherPlayer implements IDrawable {
 
-    static BitmapFont font = ClientApplication.Minecraft;
+    static BitmapFont font = ClientApplication.minecraftFont;
 
-    static Sprite cardBack = ClientApplication.BackSideOfCard;
+    static Sprite cardBack = ClientApplication.backSideOfCard;
     private int playerID;
     private List<Sprite> cards = new ArrayList<>();
 

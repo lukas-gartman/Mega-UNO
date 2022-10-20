@@ -15,16 +15,16 @@ import java.util.List;
 public class Card implements IDrawable {
 
 
-    static Sprite red = ClientApplication.RedCard;
-    static Sprite blue = ClientApplication.BlueCard;
-    static Sprite yellow = ClientApplication.YellowCard;
-    static Sprite green = ClientApplication.GreenCard;
-    static Sprite nonColored = ClientApplication.WhiteCard;
-    static BitmapFont fnt = ClientApplication.Minecraft;
-    static Sprite wildCard = ClientApplication.WildCard;
-    static Sprite reverse = ClientApplication.Reverse;
-    static Sprite takeTwo = ClientApplication.Take2;
-    static Sprite takeFour = ClientApplication.Take4;
+    static Sprite red = ClientApplication.redCard;
+    static Sprite blue = ClientApplication.blueCard;
+    static Sprite yellow = ClientApplication.yellowCard;
+    static Sprite green = ClientApplication.greenCard;
+    static Sprite nonColored = ClientApplication.whiteCard;
+    static BitmapFont fnt = ClientApplication.minecraftFont;
+    static Sprite wildCard = ClientApplication.wildCard;
+    static Sprite reverse = ClientApplication.reverse;
+    static Sprite takeTwo = ClientApplication.take2;
+    static Sprite takeFour = ClientApplication.take4;
 
 
     public float x;
@@ -168,18 +168,14 @@ public class Card implements IDrawable {
     private Sprite getTypeInString() {
         Sprite special = null;
         switch (card.getType()) {
-            case WILDCARD -> {
+            case WILDCARD ->
                 special = wildCard;
-            }
-            case REVERSECARD -> {
+            case REVERSECARD ->
                 special = reverse;
-            }
-            case TAKETWO -> {
+            case TAKETWO ->
                 special = takeTwo;
-            }
-            case TAKEFOUR -> {
+            case TAKEFOUR ->
                 special = takeFour;
-            }
         }
         return special;
     }

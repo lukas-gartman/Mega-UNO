@@ -33,22 +33,22 @@ import java.util.List;
 import java.util.Scanner;
 
 public class ClientApplication extends ApplicationAdapter implements GameController, ViewPublisher {
-    static public Sprite BlueCard;
-    static public Sprite BackSideOfCard;
-    static public Sprite GreenCard;
-    static public Sprite RedCard;
-    static public Sprite Reverse;
-    static public Sprite Take2;
-    static public Sprite Take4;
-    static public Sprite Tomte;
-    static public Sprite WhiteCard;
-    static public Sprite WildCard;
-    static public Sprite YellowCard;
-    static public BitmapFont Minecraft;
-    static public Sprite Background;
-    static public Sprite CommenceForth;
-    static public Sprite DrawPile;
-    static public Sprite SayUnoButton;
+    static public Sprite blueCard;
+    static public Sprite backSideOfCard;
+    static public Sprite greenCard;
+    static public Sprite redCard;
+    static public Sprite reverse;
+    static public Sprite take2;
+    static public Sprite take4;
+    static public Sprite tomte;
+    static public Sprite whiteCard;
+    static public Sprite wildCard;
+    static public Sprite yellowCard;
+    static public BitmapFont minecraftFont;
+    static public Sprite background;
+    static public Sprite commenceForth;
+    static public Sprite drawPile;
+    static public Sprite sayUnoButton;
 
     private Publisher<Integer> onNewPlayer = new Publisher<>();
     private Publisher<ICard> onNewTopCard = new Publisher<>();
@@ -71,22 +71,22 @@ public class ClientApplication extends ApplicationAdapter implements GameControl
                 key -> new BitmapFont(Gdx.files.internal(key)), "assets/"
         );
 
-        this.BlueCard = spriteDataFetcher.tryGetDataUnSafe("BlueCard.png");
-        this.BackSideOfCard = spriteDataFetcher.tryGetDataUnSafe("Card.png");
-        this.GreenCard = spriteDataFetcher.tryGetDataUnSafe("GreenCard.png");
-        this.RedCard = spriteDataFetcher.tryGetDataUnSafe("RedCard.png");
-        this.Reverse = spriteDataFetcher.tryGetDataUnSafe("Reverse.png");
-        this.Take2 = spriteDataFetcher.tryGetDataUnSafe("Take2.png");
-        this.Take4 = spriteDataFetcher.tryGetDataUnSafe("Take4.png");
-        this.Tomte = spriteDataFetcher.tryGetDataUnSafe("Tomte.png");
-        this.WhiteCard = spriteDataFetcher.tryGetDataUnSafe("WhiteCard.png");
-        this.WildCard = spriteDataFetcher.tryGetDataUnSafe("WildCard.png");
-        this.YellowCard = spriteDataFetcher.tryGetDataUnSafe("YellowCard.png");
-        this.Minecraft = bitmapFontDataFetcher.tryGetDataUnSafe("minecraft.fnt");
-        this.Background = spriteDataFetcher.tryGetDataUnSafe("Background.png");
-        this.CommenceForth = spriteDataFetcher.tryGetDataUnSafe("CommenceForth.png");
-        this.DrawPile = spriteDataFetcher.tryGetDataUnSafe("DrawPile.png");
-        this.SayUnoButton = spriteDataFetcher.tryGetDataUnSafe("SayUnoButton.png");
+        this.blueCard = spriteDataFetcher.tryGetDataUnSafe("BlueCard.png");
+        this.backSideOfCard = spriteDataFetcher.tryGetDataUnSafe("Card.png");
+        this.greenCard = spriteDataFetcher.tryGetDataUnSafe("GreenCard.png");
+        this.redCard = spriteDataFetcher.tryGetDataUnSafe("RedCard.png");
+        this.reverse = spriteDataFetcher.tryGetDataUnSafe("Reverse.png");
+        this.take2 = spriteDataFetcher.tryGetDataUnSafe("Take2.png");
+        this.take4 = spriteDataFetcher.tryGetDataUnSafe("Take4.png");
+        this.tomte = spriteDataFetcher.tryGetDataUnSafe("Tomte.png");
+        this.whiteCard = spriteDataFetcher.tryGetDataUnSafe("WhiteCard.png");
+        this.wildCard = spriteDataFetcher.tryGetDataUnSafe("WildCard.png");
+        this.yellowCard = spriteDataFetcher.tryGetDataUnSafe("YellowCard.png");
+        this.minecraftFont = bitmapFontDataFetcher.tryGetDataUnSafe("minecraft.fnt");
+        this.background = spriteDataFetcher.tryGetDataUnSafe("Background.png");
+        this.commenceForth = spriteDataFetcher.tryGetDataUnSafe("CommenceForth.png");
+        this.drawPile = spriteDataFetcher.tryGetDataUnSafe("DrawPile.png");
+        this.sayUnoButton = spriteDataFetcher.tryGetDataUnSafe("SayUnoButton.png");
         root = new Root();
 
 

@@ -76,7 +76,7 @@ public class GameView implements IDrawable {
     @Override
     public void draw(float delta, Batch batch) {
         // Draw background
-        batch.draw(ClientApplication.Background, 0, 0, 650, 500);
+        batch.draw(ClientApplication.background, 0, 0, 650, 500);
 
         thisPlayer.draw(delta, batch);
 

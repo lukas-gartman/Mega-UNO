@@ -16,8 +16,6 @@ public class GameTest extends TestCase {
     PlayerCircle players = new PlayerCircle(generatePlayers(5));
     Game game = new Game(players);
 
-
-
     public List<Player> generatePlayers(int n) {
         List<Player> playerList = new ArrayList<>();
         for (int i = 0; i < n; i++) {

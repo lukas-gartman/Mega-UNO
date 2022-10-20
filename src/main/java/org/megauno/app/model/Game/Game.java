@@ -68,12 +68,12 @@ public class Game implements IActOnGame, GamePublishers, IGameImputs {
     // TODO: move method to a more general class (general class representing the model)
     // commence_forth: set by a controller (or test) to signal that the player has chosen.
     // tests should remember to call update
-    public boolean commence_forth = false;
+    public boolean commenceForth = false;
 
     public void update() {
-        if (commence_forth) {
+        if (commenceForth) {
             try_play();
-            commence_forth = false;
+            commenceForth = false;
         }
     }
 
@@ -87,9 +87,9 @@ public class Game implements IActOnGame, GamePublishers, IGameImputs {
     public List<List<ICard>> getAllPlayerCards() {
         Player[] players = getPlayers();
         List<List<ICard>> result = new ArrayList<>();
-        for (int i = 0; i < players.length; i++) {
-            result.add(players[i].getCards());
-        }
+        for (Player player : players)
+            result.add(player.getCards());
+
         return result;
     }
 
@@ -305,7 +305,7 @@ public class Game implements IActOnGame, GamePublishers, IGameImputs {
     @Override
     public void commenceForth(Player player) {
         if (player == getCurrentPlayer()) {
-            commence_forth = true;
+            commenceForth = true;
         }
     }
 

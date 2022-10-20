@@ -7,7 +7,7 @@ class EndTurnButton extends Button {
 	private Preposition prep;
 
 	public EndTurnButton(float x, float y, GameController gameController, Preposition prep) {
-		super(x, y, gameController, ClientApplication.CommenceForth);
+		super(x, y, gameController, ClientApplication.commenceForth);
 		this.prep = prep;
 	}
 
@@ -19,9 +19,9 @@ class EndTurnButton extends Button {
 	@Override
 	public void draw(float delta, Batch batch) {
 		if (prep.value()) {
-			sprite = ClientApplication.CommenceForth;
+			sprite = ClientApplication.commenceForth;
 		} else {
-			sprite = ClientApplication.Tomte;
+			sprite = ClientApplication.tomte;
 		}
 		super.draw(delta, batch);
 	}

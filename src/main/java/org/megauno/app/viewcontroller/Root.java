@@ -13,7 +13,7 @@ public class Root {
 
 	public Root() {
 		drawable = ((delta, batch) -> {
-			ClientApplication.Tomte.draw(batch);
+			ClientApplication.tomte.draw(batch);
 		});
 		batch = new SpriteBatch();
 	}
