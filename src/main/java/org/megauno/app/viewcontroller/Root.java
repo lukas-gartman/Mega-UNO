@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import org.lwjgl.opengl.GL20;
 import org.megauno.app.application.ClientApplication;
-import org.megauno.app.viewcontroller.cotroller.GameController;
+import org.megauno.app.viewcontroller.controller.GameController;
 import org.megauno.app.viewcontroller.players.GameView;
 
 public class Root {

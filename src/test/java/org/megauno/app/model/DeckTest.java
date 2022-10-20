@@ -1,11 +1,11 @@
 package org.megauno.app.model;
 
 import org.junit.Test;
-import org.megauno.app.model.Cards.CardType;
-import org.megauno.app.model.Cards.ICard;
-import org.megauno.app.model.Cards.Impl.CardValidation;
-import org.megauno.app.model.Cards.Impl.NumberCard;
-import org.megauno.app.model.Game.Utilities.Deck;
+import org.megauno.app.model.cards.CardType;
+import org.megauno.app.model.cards.ICard;
+import org.megauno.app.model.cards.implementation.CardValidation;
+import org.megauno.app.model.cards.implementation.NumberCard;
+import org.megauno.app.model.game.utilities.Deck;
 
 import java.util.HashMap;
 import java.util.List;

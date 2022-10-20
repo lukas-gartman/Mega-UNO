@@ -1,7 +1,7 @@
 package org.megauno.app.model;
 
-import org.megauno.app.model.Game.Utilities.PlayerCircle;
-import org.megauno.app.model.Player.Player;
+import org.megauno.app.model.game.utilities.PlayerCircle;
+import org.megauno.app.model.player.Player;
 
 import java.util.ArrayList;
 import java.util.List;

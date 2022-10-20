@@ -1,7 +1,7 @@
 package org.megauno.app.viewcontroller;
 
-import org.megauno.app.model.Cards.ICard;
-import org.megauno.app.model.Player.Player;
+import org.megauno.app.model.cards.ICard;
+import org.megauno.app.model.player.Player;
 import org.megauno.app.utility.Publisher.IPublisher;
 import org.megauno.app.utility.Tuple;
 

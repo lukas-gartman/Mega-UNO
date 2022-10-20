@@ -1,7 +1,7 @@
 package org.megauno.app.network;
 
 import org.json.JSONObject;
-import org.megauno.app.network.Implementation.ClientHandler;
+import org.megauno.app.network.implementation.ClientHandler;
 import org.megauno.app.utility.BiHashMap;
 
 /**

@@ -4,11 +4,11 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import org.megauno.app.application.ClientApplication;
-import org.megauno.app.model.Cards.CardType;
-import org.megauno.app.model.Cards.Color;
-import org.megauno.app.model.Cards.ICard;
-import org.megauno.app.viewcontroller.cotroller.Clickable;
-import org.megauno.app.viewcontroller.cotroller.GameController;
+import org.megauno.app.model.cards.CardType;
+import org.megauno.app.model.cards.Color;
+import org.megauno.app.model.cards.ICard;
+import org.megauno.app.viewcontroller.controller.Clickable;
+import org.megauno.app.viewcontroller.controller.GameController;
 import org.megauno.app.viewcontroller.IDrawable;
 
 import java.util.ArrayList;
