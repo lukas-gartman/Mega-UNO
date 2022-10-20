@@ -1,6 +1,7 @@
 package org.megauno.app.network.Implementation;
 
 import org.json.JSONObject;
+import org.megauno.app.network.IClientHandler;
 import org.megauno.app.network.IServer;
 import org.megauno.app.network.JSONReader;
 
