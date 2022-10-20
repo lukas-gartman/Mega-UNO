@@ -6,11 +6,7 @@ import org.megauno.app.utility.BiHashMap;
 import java.io.*;
 import java.net.Socket;
 
-/**
- * Extension of Server that handles client connections.
- * @author Lukas Gartman
- */
-public class ClientHandler implements Runnable {
+public class ClientHandler implements IClientHandler {
     private IServer server;
     private final Socket client;
     private BufferedReader br;
@@ -38,10 +34,7 @@ public class ClientHandler implements Runnable {
         }
     }
 
-    /**
-     * Send a JSON object to the client
-     * @param json the object to send
-     */
+    @Override
     public void send(JSONObject json) {
         try {
             bw.write(json.toString());
@@ -52,6 +45,7 @@ public class ClientHandler implements Runnable {
         }
     }
 
+    @Override
     public void disconnect() {
         try {
             client.close();
@@ -61,11 +55,15 @@ public class ClientHandler implements Runnable {
     }
 
     @Override
+    public void updateJSONReader(JSONReader jr) {
+        this.jsonReader = jr;
+    }
+
+    @Override
     public void run() {
         String message;
         while (true) {
              try {
-
                 message = br.readLine();
                 JSONObject json = new JSONObject(message);
                 jsonReader.read(json.put("ClientId", id));
@@ -78,9 +76,5 @@ public class ClientHandler implements Runnable {
                 ex.printStackTrace();
             }
         }
-    }
-
-    public void updateJsonReader(JSONReader jr) {
-        this.jsonReader = jr;
     }
 }

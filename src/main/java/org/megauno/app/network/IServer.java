@@ -11,7 +11,7 @@ public interface IServer {
      * Get a map of all the active client handlers
      * @return a list of client handlers
      */
-    BiHashMap<ClientHandler, Integer> getClientHandlers();
+    BiHashMap<IClientHandler, Integer> getClientHandlers();
 
     /**
      * Disconnect the given client from the server
