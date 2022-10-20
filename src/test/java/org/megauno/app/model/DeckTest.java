@@ -14,10 +14,6 @@ public class DeckTest {
 
     Deck deck = new Deck();
 
-    HashMap<CardType, Integer> dist = new HashMap<>();
-
-    Deck deckWithDist = new Deck();
-
     // throws an exception if the invariant doesn't hold
     public boolean cardInvariant(ICard card) {
         if (card instanceof NumberCard nc) {
@@ -35,8 +31,11 @@ public class DeckTest {
     @Test
     public void testDeckWithDistribution() {
         HashMap<CardType, Integer> dist = new HashMap<>();
-
-        Deck deckWithDist = new Deck();
+        dist.put(CardType.NUMBERCARD, 50);
+        dist.put(CardType.TAKETWO, 10);
+        dist.put(CardType.REVERSECARD, 25);
+        dist.put(CardType.WILDCARD, 15);
+        Deck deckWithDist = new Deck(dist);
     }
 
     @Test

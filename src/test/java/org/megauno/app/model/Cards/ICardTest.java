@@ -17,15 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ICardTest {
-
-    @Before
-    public void setUp() throws Exception {
-        Player p = new Player(new ArrayList<>());
-        List<Player> players = new ArrayList<>();
-        players.add(p);
-        g = new Game(new PlayerCircle());
-    }
-
     ICard nc = new NumberCard(Color.BLUE, 3);
     ICard nc2 = new NumberCard(Color.BLUE, 3);
     ICard nc3 = new NumberCard(Color.RED, 9);
@@ -35,8 +26,17 @@ public class ICardTest {
     ICard ac3 = new ActionCard(new TakeFourAction(), Color.RED, CardType.TAKETWO);
     ICard ac4 = new ActionCard(new TakeTwoAction(), Color.RED, CardType.TAKETWO);
 
-    IActOnGame g;
+    Game g;
     //ActionCard ac = new ActionCard()
+
+    @Before
+    public void setUp() throws Exception {
+        Player p = new Player(new ArrayList<>());
+        List<Player> players = new ArrayList<>();
+        players.add(p);
+        g = new Game(new PlayerCircle(players));
+        g.start(7);
+    }
 
     @Test
     public void testEquals() {
