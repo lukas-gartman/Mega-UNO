@@ -67,7 +67,8 @@ public class Server implements IServer, Runnable {
         } // server was not set up properly, ignore...
     }
 
-    public void disconnectClient(ClientHandler clientHandler) {
+    @Override
+    public void disconnectClient(IClientHandler clientHandler) {
         // disconnect the client (critical section)
         try {
             this.semaphore.acquire();
@@ -86,9 +87,10 @@ public class Server implements IServer, Runnable {
         this.semaphore.release(); // end of critical section
     }
 
+    @Override
     public void close() {
         BiHashMap<ClientHandler, Integer> clients = new BiHashMap(clientHandlers);
-        for (ClientHandler client : clients.getLeftKeys())
+        for (IClientHandler client : clients.getLeftKeys())
             disconnectClient(client);
 
         try {
