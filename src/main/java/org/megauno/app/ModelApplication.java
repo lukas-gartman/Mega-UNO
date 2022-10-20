@@ -6,8 +6,11 @@ import org.megauno.app.model.Cards.Color;
 import org.megauno.app.model.Cards.ICard;
 import org.megauno.app.model.Game.Game;
 import org.megauno.app.network.*;
-import org.megauno.app.model.Game.PlayerCircle;
+import org.megauno.app.model.Game.Utilities.PlayerCircle;
 import org.megauno.app.model.Player.Player;
+import org.megauno.app.network.Implementation.IdCard;
+import org.megauno.app.network.Implementation.Lobby;
+import org.megauno.app.network.Implementation.PlayersCards;
 import org.megauno.app.utility.BiHashMap;
 import org.megauno.app.viewcontroller.GamePublishers;
 

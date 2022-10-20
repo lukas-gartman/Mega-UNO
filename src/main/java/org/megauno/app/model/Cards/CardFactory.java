@@ -1,4 +1,4 @@
-package org.megauno.app.model;
+package org.megauno.app.model.Cards;
 
 import org.megauno.app.model.Cards.CardType;
 import org.megauno.app.model.Cards.Color;
@@ -9,10 +9,6 @@ import org.megauno.app.model.Game.Actions.ReverseAction;
 import org.megauno.app.model.Game.Actions.TakeFourAction;
 import org.megauno.app.model.Game.Actions.TakeTwoAction;
 import org.megauno.app.model.Game.Actions.WildCardAction;
-import org.megauno.app.model.Game.Game;
-import org.megauno.app.model.Game.PlayerCircle;
-
-import java.lang.reflect.WildcardType;
 
 /**
  * Handles all the details of creating cards. Here is where the action cards gets its action that it can execute.

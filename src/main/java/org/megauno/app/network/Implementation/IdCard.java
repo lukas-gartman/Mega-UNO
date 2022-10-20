@@ -1,4 +1,4 @@
-package org.megauno.app.network;
+package org.megauno.app.network.Implementation;
 
 import org.megauno.app.model.Cards.ICard;
 import org.megauno.app.utility.Tuple;

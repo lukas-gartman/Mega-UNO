@@ -2,7 +2,7 @@ package org.megauno.app.model.Game;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.megauno.app.model.CardFactory;
+import org.megauno.app.model.Cards.CardFactory;
 import org.megauno.app.model.Cards.CardType;
 import org.megauno.app.model.Cards.Color;
 import org.megauno.app.model.Cards.ICard;

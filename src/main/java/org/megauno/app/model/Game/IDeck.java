@@ -1,4 +1,4 @@
-package org.megauno.app.model;
+package org.megauno.app.model.Game;
 
 import org.megauno.app.model.Cards.ICard;
 

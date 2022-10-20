@@ -2,8 +2,8 @@ package org.megauno.app.model.Game;
 
 import junit.framework.TestCase;
 import org.megauno.app.model.Cards.ICard;
-import org.megauno.app.model.Deck;
-import org.megauno.app.model.GameFactory;
+import org.megauno.app.model.Game.Utilities.Deck;
+import org.megauno.app.model.Game.Utilities.PlayerCircle;
 import org.megauno.app.model.Player.Player;
 
 import java.util.ArrayList;
@@ -14,7 +14,7 @@ public class GameTest extends TestCase {
 
     Deck deck = new Deck();
     PlayerCircle players = new PlayerCircle(generatePlayers(5));
-    Game game = GameFactory.createGame(players);
+    Game game = new Game(players);
 
 
 
