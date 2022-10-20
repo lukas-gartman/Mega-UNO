@@ -9,7 +9,7 @@ import org.megauno.app.model.Game.IActOnGame;
  * The action of a wildcard is that the player playing the wildcard can pick any color they like
  * to be played next
  */
-public class WildCardAction implements IAction{
+public class WildCardAction implements IAction {
 
     @Override
     public boolean execute(IActOnGame g) {
@@ -18,7 +18,7 @@ public class WildCardAction implements IAction{
     }
 
     // to be called by client when choosing to play an actionCard.
-    public void assignColor(Color choice, ICard c){
+    public void assignColor(Color choice, ICard c) {
         c.setColor(choice);
     }
     // Wild card is a type not an actioncard.

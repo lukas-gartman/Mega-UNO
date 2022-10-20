@@ -1,6 +1,5 @@
 package org.megauno.app.model.Cards;
 
-import junit.framework.TestCase;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -9,11 +8,9 @@ import org.megauno.app.model.Cards.Impl.NumberCard;
 import org.megauno.app.model.Game.Actions.ReverseAction;
 import org.megauno.app.model.Game.Actions.TakeFourAction;
 import org.megauno.app.model.Game.Actions.TakeTwoAction;
-import org.megauno.app.model.Game.Actions.WildCardAction;
 import org.megauno.app.model.Game.Game;
 import org.megauno.app.model.Game.IActOnGame;
-import org.megauno.app.model.Game.PlayerCircle;
-import org.megauno.app.model.GameFactory;
+import org.megauno.app.model.Game.Utilities.PlayerCircle;
 import org.megauno.app.model.Player.Player;
 
 import java.util.ArrayList;
@@ -26,7 +23,7 @@ public class ICardTest {
         Player p = new Player(new ArrayList<>());
         List<Player> players = new ArrayList<>();
         players.add(p);
-        g = GameFactory.createGame(new PlayerCircle());
+        g = new Game(new PlayerCircle());
     }
 
     ICard nc = new NumberCard(Color.BLUE, 3);

@@ -1,4 +1,4 @@
-package org.megauno.app.network;
+package org.megauno.app.network.Implementation;
 
 import java.util.List;
 

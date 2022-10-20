@@ -1,16 +1,14 @@
-package org.megauno.app.network;
+package org.megauno.app.network.Implementation;
 
 import org.json.JSONObject;
-import org.megauno.app.utility.BiHashMap;
+import org.megauno.app.network.IClientHandler;
+import org.megauno.app.network.IServer;
+import org.megauno.app.network.JSONReader;
 
 import java.io.*;
 import java.net.Socket;
 
-/**
- * Extension of Server that handles client connections.
- * @author Lukas Gartman
- */
-public class ClientHandler implements Runnable {
+public class ClientHandler implements IClientHandler {
     private IServer server;
     private final Socket client;
     private BufferedReader br;
@@ -20,9 +18,10 @@ public class ClientHandler implements Runnable {
 
     /**
      * Store the client information and set up readers and writers
-     * @param client the client's socket
-     * @param id the client ID
-     * @param server the server interface
+     *
+     * @param client     the client's socket
+     * @param id         the client ID
+     * @param server     the server interface
      * @param jsonReader an interface used for reading JSON
      */
     public ClientHandler(Socket client, int id, IServer server, JSONReader jsonReader) {
@@ -38,10 +37,7 @@ public class ClientHandler implements Runnable {
         }
     }
 
-    /**
-     * Send a JSON object to the client
-     * @param json the object to send
-     */
+    @Override
     public void send(JSONObject json) {
         try {
             bw.write(json.toString());
@@ -52,6 +48,7 @@ public class ClientHandler implements Runnable {
         }
     }
 
+    @Override
     public void disconnect() {
         try {
             client.close();
@@ -61,11 +58,15 @@ public class ClientHandler implements Runnable {
     }
 
     @Override
+    public void updateJSONReader(JSONReader jr) {
+        this.jsonReader = jr;
+    }
+
+    @Override
     public void run() {
         String message;
         while (true) {
-             try {
-
+            try {
                 message = br.readLine();
                 JSONObject json = new JSONObject(message);
                 jsonReader.read(json.put("ClientId", id));
@@ -74,13 +75,10 @@ public class ClientHandler implements Runnable {
                 try {
                     br.close();
                     break;
-                } catch (IOException e) { }
+                } catch (IOException e) {
+                }
                 ex.printStackTrace();
             }
         }
-    }
-
-    public void updateJsonReader(JSONReader jr) {
-        this.jsonReader = jr;
     }
 }

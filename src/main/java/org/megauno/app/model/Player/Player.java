@@ -2,7 +2,6 @@ package org.megauno.app.model.Player;
 
 import org.megauno.app.model.Cards.ICard;
 import org.megauno.app.utility.Publisher.IPublisher;
-import org.megauno.app.utility.Publisher.condition.ConPublisher;
 import org.megauno.app.utility.Publisher.normal.Publisher;
 import org.megauno.app.utility.Tuple;
 
@@ -28,36 +27,36 @@ public class Player {
     }
 
     public Player(List<ICard> hand) {
-        onCardsAddedByPlayer.publish(new Tuple<Player,List<ICard>>(this,hand));
+        onCardsAddedByPlayer.publish(new Tuple<Player, List<ICard>>(this, hand));
         this.hand = hand;
     }
 
     // Bug, since the same card can be picked several times
-    public void selectCard(ICard c){
+    public void selectCard(ICard c) {
         // This for now, but this doesn't distinguish cards by id, so it isn't complete
         if (hand.contains(c) && !selectedCards.contains(c)) {
             selectedCards.add(c);
         }
     }
 
-    public List<ICard> getSelectedCards(){
+    public List<ICard> getSelectedCards() {
         return copyCards(selectedCards);
     }
 
-    public void unSelectCard(ICard c){
+    public void unSelectCard(ICard c) {
         selectedCards.remove(c);
     }
 
-    public void discardAllSelectedCards(){
+    public void discardAllSelectedCards() {
         selectedCards = new ArrayList<>();
     }
 
 
-    public void sayUno(){
+    public void sayUno() {
         saidUno = true;
     }
 
-    public void unsayUno(){
+    public void unsayUno() {
         saidUno = false;
     }
 
@@ -65,18 +64,18 @@ public class Player {
         return saidUno;
     }
 
-    public int numOfCards(){
+    public int numOfCards() {
         return hand.size();
     }
 
-    public List<ICard> getCards(){
+    public List<ICard> getCards() {
         return copyCards(hand);
     }
 
-    public void addCard(ICard card){
+    public void addCard(ICard card) {
         ArrayList<ICard> l = new ArrayList<>();
         l.add(card);
-        onCardsAddedByPlayer.publish(new Tuple<Player,List<ICard>>(this,l));
+        onCardsAddedByPlayer.publish(new Tuple<Player, List<ICard>>(this, l));
         hand.add(card.copyCard());
     }
 
@@ -86,17 +85,17 @@ public class Player {
             this.addCard(card);
         }
     }
+
     public void removeSelectedCardsFromHand() {
         for (ICard c : selectedCards) {
             hand.remove(c);
         }
-        onCardsRemovedByPlayer.publish(new Tuple<Player,List<ICard>>(this,selectedCards));
+        onCardsRemovedByPlayer.publish(new Tuple<Player, List<ICard>>(this, selectedCards));
     }
 
 
-
     //To get the card a player wants to play
-    public List<ICard> play(){
+    public List<ICard> play() {
         //saidUno = false; don't understand why this is desired behaviour
         List<ICard> out = copyCards(selectedCards);
 
@@ -105,7 +104,7 @@ public class Player {
 
     private List<ICard> copyCards(List<ICard> cards) {
         List<ICard> copy = new ArrayList<>();
-        for (ICard card: cards) {
+        for (ICard card : cards) {
             copy.add(card.copyCard());
         }
         return copy;
