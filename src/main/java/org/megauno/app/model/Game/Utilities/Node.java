@@ -15,44 +15,44 @@ public class Node {
         this.player = p;
     }
 
-    public List<ICard> play(){
+    public List<ICard> play() {
         return player.play();
     }
 
-    public void giveCardToPlayer(ICard card){
+    public void giveCardToPlayer(ICard card) {
         player.addCard(card);
     }
 
-    public Player getPlayer(){
+    public Player getPlayer() {
         return player;
     }
 
-    public int getHandSize(){
+    public int getHandSize() {
         return player.numOfCards();
     }
 
-    public boolean uno(){
+    public boolean uno() {
         return player.uno();
     }
 
-    public void sayUno(){
+    public void sayUno() {
         player.sayUno();
     }
 
-    public void unsayUno(){
+    public void unsayUno() {
         player.unsayUno();
     }
 
-    public List<ICard> getHand(){
+    public List<ICard> getHand() {
         return player.getCards();
     }
 
-    public void selectCard(ICard c){
+    public void selectCard(ICard c) {
         player.selectCard(c);
     }
 
 
-    public void removeSelected(){
+    public void removeSelected() {
         player.removeSelectedCardsFromHand();
         player.discardAllSelectedCards();
     }

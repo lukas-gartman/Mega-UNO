@@ -3,7 +3,6 @@ package org.megauno.app.network.Implementation;
 import org.json.JSONObject;
 import org.megauno.app.network.IServer;
 import org.megauno.app.network.JSONReader;
-import org.megauno.app.utility.BiHashMap;
 
 import java.io.*;
 import java.net.Socket;
@@ -18,9 +17,10 @@ public class ClientHandler implements IClientHandler {
 
     /**
      * Store the client information and set up readers and writers
-     * @param client the client's socket
-     * @param id the client ID
-     * @param server the server interface
+     *
+     * @param client     the client's socket
+     * @param id         the client ID
+     * @param server     the server interface
      * @param jsonReader an interface used for reading JSON
      */
     public ClientHandler(Socket client, int id, IServer server, JSONReader jsonReader) {
@@ -65,7 +65,7 @@ public class ClientHandler implements IClientHandler {
     public void run() {
         String message;
         while (true) {
-             try {
+            try {
                 message = br.readLine();
                 JSONObject json = new JSONObject(message);
                 jsonReader.read(json.put("ClientId", id));
@@ -74,7 +74,8 @@ public class ClientHandler implements IClientHandler {
                 try {
                     br.close();
                     break;
-                } catch (IOException e) { }
+                } catch (IOException e) {
+                }
                 ex.printStackTrace();
             }
         }

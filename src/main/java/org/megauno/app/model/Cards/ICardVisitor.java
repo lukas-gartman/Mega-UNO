@@ -12,6 +12,7 @@ public interface ICardVisitor {
 
     /**
      * Checks that the given card can be played on this card.
+     *
      * @param actionCard The card that wants to be played on this card
      * @return Weather it can be played on this or not.
      */
@@ -19,6 +20,7 @@ public interface ICardVisitor {
 
     /**
      * Checks that the given card can be played on this card.
+     *
      * @param numberCard The card that wants to be played on this card
      * @return Weather it can be played on this or not.
      */
@@ -26,6 +28,7 @@ public interface ICardVisitor {
 
     /**
      * Checks that the given card can be stacked on this card.
+     *
      * @param actionCard The card that wants to be stacked on this card
      * @return Weather it can be stacked on this or not.
      */
@@ -33,6 +36,7 @@ public interface ICardVisitor {
 
     /**
      * Checks that the given card can be stacked on this card.
+     *
      * @param numberCard The card that wants to be stacked on this card
      * @return Weather it can be stacked on this or not.
      */

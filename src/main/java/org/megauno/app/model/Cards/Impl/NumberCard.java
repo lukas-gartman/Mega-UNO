@@ -1,6 +1,9 @@
 package org.megauno.app.model.Cards.Impl;
 
-import org.megauno.app.model.Cards.*;
+import org.megauno.app.model.Cards.AbstractCard;
+import org.megauno.app.model.Cards.CardType;
+import org.megauno.app.model.Cards.Color;
+import org.megauno.app.model.Cards.ICard;
 import org.megauno.app.model.Game.IActOnGame;
 
 import java.util.Objects;
@@ -15,6 +18,7 @@ public class NumberCard extends AbstractCard {
      * The only constructor for NumberCard, has default card type NUMBERCARD.
      * The constructor validates the card, i.e. checks that the given values are
      * correct.
+     *
      * @param color Color of the card.
      * @param value Numeric value of the card.
      */
@@ -73,6 +77,7 @@ public class NumberCard extends AbstractCard {
 
     /**
      * Shallow of a card, no need for deep copy since the attributes are immutable.
+     *
      * @return A copy of this card.
      */
     @Override
@@ -100,6 +105,6 @@ public class NumberCard extends AbstractCard {
     public boolean canBeStackedUnder(NumberCard nc) {
         return nc.getValue() == this.getValue();
     }
-    
+
 
 }

@@ -11,12 +11,14 @@ public class Root {
 
 
     private GameView gameView;
-    private  ViewController vc;
+    private ViewController vc;
     private Batch batch;
     private IDrawable drawable;
 
     public Root() {
-        drawable = ((delta, batch) -> {ClientApplication.Tomte.draw(batch);}
+        drawable = ((delta, batch) -> {
+            ClientApplication.Tomte.draw(batch);
+        }
         );
         batch = new SpriteBatch();
     }
@@ -25,7 +27,7 @@ public class Root {
         drawable = new GameView(playerID, otherPlayersIds, viewPublisher, gameController);
     }
 
-    public void draw(){
+    public void draw() {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         // Draw a game view
         batch.begin();

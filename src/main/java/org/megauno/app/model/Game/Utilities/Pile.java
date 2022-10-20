@@ -9,6 +9,7 @@ import java.util.*;
 
 public class Pile implements IPile {
     private final Stack<ICard> cards = new Stack<>();
+
     public Pile() {
         ICard firstCard = generateFirstCard();
         cards.push(firstCard);
@@ -22,7 +23,7 @@ public class Pile implements IPile {
         Arrays.stream(Color.values()).filter(c -> c != Color.NONE).forEach(colors::add);
         int colorIndex = rand.nextInt(colors.size());
         Color color = colors.get(colorIndex);
-        
+
         return new NumberCard(color, number);
     }
 

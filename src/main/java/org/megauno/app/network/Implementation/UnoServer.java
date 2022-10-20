@@ -17,30 +17,30 @@ public class UnoServer extends Server implements SendInfoToClients {
 
     @Override
     public void currentPlayerNewId(int id) {
-        broadcast(new JSONObject().put("Type","CurrentPlayerId").put("PlayerId",id));
+        broadcast(new JSONObject().put("Type", "CurrentPlayerId").put("PlayerId", id));
     }
 
     @Override
     public void newTopCardOfPile(ICard topCard) {
         JSONObject card = new JSONObject(topCard);
-        broadcast(new JSONObject().put("Type","NewTopCard").put("Card",card));
+        broadcast(new JSONObject().put("Type", "NewTopCard").put("Card", card));
     }
 
     @Override
     public void playerWithIdAddedCards(PlayersCards pc) {
         JSONObject object = new JSONObject();
-        object.put("Type","AddCards");
-        object.put("PlayerId",pc.getId());
-        object.put("Cards",pc.getCards());
+        object.put("Type", "AddCards");
+        object.put("PlayerId", pc.getId());
+        object.put("Cards", pc.getCards());
         broadcast(object);
     }
 
     @Override
     public void playerWithIdRemovedCards(PlayersCards pc) {
         JSONObject object = new JSONObject();
-        object.put("Type","RemoveCards");
-        object.put("PlayerId",pc.getId());
-        object.put("Cards",pc.getCards());
+        object.put("Type", "RemoveCards");
+        object.put("PlayerId", pc.getId());
+        object.put("Cards", pc.getCards());
         broadcast(object);
     }
 
@@ -48,19 +48,19 @@ public class UnoServer extends Server implements SendInfoToClients {
     @Override
     public void start() {
         Set<Integer> ids = getClientHandlers().getRightKeys();
-        for (Integer id: ids) {
-            int[] otherplayers = new int[ids.size()-1];
+        for (Integer id : ids) {
+            int[] otherplayers = new int[ids.size() - 1];
             int i = 0;
-            for (int innerId :ids) {
-                if(id != innerId){
+            for (int innerId : ids) {
+                if (id != innerId) {
                     otherplayers[i] = innerId;
                     i++;
                 }
             }
             JSONObject json = new JSONObject();
-            json.put("Type","Start");
-            json.put("PlayerId",id);
-            json.put("OtherPlayers",otherplayers);
+            json.put("Type", "Start");
+            json.put("PlayerId", id);
+            json.put("OtherPlayers", otherplayers);
             getClientHandlers().getLeft(id).send(json);
         }
     }

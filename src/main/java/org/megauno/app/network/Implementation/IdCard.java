@@ -1,7 +1,6 @@
 package org.megauno.app.network.Implementation;
 
 import org.megauno.app.model.Cards.ICard;
-import org.megauno.app.utility.Tuple;
 
 public class IdCard {
     private final int id;

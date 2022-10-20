@@ -1,8 +1,5 @@
 package org.megauno.app.model.Cards;
 
-import org.megauno.app.model.Cards.CardType;
-import org.megauno.app.model.Cards.Color;
-import org.megauno.app.model.Cards.ICard;
 import org.megauno.app.model.Cards.Impl.ActionCard;
 import org.megauno.app.model.Cards.Impl.NumberCard;
 import org.megauno.app.model.Game.Actions.ReverseAction;
@@ -19,18 +16,17 @@ public class CardFactory {
         return new NumberCard(color, value);
     }
 
-    public ICard createPureWildCard(){
+    public ICard createPureWildCard() {
         return new ActionCard(new WildCardAction(), Color.NONE, CardType.WILDCARD);
     }
 
     public ICard createActionCard(Color color, CardType type) {
-        return
-        switch (type) {
+        return switch (type) {
             case NUMBERCARD -> null;
             case REVERSECARD -> new ActionCard(new ReverseAction(), color, type);
             case TAKETWO -> new ActionCard(new TakeTwoAction(), color, type);
             case TAKEFOUR -> new ActionCard(new TakeFourAction(), color, type);
-            case WILDCARD -> new ActionCard(new WildCardAction(),color,type);
+            case WILDCARD -> new ActionCard(new WildCardAction(), color, type);
         };
     }
 }

@@ -10,7 +10,7 @@ import org.megauno.app.model.Game.Utilities.PlayerCircle;
 public class TakeFourAction implements IAction {
 
     @Override
-    public boolean execute(IActOnGame g){
+    public boolean execute(IActOnGame g) {
         PlayerCircle players = g.getPlayerCircle();
         for (int i = 0; i < 4; i++) {
             players.giveCardToPlayer(g.draw(), players.getNextPlayerNode());

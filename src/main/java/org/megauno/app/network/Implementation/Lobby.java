@@ -6,11 +6,13 @@ import org.megauno.app.utility.BiHashMap;
 import org.megauno.app.utility.Publisher.normal.Publisher;
 import org.megauno.app.utility.Tuple;
 
-import java.util.*;
+import java.util.List;
+import java.util.Scanner;
 import java.util.concurrent.CountDownLatch;
 
 /**
  * A lobby that is used to host a game server which accepts incoming clients
+ *
  * @author Lukas Gartman
  */
 public class Lobby {
@@ -21,8 +23,9 @@ public class Lobby {
 
     /**
      * Creates a lobby
+     *
      * @param cdl a synchronisation barrier used to signal when the lobby is finished
-     * @param jr a JSONReader for interpreting JSON
+     * @param jr  a JSONReader for interpreting JSON
      */
     public Lobby(CountDownLatch cdl, JSONReader jr) throws IllegalAccessException {
         this.countDownLatch = cdl;
@@ -40,6 +43,7 @@ public class Lobby {
 
     /**
      * Creates a server and watches for incoming clients
+     *
      * @param jsonReader a JSONReader for interpreting JSON
      * @return a list of client IDs
      * @throws IllegalAccessException when a server is already running
@@ -77,13 +81,14 @@ public class Lobby {
 
     /**
      * Get the info sender (server)
+     *
      * @return the info sender
      */
-    public SendInfoToClients getInfoSender(){
+    public SendInfoToClients getInfoSender() {
         return server;
     }
 
-    public List<Integer> getIds(){
+    public List<Integer> getIds() {
         return clientHandlers.getRightKeys().stream().toList();
     }
 
