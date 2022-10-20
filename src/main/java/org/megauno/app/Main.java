@@ -9,8 +9,13 @@ import java.util.Scanner;
 public class Main {
     public static void main( String[] args ) {
         Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
-//      config.setMaximized(true);
-        new Lwjgl3Application(new ModelApplication(), config);
+        System.out.println("Type s for server and just enter for client");
+        String answer = new Scanner(System.in).nextLine();
+        ApplicationAdapter app = new ClientApplication();
+        if (answer.equals("s")){
+            app = new ModelApplication();
+        }
+        new Lwjgl3Application(app, config);
     }
 
 }

@@ -38,7 +38,7 @@ public class ViewlessGame {
 
     public static void playRandomTurn() throws InterruptedException {
         for (int i = 0; i < 40; i++) {
-            game.tryPlayTest();
+           // game.tryPlayTest();
         }
     }
 
@@ -46,7 +46,7 @@ public class ViewlessGame {
         Scanner input = new Scanner(System.in);
         System.out.println("Starting the game");
         while (game.getPlayerCircle().getPlayers().length > 1) {
-            game.tryPlayTest();
+            //game.tryPlayTest();
             Thread.sleep(1000);
             System.out.println("\n|||||||||| New round |||||||||| \n");
             Thread.sleep(1000);
