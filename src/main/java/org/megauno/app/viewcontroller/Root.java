@@ -4,8 +4,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import org.lwjgl.opengl.GL20;
-import org.megauno.app.ClientApplication;
-import org.megauno.app.viewcontroller.datafetching.IDrawable;
+import org.megauno.app.application.ClientApplication;
+import org.megauno.app.viewcontroller.cotroller.GameController;
+import org.megauno.app.viewcontroller.players.GameView;
 
 public class Root {
 	private Batch batch;

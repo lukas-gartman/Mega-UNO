@@ -1,4 +1,4 @@
-package org.megauno.app.viewcontroller;
+package org.megauno.app.viewcontroller.cotroller;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;

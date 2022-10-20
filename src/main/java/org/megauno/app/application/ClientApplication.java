@@ -1,4 +1,4 @@
-package org.megauno.app;
+package org.megauno.app.application;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
@@ -24,7 +24,7 @@ import org.megauno.app.utility.Publisher.condition.ConditionPublisher;
 import org.megauno.app.utility.Publisher.normal.Publisher;
 import org.megauno.app.utility.dataFetching.DataFetcher;
 import org.megauno.app.utility.dataFetching.PathDataFetcher;
-import org.megauno.app.viewcontroller.GameController;
+import org.megauno.app.viewcontroller.cotroller.GameController;
 import org.megauno.app.viewcontroller.Root;
 import org.megauno.app.viewcontroller.ViewPublisher;
 

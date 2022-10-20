@@ -1,12 +1,20 @@
-package org.megauno.app.viewcontroller;
+package org.megauno.app.viewcontroller.players;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
-import org.megauno.app.ClientApplication;
+import org.megauno.app.application.ClientApplication;
 import org.megauno.app.model.Cards.CardType;
 import org.megauno.app.model.Cards.Color;
 import org.megauno.app.model.Cards.ICard;
 import org.megauno.app.model.Cards.Impl.ActionCard;
-import org.megauno.app.viewcontroller.datafetching.IDrawable;
+import org.megauno.app.viewcontroller.*;
+import org.megauno.app.viewcontroller.cotroller.DrawPile;
+import org.megauno.app.viewcontroller.cotroller.EndTurnButton;
+import org.megauno.app.viewcontroller.cotroller.GameController;
+import org.megauno.app.viewcontroller.cotroller.SayUnoButton;
+import org.megauno.app.viewcontroller.IDrawable;
+import org.megauno.app.viewcontroller.players.otherplayers.OtherPlayer;
+import org.megauno.app.viewcontroller.players.thisPlayer.Card;
+import org.megauno.app.viewcontroller.players.thisPlayer.ThisPlayer;
 
 import java.util.ArrayList;
 import java.util.List;

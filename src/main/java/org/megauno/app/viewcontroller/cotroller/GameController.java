@@ -1,4 +1,4 @@
-package org.megauno.app.viewcontroller;
+package org.megauno.app.viewcontroller.cotroller;
 
 import org.megauno.app.model.Cards.Color;
 

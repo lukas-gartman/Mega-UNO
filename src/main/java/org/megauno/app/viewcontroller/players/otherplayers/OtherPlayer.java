@@ -1,10 +1,11 @@
-package org.megauno.app.viewcontroller;
+package org.megauno.app.viewcontroller.players.otherplayers;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import org.megauno.app.ClientApplication;
-import org.megauno.app.viewcontroller.datafetching.IDrawable;
+import org.megauno.app.application.ClientApplication;
+import org.megauno.app.viewcontroller.ViewPublisher;
+import org.megauno.app.viewcontroller.IDrawable;
 
 import java.util.ArrayList;
 import java.util.List;

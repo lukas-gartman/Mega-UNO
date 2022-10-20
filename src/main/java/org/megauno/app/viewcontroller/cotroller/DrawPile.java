@@ -1,6 +1,6 @@
-package org.megauno.app.viewcontroller;
+package org.megauno.app.viewcontroller.cotroller;
 
-import org.megauno.app.ClientApplication;
+import org.megauno.app.application.ClientApplication;
 
 public class DrawPile extends Button {
 	public DrawPile(float x, float y, GameController gameController) {

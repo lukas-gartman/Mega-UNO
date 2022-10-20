@@ -1,4 +1,4 @@
-package org.megauno.app;
+package org.megauno.app.application;
 
 import org.megauno.app.model.Game.Game;
 import org.megauno.app.model.Game.Utilities.Deck;

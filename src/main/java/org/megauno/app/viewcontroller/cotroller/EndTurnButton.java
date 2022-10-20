@@ -1,9 +1,10 @@
-package org.megauno.app.viewcontroller;
+package org.megauno.app.viewcontroller.cotroller;
 
-import org.megauno.app.ClientApplication;
+import org.megauno.app.application.ClientApplication;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import org.megauno.app.viewcontroller.Preposition;
 
-class EndTurnButton extends Button {
+public class EndTurnButton extends Button {
 	private Preposition prep;
 
 	public EndTurnButton(float x, float y, GameController gameController, Preposition prep) {

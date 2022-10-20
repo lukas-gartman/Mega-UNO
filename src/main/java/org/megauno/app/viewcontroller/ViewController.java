@@ -12,8 +12,8 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveByAction;
 import org.lwjgl.opengl.GL20;
-import org.megauno.app.viewcontroller.datafetching.FontLoader;
-import org.megauno.app.viewcontroller.datafetching.SpriteLoader;
+import org.megauno.app.viewcontroller.cotroller.GameController;
+import org.megauno.app.viewcontroller.players.GameView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -90,8 +90,8 @@ public class ViewController {
 
 
     public class DummyActor extends Actor {
-        static Sprite sprite = new SpriteLoader().retrieveData("yay.jpg");
-        static BitmapFont fnt = new FontLoader().retrieveData("assets/minecraft.fnt");
+        static Sprite sprite;
+        static BitmapFont fnt;
 
         public DummyActor() {
             setBounds(sprite.getX(), sprite.getY(), sprite.getWidth(), sprite.getHeight());

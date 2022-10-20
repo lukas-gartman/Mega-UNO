@@ -1,4 +1,4 @@
-package org.megauno.app.viewcontroller.datafetching;
+package org.megauno.app.viewcontroller;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 

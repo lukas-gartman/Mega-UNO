@@ -1,4 +1,4 @@
-package org.megauno.app;
+package org.megauno.app.application;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import org.json.JSONObject;
