@@ -1,10 +1,7 @@
 package org.megauno.app.viewcontroller.controller;
 
-<<<<<<< Updated upstream:src/main/java/org/megauno/app/viewcontroller/Button.java
-import org.megauno.app.viewcontroller.datafetching.IDrawable;
-=======
+
 import org.megauno.app.viewcontroller.IDrawable;
->>>>>>> Stashed changes:src/main/java/org/megauno/app/viewcontroller/cotroller/Button.java
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
