@@ -17,13 +17,15 @@ public interface ICard extends ICardVisitor {
 
     /**
      * Checks that this card can be played on the given card.
-     * @param card  The card that is played on.
+     *
+     * @param card The card that is played on.
      * @return If the card can be played or not.
      */
     boolean canBePlayed(ICard card);
 
     /**
      * Visitor Pattern. Checks that the given card can be played on this card.
+     *
      * @param numberCard The card that wants to be played on this card
      * @return Weather it can be played on this or not.
      */
@@ -31,6 +33,7 @@ public interface ICard extends ICardVisitor {
 
     /**
      * Visitor Pattern. Checks that the given card can be played on this card.
+     *
      * @param actionCard The card that wants to be played on this card
      * @return Weather it can be played on this or not.
      */
@@ -42,10 +45,11 @@ public interface ICard extends ICardVisitor {
 
     ICard copyCard();
 
-	Integer getNumber();
+    Integer getNumber();
 
     /**
      * Propagates the changes a particular card has on the game.
+     *
      * @param g An abstraction of a game.
      * @return Weather the change was successfully done.
      */
@@ -56,6 +60,7 @@ public interface ICard extends ICardVisitor {
     /**
      * Checks weather a card can be stacked on another.
      * This is relevant when multiple cards are chosen at once.
+     *
      * @param card The card which this card wants to stack upon.
      * @return If this card can be stacked on the given card.
      */
@@ -63,6 +68,7 @@ public interface ICard extends ICardVisitor {
 
     /**
      * Visitor Pattern. Checks that the given card can be stacked on this card.
+     *
      * @param numberCard The card that wants to be stacked on this card
      * @return Weather it can be stacked on this or not.
      */
@@ -70,6 +76,7 @@ public interface ICard extends ICardVisitor {
 
     /**
      * Visitor Pattern. Checks that the given card can be stacked on this card.
+     *
      * @param actionCard The card that wants to be stacked on this card
      * @return Weather it can be stacked on this or not.
      */

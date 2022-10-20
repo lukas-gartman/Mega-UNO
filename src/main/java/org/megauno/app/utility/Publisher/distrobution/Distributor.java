@@ -1,11 +1,11 @@
 package org.megauno.app.utility.Publisher.distrobution;
 
-import org.megauno.app.utility.Publisher.normal.Subscriber;
 import org.megauno.app.utility.Publisher.normal.Publisher;
+import org.megauno.app.utility.Publisher.normal.Subscriber;
 
-public class Distributor<newsPaper,story> {
+public class Distributor<newsPaper, story> {
     private Publisher<newsPaper> publisher = new Publisher<>();
-    private Editor<newsPaper,story> editor;
+    private Editor<newsPaper, story> editor;
 
     public Distributor(Editor<newsPaper, story> editor) {
         this.editor = editor;

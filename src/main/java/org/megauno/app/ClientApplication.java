@@ -28,7 +28,6 @@ import org.megauno.app.viewcontroller.GameController;
 import org.megauno.app.viewcontroller.Root;
 import org.megauno.app.viewcontroller.ViewPublisher;
 
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -75,19 +74,19 @@ public class ClientApplication extends ApplicationAdapter implements GameControl
         this.BlueCard = spriteDataFetcher.tryGetDataUnSafe("BlueCard.png");
         this.BackSideOfCard = spriteDataFetcher.tryGetDataUnSafe("Card.png");
         this.GreenCard = spriteDataFetcher.tryGetDataUnSafe("GreenCard.png");
-        this.RedCard= spriteDataFetcher.tryGetDataUnSafe("RedCard.png");
-        this.Reverse= spriteDataFetcher.tryGetDataUnSafe("Reverse.png");
-        this.Take2= spriteDataFetcher.tryGetDataUnSafe("Take2.png");
-        this.Take4= spriteDataFetcher.tryGetDataUnSafe("Take4.png");
-        this.Tomte= spriteDataFetcher.tryGetDataUnSafe("Tomte.png");
-        this.WhiteCard= spriteDataFetcher.tryGetDataUnSafe("WhiteCard.png");
-        this.WildCard= spriteDataFetcher.tryGetDataUnSafe("WildCard.png");
-        this.YellowCard= spriteDataFetcher.tryGetDataUnSafe("YellowCard.png");
+        this.RedCard = spriteDataFetcher.tryGetDataUnSafe("RedCard.png");
+        this.Reverse = spriteDataFetcher.tryGetDataUnSafe("Reverse.png");
+        this.Take2 = spriteDataFetcher.tryGetDataUnSafe("Take2.png");
+        this.Take4 = spriteDataFetcher.tryGetDataUnSafe("Take4.png");
+        this.Tomte = spriteDataFetcher.tryGetDataUnSafe("Tomte.png");
+        this.WhiteCard = spriteDataFetcher.tryGetDataUnSafe("WhiteCard.png");
+        this.WildCard = spriteDataFetcher.tryGetDataUnSafe("WildCard.png");
+        this.YellowCard = spriteDataFetcher.tryGetDataUnSafe("YellowCard.png");
         this.Minecraft = bitmapFontDataFetcher.tryGetDataUnSafe("minecraft.fnt");
         this.Background = spriteDataFetcher.tryGetDataUnSafe("Background.png");
         this.CommenceForth = spriteDataFetcher.tryGetDataUnSafe("CommenceForth.png");
         this.DrawPile = spriteDataFetcher.tryGetDataUnSafe("DrawPile.png");
-        this.SayUnoButton =  spriteDataFetcher.tryGetDataUnSafe("SayUnoButton.png");
+        this.SayUnoButton = spriteDataFetcher.tryGetDataUnSafe("SayUnoButton.png");
         root = new Root();
 
 
@@ -100,16 +99,16 @@ public class ClientApplication extends ApplicationAdapter implements GameControl
         System.out.print("Port (0-65535): ");
         //int port = scanner.nextInt();
 
-        client = new Client("dude","localhost",1337,o->
+        client = new Client("dude", "localhost", 1337, o ->
         {
-            if(o.getString("Type").equals("Start")){
+            if (o.getString("Type").equals("Start")) {
                 List<Object> jsonArray = o.getJSONArray("OtherPlayers").toList();
                 int[] otherPlayers = new int[jsonArray.size()];
                 for (int i = 0; i < otherPlayers.length; i++) {
                     otherPlayers[i] = (int) jsonArray.get(i);
                 }
-                root.start(o.getInt("PlayerId"),otherPlayers,this,this);
-            }else {
+                root.start(o.getInt("PlayerId"), otherPlayers, this, this);
+            } else {
                 respondToJSON(o);
             }
         });
@@ -121,36 +120,35 @@ public class ClientApplication extends ApplicationAdapter implements GameControl
         root.draw();
     }
 
-     void respondToJSON(JSONObject o) {
-         String type = o.getString("Type");
+    void respondToJSON(JSONObject o) {
+        String type = o.getString("Type");
 
-         if (root != null) {
+        if (root != null) {
+            switch (type) {
+                case "AddCards":
+                    onCardsAddedToPlayer.publish(parsePlayerCards(o));
+                    break;
+                case "RemoveCards":
+                    onCardsRemovedByPlayer.publish(parsePlayerCards(o));
+                    break;
+                case "CurrentPlayerId":
+                    onNewPlayer.publish(o.getInt("PlayerId"));
+                    break;
+                case "NewTopCard":
+                    onNewTopCard.publish((iCardMaker(o.getJSONObject("Card"))));
+                    break;
+            }
+        } else {
+            if (type.equals("Start")) {
+                List<Object> jsonArray = o.getJSONArray("OtherPlayers").toList();
+                int[] otherPlayers = new int[jsonArray.size()];
+                for (int i = 0; i < otherPlayers.length; i++) {
+                    otherPlayers[i] = (int) jsonArray.get(i);
+                }
+            }
 
-             switch (type) {
-                 case "AddCards":
-                     onCardsAddedToPlayer.publish(parsePlayerCards(o));
-                     break;
-                 case "RemoveCards":
-                     onCardsRemovedByPlayer.publish(parsePlayerCards(o));
-                     break;
-                 case "CurrentPlayerId":
-                     onNewPlayer.publish(o.getInt("PlayerId"));
-                     break;
-                 case "NewTopCard":
-                     onNewTopCard.publish((iCardMaker(o.getJSONObject("Card"))));
-                     break;
-             }
-         } else {
-             if (type.equals("Start")) {
-                 List<Object> jsonArray = o.getJSONArray("OtherPlayers").toList();
-                 int[] otherPlayers = new int[jsonArray.size()];
-                 for (int i = 0; i < otherPlayers.length; i++) {
-                     otherPlayers[i] = (int) jsonArray.get(i);
-                 }
-             }
-
-         }
-     }
+        }
+    }
 
     private static PlayersCards parsePlayerCards(JSONObject o) {
         int playerID = o.getInt("PlayerId");
@@ -167,85 +165,76 @@ public class ClientApplication extends ApplicationAdapter implements GameControl
     }
 
 
-    static private ICard iCardMaker(JSONObject jsonObject){
+    static private ICard iCardMaker(JSONObject jsonObject) {
         Color c = Color.NONE;
-        switch (jsonObject.getString("color")){
-            case "BLUE":{
+        switch (jsonObject.getString("color")) {
+            case "BLUE":
                 c = Color.BLUE;
                 break;
-            }
-            case "GREEN":{
+            case "GREEN":
                 c = Color.GREEN;
                 break;
-            }
-            case "RED":{
+            case "RED":
                 c = Color.RED;
                 break;
-            }
-            case "YELLOW":{
+            case "YELLOW":
                 c = Color.YELLOW;
                 break;
-            }
-            case "NONE":{
+            case "NONE":
                 c = Color.NONE;
                 break;
-            }
         }
-        ICard icard = new NumberCard(Color.RED,2);
-        switch (jsonObject.getString("type")){
-            case "NUMBERCARD": {
-                icard = new NumberCard(c,(int)jsonObject.get("number"));
+
+        ICard icard = new NumberCard(Color.RED, 2);
+        switch (jsonObject.getString("type")) {
+            case "NUMBERCARD":
+                icard = new NumberCard(c, (int) jsonObject.get("number"));
                 break;
-            }
-            case "REVERSECARD": {
-                icard = new ActionCard(new ReverseAction(),c,CardType.REVERSECARD);
+            case "REVERSECARD":
+                icard = new ActionCard(new ReverseAction(), c, CardType.REVERSECARD);
                 break;
-            }
-            case "WILDCARD":{
-                icard = new ActionCard(new WildCardAction(),c,CardType.WILDCARD);
+            case "WILDCARD":
+                icard = new ActionCard(new WildCardAction(), c, CardType.WILDCARD);
                 break;
-            }
-            case "TAKETWO":{
-                icard = new ActionCard(new TakeTwoAction(),c,CardType.TAKETWO);
+            case "TAKETWO":
+                icard = new ActionCard(new TakeTwoAction(), c, CardType.TAKETWO);
                 break;
-            }
-            case "TAKEFOUR":{
-                icard = new ActionCard(new TakeFourAction(),c,CardType.TAKEFOUR);
+            case "TAKEFOUR":
+                icard = new ActionCard(new TakeFourAction(), c, CardType.TAKEFOUR);
                 break;
-            }
         }
         return icard;
     }
 
     @Override
     public void selectCard(int cardId) {
-        client.sendJSON(new JSONObject().put("Type","SelectCard").put("CardId",cardId));
+        client.sendJSON(new JSONObject().put("Type", "SelectCard").put("CardId", cardId));
     }
 
     @Override
     public void unSelectCard(int cardId) {
-        client.sendJSON(new JSONObject().put("Type","UnSelectCard").put("CardId",cardId));
+        client.sendJSON(new JSONObject().put("Type", "UnSelectCard").put("CardId", cardId));
     }
 
     @Override
     public void commenceForth() {
-        client.sendJSON(new JSONObject().put("Type","CommenceForth"));
+        client.sendJSON(new JSONObject().put("Type", "CommenceForth"));
     }
 
     @Override
     public void sayUno() {
-        client.sendJSON(new JSONObject().put("Type","Uno"));
+        client.sendJSON(new JSONObject().put("Type", "Uno"));
     }
 
     @Override
     public void setColor(Color color) {
-        client.sendJSON(new JSONObject().put("Type", "SetColor").put("Color",color));
+        client.sendJSON(new JSONObject().put("Type", "SetColor").put("Color", color));
     }
 
     @Override
     public void drawCard() {
         System.out.println("drawing card");
-        client.sendJSON(new JSONObject().put("Type","DrawCard"));
+        client.sendJSON(new JSONObject().put("Type", "DrawCard"));
     }
 
     @Override

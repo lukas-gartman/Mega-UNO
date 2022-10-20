@@ -1,53 +1,49 @@
 package org.megauno.app.viewcontroller;
 
-import org.megauno.app.ClientApplication;
-import org.megauno.app.model.Game.Game;
-import org.megauno.app.utility.Publisher.condition.DataCon;
-import org.megauno.app.viewcontroller.datafetching.IDrawable;
-import org.megauno.app.viewcontroller.datafetching.SpriteLoader;
-
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import org.megauno.app.ClientApplication;
+import org.megauno.app.viewcontroller.datafetching.IDrawable;
 
 class EndTurnButton implements IDrawable {
-	public float x;
-	public float y;
-	private GameController gameController;
+    public float x;
+    public float y;
+    private GameController gameController;
 
-	private Clickable clickable;
+    private Clickable clickable;
 
-	private Sprite sprite;
+    private Sprite sprite;
 
-	private boolean clicked;
+    private boolean clicked;
 
-	private Preposition prep;
+    private Preposition prep;
 
-	public EndTurnButton(float x, float y, GameController gameController, Preposition prep) {
-		sprite = ClientApplication.CommenceForth;
-		this.x = x;
-		this.y = y;
-		this.gameController = gameController;
-		this.prep = prep;
-		clickable = new Clickable(sprite.getWidth(), sprite.getHeight());
+    public EndTurnButton(float x, float y, GameController gameController, Preposition prep) {
+        sprite = ClientApplication.CommenceForth;
+        this.x = x;
+        this.y = y;
+        this.gameController = gameController;
+        this.prep = prep;
+        clickable = new Clickable(sprite.getWidth(), sprite.getHeight());
 
-		clicked = false;
+        clicked = false;
 
-	}
+    }
 
 
-	@Override
-	public void draw(float delta, Batch batch) {
-		if (clickable.wasClicked(x, y)) {
-			gameController.commenceForth();
-			clicked = !clicked;
+    @Override
+    public void draw(float delta, Batch batch) {
+        if (clickable.wasClicked(x, y)) {
+            gameController.commenceForth();
+            clicked = !clicked;
 
-		}
-		if(prep.value()){
-			sprite = ClientApplication.CommenceForth;
-		}else {
-			sprite = ClientApplication.Tomte;
-		}
+        }
+        if (prep.value()) {
+            sprite = ClientApplication.CommenceForth;
+        } else {
+            sprite = ClientApplication.Tomte;
+        }
 
-		batch.draw(sprite, x, y);
-	}
+        batch.draw(sprite, x, y);
+    }
 }

@@ -12,6 +12,7 @@ public enum Color {
     NONE(4);
 
     private final int index;
+
     Color(int index) {
         this.index = index;
     }
@@ -21,7 +22,6 @@ public enum Color {
     }
 
     /**
-     *
      * @param index the index of which a particular color maps to.
      * @return The card at the given index.
      */
