@@ -1,7 +1,6 @@
 package org.megauno.app.viewcontroller;
 
 import org.megauno.app.model.Cards.Color;
-import org.megauno.app.model.Cards.ICard;
 
 
 //When these methodes are triggered

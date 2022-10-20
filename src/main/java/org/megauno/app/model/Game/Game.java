@@ -1,25 +1,24 @@
 package org.megauno.app.model.Game;
 
-import org.lwjgl.system.CallbackI;
 import org.megauno.app.model.Cards.Color;
 import org.megauno.app.model.Cards.ICard;
-import org.megauno.app.model.Deck;
-import org.megauno.app.model.IDeck;
-import org.megauno.app.model.IPile;
-import org.megauno.app.model.Pile;
+import org.megauno.app.model.Game.Utilities.Deck;
+import org.megauno.app.model.Game.Utilities.Node;
+import org.megauno.app.model.Game.Utilities.Pile;
+import org.megauno.app.model.Game.Utilities.PlayerCircle;
 import org.megauno.app.model.Player.Player;
 import org.megauno.app.utility.Publisher.IPublisher;
-import org.megauno.app.utility.Publisher.condition.ConPublisher;
 import org.megauno.app.utility.Publisher.normal.Publisher;
 import org.megauno.app.utility.Tuple;
 import org.megauno.app.viewcontroller.GamePublishers;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- *  The endpoint of the model. Here is where all the smaller components are combined into
- *  a functional logical representation of a UNO game.
- *  The changes made in Game are published to anyone who is subscribed to Game.
+ * The endpoint of the model. Here is where all the smaller components are combined into
+ * a functional logical representation of a UNO game.
+ * The changes made in Game are published to anyone who is subscribed to Game.
  */
 public class Game implements IActOnGame, GamePublishers, IGameImputs {
     private PlayerCircle players;
@@ -54,7 +53,7 @@ public class Game implements IActOnGame, GamePublishers, IGameImputs {
     }
 
     public void addCardsToAllPlayers(int numCards) {
-        for (Player player : getPlayers()){
+        for (Player player : getPlayers()) {
             player.addCards(deck.dealHand(numCards));
         }
     }
@@ -94,10 +93,10 @@ public class Game implements IActOnGame, GamePublishers, IGameImputs {
         return result;
     }
 
-	// Current player
+    // Current player
 
 
-    public Player getCurrentPlayer(){
+    public Player getCurrentPlayer() {
         return players.getCurrent().getPlayer();
     }
 
@@ -186,8 +185,8 @@ public class Game implements IActOnGame, GamePublishers, IGameImputs {
             current.giveCardToPlayer(deck.drawCard());
             current.giveCardToPlayer(deck.drawCard());
             current.giveCardToPlayer(deck.drawCard());
-        }else if (players.IsPlayerOutOfCards(current) ) {
-            if (choices.size() > 1 || current.getPlayer().uno()){
+        } else if (players.isPlayerOutOfCards(current)) {
+            if (choices.size() > 1 || current.getPlayer().uno()) {
                 players.playerFinished(current);
             }
         }
@@ -235,7 +234,7 @@ public class Game implements IActOnGame, GamePublishers, IGameImputs {
 
     @Override
     public void setColor(Player player, Color color) {
-        if(player == getCurrentPlayer()){
+        if (player == getCurrentPlayer()) {
             wildCardColor = color;
         }
     }
@@ -255,7 +254,7 @@ public class Game implements IActOnGame, GamePublishers, IGameImputs {
         return players.getPlayers();
     }
 
-    public ICard getTopCard(){
+    public ICard getTopCard() {
         return discarded.getTop();
     }
 
@@ -319,12 +318,12 @@ public class Game implements IActOnGame, GamePublishers, IGameImputs {
 
     @Override
     public void drawCard(Player player) {
-        if(drawCount <= 2){
-            if (player == getCurrentPlayer()){
+        if (drawCount <= 2) {
+            if (player == getCurrentPlayer()) {
                 drawCount++;
                 player.addCard(deck.drawCard());
             }
-        }else {
+        } else {
             nextTurn();
         }
     }

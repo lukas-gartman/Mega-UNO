@@ -2,7 +2,6 @@ package org.megauno.app.model.Player;
 
 import org.megauno.app.model.Cards.ICard;
 import org.megauno.app.utility.Publisher.IPublisher;
-import org.megauno.app.utility.Publisher.condition.ConPublisher;
 import org.megauno.app.utility.Publisher.normal.Publisher;
 import org.megauno.app.utility.Tuple;
 
@@ -33,7 +32,7 @@ public class Player {
      * @param hand the cards the player should start with
      */
     public Player(List<ICard> hand) {
-        onCardsAddedByPlayer.publish(new Tuple<Player,List<ICard>>(this,hand));
+        onCardsAddedByPlayer.publish(new Tuple<Player, List<ICard>>(this, hand));
         this.hand = hand;
     }
 
@@ -90,7 +89,7 @@ public class Player {
         return saidUno;
     }
 
-    public int numOfCards(){
+    public int numOfCards() {
         return hand.size();
     }
 
@@ -106,7 +105,7 @@ public class Player {
     public void addCard(ICard card){
         ArrayList<ICard> l = new ArrayList<>();
         l.add(card);
-        onCardsAddedByPlayer.publish(new Tuple<Player,List<ICard>>(this,l));
+        onCardsAddedByPlayer.publish(new Tuple<Player, List<ICard>>(this, l));
         hand.add(card.copyCard());
     }
 
@@ -127,7 +126,7 @@ public class Player {
         for (ICard c : selectedCards) {
             hand.remove(c);
         }
-        onCardsRemovedByPlayer.publish(new Tuple<Player,List<ICard>>(this,selectedCards));
+        onCardsRemovedByPlayer.publish(new Tuple<Player, List<ICard>>(this, selectedCards));
     }
 
 
@@ -135,9 +134,7 @@ public class Player {
      * Simulates the player making their play
      * @return the cards which the player wants to play
      */
-    //To get the card a player wants to play
-    public List<ICard> play(){
-        //saidUno = false; don't understand why this is desired behaviour
+    public List<ICard> play() {
         List<ICard> out = copyCards(selectedCards);
 
         return out;
@@ -149,7 +146,7 @@ public class Player {
      */
     private List<ICard> copyCards(List<ICard> cards) {
         List<ICard> copy = new ArrayList<>();
-        for (ICard card: cards) {
+        for (ICard card : cards) {
             copy.add(card.copyCard());
         }
         return copy;

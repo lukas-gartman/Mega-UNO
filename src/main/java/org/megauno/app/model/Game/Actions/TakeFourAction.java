@@ -2,7 +2,7 @@ package org.megauno.app.model.Game.Actions;
 
 import org.megauno.app.model.Cards.IAction;
 import org.megauno.app.model.Game.IActOnGame;
-import org.megauno.app.model.Game.PlayerCircle;
+import org.megauno.app.model.Game.Utilities.PlayerCircle;
 
 /**
  * When this action is executed, the next player in line has to draw four cards
@@ -10,7 +10,7 @@ import org.megauno.app.model.Game.PlayerCircle;
 public class TakeFourAction implements IAction {
 
     @Override
-    public boolean execute(IActOnGame g){
+    public boolean execute(IActOnGame g) {
         PlayerCircle players = g.getPlayerCircle();
         for (int i = 0; i < 4; i++) {
             players.giveCardToPlayer(g.draw(), players.getNextPlayerNode());

@@ -10,8 +10,8 @@ public interface ClientReceivedInfo {
 
     ICard newTopCardOfPile();
 
-    Tuple<Integer,List<ICard>> playerWithIdAddedCards();
+    Tuple<Integer, List<ICard>> playerWithIdAddedCards();
 
-    Tuple<Integer,List<ICard>> playerWithIdRemovedCards();
+    Tuple<Integer, List<ICard>> playerWithIdRemovedCards();
 }
 

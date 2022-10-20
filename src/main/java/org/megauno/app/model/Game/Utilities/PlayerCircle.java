@@ -1,4 +1,4 @@
-package org.megauno.app.model.Game;
+package org.megauno.app.model.Game.Utilities;
 
 import org.megauno.app.model.Cards.ICard;
 import org.megauno.app.model.Player.Player;
@@ -30,6 +30,11 @@ public class PlayerCircle {
         winners = new ArrayList<>();
     }
 
+    /**
+     * Creates a player circle, specifies the direction of play and
+     * fills the player circle with the given players.
+     * @param players the players for which the player circle will contain.
+     */
     public PlayerCircle(List<Player> players) {
         for (Player p : players) {
             addNode(p);
@@ -140,7 +145,7 @@ public class PlayerCircle {
      * @param n the node that holds the player to be checked
      * @return true if the player have run out of cards
      */
-    boolean IsPlayerOutOfCards(Node n) {
+    public boolean isPlayerOutOfCards(Node n) {
         return n.getPlayer().numOfCards() == 0;
     }
 
@@ -149,7 +154,7 @@ public class PlayerCircle {
      *
      * @param n is the node holding the player
      */
-    void playerFinished(Node n) {
+    public void playerFinished(Node n) {
         winners.add(n.getPlayer());
         removeNode(n);
     }

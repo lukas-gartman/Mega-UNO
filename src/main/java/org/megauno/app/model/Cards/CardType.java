@@ -15,8 +15,9 @@ public enum CardType {
     TAKEFOUR("ActionCard"),
     ;
     private final String typeOf;
+
     CardType(String typeOf) {
-       this.typeOf = typeOf;
+        this.typeOf = typeOf;
     }
 
     public String getTypeOf() {
@@ -26,6 +27,7 @@ public enum CardType {
 
     /**
      * Streams the different card types.
+     *
      * @return A stream of the card types.
      */
     public static Stream<CardType> stream() {
