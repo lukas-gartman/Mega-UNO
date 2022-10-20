@@ -205,7 +205,7 @@ public class Game implements IActOnGame, GamePublishers, IGameImputs {
         int lastCardIndex = hand.size() - 1;
         return validPlayedCards(choices) &&
                 (drawCount < 1 ||
-                        (choices.size() == 1 && choices.get(0).equals(hand.get(lastCardIndex))));
+                        (choices.size() == 1 && choices.get(0) == hand.get(lastCardIndex)));
     }
 
 

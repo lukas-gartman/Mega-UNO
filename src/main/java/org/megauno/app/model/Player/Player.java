@@ -34,7 +34,13 @@ public class Player {
     // Bug, since the same card can be picked several times
     public void selectCard(ICard c) {
         // This for now, but this doesn't distinguish cards by id, so it isn't complete
-        if (hand.contains(c) && !selectedCards.contains(c)) {
+        if (hand.contains(c)) {
+            for (ICard sc :
+                 selectedCards) {
+                if (c == sc){
+                    return;
+                }
+            }
             selectedCards.add(c);
         }
     }
