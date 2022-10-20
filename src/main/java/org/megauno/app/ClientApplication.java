@@ -20,7 +20,7 @@ import org.megauno.app.network.Implementation.Client;
 import org.megauno.app.network.Implementation.IdCard;
 import org.megauno.app.network.Implementation.PlayersCards;
 import org.megauno.app.utility.Publisher.IPublisher;
-import org.megauno.app.utility.Publisher.condition.ConPublisher;
+import org.megauno.app.utility.Publisher.condition.ConditionPublisher;
 import org.megauno.app.utility.Publisher.normal.Publisher;
 import org.megauno.app.utility.dataFetching.DataFetcher;
 import org.megauno.app.utility.dataFetching.PathDataFetcher;
@@ -52,8 +52,8 @@ public class ClientApplication extends ApplicationAdapter implements GameControl
 
     private Publisher<Integer> onNewPlayer = new Publisher<>();
     private Publisher<ICard> onNewTopCard = new Publisher<>();
-    private ConPublisher<PlayersCards> onCardsAddedToPlayer = new ConPublisher<>();
-    private ConPublisher<PlayersCards> onCardsRemovedByPlayer = new ConPublisher<>();
+    private ConditionPublisher<PlayersCards> onCardsAddedToPlayer = new ConditionPublisher<>();
+    private ConditionPublisher<PlayersCards> onCardsRemovedByPlayer = new ConditionPublisher<>();
     private Client client;
     private Root root;
 
@@ -248,12 +248,12 @@ public class ClientApplication extends ApplicationAdapter implements GameControl
     }
 
     @Override
-    public ConPublisher<PlayersCards> onCardsAddedToPlayer() {
+    public ConditionPublisher<PlayersCards> onCardsAddedToPlayer() {
         return onCardsAddedToPlayer;
     }
 
     @Override
-    public ConPublisher<PlayersCards> onCardsRemovedByPlayer() {
+    public ConditionPublisher<PlayersCards> onCardsRemovedByPlayer() {
         return onCardsRemovedByPlayer;
     }
 }

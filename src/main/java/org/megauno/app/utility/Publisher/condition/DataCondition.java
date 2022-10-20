@@ -1,5 +1,5 @@
 package org.megauno.app.utility.Publisher.condition;
 
-public interface DataCon<data> {
+public interface DataCondition<data> {
     boolean isOk(data d);
 }

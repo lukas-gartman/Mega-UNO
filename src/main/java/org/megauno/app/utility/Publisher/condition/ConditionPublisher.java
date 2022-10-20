@@ -4,11 +4,11 @@ import org.megauno.app.utility.Publisher.normal.Subscriber;
 
 import java.util.HashMap;
 
-public class ConPublisher<newsPaper> implements IConPublisher<newsPaper> {
-    private HashMap<Subscriber<newsPaper>, DataCon<newsPaper>> conDict = new HashMap<Subscriber<newsPaper>, DataCon<newsPaper>>();
+public class ConditionPublisher<newsPaper> implements IConditionPublisher<newsPaper> {
+    private HashMap<Subscriber<newsPaper>, DataCondition<newsPaper>> conDict = new HashMap<Subscriber<newsPaper>, DataCondition<newsPaper>>();
 
 
-    public void addSubscriberWithCondition(Subscriber<newsPaper> sub, DataCon<newsPaper> con) {
+    public void addSubscriberWithCondition(Subscriber<newsPaper> sub, DataCondition<newsPaper> con) {
         conDict.put(sub, con);
     }
 
