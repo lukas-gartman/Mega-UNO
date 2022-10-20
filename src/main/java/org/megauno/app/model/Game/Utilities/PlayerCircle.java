@@ -30,6 +30,11 @@ public class PlayerCircle {
         winners = new ArrayList<>();
     }
 
+    /**
+     * Creates a player circle, specifies the direction of play and
+     * fills the player circle with the given players.
+     * @param players the players for which the player circle will contain.
+     */
     public PlayerCircle(List<Player> players) {
         for (Player p : players) {
             addNode(p);

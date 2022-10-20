@@ -8,16 +8,29 @@ import org.megauno.app.model.Game.IDeck;
 
 import java.util.*;
 
+/**
+ * Deck is responsible for generating the cards, which it does upon creation, either with
+ * a given distribution or a standard distribution. From this distribution of cards one
+ * can draw a card, which in practice is done in game, for when a player wants or needs
+ * to draw a card.
+ */
 public class Deck implements IDeck {
     private final CardFactory cardFactory = new CardFactory();
     private List<ICard> deck;
     private final HashMap<CardType, Integer> probabilities;
 
+    /**
+     * The constructor for deck which uses a fixed probability.
+     */
     public Deck() {
         probabilities = generateFixedProbabilities();
         deck = generateDeck();
     }
 
+    /**
+     * The constructor for deck which uses the given distribution of cards to generate a deck
+     * @param dist The distribution from which the cards are generated from.
+     */
     public Deck(HashMap dist) {
         this.probabilities = dist;
     }
@@ -26,6 +39,13 @@ public class Deck implements IDeck {
     For now, it is static probabilities, 66% for number cards and 33% for action cards
     but this method should be modified such that it can take any probability
     and generate the distribution of cards accordingly.
+     */
+
+    /**
+     * For now, it is static probabilities, 66% for number cards and 33% for action cards
+     * but this method should be modified such that it can take any probability
+     * and generate the distribution of cards accordingly.
+     * @return The fixed distribution of which cards to be created.
      */
     private HashMap<CardType, Integer> generateFixedProbabilities() {
         HashMap<CardType, Integer> probabilities = new HashMap<>();
@@ -42,6 +62,12 @@ public class Deck implements IDeck {
     for all cards (outside of bounds for the amount in the distribution)
     and equal amounts of numeric values for number card (with some difference
     since 66 % 9 != 0.
+     */
+
+    /**
+     * Generates a deck, either from a fixed distribution or a given distribution,
+     * depending on which constructor was used upon creation of the class.
+     * @return The generated deck.
      */
     private List<ICard> generateDeck() {
         ArrayList<ICard> deck = new ArrayList<>();

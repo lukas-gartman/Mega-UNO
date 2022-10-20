@@ -7,6 +7,10 @@ import org.megauno.app.model.Game.IPile;
 
 import java.util.*;
 
+/**
+ * The concrete implementation of a pile.
+ * Responsible for storing the top card and generating the first top card.
+ */
 public class Pile implements IPile {
     private final Stack<ICard> cards = new Stack<>();
     public Pile() {
@@ -14,6 +18,7 @@ public class Pile implements IPile {
         cards.push(firstCard);
     }
 
+    // Generates the first card in the pile, only used when the game is initialized.
     private ICard generateFirstCard() {
         Random rand = new Random();
         int number = rand.nextInt(1, 9);
