@@ -1,5 +1,6 @@
 package org.megauno.app.network.Implementation;
 
+import org.megauno.app.network.IClientHandler;
 import org.megauno.app.network.JSONReader;
 import org.megauno.app.network.SendInfoToClients;
 import org.megauno.app.utility.BiHashMap;
@@ -16,10 +17,10 @@ import java.util.concurrent.CountDownLatch;
  * @author Lukas Gartman
  */
 public class Lobby {
-    private volatile BiHashMap<ClientHandler, Integer> clientHandlers;
+    private volatile BiHashMap<IClientHandler, Integer> clientHandlers;
     private volatile UnoServer server;
     private CountDownLatch countDownLatch;
-    private final Publisher<Tuple<ClientHandler, Integer>> serverPublisher = new Publisher<>();
+    private final Publisher<Tuple<IClientHandler, Integer>> serverPublisher = new Publisher<>();
 
     /**
      * Creates a lobby
@@ -32,8 +33,8 @@ public class Lobby {
         host(jr);
     }
 
-    private void delivery(Tuple<ClientHandler, Integer> event) {
-        ClientHandler clientHandler = event.l;
+    private void delivery(Tuple<IClientHandler, Integer> event) {
+        IClientHandler clientHandler = event.l;
         int id = event.r;
         if (clientHandlers.getLeftKeys().contains(clientHandler))
             clientHandlers.removeLeft(clientHandler);
