@@ -26,37 +26,62 @@ public class Player {
         this.hand = new ArrayList<>();
     }
 
+
+    /**
+     * Creates a player
+     * @param hand the cards the player should start with
+     */
     public Player(List<ICard> hand) {
         onCardsAddedByPlayer.publish(new Tuple<Player, List<ICard>>(this, hand));
         this.hand = hand;
     }
 
-    // Bug, since the same card can be picked several times
-    public void selectCard(ICard c) {
-        // This for now, but this doesn't distinguish cards by id, so it isn't complete
+    /**
+     * Selects a card to be played
+     * @param c the card to be selected for play
+     */
+    public void selectCard(ICard c){
         if (hand.contains(c) && !selectedCards.contains(c)) {
             selectedCards.add(c);
         }
     }
 
-    public List<ICard> getSelectedCards() {
+    /**
+     * Returns the currently selected cards
+     * @return the currently selected cards
+     */
+    public List<ICard> getSelectedCards(){
         return copyCards(selectedCards);
     }
 
-    public void unSelectCard(ICard c) {
+    /**
+     * Unselects a card for play
+     * @param c the card to be unselected for play
+     */
+    public void unSelectCard(ICard c){
         selectedCards.remove(c);
     }
 
-    public void discardAllSelectedCards() {
+
+    /**
+     * Discard all selected cards so that none are currently for play
+     */
+    public void discardAllSelectedCards(){
         selectedCards = new ArrayList<>();
     }
 
 
-    public void sayUno() {
+    /**
+     * Signaling that the player has said uno
+     */
+    public void sayUno(){
         saidUno = true;
     }
 
-    public void unsayUno() {
+    /**
+     * Takes back that the player has said uno
+     */
+    public void unsayUno(){
         saidUno = false;
     }
 
@@ -68,24 +93,35 @@ public class Player {
         return hand.size();
     }
 
-    public List<ICard> getCards() {
+
+    public List<ICard> getCards(){
         return copyCards(hand);
     }
 
-    public void addCard(ICard card) {
+    /**
+     * Adds a card to the player
+     * @param card the card to be added to the player
+     */
+    public void addCard(ICard card){
         ArrayList<ICard> l = new ArrayList<>();
         l.add(card);
         onCardsAddedByPlayer.publish(new Tuple<Player, List<ICard>>(this, l));
         hand.add(card.copyCard());
     }
 
-
+    /**
+     * Adds cards to the player
+     * @param cards the cards to be added to the player
+     */
     public void addCards(List<ICard> cards) {
         for (ICard card : cards) {
             this.addCard(card);
         }
     }
 
+    /**
+     * Removes the selected cards from the players cards
+     */
     public void removeSelectedCardsFromHand() {
         for (ICard c : selectedCards) {
             hand.remove(c);
@@ -94,14 +130,20 @@ public class Player {
     }
 
 
-    //To get the card a player wants to play
+    /**
+     * Simulates the player making their play
+     * @return the cards which the player wants to play
+     */
     public List<ICard> play() {
-        //saidUno = false; don't understand why this is desired behaviour
         List<ICard> out = copyCards(selectedCards);
 
         return out;
     }
-
+    /**
+     * Copies cards
+     * @param cards the cards to be copied
+     * @return the copy of cards
+     */
     private List<ICard> copyCards(List<ICard> cards) {
         List<ICard> copy = new ArrayList<>();
         for (ICard card : cards) {

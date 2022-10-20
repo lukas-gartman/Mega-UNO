@@ -8,32 +8,25 @@ import org.megauno.app.ClientApplication;
 import org.megauno.app.viewcontroller.datafetching.IDrawable;
 
 public class Root {
+	private Batch batch;
+	private IDrawable drawable;
 
+	public Root() {
+		drawable = ((delta, batch) -> {
+			ClientApplication.tomte.draw(batch);
+		});
+		batch = new SpriteBatch();
+	}
 
-    private GameView gameView;
-    private ViewController vc;
-    private Batch batch;
-    private IDrawable drawable;
+	public void start(int playerID, int[] otherPlayersIds, GameController gameController, ViewPublisher viewPublisher) {
+		drawable = new GameView(playerID, otherPlayersIds, viewPublisher, gameController);
+	}
 
-    public Root() {
-        drawable = ((delta, batch) -> {
-            ClientApplication.Tomte.draw(batch);
-        }
-        );
-        batch = new SpriteBatch();
-    }
-
-    public void start(int playerID, int[] otherPlayersIds, GameController gameController, ViewPublisher viewPublisher) {
-        drawable = new GameView(playerID, otherPlayersIds, viewPublisher, gameController);
-    }
-
-    public void draw() {
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        // Draw a game view
-        batch.begin();
-        drawable.draw(Gdx.graphics.getDeltaTime(), batch);
-        batch.end();
-    }
-
-
+	public void draw() {
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		// Draw a game view
+		batch.begin();
+		drawable.draw(Gdx.graphics.getDeltaTime(), batch);
+		batch.end();
+	}
 }

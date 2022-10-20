@@ -1,49 +1,28 @@
 package org.megauno.app.viewcontroller;
 
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import org.megauno.app.ClientApplication;
-import org.megauno.app.viewcontroller.datafetching.IDrawable;
+import com.badlogic.gdx.graphics.g2d.Batch;
 
-class EndTurnButton implements IDrawable {
-    public float x;
-    public float y;
-    private GameController gameController;
+class EndTurnButton extends Button {
+	private Preposition prep;
 
-    private Clickable clickable;
+	public EndTurnButton(float x, float y, GameController gameController, Preposition prep) {
+		super(x, y, gameController, ClientApplication.commenceForth);
+		this.prep = prep;
+	}
 
-    private Sprite sprite;
+	@Override
+	public void onClicked() {
+		gameController.commenceForth();
+	}
 
-    private boolean clicked;
-
-    private Preposition prep;
-
-    public EndTurnButton(float x, float y, GameController gameController, Preposition prep) {
-        sprite = ClientApplication.CommenceForth;
-        this.x = x;
-        this.y = y;
-        this.gameController = gameController;
-        this.prep = prep;
-        clickable = new Clickable(sprite.getWidth(), sprite.getHeight());
-
-        clicked = false;
-
-    }
-
-
-    @Override
-    public void draw(float delta, Batch batch) {
-        if (clickable.wasClicked(x, y)) {
-            gameController.commenceForth();
-            clicked = !clicked;
-
-        }
-        if (prep.value()) {
-            sprite = ClientApplication.CommenceForth;
-        } else {
-            sprite = ClientApplication.Tomte;
-        }
-
-        batch.draw(sprite, x, y);
-    }
+	@Override
+	public void draw(float delta, Batch batch) {
+		if (prep.value()) {
+			sprite = ClientApplication.commenceForth;
+		} else {
+			sprite = ClientApplication.tomte;
+		}
+		super.draw(delta, batch);
+	}
 }

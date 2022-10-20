@@ -8,8 +8,8 @@ public class Clickable {
     public float width;
     public float height;
 
-    private static float TARGET_WINDOW_WIDTH = 640;
-    private static float TARGET_WINDOW_HEIGHT = 480;
+    private static final float TARGET_WINDOW_WIDTH = 640;
+    private static final float TARGET_WINDOW_HEIGHT = 480;
 
     public Clickable(float width, float height) {
         this.width = width;

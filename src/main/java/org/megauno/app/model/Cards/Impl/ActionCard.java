@@ -1,6 +1,10 @@
 package org.megauno.app.model.Cards.Impl;
 
-import org.megauno.app.model.Cards.*;
+import org.megauno.app.model.Cards.AbstractCard;
+import org.megauno.app.model.Cards.CardType;
+import org.megauno.app.model.Cards.Color;
+import org.megauno.app.model.Cards.IAction;
+import org.megauno.app.model.Cards.ICard;
 import org.megauno.app.model.Game.IActOnGame;
 
 import java.util.Objects;
