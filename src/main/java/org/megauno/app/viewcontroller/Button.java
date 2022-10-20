@@ -1,6 +1,5 @@
 package org.megauno.app.viewcontroller;
 
-import org.megauno.app.ClientApplication;
 import org.megauno.app.viewcontroller.datafetching.IDrawable;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
