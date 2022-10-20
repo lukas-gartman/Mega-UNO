@@ -4,10 +4,14 @@ import junit.framework.TestCase;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.megauno.app.model.Cards.CardFactory;
 import org.megauno.app.model.Cards.Color;
 import org.megauno.app.model.Cards.ICard;
 import org.megauno.app.model.Cards.Impl.ActionCard;
 import org.megauno.app.model.Cards.Impl.NumberCard;
+import org.megauno.app.utility.Publisher.IPublisher;
+import org.megauno.app.utility.Publisher.normal.Publisher;
+import org.megauno.app.utility.Tuple;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,6 +85,29 @@ public class PlayerTest {
     public void testUno() {
         player.sayUno();
         assert(player.uno());
+    }
+
+    @Test
+    public void testPublishers() {
+        IPublisher<Tuple<Player, List<ICard>>> expected = new Publisher<>();
+        assert(player.getOnCardsAddedByPlayer().equals(expected));
+        assert(player.getOnCardRemovedByPlayer().equals(expected));
+    }
+
+    @Test
+    public void testRemoveSelectedCardsFromHand() {
+        int handSize = player.numOfCards();
+        ICard firstCard = player.getCards().get(0);
+        player.selectCard(firstCard);
+        player.removeSelectedCardsFromHand();
+        assert(player.numOfCards() == handSize - 1);
+    }
+
+    @Test
+    public void testUnsayUno() {
+        player.sayUno();
+        player.unsayUno();
+        Assert.assertFalse(player.uno());
     }
 
 }

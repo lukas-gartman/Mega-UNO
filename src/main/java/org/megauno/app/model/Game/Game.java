@@ -240,11 +240,6 @@ public class Game implements IActOnGame, GamePublishers, IGameImputs {
     }
 
     @Override
-    public IDeck getDeck() {
-        return deck;
-    }
-
-    @Override
     public PlayerCircle getPlayerCircle() {
         return players;
     }
@@ -256,15 +251,6 @@ public class Game implements IActOnGame, GamePublishers, IGameImputs {
 
     public ICard getTopCard() {
         return discarded.getTop();
-    }
-
-    @Override
-    public void unsayUno(Player player) {
-        player.unsayUno();
-    }
-
-    private boolean hasSaidUno(Player player) {
-        return player.uno();
     }
 
     @Override
@@ -316,6 +302,9 @@ public class Game implements IActOnGame, GamePublishers, IGameImputs {
         }
     }
 
+    /**
+     * The given player tries to draw a card, which is limited to 3 cards
+     */
     @Override
     public void drawCard(Player player) {
         if (drawCount <= 2) {

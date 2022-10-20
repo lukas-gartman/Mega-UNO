@@ -25,12 +25,6 @@ public interface IActOnGame {
     Player[] getPlayers();
 
     /**
-     *
-     * @return the deck from the game.
-     */
-    IDeck getDeck();
-
-    /**
      * Draw a card from the deck in the game.
      * @return the card that is drawn.
      */
@@ -64,5 +58,4 @@ public interface IActOnGame {
      */
     void sayUno(Player player);
 
-    void unsayUno(Player player);
 }

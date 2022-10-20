@@ -1,6 +1,10 @@
 package org.megauno.app.model.Game;
 
 import junit.framework.TestCase;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.megauno.app.model.Cards.Color;
 import org.megauno.app.model.Cards.ICard;
 import org.megauno.app.model.Game.Utilities.Deck;
 import org.megauno.app.model.Game.Utilities.PlayerCircle;
@@ -13,10 +17,15 @@ import java.util.Random;
 public class GameTest extends TestCase {
 
     Deck deck = new Deck();
-    PlayerCircle players = new PlayerCircle(generatePlayers(5));
-    Game game = new Game(players);
+    PlayerCircle players;
+    Game game;
 
-
+    @Before
+    public void setUp() {
+        players = new PlayerCircle(generatePlayers(5));
+        game = new Game(players);
+        game.start(7);
+    }
 
     public List<Player> generatePlayers(int n) {
         List<Player> playerList = new ArrayList<>();
@@ -26,11 +35,32 @@ public class GameTest extends TestCase {
         return playerList;
     }
 
-    public void testUpdate() {
-        game.update();
+    @Test
+    public void testTryPlay() {
+        game.try_play();
     }
 
-    public void testReverse() {
+    @Test
+    public void testNextTurn() {
+        Player previousPlayer = game.getCurrentPlayer();
+        game.nextTurn();
+        Player currentPlayer = game.getCurrentPlayer();
+        Assert.assertNotEquals(previousPlayer, currentPlayer);
+    }
+
+    @Test
+    public void testSetColor() {
+        game.setColor(game.getCurrentPlayer(), Color.BLUE);
+        assert(game.getChosenColor() == Color.BLUE);
+    }
+
+    @Test
+    public void testCheckPlayerProgress() {
+        
+    }
+
+    public void testUpdate() {
+        game.update();
     }
 
     public void testTry_play() {
@@ -40,15 +70,6 @@ public class GameTest extends TestCase {
         currentPlayer.selectCard(currentPlayer.getCards().get(randomIndex));
         game.try_play();
     }
-
-    /*
-    public void testPlayRandomTurn() throws InterruptedException {
-        for (int i = 0; i < 40; i++) {
-            game.tryPlayTest();
-        }
-        //assert(game.tryPlayTest());
-    }
-    */
 
     public void testCanBeStackedOn() {
         //assertFalse(game.validPlayedCards());

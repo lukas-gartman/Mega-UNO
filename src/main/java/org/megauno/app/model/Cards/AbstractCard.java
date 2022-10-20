@@ -78,6 +78,10 @@ public abstract class AbstractCard implements ICard {
     @Override
     public abstract boolean activate(IActOnGame g);
 
+    /**
+     * Sets the color of the card
+     * @param c the color to be set.
+     */
     public void setColor(Color c) {
         this.color = c;
 
