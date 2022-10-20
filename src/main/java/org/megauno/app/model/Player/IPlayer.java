@@ -1,4 +1,4 @@
-package org.megauno.app.model.Game;
+package org.megauno.app.model.Player;
 
 import java.util.List;
 

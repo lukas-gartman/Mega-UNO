@@ -1,10 +1,11 @@
-package org.megauno.app.model;
+package org.megauno.app.model.Game.Utilities;
 
+import org.megauno.app.model.Cards.CardFactory;
 import org.megauno.app.model.Cards.CardType;
 import org.megauno.app.model.Cards.Color;
 import org.megauno.app.model.Cards.ICard;
+import org.megauno.app.model.Game.IDeck;
 
-import java.sql.Array;
 import java.util.*;
 
 public class Deck implements IDeck {

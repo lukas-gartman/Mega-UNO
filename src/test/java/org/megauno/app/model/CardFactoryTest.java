@@ -1,6 +1,7 @@
 package org.megauno.app.model;
 
 import junit.framework.TestCase;
+import org.megauno.app.model.Cards.CardFactory;
 import org.megauno.app.model.Cards.CardType;
 import org.megauno.app.model.Cards.Color;
 import org.megauno.app.model.Cards.ICard;

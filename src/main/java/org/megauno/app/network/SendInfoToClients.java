@@ -1,9 +1,7 @@
 package org.megauno.app.network;
 
 import org.megauno.app.model.Cards.ICard;
-import org.megauno.app.utility.Tuple;
-
-import java.util.List;
+import org.megauno.app.network.Implementation.PlayersCards;
 
 public interface SendInfoToClients {
     void currentPlayerNewId(int id);

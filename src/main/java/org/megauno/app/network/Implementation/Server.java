@@ -1,6 +1,8 @@
-package org.megauno.app.network;
+package org.megauno.app.network.Implementation;
 
 import org.json.JSONObject;
+import org.megauno.app.network.IServer;
+import org.megauno.app.network.JSONReader;
 import org.megauno.app.utility.BiHashMap;
 import org.megauno.app.utility.Publisher.normal.Publisher;
 import org.megauno.app.utility.Tuple;

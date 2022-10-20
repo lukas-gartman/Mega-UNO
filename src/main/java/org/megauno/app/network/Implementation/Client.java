@@ -1,6 +1,7 @@
-package org.megauno.app.network;
+package org.megauno.app.network.Implementation;
 
 import org.json.JSONObject;
+import org.megauno.app.network.JSONReader;
 
 import java.io.*;
 import java.net.Socket;

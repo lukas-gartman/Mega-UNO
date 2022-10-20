@@ -1,8 +1,9 @@
-package org.megauno.app.model;
+package org.megauno.app.model.Game.Utilities;
 
 import org.megauno.app.model.Cards.Color;
 import org.megauno.app.model.Cards.ICard;
 import org.megauno.app.model.Cards.Impl.NumberCard;
+import org.megauno.app.model.Game.IPile;
 
 import java.util.*;
 

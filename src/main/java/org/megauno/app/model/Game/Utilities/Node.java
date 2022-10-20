@@ -1,4 +1,4 @@
-package org.megauno.app.model.Game;
+package org.megauno.app.model.Game.Utilities;
 
 import org.megauno.app.model.Cards.ICard;
 import org.megauno.app.model.Player.Player;
@@ -19,7 +19,7 @@ public class Node {
         return player.play();
     }
 
-    void giveCardToPlayer(ICard card){
+    public void giveCardToPlayer(ICard card){
         player.addCard(card);
     }
 
