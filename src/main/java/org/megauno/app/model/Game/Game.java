@@ -53,7 +53,6 @@ public class Game implements IActOnGame, GamePublishers, IGameImputs {
         addCardsToAllPlayers(numCards);
     }
 
-
     public void addCardsToAllPlayers(int numCards) {
         for (Player player : getPlayers()){
             player.addCards(deck.dealHand(numCards));
@@ -66,10 +65,6 @@ public class Game implements IActOnGame, GamePublishers, IGameImputs {
             player.getOnCardRemovedByPlayer().addSubscriber(onCardsRemovedByPlayer::publish);
         }
     }
-
-
-
-
 
     // TODO: move method to a more general class (general class representing the model)
     // commence_forth: set by a controller (or test) to signal that the player has chosen.
@@ -264,19 +259,6 @@ public class Game implements IActOnGame, GamePublishers, IGameImputs {
         return discarded.getTop();
     }
 
-    /**
-     * Used for testing purposes, simulates a player choosing a card
-     */
-    public void simulatePlayerChoosingCard() {
-        Random rand = new Random();
-        Node current = players.getCurrent();
-        int randomIndex = rand.nextInt(current.getHandSize());
-        ICard randomCard = current.getHand().get(randomIndex);
-        current.selectCard(randomCard);
-    }
-
-
-
     @Override
     public void unsayUno(Player player) {
         player.unsayUno();
@@ -285,138 +267,6 @@ public class Game implements IActOnGame, GamePublishers, IGameImputs {
     private boolean hasSaidUno(Player player) {
         return player.uno();
     }
-
-    private <A> void prettyPrintList(List<A> list) throws InterruptedException {
-        for (int i = 0; i < list.size(); i++) {
-            Thread.sleep(300);
-            System.out.println((i + 1) + ": " + list.get(i).toString());
-        }
-    }
-
-    // Check that they input indices are valid
-    private boolean validIndices(List<ICard> hand, List<Integer> indices) {
-        indices = indices.stream().distinct().toList();
-        for (Integer index : indices) {
-            if (index < 0 || index > hand.size()) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    public boolean tryPlayTest() throws InterruptedException {
-        Scanner input = new Scanner(System.in);
-        Node current = players.getCurrent();
-        Player currentPlayer = current.getPlayer();
-        List<ICard> availableCards = currentPlayer.getCards();
-
-        System.out.println("Current player: " + currentPlayer.hashCode());
-        Thread.sleep(500);
-        System.out.println("Top card: " + discarded.getTop());
-        Thread.sleep(500);
-
-        // Display cards
-        System.out.println("Available cards to choose from: ");
-        Thread.sleep(500);
-        prettyPrintList(availableCards);
-
-        // Check that the player can actually play, otherwise make them draw cards
-        while (!canPlayerPlay(availableCards)) {
-            if (!playerDraws()) {
-                Thread.sleep(500);
-                System.out.println(">>>You have no playable cards on hand, a card is drawn<<<");
-                Thread.sleep(2000);
-                // Update the available cards such that the draw card is included
-                availableCards = currentPlayer.getCards();
-                nextTurn();
-                System.out.println("You didn't draw any playable cards, though luck.");
-                Thread.sleep(1000);
-                return !current.equals(players.getCurrent());
-            }
-            Thread.sleep(500);
-            System.out.println(">>>You have no playable cards on hand, a card is drawn<<<");
-            Thread.sleep(2000);
-            availableCards = currentPlayer.getCards();
-            System.out.println("Available cards to choose from: ");
-            Thread.sleep(500);
-            prettyPrintList(availableCards);
-        }
-
-        // Suggest saying UNO
-        System.out.println("Say UNO? -> ");
-        String maybeUno = input.nextLine();
-        // Check that uno was said
-        if (maybeUno.equals("UNO")) {
-            sayUno(currentPlayer);
-            System.out.println("Player has said UNO: " + hasSaidUno(currentPlayer));
-        }
-
-        // For player to choose cards
-        int chosenIndex = -1;
-        // Loop until valid index is chosen.
-        while (chosenIndex < 0 || chosenIndex > availableCards.size()) {
-            System.out.println("Enter the number of the card you want to choose: ");
-            chosenIndex = input.nextInt();
-        }
-        // Choose the card
-        currentPlayer.selectCard(availableCards.get(chosenIndex - 1));
-
-        //simulatePlayerChoosingCard();
-        // Play the chosen card(s)
-        boolean currentHasOnlyOneCard = currentPlayer.numOfCards() == 1;
-        // Important that this comes after the previous line, since
-        // make turn removes the cards from the hand
-        List<ICard> choices = players.currentMakeTurn();
-        System.out.println("Player choice(s): " + choices);
-
-        if (validPlayedCards(choices)) {
-            // card effects here ....
-            for (ICard choice : choices) {
-                choice.activate(this);
-            }
-            System.out.println("-------------<Successfully played>-------------");
-            Thread.sleep(700);
-            System.out.println(choices + " was played on " + discarded.getTop());
-
-            // discard played card
-            for (ICard choice : choices) {
-                discarded.discard(choice);
-            }
-
-
-            // check if the player has run out of cards
-            if (players.IsPlayerOutOfCards(current)) {
-                // if the player only had one card, and never said uno,
-                if (currentHasOnlyOneCard && !hasSaidUno(currentPlayer)) {
-                    //penalise: draw 3 cards.
-                    System.out.println("-------------<Didn't say UNO>-------------");
-                    Thread.sleep(500);
-                    System.out.println("Penalty applied, three cards added to your hand");
-                    for (int i = 0; i < 3; i++) {
-                        current.giveCardToPlayer(deck.drawCard());
-                    }
-                } else {
-                    // removes player
-                    players.playerFinished(current);
-                    System.out.println("Player " + current.getPlayer().hashCode() + " has finished");
-                    System.out.println(players.playersLeft());
-                }
-            }
-            // change currentPlayer to next in line depending on game direction and position in circle:
-            nextTurn();
-        }
-        // Player has valid cards to play, but chose not to play them
-        else {
-            System.out.println("You chose to play a card that cannot be played, too bad");
-            for (ICard choice : choices) {
-                players.giveCardToCurrentPlayer(choice);
-            }
-            nextTurn();
-        }
-        System.out.println("\n|||||||||| New round |||||||||| \n");
-        return !current.equals(players.getCurrent());
-    }
-
 
     @Override
     public Publisher<Player> onNewPlayer() {
@@ -477,17 +327,5 @@ public class Game implements IActOnGame, GamePublishers, IGameImputs {
         }else {
             nextTurn();
         }
-    }
-
-    private boolean canPlayerPlay(List<ICard> hand) {
-        for (ICard card : hand) {
-            // Create a new list for each card, since that is the required input
-            // but we want to check each card on its own
-            List<ICard> choice = new ArrayList<>();
-            choice.add(card);
-            if (validPlayedCards(choice))
-                return true;
-        }
-        return false;
     }
 }
