@@ -93,13 +93,13 @@ public class ClientApplication extends ApplicationAdapter implements GameControl
         System.out.println("");
         Scanner scanner = new Scanner(System.in);
         System.out.print("Nickname: ");
-        //String nickname = scanner.nextLine();
+        String nickname = scanner.nextLine();
         System.out.print("Host name: ");
-        //String hostName = scanner.nextLine();
+        String hostname = scanner.nextLine();
         System.out.print("Port (0-65535): ");
-        //int port = scanner.nextInt();
+        int port = scanner.nextInt();
 
-        client = new Client("dude", "localhost", 1337, o ->
+        client = new Client(nickname, hostname, port, o ->
         {
             if (o.getString("Type").equals("Start")) {
                 List<Object> jsonArray = o.getJSONArray("OtherPlayers").toList();

@@ -30,15 +30,25 @@ public class ModelApplication extends ApplicationAdapter {
     public void create() {
         CountDownLatch countDownLatch = new CountDownLatch(1); // Used to signal when the lobby is done searching for players
         try {
+            Scanner scanner = new Scanner(System.in);
+            System.out.println("Enter port number (0-65535): ");
+            int port = scanner.nextInt();
+            while (port < 0 || port > 65535) {
+                System.out.println("invalid port");
+                port = scanner.nextInt();
+            }
+
             // Create the lobby
-            lobby = new Lobby(countDownLatch, (this::readJson));
+            lobby = new Lobby(port, countDownLatch, (this::readJson));
             countDownLatch.await(); // Wait for the host to start the game (blocking call)
-            System.out.println("How many cards?");
             createGame(lobby.getIds());
             addLobbySubscriptions(game, lobby.getInfoSender(), cardsWithID, playersWithID);
+
+            System.out.println("How many cards?");
             lobby.getInfoSender().start();
-            int numcards = new Scanner(System.in).nextInt();
-            game.start(numcards);
+            int numOfCards = scanner.nextInt();
+            game.start(numOfCards);
+
             System.out.println("Starting game!");
         } catch (IllegalAccessException | InterruptedException e) {
             System.out.println("The lobby was closed");

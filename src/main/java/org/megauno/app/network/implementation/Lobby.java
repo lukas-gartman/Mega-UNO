@@ -17,6 +17,7 @@ import java.util.concurrent.CountDownLatch;
  * @author Lukas Gartman
  */
 public class Lobby {
+    private int port;
     private volatile BiHashMap<IClientHandler, Integer> clientHandlers;
     private volatile UnoServer server;
     private CountDownLatch countDownLatch;
@@ -28,7 +29,8 @@ public class Lobby {
      * @param cdl a synchronisation barrier used to signal when the lobby is finished
      * @param jr  a JSONReader for interpreting JSON
      */
-    public Lobby(CountDownLatch cdl, JSONReader jr) throws IllegalAccessException {
+    public Lobby(int port, CountDownLatch cdl, JSONReader jr) throws IllegalAccessException {
+        this.port = port;
         this.countDownLatch = cdl;
         host(jr);
     }
@@ -50,7 +52,7 @@ public class Lobby {
      * @throws IllegalAccessException when a server is already running
      */
     public void host(JSONReader jsonReader) throws IllegalAccessException {
-        server = new UnoServer(1337, serverPublisher, jsonReader); // Game host holds the server object
+        server = new UnoServer(port, serverPublisher, jsonReader); // Game host holds the server object
         serverPublisher.addSubscriber(this::delivery); // subscribe self to changes to client handlers
         new Thread(server).start(); // Start the server on a new thread to prevent blocking
         clientHandlers = server.getClientHandlers(); // initialise the map of clientHandlers
