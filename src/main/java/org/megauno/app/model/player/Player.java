@@ -41,7 +41,8 @@ public class Player {
      * @param c the card to be selected for play
      */
     public void selectCard(ICard c){
-        if (hand.contains(c) && !selectedCards.contains(c)) {
+        if (hand.contains(c)) {
+            for (ICard sc : selectedCards) if (c == sc) return;
             selectedCards.add(c);
         }
     }
