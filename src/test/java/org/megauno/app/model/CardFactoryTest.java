@@ -1,13 +1,14 @@
 package org.megauno.app.model;
 
 import junit.framework.TestCase;
-import org.megauno.app.model.Cards.CardType;
-import org.megauno.app.model.Cards.Color;
-import org.megauno.app.model.Cards.ICard;
-import org.megauno.app.model.Cards.Impl.ActionCard;
-import org.megauno.app.model.Cards.Impl.NumberCard;
-import org.megauno.app.model.Game.Actions.TakeTwoAction;
-import org.megauno.app.model.Game.Actions.WildCardAction;
+import org.megauno.app.model.cards.CardFactory;
+import org.megauno.app.model.cards.CardType;
+import org.megauno.app.model.cards.Color;
+import org.megauno.app.model.cards.ICard;
+import org.megauno.app.model.cards.implementation.ActionCard;
+import org.megauno.app.model.cards.implementation.NumberCard;
+import org.megauno.app.model.game.actions.TakeTwoAction;
+import org.megauno.app.model.game.actions.WildCardAction;
 
 public class CardFactoryTest extends TestCase {
 

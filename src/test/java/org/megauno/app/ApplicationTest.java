@@ -1,14 +1,13 @@
 package org.megauno.app;
 
 import org.junit.Test;
-
-import static org.junit.Assert.*;
+import org.megauno.app.application.ModelApplication;
 
 public class ApplicationTest {
 
     @Test
     public void testFunc() {
         System.out.println("Testing testFunc");
-        Application.testFunc();
+        ModelApplication.testFunc();
     }
 }

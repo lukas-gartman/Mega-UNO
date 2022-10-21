@@ -1,10 +1,8 @@
 package org.megauno.app.utility.dataFetching;
 
-import org.megauno.app.viewcontroller.datafetching.SpriteLoader;
-
 import java.util.List;
 
-public class PathDataFetcher<dataType> extends DataFetcher<String,dataType>{
+public class PathDataFetcher<dataType> extends DataFetcher<String, dataType> {
     private String defaultPath;
 
     public PathDataFetcher(IDataRetriever<String, dataType> dataRetriever, String defaultPath, List<String> backUp) {
@@ -12,7 +10,7 @@ public class PathDataFetcher<dataType> extends DataFetcher<String,dataType>{
         this.defaultPath = defaultPath;
     }
 
-    public PathDataFetcher(IDataRetriever<String, dataType> dataRetriever,String defaultPath) {
+    public PathDataFetcher(IDataRetriever<String, dataType> dataRetriever, String defaultPath) {
         super(dataRetriever);
         this.defaultPath = defaultPath;
     }
