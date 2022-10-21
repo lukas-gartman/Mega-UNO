@@ -93,7 +93,7 @@ public class ModelApplication extends ApplicationAdapter {
                 break;
             }
             case "DrawCard": {
-                game.drawCard(player);
+                game.playerDraws(player);
                 break;
             }
             case "SetColor": {

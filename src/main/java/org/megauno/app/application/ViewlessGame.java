@@ -30,7 +30,7 @@ public class ViewlessGame {
 
     public static void try_play() {
         Random rand = new Random();
-        Player currentPlayer = players.getCurrent().getPlayer();
+        Player currentPlayer = players.getCurrent();
         int randomIndex = rand.nextInt(currentPlayer.numOfCards());
         currentPlayer.selectCard(currentPlayer.getCards().get(randomIndex));
         game.try_play();

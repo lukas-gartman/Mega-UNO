@@ -3,7 +3,6 @@ package org.megauno.app.model.game;
 import org.megauno.app.model.cards.Color;
 import org.megauno.app.model.cards.ICard;
 import org.megauno.app.model.game.utilities.Deck;
-import org.megauno.app.model.game.utilities.Node;
 import org.megauno.app.model.game.utilities.Pile;
 import org.megauno.app.model.game.utilities.PlayerCircle;
 import org.megauno.app.model.player.Player;
@@ -97,7 +96,7 @@ public class Game implements IActOnGame, GamePublishers, IGameImputs {
 
 
     public Player getCurrentPlayer() {
-        return players.getCurrent().getPlayer();
+        return players.getCurrent();
     }
 
 
@@ -127,19 +126,17 @@ public class Game implements IActOnGame, GamePublishers, IGameImputs {
     }
 
     /**
-     * The current player tries to draw a card, which is limited to 3 cards
-     *
-     * @return true if the draw succeeded
+     * The given player tries to draw a card, which is limited to 3 cards
      */
-    public boolean playerDraws() {
-        if (drawCount > 2) {
-            nextTurn();
-            return false;
+    @Override
+    public void playerDraws(Player player) {
+        if (drawCount <= 2) {
+            if (player == getCurrentPlayer()) {
+                drawCount++;
+                player.addCard(deck.drawCard());
+            }
         } else {
-            Node current = players.getCurrent();
-            current.giveCardToPlayer(deck.drawCard());
-            drawCount++;
-            return true;
+            nextTurn();
         }
     }
 
@@ -148,9 +145,9 @@ public class Game implements IActOnGame, GamePublishers, IGameImputs {
      * attempt to play those cards and discard on pile if successful
      */
     public void try_play() {
-        Node current = players.getCurrent();
-        List<ICard> choices = players.currentMakeTurn();
-        boolean currentHasOnlyOneCard = (current.getHandSize() - choices.size()) == 1;
+        Player current = players.getCurrent();
+        List<ICard> choices = current.play();
+        boolean currentHasOnlyOneCard = (current.getCards().size() - choices.size()) == 1;
         if (!currentHasOnlyOneCard) current.unsayUno();
 
         if (validPlay(choices, current)) {
@@ -165,7 +162,7 @@ public class Game implements IActOnGame, GamePublishers, IGameImputs {
             // change currentPlayer to next in line:
             nextTurn();
 
-            current.removeSelected();
+            current.removeSelectedCardsFromHand();
             checkPlayersProgress(current, currentHasOnlyOneCard, choices);
 
         }
@@ -179,14 +176,14 @@ public class Game implements IActOnGame, GamePublishers, IGameImputs {
      * @param currentHasOnlyOneCard is true if current player has only one card
      * @param choices               is the set of cards the current player has tried to play
      */
-    private void checkPlayersProgress(Node current, boolean currentHasOnlyOneCard, List<ICard> choices) {
+    private void checkPlayersProgress(Player current, boolean currentHasOnlyOneCard, List<ICard> choices) {
         if (currentHasOnlyOneCard && !current.uno()) {
             //penalise: draw 3 cards.
-            current.giveCardToPlayer(deck.drawCard());
-            current.giveCardToPlayer(deck.drawCard());
-            current.giveCardToPlayer(deck.drawCard());
+            current.addCard(deck.drawCard());
+            current.addCard(deck.drawCard());
+            current.addCard(deck.drawCard());
         } else if (players.isPlayerOutOfCards(current)) {
-            if (choices.size() > 1 || current.getPlayer().uno()) {
+            if (choices.size() > 1 || current.uno()) {
                 players.playerFinished(current);
             }
         }
@@ -200,8 +197,8 @@ public class Game implements IActOnGame, GamePublishers, IGameImputs {
      * @param current the current player
      * @return true if playing chosen cards is a valid move
      */
-    private boolean validPlay(List<ICard> choices, Node current) {
-        List<ICard> hand = current.getHand();
+    private boolean validPlay(List<ICard> choices, Player current) {
+        List<ICard> hand = current.getCards();
         int lastCardIndex = hand.size() - 1;
         return validPlayedCards(choices) &&
                 (drawCount < 1 ||
@@ -302,18 +299,5 @@ public class Game implements IActOnGame, GamePublishers, IGameImputs {
         }
     }
 
-    /**
-     * The given player tries to draw a card, which is limited to 3 cards
-     */
-    @Override
-    public void drawCard(Player player) {
-        if (drawCount <= 2) {
-            if (player == getCurrentPlayer()) {
-                drawCount++;
-                player.addCard(deck.drawCard());
-            }
-        } else {
-            nextTurn();
-        }
-    }
+
 }

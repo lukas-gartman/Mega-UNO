@@ -9,19 +9,12 @@ import java.util.List;
 
 
 /**
- * Circular doubly linked list to keep track of players and turns
- * dependency on Node class
  */
 public class PlayerCircle {
-    private Node head = null;
-    private Node tail = null;
-    private Node currentPlayer = null;
+    public int currentIndex = 0;
     Rotation direction;
-
+    List<Player> players;
     public List<Player> winners;
-
-    private int numPlayers;
-
     private Publisher<Player> onNewPlayer = new Publisher<>();
 
     public PlayerCircle() {
@@ -36,72 +29,39 @@ public class PlayerCircle {
      * @param players the players for which the player circle will contain.
      */
     public PlayerCircle(List<Player> players) {
-        for (Player p : players) {
-            addNode(p);
-        }
+        this.players = players;
         this.direction = Rotation.CLOCKWISE;
         this.winners = new ArrayList<>();
-    }
-
-    /**
-     * Adding a new node to the circle
-     *
-     * @param p is the Player object that the new node will hold
-     */
-    public void addNode(Player p) {
-        Node newNode = new Node(p);
-        if (head == null) {
-            head = newNode;
-
-            // Set first added player as current player:
-            currentPlayer = newNode;
-
-        } else {
-            tail.nextNode = newNode;
-            newNode.previousNode = tail;
-        }
-        tail = newNode;
-
-        tail.nextNode = head;
-        head.previousNode = tail;
-        numPlayers++;
-    }
-
-
-    /**
-     * Removes a node from the circle, connecting the previous and next node to each other
-     *
-     * @param toRemove the node that needs to be removed
-     */
-    private void removeNode(Node toRemove) {
-        Node next = toRemove.nextNode;
-        Node prev = toRemove.previousNode;
-        prev.nextNode = next;
-        next.previousNode = prev;
-        numPlayers--;
     }
 
     /**
      * Changes currentPlayer to next in line depending on current rotation
      */
     public void moveOnToNextTurn() {
-        if (direction == Rotation.CLOCKWISE) currentPlayer = currentPlayer.nextNode;
-        else currentPlayer = currentPlayer.previousNode;
-        onNewPlayer.publish(currentPlayer.getPlayer());
+        if (direction == Rotation.CLOCKWISE) {
+            if (currentIndex < (players.size()-1)){
+                currentIndex++;
+            }else currentIndex = 0;
+        }
+        else {
+            if (currentIndex == 0){
+                currentIndex = players.size()-1;
+            } else currentIndex--;
+        }
+        onNewPlayer.publish(players.get(currentIndex));
     }
 
     public Player getNextPlayer() {
-        if (direction == Rotation.CLOCKWISE) return currentPlayer.nextNode.getPlayer();
-        else return currentPlayer.previousNode.getPlayer();
-    }
-
-    /**
-     * let the current player try to play a set of cards
-     *
-     * @return the set of cards the player has chosen
-     */
-    public List<ICard> currentMakeTurn() {
-        return currentPlayer.play();
+        if (direction == Rotation.CLOCKWISE){
+            if (currentIndex < (players.size()-1)){
+                return players.get(currentIndex+1);
+            }else return players.get(0);
+        }
+        else {
+            if (currentIndex == 0){
+                return players.get(players.size()-1);
+            }else return players.get(currentIndex-1);
+        }
     }
 
     /**
@@ -110,62 +70,41 @@ public class PlayerCircle {
     public void changeRotation() {
         if (direction == Rotation.CLOCKWISE) direction = Rotation.ANTICLOCKWISE;
         else direction = Rotation.CLOCKWISE;
-        onNewPlayer.publish(currentPlayer.getPlayer());
+        onNewPlayer.publish(players.get(currentIndex));
     }
 
     public int playersLeft() {
-        return numPlayers;
+        return players.size();
     }
 
-    /**
-     * give current player a card
-     *
-     * @param card is the card to give
-     */
-    public void giveCardToCurrentPlayer(ICard card) {
-        currentPlayer.giveCardToPlayer(card);
-    }
-
-    public Node getCurrent() {
-        return currentPlayer;
-    }
-
-    public Node getNextPlayerNode() {
-        if (direction == Rotation.CLOCKWISE) return currentPlayer.nextNode;
-        else return currentPlayer.previousNode;
-    }
-
-    public void giveCardToPlayer(ICard c, Node p) {
-        p.giveCardToPlayer(c);
+    public Player getCurrent(){
+        return players.get(currentIndex);
     }
 
     /**
      * checking if a player has run out of cards
      *
-     * @param n the node that holds the player to be checked
+     * @param p is the player to be checked
      * @return true if the player have run out of cards
      */
-    public boolean isPlayerOutOfCards(Node n) {
-        return n.getPlayer().numOfCards() == 0;
+    public boolean isPlayerOutOfCards(Player p) {
+         return p.getCards().size() == 0;
     }
 
     /**
      * when a player has finished the game, their node is removed and placed in the list of winners
      *
-     * @param n is the node holding the player
+     * @param p is the player that has finished the game
      */
-    public void playerFinished(Node n) {
-        winners.add(n.getPlayer());
-        removeNode(n);
+    public void playerFinished(Player p) {
+        winners.add(p);
+        players.remove(p);
     }
 
     public Player[] getPlayers() {
-        Node next = currentPlayer.nextNode;
-        Player[] out = new Player[numPlayers];
-        out[0] = currentPlayer.getPlayer();
-        for (int i = 1; i < numPlayers; i++) {
-            out[i] = (next.getPlayer());
-            next = next.nextNode;
+        Player[] out = new Player[players.size()];
+        for (int i = 0; i < players.size(); i++) {
+            out[i] = players.get(i);
         }
         return out;
     }
