@@ -3,6 +3,8 @@ package org.megauno.app;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
+import org.megauno.app.application.ClientApplication;
+import org.megauno.app.application.ModelApplication;
 
 import java.util.Scanner;
 

@@ -1,6 +1,6 @@
 package org.megauno.app.network;
 
-import org.megauno.app.model.Cards.ICard;
+import org.megauno.app.model.cards.ICard;
 import org.megauno.app.utility.Tuple;
 
 import java.util.List;

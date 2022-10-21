@@ -1,6 +1,7 @@
 package org.megauno.app;
 
 import org.junit.Test;
+import org.megauno.app.application.ModelApplication;
 
 public class ApplicationTest {
 

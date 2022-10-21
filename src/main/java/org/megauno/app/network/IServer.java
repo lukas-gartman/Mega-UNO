@@ -1,7 +1,7 @@
 package org.megauno.app.network;
 
 import org.json.JSONObject;
-import org.megauno.app.network.Implementation.ClientHandler;
+import org.megauno.app.network.implementation.ClientHandler;
 import org.megauno.app.utility.BiHashMap;
 
 /**
@@ -20,7 +20,7 @@ public interface IServer {
      *
      * @param client the client to disconnect
      */
-    void disconnectClient(ClientHandler client);
+    void disconnectClient(IClientHandler client);
 
     /**
      * Send a JSON object to all connected clients
@@ -28,4 +28,9 @@ public interface IServer {
      * @param json the object to send
      */
     void broadcast(JSONObject json);
+
+    /**
+     * Disconnect all clients and close the server socket
+     */
+    void close();
 }

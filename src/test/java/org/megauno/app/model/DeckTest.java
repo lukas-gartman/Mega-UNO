@@ -1,11 +1,11 @@
 package org.megauno.app.model;
 
 import org.junit.Test;
-import org.megauno.app.model.Cards.CardType;
-import org.megauno.app.model.Cards.ICard;
-import org.megauno.app.model.Cards.Impl.CardValidation;
-import org.megauno.app.model.Cards.Impl.NumberCard;
-import org.megauno.app.model.Game.Utilities.Deck;
+import org.megauno.app.model.cards.CardType;
+import org.megauno.app.model.cards.ICard;
+import org.megauno.app.model.cards.implementation.CardValidation;
+import org.megauno.app.model.cards.implementation.NumberCard;
+import org.megauno.app.model.game.utilities.Deck;
 
 import java.util.HashMap;
 import java.util.List;
@@ -13,10 +13,6 @@ import java.util.List;
 public class DeckTest {
 
     Deck deck = new Deck();
-
-    HashMap<CardType, Integer> dist = new HashMap<>();
-
-    Deck deckWithDist = new Deck();
 
     // throws an exception if the invariant doesn't hold
     public boolean cardInvariant(ICard card) {
@@ -35,8 +31,11 @@ public class DeckTest {
     @Test
     public void testDeckWithDistribution() {
         HashMap<CardType, Integer> dist = new HashMap<>();
-
-        Deck deckWithDist = new Deck();
+        dist.put(CardType.NUMBERCARD, 50);
+        dist.put(CardType.TAKETWO, 10);
+        dist.put(CardType.REVERSECARD, 25);
+        dist.put(CardType.WILDCARD, 15);
+        Deck deckWithDist = new Deck(dist);
     }
 
     @Test
