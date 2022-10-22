@@ -1,6 +1,7 @@
-package org.megauno.app.model;
+package org.megauno.app.model.cards;
 
 import junit.framework.TestCase;
+import org.junit.Assert;
 import org.megauno.app.model.cards.CardFactory;
 import org.megauno.app.model.cards.CardType;
 import org.megauno.app.model.cards.Color;
@@ -21,7 +22,7 @@ public class CardFactoryTest extends TestCase {
     }
 
     public void testCreatePureWildCard() {
-        ICard thisCard = new ActionCard(new WildCardAction(), Color.GREEN, CardType.WILDCARD);
+        ICard thisCard = new ActionCard(new WildCardAction(), Color.NONE, CardType.WILDCARD);
         ICard thatCard = cardFactory.createPureWildCard();
         assert(thisCard.equals(thatCard));
     }
@@ -30,5 +31,9 @@ public class CardFactoryTest extends TestCase {
         ICard thisCard = new ActionCard(new TakeTwoAction(), Color.RED, CardType.TAKETWO);
         ICard thatCard = cardFactory.createActionCard(Color.RED, CardType.TAKETWO);
         assert(thisCard.equals(thatCard));
+    }
+
+    public void testCreateWrong() {
+        Assert.assertNull(cardFactory.createActionCard(Color.RED, CardType.NUMBERCARD));
     }
 }

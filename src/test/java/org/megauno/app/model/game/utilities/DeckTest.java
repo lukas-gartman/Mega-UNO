@@ -1,4 +1,4 @@
-package org.megauno.app.model;
+package org.megauno.app.model.game.utilities;
 
 import org.junit.Test;
 import org.megauno.app.model.cards.CardType;

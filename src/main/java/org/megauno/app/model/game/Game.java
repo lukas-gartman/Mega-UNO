@@ -79,9 +79,11 @@ public class Game implements IActOnGame, GamePublishers, IGameImputs {
 
     // Basic API for ViewController, potentially tests as well
 
+    // ---- Can probably be removed
     // Each boolean represents wether or not a card is chosen by the current player
     public boolean[] choices;
 
+    // ---- Can probably be removed
     // Inner array is null if the player with the given ID/index is out of the game
     // TODO: add an ID in the Player class to be able to put null here
     public List<List<ICard>> getAllPlayerCards() {
@@ -126,6 +128,7 @@ public class Game implements IActOnGame, GamePublishers, IGameImputs {
         return true;
     }
 
+    // -------- Can probably be removed
     /**
      * The current player tries to draw a card, which is limited to 3 cards
      *
