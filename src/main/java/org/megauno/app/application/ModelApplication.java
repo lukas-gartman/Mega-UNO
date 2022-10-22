@@ -14,7 +14,7 @@ import org.megauno.app.network.implementation.Lobby;
 import org.megauno.app.network.implementation.PlayersCards;
 import org.megauno.app.utility.BiDicrectionalHashMap;
 import org.megauno.app.utility.BiHashMap;
-import org.megauno.app.utility.Rrbdhm;
+import org.megauno.app.utility.Publisher.TupleHashMap;
 import org.megauno.app.viewcontroller.GamePublishers;
 
 import java.util.ArrayList;
@@ -26,7 +26,7 @@ public class ModelApplication extends ApplicationAdapter {
     private Lobby lobby;
     private Game game;
     private int lastCardId = 0;
-    private BiDicrectionalHashMap<Integer, ICard> cardsWithID = new Rrbdhm<>();
+    private BiDicrectionalHashMap<Integer, ICard> cardsWithID = new TupleHashMap<>();
     private BiDicrectionalHashMap<Integer, Player> playersWithID = new BiHashMap<>();
 
     @Override
@@ -147,7 +147,6 @@ public class ModelApplication extends ApplicationAdapter {
 
         game.onNewPlayer().addSubscriber((player) -> infoSender.currentPlayerNewId(playersWithID.getLeft(player)));
         game.onNewTopCard().addSubscriber(infoSender::newTopCardOfPile);
-//		game.onNewTopCard().addSubscriber( (newTopCard) -> infoSender.newTopCardOfPile(newTopCard) );
     }
 
     @Override
