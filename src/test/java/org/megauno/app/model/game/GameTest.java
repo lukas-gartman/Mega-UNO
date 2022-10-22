@@ -66,10 +66,7 @@ public class GameTest {
         
     }
 
-    @Test
-    public void testUpdate() {
-        game.update();
-    }
+
 
     @Test
     public void testTry_play() {
@@ -133,7 +130,6 @@ public class GameTest {
     public void testCommenceForth() {
         System.out.println(p1);
         game.commenceForth(p1);
-        game.update();
         System.out.println(game.getCurrentPlayer());
         // Assumes that the simulated turn was not valid
         // thus no new player in turn yet

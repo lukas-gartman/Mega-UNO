@@ -66,17 +66,6 @@ public class Game implements IActOnGame, GamePublishers, IGameImputs {
         }
     }
 
-    // TODO: move method to a more general class (general class representing the model)
-    // commence_forth: set by a controller (or test) to signal that the player has chosen.
-    // tests should remember to call update
-    public boolean commenceForth = false;
-
-    public void update() {
-        if (commenceForth) {
-            try_play();
-            commenceForth = false;
-        }
-    }
 
     // Basic API for ViewController, potentially tests as well
 
@@ -294,7 +283,7 @@ public class Game implements IActOnGame, GamePublishers, IGameImputs {
     @Override
     public void commenceForth(Player player) {
         if (player == getCurrentPlayer()) {
-            commenceForth = true;
+            try_play();
         }
     }
 
