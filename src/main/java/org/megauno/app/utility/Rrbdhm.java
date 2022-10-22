@@ -14,8 +14,8 @@ public class Rrbdhm<l,r> implements BiDicrectionalHashMap<l,r>{
     }
 
     @Override
-    public void put(l left, r right) {
-        biHashMap.put(left,new EqualsReferenceWrapper<>(right));
+    public boolean put(l left, r right) {
+        return biHashMap.put(left,new EqualsReferenceWrapper<>(right));
     }
 
     @Override

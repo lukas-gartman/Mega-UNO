@@ -15,9 +15,13 @@ public class BiHashMap<l, r> implements BiDicrectionalHashMap<l,r>{
         }
     }
 
-    public void put(l left, r right) {
-        leftRight.put(left, right);
-        rightLeft.put(right, left);
+    public boolean put(l left, r right) {
+        if(!(leftRight.keySet().contains(left) || rightLeft.keySet().contains(right))){
+            leftRight.put(left, right);
+            rightLeft.put(right, left);
+            return true;
+        }
+        return false;
     }
 
     public boolean removeLeft(l left) {

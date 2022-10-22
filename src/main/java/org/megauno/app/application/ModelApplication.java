@@ -108,7 +108,9 @@ public class ModelApplication extends ApplicationAdapter {
     private void addCards(List<ICard> cards, BiDicrectionalHashMap<Integer, ICard> cardsWithID) {
         for (ICard card : cards) {
             lastCardId++;
-            cardsWithID.put(lastCardId, card);
+            if(!cardsWithID.put(lastCardId, card)){
+               throw new RuntimeException("Card could not be added!");
+            }
         }
     }
 

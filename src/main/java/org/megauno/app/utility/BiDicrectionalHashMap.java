@@ -3,7 +3,7 @@ package org.megauno.app.utility;
 import java.util.Set;
 
 public interface BiDicrectionalHashMap<l,r> {
-    void put(l left, r right);
+    boolean put(l left, r right);
 
     boolean removeLeft(l left) ;
 

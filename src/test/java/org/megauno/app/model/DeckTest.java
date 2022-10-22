@@ -82,7 +82,7 @@ public class DeckTest {
             cards.add(newCard);
         }
     }
-    
+
 
 
 }
