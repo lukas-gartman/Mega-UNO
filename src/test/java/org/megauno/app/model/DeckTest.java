@@ -82,17 +82,7 @@ public class DeckTest {
             cards.add(newCard);
         }
     }
-
-    @Test
-    public void hashTest(){
-        BiHashMap<Integer,String> h = new BiHashMap<Integer, String>();
-        String s1 = "1";
-        String s2 = "1";
-        h.put(1,s1);
-        h.put(2,s2);
-        System.out.println();
-        assert(h.getLeftKeys().size() == h.getRightKeys().size());
-    }
+    
 
 
 }
