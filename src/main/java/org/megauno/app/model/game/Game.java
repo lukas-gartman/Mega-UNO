@@ -165,6 +165,7 @@ public class Game implements IActOnGame, GamePublishers, IGameImputs {
             nextTurn();
 
             current.removeSelectedCardsFromHand();
+            current.discardAllSelectedCards();
             checkPlayersProgress(current, currentHasOnlyOneCard, choices);
             //GameStatePrint.print(this);
         }
@@ -276,7 +277,6 @@ public class Game implements IActOnGame, GamePublishers, IGameImputs {
     @Override
     public void selectCard(Player player, ICard card) {
         if (player == getCurrentPlayer()) {
-            System.out.println(player.getSelectedCards());
             player.selectCard(card);
         }
     }
