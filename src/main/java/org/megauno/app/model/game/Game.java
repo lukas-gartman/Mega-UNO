@@ -160,10 +160,10 @@ public class Game implements IActOnGame, GamePublishers, IGameImputs {
             for (ICard c : choices) {
                 discarded.discard(c);
             }
-            onNewTopCard.publish(getTopCard());
             for (ICard choice : choices) {
                 choice.activate(this);
             }
+            onNewTopCard.publish(getTopCard());
             // change currentPlayer to next in line:
             nextTurn();
 
