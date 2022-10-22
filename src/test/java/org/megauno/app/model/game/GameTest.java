@@ -65,7 +65,7 @@ public class GameTest extends TestCase {
 
     public void testTry_play() {
         Random rand = new Random();
-        Player currentPlayer = players.getCurrent().getPlayer();
+        Player currentPlayer = players.getCurrent();
         int randomIndex = rand.nextInt(currentPlayer.numOfCards());
         currentPlayer.selectCard(currentPlayer.getCards().get(randomIndex));
         game.try_play();
@@ -77,7 +77,7 @@ public class GameTest extends TestCase {
 
     // Try that wrong cards cannot be stacked on top of each other.
     private void addSelectedCards(int nCards) {
-        Player currentPlayer = game.getPlayerCircle().getCurrent().getPlayer();
+        Player currentPlayer = game.getPlayerCircle().getCurrent();
         for (ICard c : currentPlayer.getCards()) {
             currentPlayer.selectCard(c);
         }

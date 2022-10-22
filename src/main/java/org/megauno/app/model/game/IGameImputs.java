@@ -38,7 +38,7 @@ public interface IGameImputs {
      * A player should draw a card.
      * @param player the player that should draw a card.
      */
-    void drawCard(Player player);
+    void playerDraws(Player player);
 
     /**
      * When a wildcard is played a player should be able to choose the color of the wildcard.
