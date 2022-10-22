@@ -59,7 +59,9 @@ public class GameTest extends TestCase {
         
     }
 
-
+    public void testUpdate() {
+        game.update();
+    }
 
     public void testTry_play() {
         Random rand = new Random();
