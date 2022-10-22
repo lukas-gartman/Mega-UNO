@@ -13,7 +13,7 @@ public class TakeFourAction implements IAction {
     public boolean execute(IActOnGame g) {
         PlayerCircle players = g.getPlayerCircle();
         for (int i = 0; i < 4; i++) {
-            players.giveCardToPlayer(g.draw(), players.getNextPlayerNode());
+            players.getNextPlayer().addCard(g.draw());
         }
         return true;
     }

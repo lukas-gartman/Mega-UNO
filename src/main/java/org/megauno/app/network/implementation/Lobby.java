@@ -3,6 +3,7 @@ package org.megauno.app.network.implementation;
 import org.megauno.app.network.IClientHandler;
 import org.megauno.app.network.JSONReader;
 import org.megauno.app.network.SendInfoToClients;
+import org.megauno.app.utility.BiDicrectionalHashMap;
 import org.megauno.app.utility.BiHashMap;
 import org.megauno.app.utility.Publisher.normal.Publisher;
 import org.megauno.app.utility.Tuple;
@@ -18,7 +19,7 @@ import java.util.concurrent.CountDownLatch;
  */
 public class Lobby {
     private int port;
-    private volatile BiHashMap<IClientHandler, Integer> clientHandlers;
+    private volatile BiDicrectionalHashMap<IClientHandler, Integer> clientHandlers;
     private volatile UnoServer server;
     private CountDownLatch countDownLatch;
     private final Publisher<Tuple<IClientHandler, Integer>> serverPublisher = new Publisher<>();
