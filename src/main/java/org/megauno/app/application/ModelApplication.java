@@ -150,7 +150,7 @@ public class ModelApplication extends ApplicationAdapter {
 
     @Override
     public void render() {
-        game.update();
+
     }
 
     // todo: gracefully shut down application
