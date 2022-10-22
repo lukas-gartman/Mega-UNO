@@ -3,14 +3,13 @@ package org.megauno.app.utility;
 import java.util.HashMap;
 import java.util.Set;
 
-public class BiHashMap<l, r> {
+public class BiHashMap<l, r> implements BiDicrectionalHashMap<l,r>{
     HashMap<l, r> leftRight = new HashMap<>();
     HashMap<r, l> rightLeft = new HashMap<>();
 
-    public BiHashMap() {
-    }
+    public BiHashMap() {}
 
-    public BiHashMap(BiHashMap<l, r> bhm) {
+    public BiHashMap(BiDicrectionalHashMap<l, r> bhm) {
         for (l left : bhm.getLeftKeys()) {
             put(left, bhm.getRight(left));
         }
@@ -23,6 +22,7 @@ public class BiHashMap<l, r> {
 
     public boolean removeLeft(l left) {
         r right = leftRight.remove(left);
+
         if (right != null) {
             if (rightLeft.remove(right) != null) {
                 return true;

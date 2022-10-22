@@ -6,7 +6,9 @@ import org.megauno.app.model.cards.ICard;
 import org.megauno.app.model.cards.implementation.CardValidation;
 import org.megauno.app.model.cards.implementation.NumberCard;
 import org.megauno.app.model.game.utilities.Deck;
+import org.megauno.app.utility.BiHashMap;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -57,5 +59,40 @@ public class DeckTest {
         //System.out.println(hand.size());
         assert(hand.size() == 7);
     }
+
+    @Test
+    public void testDeckNoDealSameCardTwice(){
+        List<ICard> cards = new ArrayList<>();
+        for(int i = 0; i < 200; i++){
+            ICard newCard = deck.drawCard();
+            for (ICard card:cards) {
+                assert(!(card == newCard));
+            }
+            cards.add(newCard);
+        }
+    }
+    @Test
+    public void testDeckNoDealSameCardTwiceWithDrawHand(){
+        List<ICard> cards = new ArrayList<>();
+        for(int i = 0; i < 200; i++){
+            ICard newCard = deck.dealHand(1).get(0);
+            for (ICard card:cards) {
+                assert(!(card == newCard));
+            }
+            cards.add(newCard);
+        }
+    }
+
+    @Test
+    public void hashTest(){
+        BiHashMap<Integer,String> h = new BiHashMap<Integer, String>();
+        String s1 = "1";
+        String s2 = "1";
+        h.put(1,s1);
+        h.put(2,s2);
+        System.out.println();
+        assert(h.getLeftKeys().size() == h.getRightKeys().size());
+    }
+
 
 }
