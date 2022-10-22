@@ -50,6 +50,8 @@ public class Game implements IActOnGame, GamePublishers, IGameImputs {
         onNewTopCard.publish(getTopCard());
         this.deck = new Deck();
         addCardsToAllPlayers(numCards);
+        //GameStatePrint.print(this);
+        players.onNewPlayer().publish(getCurrentPlayer());
     }
 
     public void addCardsToAllPlayers(int numCards) {
@@ -167,8 +169,9 @@ public class Game implements IActOnGame, GamePublishers, IGameImputs {
 
             current.removeSelected();
             checkPlayersProgress(current, currentHasOnlyOneCard, choices);
-
+            //GameStatePrint.print(this);
         }
+
     }
 
     /**
