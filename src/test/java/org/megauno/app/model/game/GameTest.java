@@ -149,7 +149,7 @@ public class GameTest {
     @Test
     public void testDrawOneCard() {
         int before = p1.numOfCards();
-        game.drawCard(p1);
+        game.playerDraws(p1);
         int after = p1.numOfCards();
         assert(before == after - 1);
     }
@@ -159,7 +159,7 @@ public class GameTest {
         int before = p1.numOfCards();
         // The forth time a player tries to draw, it moves on to the next player.
         for (int i = 0; i < 4; i++) {
-            game.drawCard(p1);
+            game.playerDraws(p1);
         }
         int after = p1.numOfCards();
         assert(before == after - 3);
