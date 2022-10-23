@@ -44,6 +44,11 @@ public class Game implements IActOnGame, GamePublishers, IGameImputs {
         addSubscriptionToPlayers(players.getPlayers());
     }
 
+    /**
+     * starts this game
+     * @param numCards is the amount of cards to be dealt each player
+     * at the beginning
+     */
     public void start(int numCards) {
         this.discarded = new Pile();
         onNewTopCard.publish(getTopCard());
@@ -53,12 +58,20 @@ public class Game implements IActOnGame, GamePublishers, IGameImputs {
         players.onNewPlayer().publish(getCurrentPlayer());
     }
 
+    /**
+     * deals each player their beginning hand
+     * @param numCards is the amount of cards to be dealt
+     */
     public void addCardsToAllPlayers(int numCards) {
         for (Player player : getPlayers()) {
             player.addCards(deck.dealHand(numCards));
         }
     }
 
+    /**
+     * add subscribers to all players
+     * @param players is the list of players
+     */
     private void addSubscriptionToPlayers(Player[] players) {
         for (Player player : players) {
             player.getOnCardsAddedByPlayer().addSubscriber(onCardsAddedByPlayer::publish);
@@ -93,6 +106,9 @@ public class Game implements IActOnGame, GamePublishers, IGameImputs {
     }
 
 
+    /**
+     *
+     */
     @Override
     public void reverse() {
         players.changeRotation();
@@ -118,7 +134,6 @@ public class Game implements IActOnGame, GamePublishers, IGameImputs {
         return true;
     }
 
-    // -------- Can probably be removed
     /**
      * The given player tries to draw a card, which is limited to 3 cards
      */
@@ -135,8 +150,8 @@ public class Game implements IActOnGame, GamePublishers, IGameImputs {
     }
 
     /**
-     * If the player has selected which cards to play,
-     * attempt to play those cards and discard on pile if successful
+     * When the player has selected cards to play,
+     * attempt to play these cards and discard on pile if valid move
      */
     public void try_play() {
         Player current = players.getCurrent();
@@ -166,8 +181,7 @@ public class Game implements IActOnGame, GamePublishers, IGameImputs {
 
     /**
      * A check to see if the current player has only one card left and said uno,
-     * or is out of cards and qualify to leave the game to
-     *
+     * or is out of cards and qualify to leave the game
      * @param current               is the current player
      * @param currentHasOnlyOneCard is true if current player has only one card
      * @param choices               is the set of cards the current player has tried to play
@@ -188,7 +202,6 @@ public class Game implements IActOnGame, GamePublishers, IGameImputs {
     /**
      * check that the cards attempted to be played can be played given the top of the discard pile.
      * If a card has been drawn by the current player on this turn, then only this card can be played.
-     *
      * @param choices the set of cards attempted to be played
      * @param current the current player
      * @return true if playing chosen cards is a valid move
@@ -201,7 +214,6 @@ public class Game implements IActOnGame, GamePublishers, IGameImputs {
                         (choices.size() == 1 && choices.get(0) == hand.get(lastCardIndex)));
     }
 
-
     /**
      * method to hand over the turn to next player
      * resets drawCount for the next turn.
@@ -212,19 +224,29 @@ public class Game implements IActOnGame, GamePublishers, IGameImputs {
         players.moveOnToNextTurn();
     }
 
+    /**
+     * draw a card from the deck
+     * @return a card
+     */
     @Override
     public ICard draw() {
         return deck.drawCard();
     }
 
-    // Setter and getter for setting  the color of chosen wildcards
-    // during the current turn, this means there is no way of choosing
-    // different colors for different wildcards if multiple is played
+    /**
+     * get the choice of color to set a wild card to
+     * @return the chosen color
+     */
     @Override
     public Color getChosenColor() {
         return wildCardColor;
     }
 
+    /**
+     * choose the color of a wild card
+     * @param player The player that played the wildcard
+     * @param color The color the player wants to set the wildcard to.
+     */
     @Override
     public void setColor(Player player, Color color) {
         if (player == getCurrentPlayer()) {
@@ -266,6 +288,11 @@ public class Game implements IActOnGame, GamePublishers, IGameImputs {
         return onCardsRemovedByPlayer;
     }
 
+    /**
+     * Selects a given card for a given player
+     * @param player The player that wants to select.
+     * @param card The card the player wants to select.
+     */
     @Override
     public void selectCard(Player player, ICard card) {
         if (player == getCurrentPlayer()) {
@@ -273,6 +300,11 @@ public class Game implements IActOnGame, GamePublishers, IGameImputs {
         }
     }
 
+    /**
+     * Unselects a given card for a given player
+     * @param player The player that wants to unselect.
+     * @param card The card the player wants to unselect.
+     */
     @Override
     public void unSelectCard(Player player, ICard card) {
         if (player == getCurrentPlayer()) {
@@ -287,6 +319,10 @@ public class Game implements IActOnGame, GamePublishers, IGameImputs {
         }
     }
 
+    /**
+     * This method sets a players sayUno variable to true.
+     * @param player the player that wants to say uno.
+     */
     @Override
     public void sayUno(Player player) {
         if (player == getCurrentPlayer()) {
