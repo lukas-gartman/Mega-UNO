@@ -1,0 +1,109 @@
+{
+com.badlogic.gdx.graphics.g2d.BitmapFont: {
+	mega-man: {
+		file: MMRock9.fnt
+	}
+	megaman: {
+		file: megaman.fnt
+	}
+}
+com.badlogic.gdx.graphics.Color: {
+	black: {
+		r: 0.05882353
+		g: 0.05882353
+		b: 0.05882353
+		a: 1
+	}
+	disabled-colour: {
+		r: 0.7058824
+		g: 0.7058824
+		b: 0.7058824
+		a: 1
+	}
+	highlight-colour: {
+		r: 1
+		g: 0.84705883
+		b: 0.6862745
+		a: 1
+	}
+	text-colour: {
+		r: 1
+		g: 1
+		b: 1
+		a: 1
+	}
+	textfield-bg-colour: {
+		r: 0.92941177
+		g: 0.7882353
+		b: 0.62352943
+		a: 1
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.Skin$TintedDrawable: {
+	background-drawable: {
+		name: white-pixel
+		color: textfield-bg-colour
+		minHeight: 25
+	}
+	button-drawable: {
+		name: white-pixel
+		color: textfield-bg-colour
+		minHeight: 24
+	}
+	hl-button-drawable: {
+		name: white-pixel
+		color: highlight-colour
+	}
+	disabled: {
+		name: white-pixel
+		color: disabled-colour
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle: {
+	default: {
+		up: button-drawable
+		focused: hl-button-drawable
+		disabled: disabled
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
+	default: {
+		font: mega-man
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.List$ListStyle: {
+	default: {
+		font: megaman
+		fontColorSelected: highlight-colour
+		fontColorUnselected: text-colour
+		selection: background-drawable
+		background: scrollpanel-coloured
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.ScrollPane$ScrollPaneStyle: {
+	default: {
+		background: scrollpanel-coloured
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
+	default: {
+		font: megaman
+		fontColor: text-colour
+		up: button-drawable
+		over: hl-button-drawable
+		disabled: disabled
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle: {
+	default: {
+		font: megaman
+		fontColor: text-colour
+		background: background-drawable
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.TextTooltip$TextTooltipStyle: {
+	default: {
+		label: default
+	}
+}
+}
