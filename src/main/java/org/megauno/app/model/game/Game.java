@@ -49,6 +49,8 @@ public class Game implements IActOnGame, GamePublishers, IGameImputs {
         onNewTopCard.publish(getTopCard());
         this.deck = new Deck();
         addCardsToAllPlayers(numCards);
+        //GameStatePrint.print(this);
+        players.onNewPlayer().publish(getCurrentPlayer());
     }
 
     public void addCardsToAllPlayers(int numCards) {
@@ -64,23 +66,14 @@ public class Game implements IActOnGame, GamePublishers, IGameImputs {
         }
     }
 
-    // TODO: move method to a more general class (general class representing the model)
-    // commence_forth: set by a controller (or test) to signal that the player has chosen.
-    // tests should remember to call update
-    public boolean commenceForth = false;
-
-    public void update() {
-        if (commenceForth) {
-            try_play();
-            commenceForth = false;
-        }
-    }
 
     // Basic API for ViewController, potentially tests as well
 
+    // ---- Can probably be removed
     // Each boolean represents wether or not a card is chosen by the current player
     public boolean[] choices;
 
+    // ---- Can probably be removed
     // Inner array is null if the player with the given ID/index is out of the game
     // TODO: add an ID in the Player class to be able to put null here
     public List<List<ICard>> getAllPlayerCards() {
@@ -125,6 +118,7 @@ public class Game implements IActOnGame, GamePublishers, IGameImputs {
         return true;
     }
 
+    // -------- Can probably be removed
     /**
      * The given player tries to draw a card, which is limited to 3 cards
      */
@@ -155,17 +149,19 @@ public class Game implements IActOnGame, GamePublishers, IGameImputs {
             for (ICard c : choices) {
                 discarded.discard(c);
             }
-            onNewTopCard.publish(getTopCard());
             for (ICard choice : choices) {
                 choice.activate(this);
             }
+            onNewTopCard.publish(getTopCard());
             // change currentPlayer to next in line:
             nextTurn();
 
             current.removeSelectedCardsFromHand();
+            current.discardAllSelectedCards();
             checkPlayersProgress(current, currentHasOnlyOneCard, choices);
-
+            //GameStatePrint.print(this);
         }
+
     }
 
     /**
@@ -273,7 +269,6 @@ public class Game implements IActOnGame, GamePublishers, IGameImputs {
     @Override
     public void selectCard(Player player, ICard card) {
         if (player == getCurrentPlayer()) {
-            System.out.println(player.getSelectedCards());
             player.selectCard(card);
         }
     }
@@ -288,7 +283,7 @@ public class Game implements IActOnGame, GamePublishers, IGameImputs {
     @Override
     public void commenceForth(Player player) {
         if (player == getCurrentPlayer()) {
-            commenceForth = true;
+            try_play();
         }
     }
 

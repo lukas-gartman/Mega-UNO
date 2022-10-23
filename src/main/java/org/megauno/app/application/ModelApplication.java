@@ -5,13 +5,16 @@ import org.json.JSONObject;
 import org.megauno.app.model.cards.Color;
 import org.megauno.app.model.cards.ICard;
 import org.megauno.app.model.game.Game;
+
 import org.megauno.app.model.game.utilities.PlayerCircle;
 import org.megauno.app.model.player.Player;
+import org.megauno.app.network.SendInfoToClients;
 import org.megauno.app.network.implementation.IdCard;
 import org.megauno.app.network.implementation.Lobby;
 import org.megauno.app.network.implementation.PlayersCards;
-import org.megauno.app.network.SendInfoToClients;
+import org.megauno.app.utility.BiDicrectionalHashMap;
 import org.megauno.app.utility.BiHashMap;
+import org.megauno.app.utility.Publisher.TupleHashMap;
 import org.megauno.app.viewcontroller.GamePublishers;
 
 import java.util.ArrayList;
@@ -23,8 +26,8 @@ public class ModelApplication extends ApplicationAdapter {
     private Lobby lobby;
     private Game game;
     private int lastCardId = 0;
-    private BiHashMap<Integer, ICard> cardsWithID = new BiHashMap<>();
-    private BiHashMap<Integer, Player> playersWithID = new BiHashMap<>();
+    private BiDicrectionalHashMap<Integer, ICard> cardsWithID = new TupleHashMap<>();
+    private BiDicrectionalHashMap<Integer, Player> playersWithID = new BiHashMap<>();
 
     @Override
     public void create() {
@@ -102,20 +105,22 @@ public class ModelApplication extends ApplicationAdapter {
         }
     }
 
-    private void addCards(List<ICard> cards, BiHashMap<Integer, ICard> cardsWithID) {
+    private void addCards(List<ICard> cards, BiDicrectionalHashMap<Integer, ICard> cardsWithID) {
         for (ICard card : cards) {
             lastCardId++;
-            cardsWithID.put(lastCardId, card);
+            if(!cardsWithID.put(lastCardId, card)){
+               throw new RuntimeException("Card could not be added!");
+            }
         }
     }
 
-    private void removeCards(List<ICard> cards, BiHashMap<Integer, ICard> cardsWithID) {
+    private void removeCards(List<ICard> cards, BiDicrectionalHashMap<Integer, ICard> cardsWithID) {
         for (ICard card : cards) {
             cardsWithID.removeRight(card);
         }
     }
 
-    private List<IdCard> getIdCards(List<ICard> cards, BiHashMap<Integer, ICard> cardsWithID) {
+    private List<IdCard> getIdCards(List<ICard> cards, BiDicrectionalHashMap<Integer, ICard> cardsWithID) {
         List<IdCard> cardTuples = new ArrayList<>();
         for (ICard card : cards) {
             cardTuples.add(new IdCard(cardsWithID.getLeft(card), card));
@@ -124,8 +129,8 @@ public class ModelApplication extends ApplicationAdapter {
     }
 
     private void addLobbySubscriptions(GamePublishers game, SendInfoToClients infoSender,
-                                       BiHashMap<Integer, ICard> cardsWithID,
-                                       BiHashMap<Integer, Player> playersWithID) {
+                                       BiDicrectionalHashMap<Integer, ICard> cardsWithID,
+                                       BiDicrectionalHashMap<Integer, Player> playersWithID) {
 
         game.onCardsAddedToPlayer().addSubscriber((t) -> {
 
@@ -142,12 +147,11 @@ public class ModelApplication extends ApplicationAdapter {
 
         game.onNewPlayer().addSubscriber((player) -> infoSender.currentPlayerNewId(playersWithID.getLeft(player)));
         game.onNewTopCard().addSubscriber(infoSender::newTopCardOfPile);
-//		game.onNewTopCard().addSubscriber( (newTopCard) -> infoSender.newTopCardOfPile(newTopCard) );
     }
 
     @Override
     public void render() {
-        game.update();
+
     }
 
     // todo: gracefully shut down application

@@ -22,6 +22,7 @@ public class PlayerTest {
     @Before
     public void setUp() throws Exception {
         cards.add(new NumberCard(Color.GREEN,5));
+        cards.add(new NumberCard(Color.GREEN,5));
         cards.add(new NumberCard(Color.BLUE,5));
         cards.add(new NumberCard(Color.GREEN,8));
         emptyPlayer = new Player();

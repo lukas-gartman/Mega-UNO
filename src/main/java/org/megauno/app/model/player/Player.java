@@ -52,7 +52,7 @@ public class Player {
      * @return the currently selected cards
      */
     public List<ICard> getSelectedCards(){
-        return copyCards(selectedCards);
+        return (selectedCards);
     }
 
     /**
@@ -96,7 +96,7 @@ public class Player {
 
 
     public List<ICard> getCards(){
-        return copyCards(hand);
+        return hand;
     }
 
     /**
@@ -107,7 +107,7 @@ public class Player {
         ArrayList<ICard> l = new ArrayList<>();
         l.add(card);
         onCardsAddedByPlayer.publish(new Tuple<Player, List<ICard>>(this, l));
-        hand.add(card.copyCard());
+        hand.add(card);
     }
 
     /**
@@ -136,22 +136,9 @@ public class Player {
      * @return the cards which the player wants to play
      */
     public List<ICard> play() {
-        List<ICard> out = copyCards(selectedCards);
+        return selectedCards;
+    }
 
-        return out;
-    }
-    /**
-     * Copies cards
-     * @param cards the cards to be copied
-     * @return the copy of cards
-     */
-    private List<ICard> copyCards(List<ICard> cards) {
-        List<ICard> copy = new ArrayList<>();
-        for (ICard card : cards) {
-            copy.add(card.copyCard());
-        }
-        return copy;
-    }
 
     public IPublisher<Tuple<Player, List<ICard>>> getOnCardsAddedByPlayer() {
         return onCardsAddedByPlayer;
