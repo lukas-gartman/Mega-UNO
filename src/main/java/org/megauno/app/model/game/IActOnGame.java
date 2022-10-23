@@ -1,10 +1,5 @@
 package org.megauno.app.model.game;
 
-import org.megauno.app.model.cards.Color;
-import org.megauno.app.model.cards.ICard;
-import org.megauno.app.model.game.utilities.PlayerCircle;
-import org.megauno.app.model.player.Player;
-
 /**
  * This interface is used for abstracting game from components in the model that wants to interact
  * with the game in one way or another.
@@ -28,8 +23,8 @@ public interface IActOnGame {
     void nextTurn();
 
     /**
-     * assigns the topCard the chosen color
+     * assigns the topCard the chosen color, if it is a WildCard
      */
-    void assignColor();
+    void assignWildCardColor();
 
 }

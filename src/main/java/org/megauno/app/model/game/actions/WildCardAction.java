@@ -1,8 +1,6 @@
 package org.megauno.app.model.game.actions;
 
-import org.megauno.app.model.cards.Color;
 import org.megauno.app.model.cards.IAction;
-import org.megauno.app.model.cards.ICard;
 import org.megauno.app.model.game.IActOnGame;
 
 /**
@@ -13,7 +11,7 @@ public class WildCardAction implements IAction {
 
     @Override
     public boolean execute(IActOnGame g) {
-        g.assignColor();
+        g.assignWildCardColor();
         return true;
     }
 }

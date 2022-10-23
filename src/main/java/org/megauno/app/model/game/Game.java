@@ -238,7 +238,7 @@ public class Game implements IActOnGame, GamePublishers, IGameImputs {
      * assigns the topCard the chosen color
      */
     @Override
-    public void assignColor() {
+    public void assignWildCardColor() {
         ICard top = discarded.getTop();
         if(top.getType().equals(CardType.WILDCARD)) top.setColor(getChosenColor());
     }
