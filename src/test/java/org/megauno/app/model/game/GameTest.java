@@ -63,7 +63,17 @@ public class GameTest {
 
     @Test
     public void testCheckPlayerProgress() {
-        
+
+    }
+
+    @Test
+    public void testNextDraws(){
+        Player next = players.getNextPlayer();
+        List<ICard> nextHand = new ArrayList<>();
+        for (ICard c : next.getCards()) nextHand.add(c);
+        game.nextDraw();
+        List<ICard> nextHandAfterDraw = next.getCards();
+        assert(!nextHandAfterDraw.equals(nextHand));
     }
 
 

@@ -1,5 +1,6 @@
 package org.megauno.app.model.game;
 
+import org.megauno.app.model.cards.CardType;
 import org.megauno.app.model.cards.Color;
 import org.megauno.app.model.cards.ICard;
 import org.megauno.app.model.game.utilities.Deck;
@@ -225,21 +226,25 @@ public class Game implements IActOnGame, GamePublishers, IGameImputs {
     }
 
     /**
-     * draw a card from the deck
-     * @return a card
-     */
-    @Override
-    public ICard draw() {
-        return deck.drawCard();
-    }
-
-    /**
      * get the choice of color to set a wild card to
      * @return the chosen color
      */
-    @Override
     public Color getChosenColor() {
         return wildCardColor;
+    }
+
+
+    /**
+     * assigns the topCard the chosen color
+     */
+    @Override
+    public void assignColor() {
+        ICard top = discarded.getTop();
+        if(top.getType().equals(CardType.WILDCARD)) top.setColor(getChosenColor());
+    }
+
+    public void nextDraw(){
+        players.getNextPlayer().addCard(deck.drawCard());
     }
 
     /**
@@ -254,12 +259,10 @@ public class Game implements IActOnGame, GamePublishers, IGameImputs {
         }
     }
 
-    @Override
     public PlayerCircle getPlayerCircle() {
         return players;
     }
 
-    @Override
     public Player[] getPlayers() {
         return players.getPlayers();
     }
