@@ -212,21 +212,6 @@ public class GameTest {
     }
 
     @Test
-    public void testPublishers() {
-        ISubscribable<Player> onNewPlayer = new Publisher<>();
-        assert(game.onNewPlayer().equals(onNewPlayer));
-
-        ISubscribable<ICard> onNewTopCard = new Publisher<>();
-        assert(game.onNewTopCard().equals(onNewTopCard));
-
-        ISubscribable<Tuple<Player, List<ICard>>> onCardsAddedToP = new Publisher<>();
-        assert(game.onCardsAddedToPlayer().equals(onCardsAddedToP));
-
-        ISubscribable<Tuple<Player, List<ICard>>> onCardsRemovedByP = new Publisher<>();
-        assert(game.onCardsRemovedByPlayer().equals(onCardsRemovedByP));
-    }
-
-    @Test
     public void testSelectCard() {
         ICard card = p1.getCards().get(0);
         game.selectCard(p1, card);

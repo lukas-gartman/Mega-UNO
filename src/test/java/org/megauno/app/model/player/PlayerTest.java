@@ -86,13 +86,6 @@ public class PlayerTest {
     }
 
     @Test
-    public void testPublishers() {
-        ISubscribable<Tuple<Player, List<ICard>>> expected = new Publisher<>();
-        assert(player.getOnCardsAddedByPlayer().equals(expected));
-        assert(player.getOnCardRemovedByPlayer().equals(expected));
-    }
-
-    @Test
     public void testRemoveSelectedCardsFromHand() {
         int handSize = player.numOfCards();
         ICard firstCard = player.getCards().get(0);
@@ -107,5 +100,4 @@ public class PlayerTest {
         player.unsayUno();
         Assert.assertFalse(player.uno());
     }
-
 }
