@@ -3,7 +3,7 @@ package org.megauno.app.viewcontroller.players.otherplayers;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import org.megauno.app.application.ClientApplication;
+import org.megauno.app.application.ClientScreen;
 import org.megauno.app.viewcontroller.ViewPublisher;
 import org.megauno.app.viewcontroller.IDrawable;
 
@@ -16,17 +16,19 @@ import java.util.List;
  */
 public class OtherPlayer implements IDrawable {
 
-    static BitmapFont font = ClientApplication.minecraftFont;
+    static BitmapFont font = ClientScreen.minecraftFont;
 
-    static Sprite cardBack = ClientApplication.backSideOfCard;
+    static Sprite cardBack = ClientScreen.backSideOfCard;
     private int playerID;
+    private String nickname;
     private List<Sprite> cards = new ArrayList<>();
 
     public float x;
     public float y;
 
-    public OtherPlayer(int playerID, ViewPublisher publishers) {
+    public OtherPlayer(int playerID, String nickname, ViewPublisher publishers) {
         this.playerID = playerID;
+        this.nickname = nickname;
         publishers.onCardsAddedToPlayer().addSubscriberWithCondition(
                 (np) -> addCards(np.getCards().size()),
                 (np) -> np.getId() == playerID
@@ -62,6 +64,6 @@ public class OtherPlayer implements IDrawable {
             card.draw(batch);
         }
         // Draw text as well
-        font.draw(batch, "P" + playerID + ": " + Integer.toString(cards.size()), x, y);
+        font.draw(batch, nickname + ": " + cards.size(), x, y);
     }
 }

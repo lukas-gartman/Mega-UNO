@@ -36,4 +36,6 @@ public interface GameController {
 	 * Makes player draw a card from the draw pile.
 	 */
     void drawCard();
+
+    void sendNickname(String nickname);
 }

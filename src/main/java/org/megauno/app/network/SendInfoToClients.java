@@ -3,6 +3,8 @@ package org.megauno.app.network;
 import org.megauno.app.model.cards.ICard;
 import org.megauno.app.network.implementation.PlayersCards;
 
+import java.util.HashMap;
+
 public interface SendInfoToClients {
     void currentPlayerNewId(int id);
 
@@ -12,7 +14,5 @@ public interface SendInfoToClients {
 
     void playerWithIdRemovedCards(PlayersCards pc);
 
-    void start();
-
-
+    void start(HashMap<Integer, String> playersIdWithNickname);
 }

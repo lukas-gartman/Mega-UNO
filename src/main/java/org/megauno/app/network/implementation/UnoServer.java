@@ -8,11 +8,12 @@ import org.megauno.app.network.SendInfoToClients;
 import org.megauno.app.utility.Publisher.normal.Publisher;
 import org.megauno.app.utility.Tuple;
 
+import java.net.ConnectException;
+import java.util.HashMap;
 import java.util.Set;
 
 public class UnoServer extends Server implements SendInfoToClients {
-
-    public UnoServer(int port, Publisher<Tuple<IClientHandler, Integer>> publisher, JSONReader jsonReader) throws IllegalAccessException {
+    public UnoServer(int port, Publisher<Tuple<IClientHandler, Integer>> publisher, JSONReader jsonReader) throws ConnectException {
         super(port, publisher, jsonReader);
     }
 
@@ -47,21 +48,19 @@ public class UnoServer extends Server implements SendInfoToClients {
 
 
     @Override
-    public void start() {
+    public void start(HashMap<Integer, String> playersIdWithNickname) {
         Set<Integer> ids = getClientHandlers().getRightKeys();
-        for (Integer id : ids) {
-            int[] otherplayers = new int[ids.size() - 1];
-            int i = 0;
+        for (int id : ids) {
+            HashMap<Integer, String> otherPlayers = new HashMap<>();
             for (int innerId : ids) {
                 if (id != innerId) {
-                    otherplayers[i] = innerId;
-                    i++;
+                    otherPlayers.put(innerId, playersIdWithNickname.get(innerId));
                 }
             }
             JSONObject json = new JSONObject();
             json.put("Type", "Start");
             json.put("PlayerId", id);
-            json.put("OtherPlayers", otherplayers);
+            json.put("OtherPlayers", new JSONObject(otherPlayers));
             getClientHandlers().getLeft(id).send(json);
         }
     }

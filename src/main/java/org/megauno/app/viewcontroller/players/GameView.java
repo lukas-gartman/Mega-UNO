@@ -1,7 +1,7 @@
 package org.megauno.app.viewcontroller.players;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
-import org.megauno.app.application.ClientApplication;
+import org.megauno.app.application.ClientScreen;
 import org.megauno.app.model.cards.CardType;
 import org.megauno.app.model.cards.Color;
 import org.megauno.app.model.cards.ICard;
@@ -17,6 +17,7 @@ import org.megauno.app.viewcontroller.players.thisPlayer.Card;
 import org.megauno.app.viewcontroller.players.thisPlayer.ThisPlayer;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -37,7 +38,7 @@ public class GameView implements IDrawable {
     private DrawPile drawPile;
     private int currentPlayerId;
 
-    public GameView(int playerID, int[] otherPlayersIds, ViewPublisher publishers, GameController gameController) {
+    public GameView(int playerID, HashMap<Integer, String> otherPlayersIdsWithNicknames, ViewPublisher publishers, GameController gameController) {
         // Add this view's player
         this.playerID = playerID;
         this.gameController = gameController;
@@ -46,8 +47,9 @@ public class GameView implements IDrawable {
 
         // Add all other players
         int offset = 0;
-        for (int i : otherPlayersIds) {
-            OtherPlayer otherPlayer = new OtherPlayer(i, publishers);
+        for (int id : otherPlayersIdsWithNicknames.keySet()) {
+            String nickname = otherPlayersIdsWithNicknames.get(id);
+            OtherPlayer otherPlayer = new OtherPlayer(id, nickname, publishers);
             otherPlayer.y = 400;
             otherPlayer.x = offset * 200;
             otherPlayers.add(otherPlayer);
@@ -81,7 +83,7 @@ public class GameView implements IDrawable {
     @Override
     public void draw(float delta, Batch batch) {
         // Draw background
-        batch.draw(ClientApplication.background, 0, 0, 650, 500);
+        batch.draw(ClientScreen.background, 0, 0, 650, 500);
 
         thisPlayer.draw(delta, batch);
 
@@ -91,13 +93,8 @@ public class GameView implements IDrawable {
             op.draw(delta, batch);
         }
 
-        // Draw end turn button
         endTurnButton.draw(delta, batch);
-        // Draw say uno button
         sayUnoButton.draw(delta, batch);
-        // Draw draw pile
         drawPile.draw(delta, batch);
     }
-
-
 }

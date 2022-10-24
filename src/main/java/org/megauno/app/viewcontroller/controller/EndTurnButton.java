@@ -1,6 +1,6 @@
 package org.megauno.app.viewcontroller.controller;
 
-import org.megauno.app.application.ClientApplication;
+import org.megauno.app.application.ClientScreen;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import org.megauno.app.viewcontroller.Preposition;
 
@@ -13,7 +13,7 @@ public class EndTurnButton extends Button {
 	private Preposition prep;
 
 	public EndTurnButton(float x, float y, GameController gameController, Preposition prep) {
-		super(x, y, gameController, ClientApplication.commenceForth);
+		super(x, y, gameController, ClientScreen.commenceForth);
 		this.prep = prep;
 	}
 
@@ -25,9 +25,9 @@ public class EndTurnButton extends Button {
 	@Override
 	public void draw(float delta, Batch batch) {
 		if (prep.value()) {
-			sprite = ClientApplication.commenceForth;
+			sprite = ClientScreen.commenceForth;
 		} else {
-			sprite = ClientApplication.tomte;
+			sprite = ClientScreen.tomte;
 		}
 		super.draw(delta, batch);
 	}

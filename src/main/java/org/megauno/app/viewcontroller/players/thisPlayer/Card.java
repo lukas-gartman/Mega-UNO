@@ -3,13 +3,13 @@ package org.megauno.app.viewcontroller.players.thisPlayer;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import org.megauno.app.application.ClientApplication;
+import org.megauno.app.application.ClientScreen;
 import org.megauno.app.model.cards.CardType;
 import org.megauno.app.model.cards.Color;
 import org.megauno.app.model.cards.ICard;
+import org.megauno.app.viewcontroller.IDrawable;
 import org.megauno.app.viewcontroller.controller.Clickable;
 import org.megauno.app.viewcontroller.controller.GameController;
-import org.megauno.app.viewcontroller.IDrawable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,27 +21,27 @@ import java.util.List;
 public class Card implements IDrawable {
 
 
-    static Sprite red = ClientApplication.redCard;
-    static Sprite blue = ClientApplication.blueCard;
-    static Sprite yellow = ClientApplication.yellowCard;
-    static Sprite green = ClientApplication.greenCard;
-    static Sprite nonColored = ClientApplication.whiteCard;
-    static BitmapFont fnt = ClientApplication.minecraftFont;
-    static Sprite wildCard = ClientApplication.wildCard;
-    static Sprite reverse = ClientApplication.reverse;
-    static Sprite takeTwo = ClientApplication.take2;
-    static Sprite takeFour = ClientApplication.take4;
+    private static final Sprite red = ClientScreen.redCard;
+    private static final Sprite blue = ClientScreen.blueCard;
+    private static final Sprite yellow = ClientScreen.yellowCard;
+    private static final Sprite green = ClientScreen.greenCard;
+    private static final Sprite nonColored = ClientScreen.whiteCard;
+    private static final BitmapFont fnt = ClientScreen.minecraftFont;
+    private static final Sprite wildCard = ClientScreen.wildCard;
+    private static final Sprite reverse = ClientScreen.reverse;
+    private static final Sprite takeTwo = ClientScreen.take2;
+    private static final Sprite takeFour = ClientScreen.take4;
 
 
     public float x;
     public float y;
     public boolean selected = false;
 
-    private Sprite sprite;
-    private ICard card;
-    private Clickable clickable;
-    private GameController gameController;
-    private int cardId;
+    private final Sprite sprite;
+    private final ICard card;
+    private final Clickable clickable;
+    private final GameController gameController;
+    private final int cardId;
     // Null means there are no color options, otherwise it is a filled array
     private List<ColorOption> colorOptions = null;
 
@@ -51,9 +51,6 @@ public class Card implements IDrawable {
         this.card = card;
         this.sprite = chooseSprite(card.getColor());
         this.clickable = new Clickable(sprite.getWidth(), sprite.getHeight());
-        // setBounds(sprite.getX(), sprite.getY(), sprite.getWidth(),
-        // sprite.getHeight());
-        // setTouchable(Touchable.enabled);
     }
 
 	/**
@@ -84,8 +81,6 @@ public class Card implements IDrawable {
     public void draw(float delta, Batch batch) {
         // Check if clicked
         if (clickable.wasClicked(x, y)) {
-
-            System.out.println("Clicked card with ID: " + Integer.toString(cardId));
             // If wildcard: show color-selector
             if (card.getType() == CardType.WILDCARD) {
                 if (colorOptions == null)
@@ -94,7 +89,6 @@ public class Card implements IDrawable {
                     hideColorOptions();
             }
             // Flip card selection in model and visually
-            // game.choices[cardID] = !game.choices[cardID];
             else {
                 selected = !selected;
                 if (selected) {
@@ -112,7 +106,6 @@ public class Card implements IDrawable {
                 }
             }
         }
-
 
         // Draw card, with a tint if unselected
         if (!selected) {
@@ -147,9 +140,8 @@ public class Card implements IDrawable {
         }
     }
 
-    // What happens when a color for a wildcard is slected
+    // What happens when a color for a wildcard is selected
     private void onColorSelected(Color color) {
-        //TODO: select color in Game
         gameController.setColor(color);
         gameController.selectCard(cardId);
         hideColorOptions();
@@ -173,14 +165,10 @@ public class Card implements IDrawable {
     private Sprite getTypeInString() {
         Sprite special = null;
         switch (card.getType()) {
-            case WILDCARD ->
-                special = wildCard;
-            case REVERSECARD ->
-                special = reverse;
-            case TAKETWO ->
-                special = takeTwo;
-            case TAKEFOUR ->
-                special = takeFour;
+            case WILDCARD -> special = wildCard;
+            case REVERSECARD -> special = reverse;
+            case TAKETWO -> special = takeTwo;
+            case TAKEFOUR -> special = takeFour;
         }
         return special;
     }
@@ -194,10 +182,10 @@ public class Card implements IDrawable {
         public boolean wasSelected = false;
         public Color color;
 
-        private float x;
-        private float y;
-        private Clickable clickable;
-        private Sprite sprite;
+        private final float x;
+        private final float y;
+        private final Clickable clickable;
+        private final Sprite sprite;
 
         public ColorOption(Color color, float x, float y) {
             this.color = color;

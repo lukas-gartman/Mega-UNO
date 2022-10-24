@@ -4,6 +4,7 @@ import org.json.JSONObject;
 import org.megauno.app.network.JSONReader;
 
 import java.io.*;
+import java.net.ConnectException;
 import java.net.Socket;
 
 /**
@@ -23,13 +24,11 @@ public class Client {
     /**
      * Set up client connection and listen to incoming messages from the server
      *
-     * @param nickname   the nickname of the client
      * @param hostname   the hostname to connect to
      * @param port       the port to connect to
      * @param jsonReader an interface used for reading JSON
      */
-    public Client(String nickname, String hostname, int port, JSONReader jsonReader) {
-        this.nickname = nickname;
+    public Client(String hostname, int port, JSONReader jsonReader) throws ConnectException {
         this.hostname = hostname;
         this.port = port;
         this.jsonReader = jsonReader;
@@ -37,15 +36,23 @@ public class Client {
             listen();
     }
 
-    private boolean connect() {
+    private boolean connect() throws ConnectException {
         try {
             this.server = new Socket(hostname, port); // Connect to the server
             this.bw = new BufferedWriter(new OutputStreamWriter(server.getOutputStream())); // Used for sending messages
             this.br = new BufferedReader(new InputStreamReader(server.getInputStream()));   // Used for reading messages
             return true;
         } catch (IOException e) {
-            System.out.println("Unable to connect to server @ " + hostname + ":" + port);
-            return false;
+            throw new ConnectException("Unable to connect to server @ " + hostname + ":" + port);
+//            return false;
+        }
+    }
+
+    public void disconnect() {
+        try {
+            this.server.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
