@@ -3,7 +3,9 @@ package org.megauno.app.viewcontroller.controller;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 
-// Bounding box, used to know if it was clicked or not
+/**
+ * Bounding box, used to know if it was clicked or not.
+ */
 public class Clickable {
     public float width;
     public float height;
@@ -16,6 +18,11 @@ public class Clickable {
         this.height = height;
     }
 
+	/**
+	 * @param x x in pixel coordinates.
+	 * @param y y in pixel coordinates.
+	 * @return whether the button was clicked or not.
+	 */
     public boolean wasClicked(float x, float y) {
         if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
             // Note that the input coordinate system is flipped in the y axis

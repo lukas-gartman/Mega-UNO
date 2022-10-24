@@ -186,7 +186,10 @@ public class Card implements IDrawable {
         return special;
     }
 
-    // Visual class for representing a color picked when playing a wildcard
+    /**
+	 * Visual class for representing a color picked when playing a wildcard.
+	 * Used by client by reading {@link ColorOption#wasSelected}.
+	 */
     class ColorOption implements IDrawable {
         // Used by parent card, could use an event here
         public boolean wasSelected = false;
