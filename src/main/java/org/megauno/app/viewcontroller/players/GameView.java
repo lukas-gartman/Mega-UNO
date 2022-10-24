@@ -22,6 +22,8 @@ import java.util.List;
 /**
  * Represents the game-view of a player, that is, everything the player
  * with {@link GameView#currentPlayerId} sees on the screen.
+ * This class is composed of the different elements on the screen, such
+ * as ThisPlayer, DrawPile etc.
  */
 public class GameView implements IDrawable {
     private int playerID;
@@ -68,10 +70,6 @@ public class GameView implements IDrawable {
                     currentPlayerId = np;
                 }
         );
-    }
-
-    public int getPlayerID() {
-        return playerID;
     }
 
     private void updateTopCard(ICard newTop) {

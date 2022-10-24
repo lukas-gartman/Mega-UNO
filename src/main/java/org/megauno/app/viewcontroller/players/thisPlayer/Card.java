@@ -56,6 +56,9 @@ public class Card implements IDrawable {
         // setTouchable(Touchable.enabled);
     }
 
+	/**
+	 * Returns the card ID of the diplayed card.
+	 */
     public int getCardId() {
         return cardId;
     }
@@ -75,10 +78,6 @@ public class Card implements IDrawable {
             default:
                 return nonColored;
         }
-    }
-
-    public ICard getCard() {
-        return card.copyCard();
     }
 
     @Override
@@ -190,7 +189,7 @@ public class Card implements IDrawable {
 	 * Visual class for representing a color picked when playing a wildcard.
 	 * Used by client by reading {@link ColorOption#wasSelected}.
 	 */
-    class ColorOption implements IDrawable {
+    private class ColorOption implements IDrawable {
         // Used by parent card, could use an event here
         public boolean wasSelected = false;
         public Color color;
@@ -208,6 +207,7 @@ public class Card implements IDrawable {
             this.clickable = new Clickable(sprite.getWidth(), sprite.getHeight());
         }
 
+		@Override
         public void draw(float delta, Batch batch) {
             // Check if clicked
             if (clickable.wasClicked(x, y)) {
