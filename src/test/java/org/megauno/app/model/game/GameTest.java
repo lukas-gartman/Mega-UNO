@@ -87,7 +87,7 @@ public class GameTest {
         p1.addCard(c);
         p1.selectCard(c);
         game.setColor(p1, Color.BLUE);
-        game.try_play();
+        game.commenceForth(p1);
         assert(game.getTopCard().getColor()==Color.BLUE && c.getColor() == Color.BLUE);
     }
 
