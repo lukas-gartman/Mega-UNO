@@ -39,7 +39,7 @@ public class OtherPlayer implements IDrawable {
     }
 
     // Adds cards to the player
-    public void addCards(int newCards) {
+    private void addCards(int newCards) {
         for (int i = 0; i < newCards; i++) {
             Sprite card = cardBack;
             cards.add(card);
@@ -47,7 +47,7 @@ public class OtherPlayer implements IDrawable {
     }
 
     // Removes cards from the player
-    public void removeCards(int removedCards) {
+    private void removeCards(int removedCards) {
         for (int i = 0; i < removedCards; i++) {
             cards.remove(cards.size() - 1);
         }
