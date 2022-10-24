@@ -6,10 +6,7 @@ import org.megauno.app.model.cards.Color;
 import org.megauno.app.model.cards.ICard;
 import org.megauno.app.model.game.IDeck;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 /**
  * Deck is responsible for generating the cards, which it does upon creation, either with
@@ -20,7 +17,7 @@ import java.util.Random;
 public class Deck implements IDeck {
     private final CardFactory cardFactory = new CardFactory();
     private List<ICard> deck;
-    private final HashMap<CardType, Integer> probabilities;
+    private final Map<CardType, Integer> probabilities;
 
     /**
      * The constructor for deck which uses a fixed probability.
@@ -34,7 +31,7 @@ public class Deck implements IDeck {
      * The constructor for deck which uses the given distribution of cards to generate a deck
      * @param dist The distribution from which the cards are generated from.
      */
-    public Deck(HashMap dist) {
+    public Deck(Map<CardType, Integer> dist) {
         this.probabilities = dist;
     }
 
@@ -46,7 +43,7 @@ public class Deck implements IDeck {
      * This could be changed to the UNO default if desired.
      * @return The fixed distribution of which cards to be created.
      */
-    private HashMap<CardType, Integer> generateFixedProbabilities() {
+    private Map<CardType, Integer> generateFixedProbabilities() {
         HashMap<CardType, Integer> probabilities = new HashMap<>();
         //int distibution = (int) (CardType.stream().count() - 1);
         CardType.stream().forEach(c -> {
@@ -79,11 +76,6 @@ public class Deck implements IDeck {
                 }
             }
         }
-        return deck;
-    }
-
-    // For testing
-    public List<ICard> getDeck() {
         return deck;
     }
 

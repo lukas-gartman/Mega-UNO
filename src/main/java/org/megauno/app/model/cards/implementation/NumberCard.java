@@ -61,8 +61,8 @@ public class NumberCard extends AbstractCard {
     }
 
     @Override
-    public boolean canBePlayed(ICard c) {
-        return c.canBePlayedOnMe(this);
+    public boolean canBePlayed(ICard card) {
+        return card.canBePlayedOnMe(this);
     }
 
     @Override
@@ -86,7 +86,7 @@ public class NumberCard extends AbstractCard {
     }
 
     @Override
-    public boolean activate(IActOnGame g) {
+    public boolean activate(IActOnGame game) {
         return true;
     }
 

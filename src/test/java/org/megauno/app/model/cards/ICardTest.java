@@ -16,16 +16,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ICardTest {
-    ICard nc = new NumberCard(Color.BLUE, 3);
-    ICard nc2 = new NumberCard(Color.BLUE, 3);
-    ICard nc3 = new NumberCard(Color.RED, 9);
-    ICard nc4 = new NumberCard(Color.GREEN, 3);
-    ICard ac1 = new ActionCard(new ReverseAction(), Color.BLUE, CardType.REVERSECARD);
-    ICard ac2 = new ActionCard(new ReverseAction(), Color.BLUE, CardType.REVERSECARD);
-    ICard ac3 = new ActionCard(new TakeFourAction(), Color.RED, CardType.TAKETWO);
-    ICard ac4 = new ActionCard(new TakeTwoAction(), Color.RED, CardType.TAKETWO);
+    public ICard nc = new NumberCard(Color.BLUE, 3);
+    public ICard nc2 = new NumberCard(Color.BLUE, 3);
+    public ICard nc3 = new NumberCard(Color.RED, 9);
+    public ICard nc4 = new NumberCard(Color.GREEN, 3);
+    public ICard ac1 = new ActionCard(new ReverseAction(), Color.BLUE, CardType.REVERSECARD);
+    public ICard ac2 = new ActionCard(new ReverseAction(), Color.BLUE, CardType.REVERSECARD);
+    public ICard ac3 = new ActionCard(new TakeFourAction(), Color.RED, CardType.TAKETWO);
+    public ICard ac4 = new ActionCard(new TakeTwoAction(), Color.RED, CardType.TAKETWO);
 
-    Game g;
+    public Game g;
     //ActionCard ac = new ActionCard()
 
     @Before
@@ -70,14 +70,6 @@ public class ICardTest {
         Assert.assertFalse(nc3.canBePlayed(nc));
         Assert.assertFalse(ac2.canBePlayed(ac3));
 
-    }
-
-    @Test
-    public void testCanBePlayedOnMe() {
-    }
-
-    @Test
-    public void testTestCanBePlayedOnMe() {
     }
 
     @Test

@@ -1,17 +1,14 @@
 package org.megauno.app.model.game;
 
-import junit.framework.TestCase;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.megauno.app.model.GeneralTestMethods;
 import org.megauno.app.model.cards.CardType;
 import org.megauno.app.model.cards.Color;
 import org.megauno.app.model.cards.ICard;
 import org.megauno.app.model.cards.implementation.ActionCard;
 import org.megauno.app.model.cards.implementation.NumberCard;
 import org.megauno.app.model.game.actions.WildCardAction;
-import org.megauno.app.model.game.utilities.Deck;
 import org.megauno.app.model.game.utilities.PlayerCircle;
 import org.megauno.app.model.player.Player;
 import org.megauno.app.utility.Publisher.IPublisher;
@@ -20,21 +17,18 @@ import org.megauno.app.utility.Tuple;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
-import java.util.concurrent.Flow;
 
 import static org.megauno.app.model.GeneralTestMethods.generatePlayers;
 
 public class GameTest {
 
-    PlayerCircle players;
-    Game game;
+    public PlayerCircle players;
+    public Game game;
 
-    Player p1;
+    public Player p1;
 
     @Before
     public void setUp() {
-        Game testGame = new Game();
         players = new PlayerCircle(generatePlayers(5));
         game = new Game(players);
         game.start(7);
@@ -183,7 +177,7 @@ public class GameTest {
     public void testNextDraws(){
         Player next = players.getNextPlayer();
         List<ICard> nextHand = new ArrayList<>();
-        for (ICard c : next.getCards()) nextHand.add(c);
+        for (ICard c : next.getCards()) { nextHand.add(c); }
         game.nextDraw();
         List<ICard> nextHandAfterDraw = next.getCards();
         assert(!nextHandAfterDraw.equals(nextHand));
@@ -201,7 +195,7 @@ public class GameTest {
     }
 
     // Try that wrong cards cannot be stacked on top of each other.
-    private void addSelectedCards(int nCards) {
+    private void addSelectedCards() {
         for (ICard c : p1.getCards()) {
             p1.selectCard(c);
         }
@@ -209,7 +203,7 @@ public class GameTest {
 
     @Test
     public void testTryPlaySelectedCards() throws InterruptedException {
-        addSelectedCards(3);
+        addSelectedCards();
       //  game.tryPlayTest(); // an error expected
     }
 

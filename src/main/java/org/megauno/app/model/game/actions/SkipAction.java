@@ -9,8 +9,8 @@ import org.megauno.app.model.game.IActOnGame;
 public class SkipAction implements IAction {
 
     @Override
-    public boolean execute(IActOnGame g) {
-        g.nextTurn();
+    public boolean execute(IActOnGame game) {
+        game.nextTurn();
         return true;
     }
 }

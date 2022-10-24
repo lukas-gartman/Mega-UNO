@@ -12,7 +12,6 @@ import org.megauno.app.utility.Publisher.normal.Publisher;
 import org.megauno.app.utility.Tuple;
 import org.megauno.app.viewcontroller.GamePublishers;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -33,12 +32,6 @@ public class Game implements IActOnGame, GamePublishers, IGameInputs {
     private Publisher<Tuple<Player, List<ICard>>> onCardsRemovedByPlayer = new Publisher<>();
 
     private Color wildCardColor;
-
-    public Game() {
-        this.discarded = new Pile();
-        this.deck = new Deck();
-        this.players = new PlayerCircle();
-    }
 
     public Game(PlayerCircle players) {
         this.players = players;
@@ -99,7 +92,7 @@ public class Game implements IActOnGame, GamePublishers, IGameInputs {
      */
     private boolean validPlayedCards(List<ICard> play) {
         ICard top = discarded.getTop();
-        if (play.size() == 0) {
+        if (play.isEmpty()) {
             return false;
         } else if (!play.get(0).canBePlayed(top)) {
             return false;
