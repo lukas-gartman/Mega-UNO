@@ -20,7 +20,7 @@ import java.util.List;
  * a functional logical representation of a UNO game.
  * The changes made in Game are published to anyone who is subscribed to Game.
  */
-public class Game implements IActOnGame, GamePublishers, IGameImputs {
+public class Game implements IActOnGame, GamePublishers, IGameInputs {
     private PlayerCircle players;
     private IDeck deck;
     private IPile discarded;
