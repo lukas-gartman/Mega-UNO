@@ -33,7 +33,7 @@ public class ViewlessGame {
         Player currentPlayer = players.getCurrent();
         int randomIndex = rand.nextInt(currentPlayer.numOfCards());
         currentPlayer.selectCard(currentPlayer.getCards().get(randomIndex));
-        game.try_play();
+        game.commenceForth(currentPlayer);
     }
 
     public static void playRandomTurn() throws InterruptedException {

@@ -80,28 +80,6 @@ public class Game implements IActOnGame, GamePublishers, IGameImputs {
         }
     }
 
-
-    // Basic API for ViewController, potentially tests as well
-
-    // ---- Can probably be removed
-    // Each boolean represents wether or not a card is chosen by the current player
-    public boolean[] choices;
-
-    // ---- Can probably be removed
-    // Inner array is null if the player with the given ID/index is out of the game
-    // TODO: add an ID in the Player class to be able to put null here
-    public List<List<ICard>> getAllPlayerCards() {
-        Player[] players = getPlayers();
-        List<List<ICard>> result = new ArrayList<>();
-        for (Player player : players)
-            result.add(player.getCards());
-
-        return result;
-    }
-
-    // Current player
-
-
     public Player getCurrentPlayer() {
         return players.getCurrent();
     }
@@ -154,7 +132,7 @@ public class Game implements IActOnGame, GamePublishers, IGameImputs {
      * When the player has selected cards to play,
      * attempt to play these cards and discard on pile if valid move
      */
-    public void try_play() {
+    private void try_play() {
         Player current = players.getCurrent();
         List<ICard> choices = current.play();
         boolean currentHasOnlyOneCard = (current.getCards().size() - choices.size()) == 1;
@@ -210,9 +188,7 @@ public class Game implements IActOnGame, GamePublishers, IGameImputs {
     private boolean validPlay(List<ICard> choices, Player current) {
         List<ICard> hand = current.getCards();
         int lastCardIndex = hand.size() - 1;
-        return validPlayedCards(choices) &&
-                (drawCount < 1 ||
-                        (choices.size() == 1 && choices.get(0) == hand.get(lastCardIndex)));
+        return validPlayedCards(choices) && (drawCount < 1 || (choices.size() == 1 && choices.get(0) == hand.get(lastCardIndex)));
     }
 
     /**

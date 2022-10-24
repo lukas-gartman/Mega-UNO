@@ -2,16 +2,16 @@ package org.megauno.app.model.game;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.megauno.app.model.cards.CardFactory;
-import org.megauno.app.model.cards.CardType;
-import org.megauno.app.model.cards.Color;
-import org.megauno.app.model.cards.ICard;
+import org.megauno.app.model.cards.*;
+import org.megauno.app.model.game.actions.SkipAction;
 import org.megauno.app.model.game.utilities.PlayerCircle;
 import org.megauno.app.model.GeneralTestMethods;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+import static org.junit.Assert.assertFalse;
 
 public class ActionTest {
 
@@ -43,5 +43,11 @@ public class ActionTest {
        for (ICard card : actionCards) {
            card.activate(testGame);
        }
+    }
+
+    @Test
+    public void testSkipAction() {
+        IAction skipAction = new SkipAction();
+        assert(skipAction.execute(testGame));
     }
 }
