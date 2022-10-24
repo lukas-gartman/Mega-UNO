@@ -4,17 +4,20 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import org.lwjgl.opengl.GL20;
-import org.megauno.app.application.ClientApplication;
+import org.megauno.app.application.ClientScreen;
+import org.megauno.app.application.MegaUNO;
 import org.megauno.app.viewcontroller.controller.GameController;
 import org.megauno.app.viewcontroller.players.GameView;
 
 public class Root {
+	MegaUNO megaUNO;
 	private Batch batch;
 	private IDrawable drawable;
 
-	public Root() {
+	public Root(MegaUNO megaUNO) {
+		this.megaUNO = megaUNO;
 		drawable = ((delta, batch) -> {
-			ClientApplication.tomte.draw(batch);
+			ClientScreen.tomte.draw(batch);
 		});
 		batch = new SpriteBatch();
 	}
@@ -29,5 +32,9 @@ public class Root {
 		batch.begin();
 		drawable.draw(Gdx.graphics.getDeltaTime(), batch);
 		batch.end();
+	}
+
+	public void resize(int width, int height) {
+		batch.getProjectionMatrix().setToOrtho2D(0, 0, width, height);
 	}
 }

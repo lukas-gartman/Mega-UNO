@@ -1,7 +1,7 @@
 package org.megauno.app.viewcontroller.players;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
-import org.megauno.app.application.ClientApplication;
+import org.megauno.app.application.ClientScreen;
 import org.megauno.app.model.cards.CardType;
 import org.megauno.app.model.cards.Color;
 import org.megauno.app.model.cards.ICard;
@@ -84,7 +84,7 @@ public class GameView implements IDrawable {
     @Override
     public void draw(float delta, Batch batch) {
         // Draw background
-        batch.draw(ClientApplication.background, 0, 0, 650, 500);
+        batch.draw(ClientScreen.background, 0, 0, 650, 500);
 
         thisPlayer.draw(delta, batch);
 
@@ -94,11 +94,8 @@ public class GameView implements IDrawable {
             op.draw(delta, batch);
         }
 
-        // Draw end turn button
         endTurnButton.draw(delta, batch);
-        // Draw say uno button
         sayUnoButton.draw(delta, batch);
-        // Draw draw pile
         drawPile.draw(delta, batch);
     }
 

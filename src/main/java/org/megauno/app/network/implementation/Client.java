@@ -49,6 +49,14 @@ public class Client {
         }
     }
 
+    public void disconnect() {
+        try {
+            this.server.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private void listen() {
         // Create a new thread to prevent blocking
         new Thread(() -> {
