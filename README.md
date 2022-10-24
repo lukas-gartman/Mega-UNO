@@ -1,4 +1,6 @@
 # Mega-UNO
+There is a cursor, you just can not see it.
+Tomte means wait.
 ## Installation
 ### Using Maven:
 1. mvn package
