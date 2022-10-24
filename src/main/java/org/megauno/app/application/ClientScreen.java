@@ -1,10 +1,13 @@
 package org.megauno.app.application;
 
-import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.megauno.app.model.cards.CardType;
@@ -32,7 +35,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class ClientApplication extends ApplicationAdapter implements GameController, ViewPublisher {
+public class ClientScreen extends ScreenAdapter implements GameController, ViewPublisher {
     static public Sprite blueCard;
     static public Sprite backSideOfCard;
     static public Sprite greenCard;
@@ -50,6 +53,12 @@ public class ClientApplication extends ApplicationAdapter implements GameControl
     static public Sprite drawPile;
     static public Sprite sayUnoButton;
 
+    private MegaUNO megaUNO;
+    private Viewport viewport;
+    private final String nickname;
+    private final String hostname;
+    private final int port;
+
     private Publisher<Integer> onNewPlayer = new Publisher<>();
     private Publisher<ICard> onNewTopCard = new Publisher<>();
     private ConditionPublisher<PlayersCards> onCardsAddedToPlayer = new ConditionPublisher<>();
@@ -58,12 +67,16 @@ public class ClientApplication extends ApplicationAdapter implements GameControl
     private Root root;
 
 
-    public ClientApplication() {
-
+    public ClientScreen(MegaUNO megaUNO, String nickname, String hostname, int port) {
+        this.megaUNO = megaUNO;
+        this.nickname = nickname;
+        this.hostname = hostname;
+        this.port = port;
+        this.viewport = new ExtendViewport(megaUNO.WINDOW_WIDTH, megaUNO.WINDOW_HEIGHT);
     }
 
     @Override
-    public void create() {
+    public void show() {
         DataFetcher<String, Sprite> spriteDataFetcher = new PathDataFetcher<>(
                 key -> new Sprite(new Texture(key)), "assets/"
         );
@@ -87,17 +100,17 @@ public class ClientApplication extends ApplicationAdapter implements GameControl
         this.commenceForth = spriteDataFetcher.tryGetDataUnSafe("CommenceForth.png");
         this.drawPile = spriteDataFetcher.tryGetDataUnSafe("DrawPile.png");
         this.sayUnoButton = spriteDataFetcher.tryGetDataUnSafe("SayUnoButton.png");
-        root = new Root();
+        root = new Root(megaUNO);
 
 
-        System.out.println("");
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Nickname: ");
-        String nickname = scanner.nextLine();
-        System.out.print("Host name: ");
-        String hostname = scanner.nextLine();
-        System.out.print("Port (0-65535): ");
-        int port = scanner.nextInt();
+//        System.out.println("");
+//        Scanner scanner = new Scanner(System.in);
+//        System.out.print("Nickname: ");
+//        String nickname = scanner.nextLine();
+//        System.out.print("Host name: ");
+//        String hostname = scanner.nextLine();
+//        System.out.print("Port (0-65535): ");
+//        int port = scanner.nextInt();
 
         client = new Client(nickname, hostname, port, o ->
         {
@@ -116,9 +129,38 @@ public class ClientApplication extends ApplicationAdapter implements GameControl
     }
 
     @Override
-    public void render() {
+    public void render(float delta) {
         root.draw();
+        super.render(delta);
     }
+
+    @Override
+    public void resize(int width, int height) {
+        viewport.setWorldSize(width, height);
+        root.resize(width, height);
+//        stage.getViewport().update(width, height);
+    }
+
+//    @Override
+//    public void hide() {
+//
+//    }
+
+    @Override
+    public void dispose() {
+        if (client != null)
+            client.disconnect();
+        super.dispose();
+    }
+
+
+
+
+
+
+
+
+
 
     void respondToJSON(JSONObject o) {
         String type = o.getString("Type");

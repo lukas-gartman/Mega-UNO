@@ -3,7 +3,7 @@ package org.megauno.app.viewcontroller.players.thisPlayer;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import org.megauno.app.application.ClientApplication;
+import org.megauno.app.application.ClientScreen;
 import org.megauno.app.model.cards.CardType;
 import org.megauno.app.model.cards.Color;
 import org.megauno.app.model.cards.ICard;
@@ -17,16 +17,16 @@ import java.util.List;
 public class Card implements IDrawable {
 
 
-    static Sprite red = ClientApplication.redCard;
-    static Sprite blue = ClientApplication.blueCard;
-    static Sprite yellow = ClientApplication.yellowCard;
-    static Sprite green = ClientApplication.greenCard;
-    static Sprite nonColored = ClientApplication.whiteCard;
-    static BitmapFont fnt = ClientApplication.minecraftFont;
-    static Sprite wildCard = ClientApplication.wildCard;
-    static Sprite reverse = ClientApplication.reverse;
-    static Sprite takeTwo = ClientApplication.take2;
-    static Sprite takeFour = ClientApplication.take4;
+    static Sprite red = ClientScreen.redCard;
+    static Sprite blue = ClientScreen.blueCard;
+    static Sprite yellow = ClientScreen.yellowCard;
+    static Sprite green = ClientScreen.greenCard;
+    static Sprite nonColored = ClientScreen.whiteCard;
+    static BitmapFont fnt = ClientScreen.minecraftFont;
+    static Sprite wildCard = ClientScreen.wildCard;
+    static Sprite reverse = ClientScreen.reverse;
+    static Sprite takeTwo = ClientScreen.take2;
+    static Sprite takeFour = ClientScreen.take4;
 
 
     public float x;

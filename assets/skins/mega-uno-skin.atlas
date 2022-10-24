@@ -1,0 +1,43 @@
+
+mega-uno-skin.png
+size: 512, 512
+format: RGBA8888
+filter: Linear, Linear
+repeat: none
+white-pixel
+  rotate: false
+  xy: 508, 506
+  size: 1, 1
+  orig: 1, 1
+  offset: 0, 0
+  index: -1
+MMRock9
+  rotate: false
+  xy: 1, 418
+  size: 505, 89
+  orig: 505, 89
+  offset: 0, 0
+  index: -1
+megaman
+  rotate: false
+  xy: 1, 327
+  size: 505, 89
+  orig: 505, 89
+  offset: 0, 0
+  index: -1
+scrollpanel
+  rotate: false
+  xy: 1, 197
+  size: 128, 128
+  split: 10, 10, 10, 10
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+scrollpanel-coloured
+  rotate: false
+  xy: 1, 67
+  size: 128, 128
+  split: 10, 10, 10, 10
+  orig: 128, 128
+  offset: 0, 0
+  index: -1

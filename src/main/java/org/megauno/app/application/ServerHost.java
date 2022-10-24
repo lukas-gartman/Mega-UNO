@@ -1,6 +1,5 @@
 package org.megauno.app.application;
 
-import com.badlogic.gdx.ApplicationAdapter;
 import org.json.JSONObject;
 import org.megauno.app.model.cards.Color;
 import org.megauno.app.model.cards.ICard;
@@ -19,43 +18,30 @@ import org.megauno.app.viewcontroller.GamePublishers;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
-import java.util.concurrent.CountDownLatch;
 
-public class ModelApplication extends ApplicationAdapter {
+public class ServerHost {
     private Lobby lobby;
     private Game game;
     private int lastCardId = 0;
     private BiDicrectionalHashMap<Integer, ICard> cardsWithID = new TupleHashMap<>();
     private BiDicrectionalHashMap<Integer, Player> playersWithID = new BiHashMap<>();
 
-    @Override
-    public void create() {
-        CountDownLatch countDownLatch = new CountDownLatch(1); // Used to signal when the lobby is done searching for players
-        try {
-            Scanner scanner = new Scanner(System.in);
-            System.out.println("Enter port number (0-65535): ");
-            int port = scanner.nextInt();
-            while (port < 0 || port > 65535) {
-                System.out.println("invalid port");
-                port = scanner.nextInt();
-            }
+    public void createLobby(int port) throws IllegalAccessException {
+        this.lobby = new Lobby(port, (this::readJson));
+    }
 
-            // Create the lobby
-            lobby = new Lobby(port, countDownLatch, (this::readJson));
-            countDownLatch.await(); // Wait for the host to start the game (blocking call)
-            createGame(lobby.getIds());
-            addLobbySubscriptions(game, lobby.getInfoSender(), cardsWithID, playersWithID);
+    public void start() {
+        createGame(lobby.getIds());
+        addLobbySubscriptions(game, lobby.getInfoSender(), cardsWithID, playersWithID);
+        lobby.getInfoSender().start();
+        game.start(7);
 
-            System.out.println("How many cards?");
-            lobby.getInfoSender().start();
-            int numOfCards = scanner.nextInt();
-            game.start(numOfCards);
+        System.out.println("Starting game!");
+    }
 
-            System.out.println("Starting game!");
-        } catch (IllegalAccessException | InterruptedException e) {
-            System.out.println("The lobby was closed");
-        }
+    public void close() {
+        if (lobby != null)
+            lobby.close();
     }
 
     private void createGame(List<Integer> ids) {
@@ -101,6 +87,7 @@ public class ModelApplication extends ApplicationAdapter {
             }
             case "SetColor": {
                 game.setColor(player, object.getEnum(Color.class, "Color"));
+                break;
             }
         }
     }
@@ -108,8 +95,8 @@ public class ModelApplication extends ApplicationAdapter {
     private void addCards(List<ICard> cards, BiDicrectionalHashMap<Integer, ICard> cardsWithID) {
         for (ICard card : cards) {
             lastCardId++;
-            if(!cardsWithID.put(lastCardId, card)){
-               throw new RuntimeException("Card could not be added!");
+            if (!cardsWithID.put(lastCardId, card)) {
+                throw new RuntimeException("Card could not be added!");
             }
         }
     }
@@ -149,17 +136,17 @@ public class ModelApplication extends ApplicationAdapter {
         game.onNewTopCard().addSubscriber(infoSender::newTopCardOfPile);
     }
 
-    @Override
-    public void render() {
-
-    }
-
-    // todo: gracefully shut down application
-    @Override
-    public void dispose() {
-//		viewController.teardown();
-        lobby.close();
-    }
+//    @Override
+//    public void render() {
+//
+//    }
+//
+//    // todo: gracefully shut down application
+//    @Override
+//    public void dispose() {
+////		viewController.teardown();
+//        lobby.close();
+//    }
 
     public static void testFunc() {
         System.out.println("Wow!");

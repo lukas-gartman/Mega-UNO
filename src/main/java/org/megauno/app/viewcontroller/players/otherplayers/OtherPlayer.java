@@ -3,7 +3,7 @@ package org.megauno.app.viewcontroller.players.otherplayers;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import org.megauno.app.application.ClientApplication;
+import org.megauno.app.application.ClientScreen;
 import org.megauno.app.viewcontroller.ViewPublisher;
 import org.megauno.app.viewcontroller.IDrawable;
 
@@ -13,9 +13,9 @@ import java.util.List;
 // Graphical element to represent another player
 public class OtherPlayer implements IDrawable {
 
-    static BitmapFont font = ClientApplication.minecraftFont;
+    static BitmapFont font = ClientScreen.minecraftFont;
 
-    static Sprite cardBack = ClientApplication.backSideOfCard;
+    static Sprite cardBack = ClientScreen.backSideOfCard;
     private int playerID;
     private List<Sprite> cards = new ArrayList<>();
 
