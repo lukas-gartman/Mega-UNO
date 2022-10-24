@@ -7,7 +7,7 @@ import org.megauno.app.model.player.Player;
 /**
  * The communication that is done from the application to the game
  */
-public interface IGameImputs {
+public interface IGameInputs {
     /**
      * A given player wants to select a card.
      * @param player The player that wants to select.
