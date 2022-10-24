@@ -4,13 +4,11 @@ import org.megauno.app.network.IClientHandler;
 import org.megauno.app.network.JSONReader;
 import org.megauno.app.network.SendInfoToClients;
 import org.megauno.app.utility.BiDicrectionalHashMap;
-import org.megauno.app.utility.BiHashMap;
 import org.megauno.app.utility.Publisher.normal.Publisher;
 import org.megauno.app.utility.Tuple;
 
+import java.net.ConnectException;
 import java.util.List;
-import java.util.Scanner;
-import java.util.concurrent.CountDownLatch;
 
 /**
  * A lobby that is used to host a game server which accepts incoming clients
@@ -26,10 +24,10 @@ public class Lobby {
     /**
      * Creates a lobby
      *
-     * @param cdl a synchronisation barrier used to signal when the lobby is finished
+     * @param port the port to connect to
      * @param jr  a JSONReader for interpreting JSON
      */
-    public Lobby(int port, JSONReader jr) throws IllegalAccessException {
+    public Lobby(int port, JSONReader jr) throws ConnectException {
         this.port = port;
         host(jr);
     }
@@ -50,7 +48,7 @@ public class Lobby {
      * @return a list of client IDs
      * @throws IllegalAccessException when a server is already running
      */
-    public void host(JSONReader jsonReader) throws IllegalAccessException {
+    public void host(JSONReader jsonReader) throws ConnectException {
         server = new UnoServer(port, serverPublisher, jsonReader); // Game host holds the server object
         serverPublisher.addSubscriber(this::delivery); // subscribe self to changes to client handlers
         new Thread(server).start(); // Start the server on a new thread to prevent blocking

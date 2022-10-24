@@ -17,13 +17,15 @@ public class OtherPlayer implements IDrawable {
 
     static Sprite cardBack = ClientScreen.backSideOfCard;
     private int playerID;
+    private String nickname;
     private List<Sprite> cards = new ArrayList<>();
 
     public float x;
     public float y;
 
-    public OtherPlayer(int playerID, ViewPublisher publishers) {
+    public OtherPlayer(int playerID, String nickname, ViewPublisher publishers) {
         this.playerID = playerID;
+        this.nickname = nickname;
         publishers.onCardsAddedToPlayer().addSubscriberWithCondition(
                 (np) -> addCards(np.getCards().size()),
                 (np) -> np.getId() == playerID
@@ -68,6 +70,6 @@ public class OtherPlayer implements IDrawable {
             card.draw(batch);
         }
         // Draw text as well
-        font.draw(batch, "P" + playerID + ": " + Integer.toString(cards.size()), x, y);
+        font.draw(batch, nickname + ": " + cards.size(), x, y);
     }
 }

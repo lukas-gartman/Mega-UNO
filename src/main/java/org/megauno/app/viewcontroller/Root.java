@@ -9,8 +9,10 @@ import org.megauno.app.application.MegaUNO;
 import org.megauno.app.viewcontroller.controller.GameController;
 import org.megauno.app.viewcontroller.players.GameView;
 
+import java.util.HashMap;
+
 public class Root {
-	MegaUNO megaUNO;
+	private MegaUNO megaUNO;
 	private Batch batch;
 	private IDrawable drawable;
 
@@ -22,7 +24,7 @@ public class Root {
 		batch = new SpriteBatch();
 	}
 
-	public void start(int playerID, int[] otherPlayersIds, GameController gameController, ViewPublisher viewPublisher) {
+	public void start(int playerID, HashMap<Integer, String> otherPlayersIds, GameController gameController, ViewPublisher viewPublisher) {
 		drawable = new GameView(playerID, otherPlayersIds, viewPublisher, gameController);
 	}
 

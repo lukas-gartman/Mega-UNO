@@ -16,4 +16,6 @@ public interface GameController {
     void setColor(Color color);
 
     void drawCard();
+
+    void sendNickname(String nickname);
 }

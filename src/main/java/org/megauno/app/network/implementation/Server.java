@@ -9,6 +9,7 @@ import org.megauno.app.utility.Publisher.normal.Publisher;
 import org.megauno.app.utility.Tuple;
 
 import java.io.IOException;
+import java.net.ConnectException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
@@ -16,19 +17,19 @@ import java.util.concurrent.Semaphore;
 
 public class Server implements IServer, Runnable {
     private ServerSocket server;
-    private Publisher<Tuple<IClientHandler, Integer>> publisher;
-    private BiHashMap<IClientHandler, Integer> clientHandlers = new BiHashMap<>();
-    private HashMap<IClientHandler, Thread> clientHandlerThreads = new HashMap<>();
+    private final Publisher<Tuple<IClientHandler, Integer>> publisher;
+    private final BiHashMap<IClientHandler, Integer> clientHandlers = new BiHashMap<>();
+    private final HashMap<IClientHandler, Thread> clientHandlerThreads = new HashMap<>();
     private final Semaphore semaphore = new Semaphore(1);
     private static int cid = 0;
     private JSONReader jsonReader;
 
-    public Server(int port, Publisher<Tuple<IClientHandler, Integer>> publisher, JSONReader jsonReader) throws IllegalAccessException {
+    public Server(int port, Publisher<Tuple<IClientHandler, Integer>> publisher, JSONReader jsonReader) throws ConnectException {
         this.jsonReader = jsonReader;
         try {
             this.server = new ServerSocket(port);
         } catch (IOException ex) {
-            throw new IllegalAccessException("A server is already running on port " + port);
+            throw new ConnectException("A server is already running on port " + port);
         } catch (IllegalArgumentException ex) {
             System.out.println("Unable to create server on port " + port + ". Please use a port within the range 0-65535.");
         }
@@ -98,12 +99,6 @@ public class Server implements IServer, Runnable {
             System.out.println("closed server");
         } catch (IOException ex) {
             ex.printStackTrace();
-        }
-    }
-
-    private void updateAllClientsJsonReaders(JSONReader jr) {
-        for (IClientHandler ch : clientHandlers.getLeftKeys()) {
-            ch.updateJSONReader(jr);
         }
     }
 

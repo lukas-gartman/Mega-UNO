@@ -16,7 +16,9 @@ import org.megauno.app.utility.BiHashMap;
 import org.megauno.app.utility.Publisher.TupleHashMap;
 import org.megauno.app.viewcontroller.GamePublishers;
 
+import java.net.ConnectException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class ServerHost {
@@ -25,20 +27,32 @@ public class ServerHost {
     private int lastCardId = 0;
     private BiDicrectionalHashMap<Integer, ICard> cardsWithID = new TupleHashMap<>();
     private BiDicrectionalHashMap<Integer, Player> playersWithID = new BiHashMap<>();
+    private HashMap<Integer, String> playersIdWithNickname = new HashMap<>();
 
-    public void createLobby(int port) throws IllegalAccessException {
+    /**
+     * Creates a lobby that holds a server connection
+     * @param port the port to create the server on
+     * @throws ConnectException is thrown when the given port is already in use
+     */
+    public void createLobby(int port) throws ConnectException {
         this.lobby = new Lobby(port, (this::readJson));
     }
 
+    /**
+     * Starts the game
+     */
     public void start() {
         createGame(lobby.getIds());
         addLobbySubscriptions(game, lobby.getInfoSender(), cardsWithID, playersWithID);
-        lobby.getInfoSender().start();
+        lobby.getInfoSender().start(playersIdWithNickname);
         game.start(7);
 
         System.out.println("Starting game!");
     }
 
+    /**
+     * Closes the lobby
+     */
     public void close() {
         if (lobby != null)
             lobby.close();
@@ -89,6 +103,9 @@ public class ServerHost {
                 game.setColor(player, object.getEnum(Color.class, "Color"));
                 break;
             }
+            case "PlayerNickname":
+                playersIdWithNickname.put(clientId, object.getString("Nickname"));
+                break;
         }
     }
 
@@ -120,7 +137,6 @@ public class ServerHost {
                                        BiDicrectionalHashMap<Integer, Player> playersWithID) {
 
         game.onCardsAddedToPlayer().addSubscriber((t) -> {
-
             addCards(t.r, cardsWithID);
             int id = playersWithID.getLeft(t.l);
             infoSender.playerWithIdAddedCards(new PlayersCards(id, getIdCards(t.r, cardsWithID)));
@@ -136,18 +152,9 @@ public class ServerHost {
         game.onNewTopCard().addSubscriber(infoSender::newTopCardOfPile);
     }
 
-//    @Override
-//    public void render() {
-//
-//    }
-//
-//    // todo: gracefully shut down application
-//    @Override
-//    public void dispose() {
-////		viewController.teardown();
-//        lobby.close();
-//    }
-
+    /**
+     * used for testing only
+     */
     public static void testFunc() {
         System.out.println("Wow!");
     }

@@ -13,8 +13,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
-import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import org.lwjgl.opengl.GL20;
 import org.megauno.app.utility.dataFetching.DataFetcher;
@@ -51,17 +49,13 @@ public class LobbyScreen extends ScreenAdapter {
         stage = new Stage();
         stage.setViewport(viewport);
         Gdx.input.setInputProcessor(stage);
-//        drawable = new LobbyView();
         batch = new SpriteBatch();
 
-
         // CONNECTED CLIENTS
-//        Table lobbyTable = new Table();
         Table nicknameTable = new Table();
         Table joinTable = new Table();
         Table hostTable = new Table();
 
-//        Label lobbyLabel = new Label("Lobby", skin);
         Label nicknameLabel = new Label("Nickname", skin);
         Label joinHostnameLabel = new Label("Hostname", skin);
         Label joinPortLabel = new Label("Port", skin);
@@ -74,8 +68,6 @@ public class LobbyScreen extends ScreenAdapter {
 
         joinFeedback.setColor(Color.RED);
         hostFeedback.setColor(Color.RED);
-
-//        List<String> lobbyList = new List<>(skin);
 
         // NICKNAME
         TextField nicknameTextField = new TextField("", skin);
@@ -92,8 +84,6 @@ public class LobbyScreen extends ScreenAdapter {
         buttons.add(joinButton);
         buttons.add(hostButton);
         buttons.add(hostStartButton);
-
-
         hostStartButton.setVisible(false);
 
         onChange(nicknameButton, () -> {
@@ -121,6 +111,7 @@ public class LobbyScreen extends ScreenAdapter {
             else {
                 try {
                     ClientScreen clientScreen = new ClientScreen(megaUNO, nickname, hostname, Integer.parseInt(port));
+                    clientScreen.sendNickname(nickname);
 
                     nicknameButton.setDisabled(true);
                     joinButton.setDisabled(true);
@@ -129,11 +120,11 @@ public class LobbyScreen extends ScreenAdapter {
                     clearLabels(feedbackLabels);
                     joinFeedback.setColor(Color.GREEN);
                     joinFeedback.setText("Waiting for host to start the game...");
-//                lobbyList.getItems().add(nickname);
                     Gdx.graphics.setWindowedMode(650, 500);
 
                     megaUNO.setScreen(clientScreen);
                 } catch (ConnectException ex) {
+                    joinFeedback.setColor(Color.RED);
                     joinFeedback.setText(ex.getMessage());
                 }
             }
@@ -167,7 +158,7 @@ public class LobbyScreen extends ScreenAdapter {
                     clearLabels(feedbackLabels);
                     hostFeedback.setColor(Color.GREEN);
                     hostFeedback.setText("Press start to start the game");
-                } catch (IllegalAccessException e) {
+                } catch (ConnectException e) {
                     hostFeedback.setColor(Color.RED);
                     hostFeedback.setText("Port is already in use");
                 }
@@ -178,6 +169,7 @@ public class LobbyScreen extends ScreenAdapter {
             int port = Integer.parseInt(hostPortTextField.getText());
             try {
                 ClientScreen clientScreen = new ClientScreen(megaUNO, nickname, "localhost", port);
+                clientScreen.sendNickname(nickname);
                 Gdx.graphics.setWindowedMode(650, 500);
                 megaUNO.setScreen(clientScreen);
                 this.serverHost.start();
@@ -185,7 +177,6 @@ public class LobbyScreen extends ScreenAdapter {
                 hostFeedback.setText(ex.getMessage());
             }
         });
-
 
         nicknameTable.add(nicknameLabel);
         nicknameTable.row();
@@ -211,19 +202,13 @@ public class LobbyScreen extends ScreenAdapter {
         hostTable.row();
         hostTable.add(hostStartButton).size(100, 35).pad(10);
 
-//        lobbyTable.add(lobbyLabel);
-//        lobbyTable.row().pad(10);
-//        lobbyTable.add(lobbyList);
-
         nicknameTable.setPosition(-300, 150);
         joinTable.setPosition(-300, 0);
         hostTable.setPosition(-300, -150); //250
-//        lobbyTable.setPosition(800, 550);
 
         stage.addActor(nicknameTable);
         stage.addActor(joinTable);
         stage.addActor(hostTable);
-//        stage.addActor(lobbyTable);
     }
 
     private void clearLabels(java.util.List<Label> labels) {
@@ -231,7 +216,7 @@ public class LobbyScreen extends ScreenAdapter {
             label.setText("");
     }
 
-    static public void onChange(Actor actor, Runnable listener) {
+    private static void onChange(Actor actor, Runnable listener) {
         actor.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
                 listener.run();
@@ -272,5 +257,4 @@ public class LobbyScreen extends ScreenAdapter {
         stage.dispose();
         super.dispose();
     }
-
 }

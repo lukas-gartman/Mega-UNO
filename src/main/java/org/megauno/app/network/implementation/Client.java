@@ -24,13 +24,11 @@ public class Client {
     /**
      * Set up client connection and listen to incoming messages from the server
      *
-     * @param nickname   the nickname of the client
      * @param hostname   the hostname to connect to
      * @param port       the port to connect to
      * @param jsonReader an interface used for reading JSON
      */
-    public Client(String nickname, String hostname, int port, JSONReader jsonReader) throws ConnectException {
-        this.nickname = nickname;
+    public Client(String hostname, int port, JSONReader jsonReader) throws ConnectException {
         this.hostname = hostname;
         this.port = port;
         this.jsonReader = jsonReader;

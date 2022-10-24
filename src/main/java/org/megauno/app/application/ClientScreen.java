@@ -32,9 +32,7 @@ import org.megauno.app.viewcontroller.Root;
 import org.megauno.app.viewcontroller.ViewPublisher;
 
 import java.net.ConnectException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class ClientScreen extends ScreenAdapter implements GameController, ViewPublisher {
     static public Sprite blueCard;
@@ -67,7 +65,6 @@ public class ClientScreen extends ScreenAdapter implements GameController, ViewP
     private Client client;
     private Root root;
 
-
     public ClientScreen(MegaUNO megaUNO, String nickname, String hostname, int port) throws ConnectException {
         this.megaUNO = megaUNO;
         this.nickname = nickname;
@@ -75,14 +72,14 @@ public class ClientScreen extends ScreenAdapter implements GameController, ViewP
         this.port = port;
         this.viewport = new ExtendViewport(megaUNO.WINDOW_WIDTH, megaUNO.WINDOW_HEIGHT);
 
-        client = new Client(nickname, hostname, port, o ->
+        client = new Client(hostname, port, o ->
         {
             if (o.getString("Type").equals("Start")) {
-                List<Object> jsonArray = o.getJSONArray("OtherPlayers").toList();
-                int[] otherPlayers = new int[jsonArray.size()];
-                for (int i = 0; i < otherPlayers.length; i++) {
-                    otherPlayers[i] = (int) jsonArray.get(i);
-                }
+                JSONObject otherPlayersObject = o.getJSONObject("OtherPlayers");
+                HashMap<Integer, String> otherPlayers = new HashMap<>();
+                for (String key : otherPlayersObject.keySet())
+                    otherPlayers.put(Integer.parseInt(key), (String) otherPlayersObject.get(key));
+
                 root.start(o.getInt("PlayerId"), otherPlayers, this, this);
             } else {
                 respondToJSON(o);
@@ -132,26 +129,12 @@ public class ClientScreen extends ScreenAdapter implements GameController, ViewP
 //        stage.getViewport().update(width, height);
     }
 
-//    @Override
-//    public void hide() {
-//
-//    }
-
     @Override
     public void dispose() {
         if (client != null)
             client.disconnect();
         super.dispose();
     }
-
-
-
-
-
-
-
-
-
 
     void respondToJSON(JSONObject o) {
         String type = o.getString("Type");
@@ -171,15 +154,6 @@ public class ClientScreen extends ScreenAdapter implements GameController, ViewP
                     onNewTopCard.publish((iCardMaker(o.getJSONObject("Card"))));
                     break;
             }
-        } else {
-            if (type.equals("Start")) {
-                List<Object> jsonArray = o.getJSONArray("OtherPlayers").toList();
-                int[] otherPlayers = new int[jsonArray.size()];
-                for (int i = 0; i < otherPlayers.length; i++) {
-                    otherPlayers[i] = (int) jsonArray.get(i);
-                }
-            }
-
         }
     }
 
@@ -196,7 +170,6 @@ public class ClientScreen extends ScreenAdapter implements GameController, ViewP
         }
         return new PlayersCards(playerID, cards);
     }
-
 
     static private ICard iCardMaker(JSONObject jsonObject) {
         Color c = Color.NONE;
@@ -266,8 +239,12 @@ public class ClientScreen extends ScreenAdapter implements GameController, ViewP
 
     @Override
     public void drawCard() {
-        System.out.println("drawing card");
         client.sendJSON(new JSONObject().put("Type", "DrawCard"));
+    }
+
+    @Override
+    public void sendNickname(String nickname) {
+        client.sendJSON(new JSONObject().put("Type", "PlayerNickname").put("Nickname", nickname));
     }
 
     @Override
