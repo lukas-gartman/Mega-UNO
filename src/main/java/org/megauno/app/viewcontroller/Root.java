@@ -9,6 +9,8 @@ import org.megauno.app.application.MegaUNO;
 import org.megauno.app.viewcontroller.controller.GameController;
 import org.megauno.app.viewcontroller.players.GameView;
 
+import java.util.HashMap;
+
 /**
  * This class exists so that something can be drawn before the game starts.
  */
