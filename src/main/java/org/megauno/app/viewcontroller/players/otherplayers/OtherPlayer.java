@@ -10,7 +10,10 @@ import org.megauno.app.viewcontroller.IDrawable;
 import java.util.ArrayList;
 import java.util.List;
 
-// Graphical element to represent another player
+/**
+ * Displays an other player than the view/controllers associated player.
+ * These graphical elements does not show frontsides of cards.
+ */
 public class OtherPlayer implements IDrawable {
 
     static BitmapFont font = ClientApplication.minecraftFont;
