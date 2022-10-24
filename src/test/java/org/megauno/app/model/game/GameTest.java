@@ -16,6 +16,7 @@ import org.megauno.app.model.game.utilities.PlayerCircle;
 import org.megauno.app.model.player.Player;
 import org.megauno.app.utility.Publisher.ISubscribable;
 import org.megauno.app.utility.Publisher.normal.Publisher;
+import org.megauno.app.utility.Publisher.normal.Subscriber;
 import org.megauno.app.utility.Tuple;
 
 import java.util.ArrayList;
@@ -206,6 +207,16 @@ public class GameTest {
     }
 
     @Test
+    public void testGetPlayerCircle() {
+        PlayerCircle p1 = game.getPlayerCircle();
+        PlayerCircle p2 = game.getPlayerCircle();
+        int size = p1.playersLeft();
+        for (int i = 0; i < size; i++) {
+            assert(p1.getNextPlayer() == p2.getNextPlayer());
+        }
+    }
+
+    @Test
     public void testTryPlaySelectedCards() throws InterruptedException {
         addSelectedCards();
       //  game.tryPlayTest(); // an error expected
@@ -265,6 +276,22 @@ public class GameTest {
         // Try playing the last drawn card
         p1.selectCard(p1.getCards().get(p1.numOfCards() - 1));
         game.commenceForth(p1);
+    }
+
+    @Test
+    public void testPublishers() {
+        Publisher<Player> playerPublisher = new Publisher<>();
+        assert(game.onNewPlayer().getClass() == playerPublisher.getClass());
+        Publisher<ICard> cardPublisher = new Publisher<>();
+        assert(game.onNewTopCard().getClass() == cardPublisher.getClass());
+    }
+
+    @Test
+    public void testSubscribable() {
+        ISubscribable<Tuple<Player, List<ICard>>> addCardSubsribable = new Publisher<>();
+        assert(game.onCardsAddedToPlayer().getClass() == addCardSubsribable.getClass());
+        ISubscribable<Tuple<Player, List<ICard>>> removeCardSubsribable = new Publisher<>();
+        assert(game.onCardsRemovedByPlayer().getClass() == removeCardSubsribable.getClass());
     }
 
 
