@@ -19,7 +19,10 @@ import org.megauno.app.viewcontroller.players.thisPlayer.ThisPlayer;
 import java.util.ArrayList;
 import java.util.List;
 
-// For now, GameView parses deltas from Game and calls the appropriate
+/**
+ * Represents the game-view of a player, that is, everything the player
+ * with {@link GameView#currentPlayerId} sees on the screen.
+ */
 public class GameView implements IDrawable {
     private int playerID;
 
@@ -40,14 +43,12 @@ public class GameView implements IDrawable {
         thisPlayer = new ThisPlayer(playerID, publishers, gameController);
 
         // Add all other players
-        // TODO: make the positions make sense regarding actual placing in the list
         int offset = 0;
         for (int i : otherPlayersIds) {
             OtherPlayer otherPlayer = new OtherPlayer(i, publishers);
             otherPlayer.y = 400;
             otherPlayer.x = offset * 200;
             otherPlayers.add(otherPlayer);
-            //TODO: add position, do a top-row of OtherPlayers
             offset++;
         }
 
@@ -69,18 +70,12 @@ public class GameView implements IDrawable {
         );
     }
 
-    public int getPlayerID() {
-        return playerID;
-    }
-
     private void updateTopCard(ICard newTop) {
         top = new Card(newTop, -1, gameController);
         top.x = 300;
         top.y = 250;
     }
 
-    //TODO: when a card is detected to be rmoved from hand, remove card from stage.
-    // Deltas on game are checked here, called every frame by parent
     @Override
     public void draw(float delta, Batch batch) {
         // Draw background

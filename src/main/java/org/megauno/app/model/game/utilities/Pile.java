@@ -39,8 +39,7 @@ public class Pile implements IPile {
 
     @Override
     public ICard getTop() {
-        if (!cards.isEmpty())
-            return cards.peek();
-        return null;
+        return cards.peek();
     }
+
 }

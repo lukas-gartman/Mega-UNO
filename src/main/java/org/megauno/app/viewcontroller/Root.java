@@ -8,6 +8,9 @@ import org.megauno.app.application.ClientApplication;
 import org.megauno.app.viewcontroller.controller.GameController;
 import org.megauno.app.viewcontroller.players.GameView;
 
+/**
+ * This class exists so that something can be drawn before the game starts.
+ */
 public class Root {
 	private Batch batch;
 	private IDrawable drawable;
@@ -19,6 +22,7 @@ public class Root {
 		batch = new SpriteBatch();
 	}
 
+	// Create GameView
 	public void start(int playerID, int[] otherPlayersIds, GameController gameController, ViewPublisher viewPublisher) {
 		drawable = new GameView(playerID, otherPlayersIds, viewPublisher, gameController);
 	}

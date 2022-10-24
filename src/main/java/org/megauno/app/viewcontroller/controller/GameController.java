@@ -3,7 +3,9 @@ package org.megauno.app.viewcontroller.controller;
 import org.megauno.app.model.cards.Color;
 
 
-//When these methodes are triggered
+/**
+ * An interface using ID:s for players used for communicating with the game.
+ */
 public interface GameController {
     void selectCard(int cardId);
 
