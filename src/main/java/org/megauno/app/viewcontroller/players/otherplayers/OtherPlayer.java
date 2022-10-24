@@ -44,7 +44,6 @@ public class OtherPlayer implements IDrawable {
             Sprite card = cardBack;
             cards.add(card);
         }
-
     }
 
     // Removes cards from the player
@@ -52,14 +51,6 @@ public class OtherPlayer implements IDrawable {
         for (int i = 0; i < removedCards; i++) {
             cards.remove(cards.size() - 1);
         }
-    }
-
-    public int getNrOfCard() {
-        return cards.size();
-    }
-
-    public int getPlayerID() {
-        return playerID;
     }
 
     @Override

@@ -70,10 +70,6 @@ public class GameView implements IDrawable {
         );
     }
 
-    public int getPlayerID() {
-        return playerID;
-    }
-
     private void updateTopCard(ICard newTop) {
         top = new Card(newTop, -1, gameController);
         top.x = 300;
