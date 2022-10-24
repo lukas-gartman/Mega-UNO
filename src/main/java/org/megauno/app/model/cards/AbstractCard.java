@@ -65,9 +65,7 @@ public abstract class AbstractCard implements ICard {
     @Override
     public abstract boolean canBePlayedOnMe(ActionCard actionCard);
 
-    public ICard copyCard() {
-        return this;
-    }
+    public abstract ICard copyCard();
 
     /**
      * Propagates the changes a particular card has on the game.
