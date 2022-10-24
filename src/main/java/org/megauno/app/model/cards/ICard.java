@@ -50,10 +50,10 @@ public interface ICard extends ICardVisitor {
     /**
      * Propagates the changes a particular card has on the game.
      *
-     * @param g An abstraction of a game.
+     * @param game An abstraction of a game.
      * @return Weather the change was successfully done.
      */
-    boolean activate(IActOnGame g);
+    boolean activate(IActOnGame game);
 
     void setColor(Color choice);
 

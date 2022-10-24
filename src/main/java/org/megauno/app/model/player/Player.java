@@ -42,7 +42,7 @@ public class Player {
      */
     public void selectCard(ICard c){
         if (hand.contains(c)) {
-            for (ICard sc : selectedCards) if (c == sc) return;
+            for (ICard sc : selectedCards){ if (c == sc) return;}
             selectedCards.add(c);
         }
     }

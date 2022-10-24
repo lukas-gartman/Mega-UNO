@@ -9,10 +9,10 @@ import org.megauno.app.model.game.IActOnGame;
 public class ReverseAction implements IAction {
 
     @Override
-    public boolean execute(IActOnGame g) {
+    public boolean execute(IActOnGame game) {
         // Changes the order of play in the game.
         // Move this action such that the work is done here
-        g.reverse();
+        game.reverse();
         return false;
     }
 }

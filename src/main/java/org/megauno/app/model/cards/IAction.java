@@ -12,8 +12,8 @@ public interface IAction {
     /**
      * Executes the specific action.
      *
-     * @param g An abstraction of the game which the action is executed on.
+     * @param game An abstraction of the game which the action is executed on.
      * @return Weather the execution of the action is successfull or not.
      */
-    boolean execute(IActOnGame g);
+    boolean execute(IActOnGame game);
 }

@@ -10,8 +10,8 @@ import org.megauno.app.model.game.IActOnGame;
 public class WildCardAction implements IAction {
 
     @Override
-    public boolean execute(IActOnGame g) {
-        g.assignWildCardColor();
+    public boolean execute(IActOnGame game) {
+        game.assignWildCardColor();
         return true;
     }
 }

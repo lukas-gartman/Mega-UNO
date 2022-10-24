@@ -11,15 +11,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import static org.junit.Assert.assertFalse;
 
 public class ActionTest {
 
-    CardFactory cardFactory;
-    List<ICard> actionCards;
-    Random random;
-    Game testGame;
-    PlayerCircle playerCircle;
+    public CardFactory cardFactory;
+    public List<ICard> actionCards;
+    public Random random;
+    public Game testGame;
+    public PlayerCircle playerCircle;
 
     @Before
     public void setUp() {

@@ -70,13 +70,13 @@ public class ActionCard extends AbstractCard {
     }
 
     @Override
-    public boolean canBePlayedOnMe(NumberCard c) {
-        return this.getColor() == c.getColor();
+    public boolean canBePlayedOnMe(NumberCard numberCard) {
+        return this.getColor() == numberCard.getColor();
     }
 
     @Override
-    public boolean canBePlayedOnMe(ActionCard c) {
-        return c.getType() == CardType.WILDCARD || c.getColor() == this.getColor() || c.getType() == this.getType();
+    public boolean canBePlayedOnMe(ActionCard actionCard) {
+        return actionCard.getType() == CardType.WILDCARD || actionCard.getColor() == this.getColor() || actionCard.getType() == this.getType();
     }
 
     // Shallow copy, no need for deep copy since the attributes are immutable.
@@ -86,17 +86,17 @@ public class ActionCard extends AbstractCard {
     }
 
     @Override
-    public boolean canBeStacked(ICard c) {
-        return c.canBeStackedUnder(this);
+    public boolean canBeStacked(ICard card) {
+        return card.canBeStackedUnder(this);
     }
 
     @Override
-    public boolean canBeStackedUnder(ActionCard ac) {
-        return ac.getAction().getClass() == action.getClass();
+    public boolean canBeStackedUnder(ActionCard actionCard) {
+        return actionCard.getAction().getClass() == action.getClass();
     }
 
     @Override
-    public boolean canBeStackedUnder(NumberCard nc) {
+    public boolean canBeStackedUnder(NumberCard numberCard) {
         return false;
     }
 }

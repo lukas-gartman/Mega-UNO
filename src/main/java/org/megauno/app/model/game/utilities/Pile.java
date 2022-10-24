@@ -14,6 +14,9 @@ import java.util.*;
 public class Pile implements IPile {
     private final Stack<ICard> cards = new Stack<>();
 
+    /**
+     * Creates a pile with a top card.
+     */
     public Pile() {
         ICard firstCard = generateFirstCard();
         cards.push(firstCard);

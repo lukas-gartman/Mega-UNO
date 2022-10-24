@@ -1,6 +1,5 @@
 package org.megauno.app.model.game.utilities;
 
-import org.megauno.app.model.cards.ICard;
 import org.megauno.app.model.player.Player;
 import org.megauno.app.utility.Publisher.normal.Publisher;
 
@@ -14,16 +13,10 @@ import java.util.List;
  */
 public class PlayerCircle {
     public int currentIndex = 0;
-    Rotation direction;
-    List<Player> players;
-    public List<Player> winners;
+    private Rotation direction;
+    private List<Player> players;
+    private List<Player> winners;
     private Publisher<Player> onNewPlayer = new Publisher<>();
-
-    public PlayerCircle() {
-        // starts with clockwise as default
-        direction = Rotation.CLOCKWISE;
-        winners = new ArrayList<>();
-    }
 
     /**
      * Creates a player circle, specifies the direction of play and

@@ -3,7 +3,6 @@ package org.megauno.app.model.game;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.megauno.app.model.GeneralTestMethods;
 import org.megauno.app.model.cards.CardType;
 import org.megauno.app.model.cards.Color;
 import org.megauno.app.model.cards.ICard;
@@ -27,14 +26,13 @@ import static org.megauno.app.model.GeneralTestMethods.generatePlayers;
 
 public class GameTest {
 
-    PlayerCircle players;
-    Game game;
+    public PlayerCircle players;
+    public Game game;
 
-    Player p1;
+    public Player p1;
 
     @Before
     public void setUp() {
-        Game testGame = new Game();
         players = new PlayerCircle(generatePlayers(5));
         game = new Game(players);
         game.start(7);
@@ -183,7 +181,7 @@ public class GameTest {
     public void testNextDraws(){
         Player next = players.getNextPlayer();
         List<ICard> nextHand = new ArrayList<>();
-        for (ICard c : next.getCards()) nextHand.add(c);
+        for (ICard c : next.getCards()) { nextHand.add(c); }
         game.nextDraw();
         List<ICard> nextHandAfterDraw = next.getCards();
         assert(!nextHandAfterDraw.equals(nextHand));
@@ -201,7 +199,7 @@ public class GameTest {
     }
 
     // Try that wrong cards cannot be stacked on top of each other.
-    private void addSelectedCards(int nCards) {
+    private void addSelectedCards() {
         for (ICard c : p1.getCards()) {
             p1.selectCard(c);
         }
@@ -209,7 +207,7 @@ public class GameTest {
 
     @Test
     public void testTryPlaySelectedCards() throws InterruptedException {
-        addSelectedCards(3);
+        addSelectedCards();
       //  game.tryPlayTest(); // an error expected
     }
 

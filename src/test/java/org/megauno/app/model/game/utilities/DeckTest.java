@@ -5,8 +5,6 @@ import org.megauno.app.model.cards.CardType;
 import org.megauno.app.model.cards.ICard;
 import org.megauno.app.model.cards.implementation.CardValidation;
 import org.megauno.app.model.cards.implementation.NumberCard;
-import org.megauno.app.model.game.utilities.Deck;
-import org.megauno.app.utility.BiHashMap;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,7 +12,7 @@ import java.util.List;
 
 public class DeckTest {
 
-    Deck deck = new Deck();
+    public Deck deck = new Deck();
 
     // throws an exception if the invariant doesn't hold
     public boolean cardInvariant(ICard card) {
@@ -40,13 +38,19 @@ public class DeckTest {
         Deck deckWithDist = new Deck(dist);
     }
 
+    /*
+    Tries to check if all cards in the deck are valid cards
+    the loop iterates 50000 times to ensure that all the cards
+    in the deck are tested. This is neccessary since "drawCard()" returns
+    a random card. If more than 100 cards are generated for the deck, the amount of
+    iterations should be increased.
+    */
     @Test
     public void testAllCardsInDeck() {
-       for (ICard card : deck.getDeck()) {
-           //System.out.println(card.toString());
-           //System.out.println(card.getColor());
-           assert(cardInvariant(card));
-       }
+       int relativelyLargeNum = 50000;
+        for (int i = 0; i < relativelyLargeNum; i++) {
+           assert(cardInvariant(deck.drawCard()));
+        }
     }
 
     @Test

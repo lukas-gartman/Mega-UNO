@@ -15,9 +15,9 @@ import java.util.List;
 
 
 public class PlayerTest {
-    Player emptyPlayer;
-    Player  player;
-    List<ICard> cards = new ArrayList<>();
+    public Player emptyPlayer;
+    public Player  player;
+    public List<ICard> cards = new ArrayList<>();
 
     @Before
     public void setUp() throws Exception {

@@ -23,16 +23,28 @@ public abstract class AbstractCard implements ICard {
         this.type = type;
     }
 
+    /**
+     * Gives the type of the card.
+     * @return The type of the card.
+     */
     @Override
     public CardType getType() {
         return type;
     }
 
+    /**
+     * Gives the color of the card.
+     * @return The color of the card.
+     */
     @Override
     public Color getColor() {
         return color;
     }
 
+    /**
+     * Gives the number of the card, if the card has a number.
+     * @return The number of the card or null.
+     */
     @Override
     public Integer getNumber() {
         return null;
@@ -70,18 +82,18 @@ public abstract class AbstractCard implements ICard {
     /**
      * Propagates the changes a particular card has on the game.
      *
-     * @param g An abstraction of a game.
+     * @param game An abstraction of a game.
      * @return Weather the change was successfully done.
      */
     @Override
-    public abstract boolean activate(IActOnGame g);
+    public abstract boolean activate(IActOnGame game);
 
     /**
      * Sets the color of the card
-     * @param c the color to be set.
+     * @param color the color to be set.
      */
-    public void setColor(Color c) {
-        this.color = c;
+    public void setColor(Color color) {
+        this.color = color;
 
     }
 }
