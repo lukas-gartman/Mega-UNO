@@ -9,21 +9,15 @@ import org.megauno.app.utility.Publisher.condition.IConditionPublisher;
  * Implemented by network layer to emmit events to the view.
  */
 public interface ViewPublisher {
-<<<<<<< Updated upstream
+
 	/**
 	 * Emitted when new player joins.
 	 */
-    IPublisher<Integer> onNewPlayer();
-
+    ISubscribable<Integer> onNewPlayer();
 	/**
 	 * Emitted when there is a new card at the top of the pile.
 	 */
-    IPublisher<ICard> onNewTopCard();
-=======
-    ISubscribable<Integer> onNewPlayer();
-
     ISubscribable<ICard> onNewTopCard();
->>>>>>> Stashed changes
 
 	/**
 	 * Emitted when cards are added to player.

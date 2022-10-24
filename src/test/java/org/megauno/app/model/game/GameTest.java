@@ -7,13 +7,12 @@ import org.megauno.app.model.GeneralTestMethods;
 import org.megauno.app.model.cards.CardType;
 import org.megauno.app.model.cards.Color;
 import org.megauno.app.model.cards.ICard;
-<<<<<<< Updated upstream
+
 import org.megauno.app.model.cards.implementation.ActionCard;
 import org.megauno.app.model.cards.implementation.NumberCard;
 import org.megauno.app.model.game.actions.WildCardAction;
 import org.megauno.app.model.game.utilities.Deck;
-=======
->>>>>>> Stashed changes
+
 import org.megauno.app.model.game.utilities.PlayerCircle;
 import org.megauno.app.model.player.Player;
 import org.megauno.app.utility.Publisher.ISubscribable;

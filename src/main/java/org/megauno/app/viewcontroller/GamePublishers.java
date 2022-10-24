@@ -13,33 +13,20 @@ import java.util.List;
  * to events.
  */
 public interface GamePublishers {
-<<<<<<< Updated upstream
 	/**
 	 * Emitted when a new player joins.
 	 */
-    IPublisher<Player> onNewPlayer();
-
+    ISubscribable<Player> onNewPlayer();
 	/**
 	 * Emitted when a new top card is placed.
 	 */
-    IPublisher<ICard> onNewTopCard();
-
+    ISubscribable<ICard> onNewTopCard();
 	/**
 	 * Emitted when cards are added to a player.
 	 */
-    IPublisher<Tuple<Player, List<ICard>>> onCardsAddedToPlayer();
-
+    ISubscribable<Tuple<Player, List<ICard>>> onCardsAddedToPlayer();
 	/**
 	 * Emitted when cards are removed from a player.
 	 */
-    IPublisher<Tuple<Player, List<ICard>>> onCardsRemovedByPlayer();
-=======
-    ISubscribable<Player> onNewPlayer();
-
-    ISubscribable<ICard> onNewTopCard();
-
-    ISubscribable<Tuple<Player, List<ICard>>> onCardsAddedToPlayer();
-
     ISubscribable<Tuple<Player, List<ICard>>> onCardsRemovedByPlayer();
->>>>>>> Stashed changes
 }
