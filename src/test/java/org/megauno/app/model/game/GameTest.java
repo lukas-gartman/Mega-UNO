@@ -4,11 +4,12 @@ import junit.framework.TestCase;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.megauno.app.model.cards.AbstractCard;
+import org.megauno.app.model.GeneralTestMethods;
 import org.megauno.app.model.cards.CardType;
 import org.megauno.app.model.cards.Color;
 import org.megauno.app.model.cards.ICard;
 import org.megauno.app.model.cards.implementation.ActionCard;
+import org.megauno.app.model.cards.implementation.NumberCard;
 import org.megauno.app.model.game.actions.WildCardAction;
 import org.megauno.app.model.game.utilities.Deck;
 import org.megauno.app.model.game.utilities.PlayerCircle;
@@ -21,6 +22,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.Flow;
+
+import static org.megauno.app.model.GeneralTestMethods.generatePlayers;
 
 public class GameTest {
 
@@ -38,19 +41,6 @@ public class GameTest {
         p1 = game.getCurrentPlayer();
     }
 
-    public List<Player> generatePlayers(int n) {
-        List<Player> playerList = new ArrayList<>();
-        for (int i = 0; i < n; i++) {
-            playerList.add(new Player());
-        }
-        return playerList;
-    }
-
-    @Test
-    public void testTryPlay() {
-        game.try_play();
-    }
-
     @Test
     public void testNextTurn() {
         Player previousPlayer = game.getCurrentPlayer();
@@ -66,8 +56,127 @@ public class GameTest {
     }
 
     @Test
-    public void testCheckPlayerProgress() {
+    public void testValidPlayedTurn() {
+        // Setup
+        List<ICard> cardList = new ArrayList<>();
+        cardList.add(new ActionCard(new WildCardAction(), Color.NONE, CardType.WILDCARD));
+        PlayerCircle players = new PlayerCircle(generatePlayers(5));
+        Game testGame = new Game(players);
+        Player p1 = testGame.getCurrentPlayer();
 
+        // Give the playable card to the player
+        p1.addCards(cardList);
+        // Make the player select the given card
+        p1.selectCard(cardList.get(0));
+        testGame.setColor(p1, Color.RED);
+        // Start the game with no additional cards to players
+        testGame.start(0);
+        // Play one turn
+        testGame.commenceForth(p1);
+        // Check that the played round was successful.
+        assert(testGame.getCurrentPlayer() != p1);
+    }
+
+    @Test
+    public void testPlayUnstackableCards() {
+        // Setup
+        List<ICard> cardList = new ArrayList<>();
+        ICard testCard1 = new NumberCard(Color.RED, 3);
+        ICard testCard2 = new NumberCard(Color.GREEN, 6);
+        cardList.add(testCard1);
+        cardList.add(testCard2);
+        PlayerCircle players = new PlayerCircle(generatePlayers(5));
+        Game testGame = new Game(players);
+        Player p1 = testGame.getCurrentPlayer();
+
+        // Give playable cards to the player
+        p1.addCards(cardList);
+        // Select the cards
+        p1.selectCard(cardList.get(0));
+        p1.selectCard(cardList.get(1));
+        // Start the game with no additional cards added to the players
+        testGame.start(0);
+        // Play one round
+        testGame.commenceForth(p1);
+        // Check that the played round wasn't successful.
+        assert(testGame.getCurrentPlayer() == p1);
+    }
+
+    @Test
+    public void testPlayStackableAndUnstackableCards() {
+        // Setup
+        List<ICard> cardList = new ArrayList<>();
+        ICard testCard1 = new NumberCard(Color.RED, 3);
+        ICard testCard2 = new NumberCard(Color.GREEN, 3);
+        ICard testCard3 = new NumberCard(Color.BLUE, 4);
+        cardList.add(testCard1);
+        cardList.add(testCard2);
+        cardList.add(testCard3);
+        PlayerCircle players = new PlayerCircle(generatePlayers(5));
+        Game testGame = new Game(players);
+        Player p1 = testGame.getCurrentPlayer();
+
+        // Give playable cards to the player
+        p1.addCards(cardList);
+        // Select the cards
+        p1.selectCard(cardList.get(0));
+        p1.selectCard(cardList.get(1));
+        p1.selectCard(cardList.get(2));
+        // Start the game with no additional cards added to the players
+        testGame.start(0);
+        // Play one round
+        testGame.commenceForth(p1);
+        // Check that the played round wasn't successful.
+        assert(testGame.getCurrentPlayer() == p1);
+    }
+
+    @Test
+    public void testDrawThreeCardsInTurn() {
+        // Setup
+        List<ICard> cardList = new ArrayList<>();
+        ICard testCard = new ActionCard(new WildCardAction(), Color.NONE, CardType.WILDCARD);
+        cardList.add(testCard);
+        cardList.add(testCard);
+        PlayerCircle players = new PlayerCircle(generatePlayers(5));
+        Game testGame = new Game(players);
+        Player p1 = testGame.getCurrentPlayer();
+
+        // Assign the cards to the player
+        p1.addCards(cardList);
+        p1.selectCard(cardList.get(0));
+        // Start the game with no additional cards to the players
+        testGame.start(0);
+        // Play one round
+        testGame.commenceForth(p1);
+        // Check that the played round was successfull.
+        assert(testGame.getCurrentPlayer() != p1);
+    }
+
+    @Test
+    public void testWinningTheGame() {
+        // Setup
+        List<ICard> cardList = new ArrayList<>();
+        ICard testCard = new ActionCard(new WildCardAction(), Color.NONE, CardType.WILDCARD);
+        ICard testCard2 = new ActionCard(new WildCardAction(), Color.NONE, CardType.WILDCARD);
+        cardList.add(testCard);
+        cardList.add(testCard2);
+        PlayerCircle players = new PlayerCircle(generatePlayers(5));
+        Game testGame = new Game(players);
+        Player p1 = testGame.getCurrentPlayer();
+
+        // Give playable cards to the player
+        p1.addCards(cardList);
+        // Select the cards
+        p1.selectCard(cardList.get(0));
+        p1.selectCard(cardList.get(1));
+        // Say UNO! in order to be able to win
+        p1.sayUno();
+        // Start the game with no additional cards added to the players
+        testGame.start(0);
+        // Play one round
+        testGame.commenceForth(p1);
+        // Check that the round was successfull.
+        assert(testGame.getCurrentPlayer() != p1);
     }
 
     @Test
@@ -89,19 +198,6 @@ public class GameTest {
         game.setColor(p1, Color.BLUE);
         game.commenceForth(p1);
         assert(game.getTopCard().getColor()==Color.BLUE && c.getColor() == Color.BLUE);
-    }
-
-    @Test
-    public void testTry_play() {
-        Random rand = new Random();
-        int randomIndex = rand.nextInt(p1.numOfCards());
-        p1.selectCard(p1.getCards().get(randomIndex));
-        game.try_play();
-    }
-
-    @Test
-    public void testCanBeStackedOn() {
-        //assertFalse(game.validPlayedCards());
     }
 
     // Try that wrong cards cannot be stacked on top of each other.
@@ -183,6 +279,9 @@ public class GameTest {
         int after = p1.numOfCards();
         assert(before == after - 3);
         assert(game.getCurrentPlayer() != p1);
+        // Try playing the last drawn card
+        p1.selectCard(p1.getCards().get(p1.numOfCards() - 1));
+        game.commenceForth(p1);
     }
 
 

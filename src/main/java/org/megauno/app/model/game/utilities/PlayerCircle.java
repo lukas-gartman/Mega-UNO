@@ -9,6 +9,8 @@ import java.util.List;
 
 
 /**
+ * PlayerCircle handles all the active players in the game.
+ * An instance of Facade Pattern for Game -> PlayerCircle -> Player
  */
 public class PlayerCircle {
     public int currentIndex = 0;
