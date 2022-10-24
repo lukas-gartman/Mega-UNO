@@ -17,7 +17,7 @@ public abstract class Button implements IDrawable {
 	// Used by sub-class
 	protected GameController gameController;
 	private Clickable clickable;
-
+	
 	public Button(float x, float y, GameController gameController, Sprite sprite) {
 		this.x = x;
 		this.y = y;
@@ -27,9 +27,9 @@ public abstract class Button implements IDrawable {
 		clickable = new Clickable(sprite.getWidth(), sprite.getHeight());
 	}
 
+	// Draws the button and calls onClicked if clicked
 	public void draw(float delta, Batch batch) {
 		if (clickable.wasClicked(x, y)) {
-			//TODO: add call to game
 			onClicked();
 		}
 

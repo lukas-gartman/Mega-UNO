@@ -190,6 +190,25 @@ public class GameTest {
     }
 
     @Test
+    public void testAssignWildCardColor(){
+        p1.discardAllSelectedCards();
+        ICard c = new ActionCard(new WildCardAction(), Color.NONE,CardType.WILDCARD);
+        p1.addCard(c);
+        p1.selectCard(c);
+        game.setColor(p1, Color.BLUE);
+        game.commenceForth(p1);
+        assert(game.getTopCard().getColor()==Color.BLUE && c.getColor() == Color.BLUE);
+    }
+
+    @Test
+    public void testTry_play() {
+        Random rand = new Random();
+        int randomIndex = rand.nextInt(p1.numOfCards());
+        p1.selectCard(p1.getCards().get(randomIndex));
+        game.try_play();
+    }
+
+    @Test
     public void testCanBeStackedOn() {
         //assertFalse(game.validPlayedCards());
     }

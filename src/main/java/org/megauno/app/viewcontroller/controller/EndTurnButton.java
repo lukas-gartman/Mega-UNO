@@ -4,6 +4,11 @@ import org.megauno.app.application.ClientApplication;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import org.megauno.app.viewcontroller.Preposition;
 
+/**
+ * Press to end turn for current player.
+ * It receives a Preposition that is used to know if it's the given player's
+ * turn or not, so that different graphics can be displayed accordingly.
+ */
 public class EndTurnButton extends Button {
 	private Preposition prep;
 
