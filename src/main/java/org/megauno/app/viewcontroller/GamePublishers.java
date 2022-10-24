@@ -7,6 +7,10 @@ import org.megauno.app.utility.Tuple;
 
 import java.util.List;
 
+/**
+ * Implemented by network layer and used by view to recieve updates about
+ * game.
+ */
 public interface GamePublishers {
     IPublisher<Player> onNewPlayer();
 
