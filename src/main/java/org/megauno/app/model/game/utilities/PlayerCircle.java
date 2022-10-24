@@ -51,6 +51,10 @@ public class PlayerCircle {
         onNewPlayer.publish(players.get(currentIndex));
     }
 
+    /**
+     * get the player who is next up, depending on the current direction of play
+     * @return the next player
+     */
     public Player getNextPlayer() {
         if (direction == Rotation.CLOCKWISE){
             if (currentIndex < (players.size()-1)){
@@ -73,10 +77,18 @@ public class PlayerCircle {
         onNewPlayer.publish(players.get(currentIndex));
     }
 
+    /**
+     * Getter for the amount of players still in the game
+     * @return
+     */
     public int playersLeft() {
         return players.size();
     }
 
+    /**
+     * get the player whose turn it currently is
+     * @return the current player
+     */
     public Player getCurrent(){
         return players.get(currentIndex);
     }
@@ -92,8 +104,8 @@ public class PlayerCircle {
     }
 
     /**
-     * when a player has finished the game, their node is removed and placed in the list of winners
-     *
+     * when a player has finished the game, they are removed from the list of players
+     * and placed in the list of winners
      * @param p is the player that has finished the game
      */
     public void playerFinished(Player p) {
@@ -109,6 +121,10 @@ public class PlayerCircle {
         return out;
     }
 
+    /**
+     *
+     * @return
+     */
     public Publisher<Player> onNewPlayer() {
         return onNewPlayer;
     }
