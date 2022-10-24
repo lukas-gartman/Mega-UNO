@@ -6,7 +6,7 @@ import org.junit.Test;
 import org.megauno.app.model.cards.Color;
 import org.megauno.app.model.cards.ICard;
 import org.megauno.app.model.cards.implementation.NumberCard;
-import org.megauno.app.utility.Publisher.IPublisher;
+import org.megauno.app.utility.Publisher.ISubscribable;
 import org.megauno.app.utility.Publisher.normal.Publisher;
 import org.megauno.app.utility.Tuple;
 
@@ -87,7 +87,7 @@ public class PlayerTest {
 
     @Test
     public void testPublishers() {
-        IPublisher<Tuple<Player, List<ICard>>> expected = new Publisher<>();
+        ISubscribable<Tuple<Player, List<ICard>>> expected = new Publisher<>();
         assert(player.getOnCardsAddedByPlayer().equals(expected));
         assert(player.getOnCardRemovedByPlayer().equals(expected));
     }

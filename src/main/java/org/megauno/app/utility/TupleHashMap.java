@@ -1,4 +1,4 @@
-package org.megauno.app.utility.Publisher;
+package org.megauno.app.utility;
 
 import org.megauno.app.utility.BiDicrectionalHashMap;
 import org.megauno.app.utility.Tuple;

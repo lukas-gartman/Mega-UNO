@@ -1,6 +1,5 @@
 package org.megauno.app.model.game;
 
-import junit.framework.TestCase;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -8,20 +7,22 @@ import org.megauno.app.model.GeneralTestMethods;
 import org.megauno.app.model.cards.CardType;
 import org.megauno.app.model.cards.Color;
 import org.megauno.app.model.cards.ICard;
+<<<<<<< Updated upstream
 import org.megauno.app.model.cards.implementation.ActionCard;
 import org.megauno.app.model.cards.implementation.NumberCard;
 import org.megauno.app.model.game.actions.WildCardAction;
 import org.megauno.app.model.game.utilities.Deck;
+=======
+>>>>>>> Stashed changes
 import org.megauno.app.model.game.utilities.PlayerCircle;
 import org.megauno.app.model.player.Player;
-import org.megauno.app.utility.Publisher.IPublisher;
+import org.megauno.app.utility.Publisher.ISubscribable;
 import org.megauno.app.utility.Publisher.normal.Publisher;
 import org.megauno.app.utility.Tuple;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.concurrent.Flow;
 
 import static org.megauno.app.model.GeneralTestMethods.generatePlayers;
 
@@ -215,16 +216,16 @@ public class GameTest {
 
     @Test
     public void testPublishers() {
-        IPublisher<Player> onNewPlayer = new Publisher<>();
+        ISubscribable<Player> onNewPlayer = new Publisher<>();
         assert(game.onNewPlayer().equals(onNewPlayer));
 
-        IPublisher<ICard> onNewTopCard = new Publisher<>();
+        ISubscribable<ICard> onNewTopCard = new Publisher<>();
         assert(game.onNewTopCard().equals(onNewTopCard));
 
-        IPublisher<Tuple<Player, List<ICard>>> onCardsAddedToP = new Publisher<>();
+        ISubscribable<Tuple<Player, List<ICard>>> onCardsAddedToP = new Publisher<>();
         assert(game.onCardsAddedToPlayer().equals(onCardsAddedToP));
 
-        IPublisher<Tuple<Player, List<ICard>>> onCardsRemovedByP = new Publisher<>();
+        ISubscribable<Tuple<Player, List<ICard>>> onCardsRemovedByP = new Publisher<>();
         assert(game.onCardsRemovedByPlayer().equals(onCardsRemovedByP));
     }
 

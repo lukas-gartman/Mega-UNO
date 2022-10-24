@@ -7,7 +7,7 @@ import org.megauno.app.model.game.utilities.Deck;
 import org.megauno.app.model.game.utilities.Pile;
 import org.megauno.app.model.game.utilities.PlayerCircle;
 import org.megauno.app.model.player.Player;
-import org.megauno.app.utility.Publisher.IPublisher;
+import org.megauno.app.utility.Publisher.ISubscribable;
 import org.megauno.app.utility.Publisher.normal.Publisher;
 import org.megauno.app.utility.Tuple;
 import org.megauno.app.viewcontroller.GamePublishers;
@@ -258,12 +258,12 @@ public class Game implements IActOnGame, GamePublishers, IGameInputs {
     }
 
     @Override
-    public IPublisher<Tuple<Player, List<ICard>>> onCardsAddedToPlayer() {
+    public ISubscribable<Tuple<Player, List<ICard>>> onCardsAddedToPlayer() {
         return onCardsAddedByPlayer;
     }
 
     @Override
-    public IPublisher<Tuple<Player, List<ICard>>> onCardsRemovedByPlayer() {
+    public ISubscribable<Tuple<Player, List<ICard>>> onCardsRemovedByPlayer() {
         return onCardsRemovedByPlayer;
     }
 

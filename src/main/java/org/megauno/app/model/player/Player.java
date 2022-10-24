@@ -1,14 +1,14 @@
 package org.megauno.app.model.player;
 
 import org.megauno.app.model.cards.ICard;
-import org.megauno.app.utility.Publisher.IPublisher;
+import org.megauno.app.utility.Publisher.ISubscribable;
 import org.megauno.app.utility.Publisher.normal.Publisher;
 import org.megauno.app.utility.Tuple;
 
 import java.util.ArrayList;
 import java.util.List;
 
-//
+//A player in the game uno
 public class Player {
     //Bool for if the player has said uno this round
     private boolean saidUno = false;
@@ -140,11 +140,11 @@ public class Player {
     }
 
 
-    public IPublisher<Tuple<Player, List<ICard>>> getOnCardsAddedByPlayer() {
+    public ISubscribable<Tuple<Player, List<ICard>>> getOnCardsAddedByPlayer() {
         return onCardsAddedByPlayer;
     }
 
-    public IPublisher<Tuple<Player, List<ICard>>> getOnCardRemovedByPlayer() {
+    public ISubscribable<Tuple<Player, List<ICard>>> getOnCardRemovedByPlayer() {
         return onCardsRemovedByPlayer;
     }
 }

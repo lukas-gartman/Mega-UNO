@@ -3,7 +3,7 @@ package org.megauno.app.viewcontroller;
 import org.megauno.app.model.cards.ICard;
 import org.megauno.app.model.game.Game;
 import org.megauno.app.model.player.Player;
-import org.megauno.app.utility.Publisher.IPublisher;
+import org.megauno.app.utility.Publisher.ISubscribable;
 import org.megauno.app.utility.Tuple;
 
 import java.util.List;
@@ -13,6 +13,7 @@ import java.util.List;
  * to events.
  */
 public interface GamePublishers {
+<<<<<<< Updated upstream
 	/**
 	 * Emitted when a new player joins.
 	 */
@@ -32,4 +33,13 @@ public interface GamePublishers {
 	 * Emitted when cards are removed from a player.
 	 */
     IPublisher<Tuple<Player, List<ICard>>> onCardsRemovedByPlayer();
+=======
+    ISubscribable<Player> onNewPlayer();
+
+    ISubscribable<ICard> onNewTopCard();
+
+    ISubscribable<Tuple<Player, List<ICard>>> onCardsAddedToPlayer();
+
+    ISubscribable<Tuple<Player, List<ICard>>> onCardsRemovedByPlayer();
+>>>>>>> Stashed changes
 }

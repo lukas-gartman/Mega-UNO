@@ -30,6 +30,7 @@ public class ConditionPublisher<newsPaper> implements IConditionPublisher<newsPa
         }
     }
 
+    @Override
     public void publish(newsPaper np) {
         for (Subscriber<newsPaper> sub : conDict.keySet()) {
             if (conDict.get(sub).isOk(np)) {

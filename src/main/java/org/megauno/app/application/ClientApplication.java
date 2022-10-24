@@ -19,7 +19,7 @@ import org.megauno.app.model.game.actions.WildCardAction;
 import org.megauno.app.network.implementation.Client;
 import org.megauno.app.network.implementation.IdCard;
 import org.megauno.app.network.implementation.PlayersCards;
-import org.megauno.app.utility.Publisher.IPublisher;
+import org.megauno.app.utility.Publisher.ISubscribable;
 import org.megauno.app.utility.Publisher.condition.ConditionPublisher;
 import org.megauno.app.utility.Publisher.normal.Publisher;
 import org.megauno.app.utility.dataFetching.DataFetcher;
@@ -243,7 +243,7 @@ public class ClientApplication extends ApplicationAdapter implements GameControl
     }
 
     @Override
-    public IPublisher<ICard> onNewTopCard() {
+    public ISubscribable<ICard> onNewTopCard() {
         return onNewTopCard;
     }
 

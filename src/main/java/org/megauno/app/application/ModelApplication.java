@@ -14,7 +14,7 @@ import org.megauno.app.network.implementation.Lobby;
 import org.megauno.app.network.implementation.PlayersCards;
 import org.megauno.app.utility.BiDicrectionalHashMap;
 import org.megauno.app.utility.BiHashMap;
-import org.megauno.app.utility.Publisher.TupleHashMap;
+import org.megauno.app.utility.TupleHashMap;
 import org.megauno.app.viewcontroller.GamePublishers;
 
 import java.util.ArrayList;
