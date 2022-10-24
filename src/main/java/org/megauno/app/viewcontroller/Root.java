@@ -22,11 +22,17 @@ public class Root {
 		batch = new SpriteBatch();
 	}
 
-	// Create GameView
+	/**
+	 * Called by client when the initial state of the game exists, that state
+	 * is provided as arguments.
+	 */
 	public void start(int playerID, int[] otherPlayersIds, GameController gameController, ViewPublisher viewPublisher) {
 		drawable = new GameView(playerID, otherPlayersIds, viewPublisher, gameController);
 	}
 
+	/**
+	 * Application is expected to call this function about 60 times per second.
+	 */
 	public void draw() {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		// Draw a game view
