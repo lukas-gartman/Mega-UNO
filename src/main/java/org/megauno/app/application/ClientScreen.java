@@ -31,6 +31,7 @@ import org.megauno.app.viewcontroller.controller.GameController;
 import org.megauno.app.viewcontroller.Root;
 import org.megauno.app.viewcontroller.ViewPublisher;
 
+import java.net.ConnectException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -67,12 +68,26 @@ public class ClientScreen extends ScreenAdapter implements GameController, ViewP
     private Root root;
 
 
-    public ClientScreen(MegaUNO megaUNO, String nickname, String hostname, int port) {
+    public ClientScreen(MegaUNO megaUNO, String nickname, String hostname, int port) throws ConnectException {
         this.megaUNO = megaUNO;
         this.nickname = nickname;
         this.hostname = hostname;
         this.port = port;
         this.viewport = new ExtendViewport(megaUNO.WINDOW_WIDTH, megaUNO.WINDOW_HEIGHT);
+
+        client = new Client(nickname, hostname, port, o ->
+        {
+            if (o.getString("Type").equals("Start")) {
+                List<Object> jsonArray = o.getJSONArray("OtherPlayers").toList();
+                int[] otherPlayers = new int[jsonArray.size()];
+                for (int i = 0; i < otherPlayers.length; i++) {
+                    otherPlayers[i] = (int) jsonArray.get(i);
+                }
+                root.start(o.getInt("PlayerId"), otherPlayers, this, this);
+            } else {
+                respondToJSON(o);
+            }
+        });
     }
 
     @Override
@@ -101,30 +116,6 @@ public class ClientScreen extends ScreenAdapter implements GameController, ViewP
         this.drawPile = spriteDataFetcher.tryGetDataUnSafe("DrawPile.png");
         this.sayUnoButton = spriteDataFetcher.tryGetDataUnSafe("SayUnoButton.png");
         root = new Root(megaUNO);
-
-
-//        System.out.println("");
-//        Scanner scanner = new Scanner(System.in);
-//        System.out.print("Nickname: ");
-//        String nickname = scanner.nextLine();
-//        System.out.print("Host name: ");
-//        String hostname = scanner.nextLine();
-//        System.out.print("Port (0-65535): ");
-//        int port = scanner.nextInt();
-
-        client = new Client(nickname, hostname, port, o ->
-        {
-            if (o.getString("Type").equals("Start")) {
-                List<Object> jsonArray = o.getJSONArray("OtherPlayers").toList();
-                int[] otherPlayers = new int[jsonArray.size()];
-                for (int i = 0; i < otherPlayers.length; i++) {
-                    otherPlayers[i] = (int) jsonArray.get(i);
-                }
-                root.start(o.getInt("PlayerId"), otherPlayers, this, this);
-            } else {
-                respondToJSON(o);
-            }
-        });
 
     }
 

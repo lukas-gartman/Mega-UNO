@@ -20,6 +20,7 @@ import org.lwjgl.opengl.GL20;
 import org.megauno.app.utility.dataFetching.DataFetcher;
 import org.megauno.app.utility.dataFetching.PathDataFetcher;
 
+import java.net.ConnectException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -118,16 +119,23 @@ public class LobbyScreen extends ScreenAdapter {
             else if (!port.matches("^(0|6[0-5][0-5][0-3][0-5]|[1-5][0-9][0-9][0-9][0-9]|[1-9][0-9]{0,3})$"))
                 joinFeedback.setText("Port number must be in the range 0-65535");
             else {
-                nicknameButton.setDisabled(true);
-                joinButton.setDisabled(true);
-                hostButton.setDisabled(true);
+                try {
+                    ClientScreen clientScreen = new ClientScreen(megaUNO, nickname, hostname, Integer.parseInt(port));
 
-                clearLabels(feedbackLabels);
-                joinFeedback.setColor(Color.GREEN);
-                joinFeedback.setText("Waiting for host to start the game...");
+                    nicknameButton.setDisabled(true);
+                    joinButton.setDisabled(true);
+                    hostButton.setDisabled(true);
+
+                    clearLabels(feedbackLabels);
+                    joinFeedback.setColor(Color.GREEN);
+                    joinFeedback.setText("Waiting for host to start the game...");
 //                lobbyList.getItems().add(nickname);
-                Gdx.graphics.setWindowedMode(650, 500);
-                megaUNO.setScreen(new ClientScreen(megaUNO, nickname, hostname, Integer.parseInt(port)));
+                    Gdx.graphics.setWindowedMode(650, 500);
+
+                    megaUNO.setScreen(clientScreen);
+                } catch (ConnectException ex) {
+                    joinFeedback.setText(ex.getMessage());
+                }
             }
         });
         onChange(hostButton, () -> {
@@ -168,10 +176,14 @@ public class LobbyScreen extends ScreenAdapter {
         onChange(hostStartButton, () ->
         {
             int port = Integer.parseInt(hostPortTextField.getText());
-            ClientScreen clientScreen = new ClientScreen(megaUNO, nickname, "localhost", port);
-            Gdx.graphics.setWindowedMode(650, 500);
-            megaUNO.setScreen(clientScreen);
-            this.serverHost.start();
+            try {
+                ClientScreen clientScreen = new ClientScreen(megaUNO, nickname, "localhost", port);
+                Gdx.graphics.setWindowedMode(650, 500);
+                megaUNO.setScreen(clientScreen);
+                this.serverHost.start();
+            } catch (ConnectException ex) {
+                hostFeedback.setText(ex.getMessage());
+            }
         });
 
 
