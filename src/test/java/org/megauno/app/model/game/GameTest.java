@@ -4,8 +4,12 @@ import junit.framework.TestCase;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.megauno.app.model.cards.AbstractCard;
+import org.megauno.app.model.cards.CardType;
 import org.megauno.app.model.cards.Color;
 import org.megauno.app.model.cards.ICard;
+import org.megauno.app.model.cards.implementation.ActionCard;
+import org.megauno.app.model.game.actions.WildCardAction;
 import org.megauno.app.model.game.utilities.Deck;
 import org.megauno.app.model.game.utilities.PlayerCircle;
 import org.megauno.app.model.player.Player;
@@ -76,7 +80,16 @@ public class GameTest {
         assert(!nextHandAfterDraw.equals(nextHand));
     }
 
-
+    @Test
+    public void testAssignWildCardColor(){
+        p1.discardAllSelectedCards();
+        ICard c = new ActionCard(new WildCardAction(), Color.NONE,CardType.WILDCARD);
+        p1.addCard(c);
+        p1.selectCard(c);
+        game.setColor(p1, Color.BLUE);
+        game.try_play();
+        assert(game.getTopCard().getColor()==Color.BLUE && c.getColor() == Color.BLUE);
+    }
 
     @Test
     public void testTry_play() {
