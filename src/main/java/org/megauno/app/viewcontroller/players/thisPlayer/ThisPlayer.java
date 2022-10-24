@@ -9,6 +9,10 @@ import org.megauno.app.viewcontroller.IDrawable;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * ThisPlayer contains all views and controllers associated with the Current
+ * player, that is the player for this view/controller.
+ */
 public class ThisPlayer implements IDrawable {
     private int playerID;
     // Visual cards

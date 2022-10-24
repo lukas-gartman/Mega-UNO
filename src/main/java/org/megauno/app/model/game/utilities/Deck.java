@@ -38,16 +38,12 @@ public class Deck implements IDeck {
         this.probabilities = dist;
     }
 
-    /*
-    For now, it is static probabilities, 66% for number cards and 33% for action cards
-    but this method should be modified such that it can take any probability
-    and generate the distribution of cards accordingly.
-     */
 
     /**
-     * For now, it is static probabilities, 66% for number cards and 33% for action cards
-     * but this method should be modified such that it can take any probability
-     * and generate the distribution of cards accordingly.
+     * This generates a fixed distribution of the cards and is used if no other distribution is given
+     * With some generous rounding, it generates 66% "evenly" distributed number cards
+     * and 11% "evenly" distributed action cards.
+     * This could be changed to the UNO default if desired.
      * @return The fixed distribution of which cards to be created.
      */
     private HashMap<CardType, Integer> generateFixedProbabilities() {
@@ -59,13 +55,6 @@ public class Deck implements IDeck {
         });
         return probabilities;
     }
-
-    /*
-    Generates the deck from a fixed distribution, with even amounts of colors
-    for all cards (outside of bounds for the amount in the distribution)
-    and equal amounts of numeric values for number card (with some difference
-    since 66 % 9 != 0.
-     */
 
     /**
      * Generates a deck, either from a fixed distribution or a given distribution,

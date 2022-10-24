@@ -14,6 +14,10 @@ import org.megauno.app.viewcontroller.IDrawable;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Displays a card and handles what happens when you click it.
+ * Also contains the ClorOption, which shows color options for wildcards.
+ */
 public class Card implements IDrawable {
 
 
