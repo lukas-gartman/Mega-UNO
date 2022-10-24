@@ -200,19 +200,6 @@ public class GameTest {
         assert(game.getTopCard().getColor()==Color.BLUE && c.getColor() == Color.BLUE);
     }
 
-    @Test
-    public void testTry_play() {
-        Random rand = new Random();
-        int randomIndex = rand.nextInt(p1.numOfCards());
-        p1.selectCard(p1.getCards().get(randomIndex));
-        game.try_play();
-    }
-
-    @Test
-    public void testCanBeStackedOn() {
-        //assertFalse(game.validPlayedCards());
-    }
-
     // Try that wrong cards cannot be stacked on top of each other.
     private void addSelectedCards(int nCards) {
         for (ICard c : p1.getCards()) {
