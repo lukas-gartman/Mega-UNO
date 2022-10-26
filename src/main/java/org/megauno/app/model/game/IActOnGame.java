@@ -8,6 +8,7 @@ package org.megauno.app.model.game;
 public interface IActOnGame {
     /**
      * Draw a card from the deck in the game.
+     *
      * @return the card that is drawn.
      */
     void nextDraw();
@@ -23,7 +24,7 @@ public interface IActOnGame {
     void nextTurn();
 
     /**
-     * assigns the topCard the chosen color, if it is a WildCard
+     * Assign a colour to the wild card
      */
     void assignWildCardColor();
 

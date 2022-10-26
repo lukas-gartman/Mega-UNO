@@ -40,20 +40,21 @@ public class Game implements IActOnGame, GamePublishers, IGameInputs {
 
     /**
      * starts this game
+     *
      * @param numCards is the amount of cards to be dealt each player
-     * at the beginning
+     *                 at the beginning
      */
     public void start(int numCards) {
         this.discarded = new Pile();
         onNewTopCard.publish(getTopCard());
         this.deck = new Deck();
         addCardsToAllPlayers(numCards);
-        //GameStatePrint.print(this);
         players.onNewPlayer().publish(getCurrentPlayer());
     }
 
     /**
      * deals each player their beginning hand
+     *
      * @param numCards is the amount of cards to be dealt
      */
     public void addCardsToAllPlayers(int numCards) {
@@ -64,6 +65,7 @@ public class Game implements IActOnGame, GamePublishers, IGameInputs {
 
     /**
      * add subscribers to all players
+     *
      * @param players is the list of players
      */
     private void addSubscriptionToPlayers(Player[] players) {
@@ -73,14 +75,15 @@ public class Game implements IActOnGame, GamePublishers, IGameInputs {
         }
     }
 
+    /**
+     * Get the current player from the PlayerCircle
+     *
+     * @return the current player
+     */
     public Player getCurrentPlayer() {
         return players.getCurrent();
     }
 
-
-    /**
-     *
-     */
     @Override
     public void reverse() {
         players.changeRotation();
@@ -108,6 +111,8 @@ public class Game implements IActOnGame, GamePublishers, IGameInputs {
 
     /**
      * The given player tries to draw a card, which is limited to 3 cards
+     *
+     * @param player the player that should draw a card.
      */
     @Override
     public void playerDraws(Player player) {
@@ -154,6 +159,7 @@ public class Game implements IActOnGame, GamePublishers, IGameInputs {
     /**
      * A check to see if the current player has only one card left and said uno,
      * or is out of cards and qualify to leave the game
+     *
      * @param current               is the current player
      * @param currentHasOnlyOneCard is true if current player has only one card
      * @param choices               is the set of cards the current player has tried to play
@@ -174,6 +180,7 @@ public class Game implements IActOnGame, GamePublishers, IGameInputs {
     /**
      * check that the cards attempted to be played can be played given the top of the discard pile.
      * If a card has been drawn by the current player on this turn, then only this card can be played.
+     *
      * @param choices the set of cards attempted to be played
      * @param current the current player
      * @return true if playing chosen cards is a valid move
@@ -184,10 +191,6 @@ public class Game implements IActOnGame, GamePublishers, IGameInputs {
         return validPlayedCards(choices) && (drawCount < 1 || (choices.size() == 1 && choices.get(0) == hand.get(lastCardIndex)));
     }
 
-    /**
-     * method to hand over the turn to next player
-     * resets drawCount for the next turn.
-     */
     @Override
     public void nextTurn() {
         drawCount = 0;
@@ -195,47 +198,61 @@ public class Game implements IActOnGame, GamePublishers, IGameInputs {
     }
 
     /**
-     * get the choice of color to set a wild card to
+     * Get the choice of color to set a wild card to
+     *
      * @return the chosen color
      */
     public Color getChosenColor() {
         return wildCardColor;
     }
 
-
-    /**
-     * assigns the topCard the chosen color
-     */
     @Override
     public void assignWildCardColor() {
         ICard top = discarded.getTop();
-        if(top.getType().equals(CardType.WILDCARD)) top.setColor(getChosenColor());
+        if (top.getType().equals(CardType.WILDCARD))
+            top.setColor(getChosenColor());
     }
 
-    public void nextDraw(){
+    @Override
+    public void nextDraw() {
         players.getNextPlayer().addCard(deck.drawCard());
     }
 
     /**
      * choose the color of a wild card
+     *
      * @param player The player that played the wildcard
-     * @param color The color the player wants to set the wildcard to.
+     * @param color  The color the player wants to set the wildcard to.
      */
     @Override
     public void setColor(Player player, Color color) {
-        if (player == getCurrentPlayer()) {
+        if (player == getCurrentPlayer())
             wildCardColor = color;
-        }
     }
 
+    /**
+     * Get the player circle
+     *
+     * @return the player circle
+     */
     public PlayerCircle getPlayerCircle() {
         return players;
     }
 
+    /**
+     * Get all the players from the player circle
+     *
+     * @return the active players
+     */
     public Player[] getPlayers() {
         return players.getPlayers();
     }
 
+    /**
+     * Get the top card from the discard pile
+     *
+     * @return the top card from the discard pile
+     */
     public ICard getTopCard() {
         return discarded.getTop();
     }
@@ -260,11 +277,6 @@ public class Game implements IActOnGame, GamePublishers, IGameInputs {
         return onCardsRemovedByPlayer;
     }
 
-    /**
-     * Selects a given card for a given player
-     * @param player The player that wants to select.
-     * @param card The card the player wants to select.
-     */
     @Override
     public void selectCard(Player player, ICard card) {
         if (player == getCurrentPlayer()) {
@@ -272,11 +284,6 @@ public class Game implements IActOnGame, GamePublishers, IGameInputs {
         }
     }
 
-    /**
-     * Unselects a given card for a given player
-     * @param player The player that wants to unselect.
-     * @param card The card the player wants to unselect.
-     */
     @Override
     public void unSelectCard(Player player, ICard card) {
         if (player == getCurrentPlayer()) {
@@ -290,17 +297,11 @@ public class Game implements IActOnGame, GamePublishers, IGameInputs {
             try_play();
         }
     }
-
-    /**
-     * This method sets a players sayUno variable to true.
-     * @param player the player that wants to say uno.
-     */
+    
     @Override
     public void sayUno(Player player) {
         if (player == getCurrentPlayer()) {
             player.sayUno();
         }
     }
-
-
 }
