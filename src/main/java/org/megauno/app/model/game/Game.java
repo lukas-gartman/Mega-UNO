@@ -297,7 +297,7 @@ public class Game implements IActOnGame, GamePublishers, IGameInputs {
             try_play();
         }
     }
-    
+
     @Override
     public void sayUno(Player player) {
         if (player == getCurrentPlayer()) {
