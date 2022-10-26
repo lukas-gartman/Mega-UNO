@@ -1,7 +1,7 @@
 package org.megauno.app.viewcontroller.players;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
-import org.megauno.app.application.ClientScreen;
+import org.megauno.app.viewcontroller.ClientScreen;
 import org.megauno.app.model.cards.CardType;
 import org.megauno.app.model.cards.Color;
 import org.megauno.app.model.cards.ICard;
@@ -29,7 +29,7 @@ import java.util.List;
 public class GameView implements IDrawable {
     private int playerID;
 
-    private Card top;
+    private Card topCard;
     private ThisPlayer thisPlayer;
     private List<OtherPlayer> otherPlayers = new ArrayList<>();
     private EndTurnButton endTurnButton;
@@ -60,9 +60,9 @@ public class GameView implements IDrawable {
         sayUnoButton = new SayUnoButton(500, 30, gameController);
         drawPile = new DrawPile(350, 250, gameController);
 
-        top = new Card(new ActionCard(o -> true, Color.NONE, CardType.WILDCARD), -1, gameController);
-        top.x = 300;
-        top.y = 250;
+        topCard = new Card(new ActionCard(o -> true, Color.NONE, CardType.WILDCARD), -1, gameController);
+        topCard.x = 300;
+        topCard.y = 250;
 
         publishers.onNewTopCard().addSubscriber(
                 (np) -> updateTopCard(np)
@@ -75,9 +75,9 @@ public class GameView implements IDrawable {
     }
 
     private void updateTopCard(ICard newTop) {
-        top = new Card(newTop, -1, gameController);
-        top.x = 300;
-        top.y = 250;
+        topCard = new Card(newTop, -1, gameController);
+        topCard.x = 300;
+        topCard.y = 250;
     }
 
     @Override
@@ -87,7 +87,7 @@ public class GameView implements IDrawable {
 
         thisPlayer.draw(delta, batch);
 
-        top.draw(delta, batch);
+        topCard.draw(delta, batch);
 
         for (OtherPlayer op : otherPlayers) {
             op.draw(delta, batch);

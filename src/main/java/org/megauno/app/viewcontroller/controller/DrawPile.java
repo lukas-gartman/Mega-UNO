@@ -1,6 +1,6 @@
 package org.megauno.app.viewcontroller.controller;
 
-import org.megauno.app.application.ClientScreen;
+import org.megauno.app.viewcontroller.ClientScreen;
 
 /**
  * Draws a card for the current player when clicked.

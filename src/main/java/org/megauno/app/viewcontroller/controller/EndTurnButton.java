@@ -1,6 +1,6 @@
 package org.megauno.app.viewcontroller.controller;
 
-import org.megauno.app.application.ClientScreen;
+import org.megauno.app.viewcontroller.ClientScreen;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import org.megauno.app.viewcontroller.Preposition;
 

@@ -1,6 +1,6 @@
 package org.megauno.app.viewcontroller.controller;
 
-import org.megauno.app.application.ClientScreen;
+import org.megauno.app.viewcontroller.ClientScreen;
 
 /**
  * Sends to the game that player said UNO!, if the player said UNO!.

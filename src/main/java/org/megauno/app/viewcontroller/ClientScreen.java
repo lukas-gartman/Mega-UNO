@@ -1,4 +1,4 @@
-package org.megauno.app.application;
+package org.megauno.app.viewcontroller;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -10,6 +10,7 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.megauno.app.application.MegaUNO;
 import org.megauno.app.model.cards.CardType;
 import org.megauno.app.model.cards.Color;
 import org.megauno.app.model.cards.ICard;
@@ -54,9 +55,6 @@ public class ClientScreen extends ScreenAdapter implements GameController, ViewP
 
     private MegaUNO megaUNO;
     private Viewport viewport;
-    private final String nickname;
-    private final String hostname;
-    private final int port;
 
     private Publisher<Integer> onNewPlayer = new Publisher<>();
     private Publisher<ICard> onNewTopCard = new Publisher<>();
@@ -65,12 +63,10 @@ public class ClientScreen extends ScreenAdapter implements GameController, ViewP
     private Client client;
     private Root root;
 
-    public ClientScreen(MegaUNO megaUNO, String nickname, String hostname, int port) throws ConnectException {
+    public ClientScreen(MegaUNO megaUNO, String hostname, int port) throws ConnectException {
         this.megaUNO = megaUNO;
-        this.nickname = nickname;
-        this.hostname = hostname;
-        this.port = port;
         this.viewport = new ExtendViewport(megaUNO.WINDOW_WIDTH, megaUNO.WINDOW_HEIGHT);
+        Gdx.graphics.setWindowedMode(650, 500);
 
         client = new Client(hostname, port, o ->
         {

@@ -3,7 +3,7 @@ package org.megauno.app.viewcontroller.players.otherplayers;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import org.megauno.app.application.ClientScreen;
+import org.megauno.app.viewcontroller.ClientScreen;
 import org.megauno.app.viewcontroller.ViewPublisher;
 import org.megauno.app.viewcontroller.IDrawable;
 

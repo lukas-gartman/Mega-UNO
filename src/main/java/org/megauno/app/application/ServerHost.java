@@ -151,11 +151,4 @@ public class ServerHost {
         game.onNewPlayer().addSubscriber((player) -> infoSender.currentPlayerNewId(playersWithID.getLeft(player)));
         game.onNewTopCard().addSubscriber(infoSender::newTopCardOfPile);
     }
-
-    /**
-     * used for testing only
-     */
-    public static void testFunc() {
-        System.out.println("Wow!");
-    }
 }

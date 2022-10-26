@@ -1,4 +1,4 @@
-package org.megauno.app.application;
+package org.megauno.app.viewcontroller;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
@@ -15,6 +15,8 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import org.lwjgl.opengl.GL20;
+import org.megauno.app.application.MegaUNO;
+import org.megauno.app.application.ServerHost;
 import org.megauno.app.utility.dataFetching.DataFetcher;
 import org.megauno.app.utility.dataFetching.PathDataFetcher;
 
@@ -36,6 +38,7 @@ public class LobbyScreen extends ScreenAdapter {
     public LobbyScreen(MegaUNO megaUNO) {
         this.megaUNO = megaUNO;
         this.viewport = new ExtendViewport(megaUNO.WINDOW_WIDTH, megaUNO.WINDOW_HEIGHT);
+        Gdx.graphics.setWindowedMode(megaUNO.WINDOW_WIDTH, megaUNO.WINDOW_HEIGHT);
     }
 
     @Override
@@ -110,7 +113,7 @@ public class LobbyScreen extends ScreenAdapter {
                 joinFeedback.setText("Port number must be in the range 0-65535");
             else {
                 try {
-                    ClientScreen clientScreen = new ClientScreen(megaUNO, nickname, hostname, Integer.parseInt(port));
+                    ClientScreen clientScreen = new ClientScreen(megaUNO, hostname, Integer.parseInt(port));
                     clientScreen.sendNickname(nickname);
 
                     nicknameButton.setDisabled(true);
@@ -120,7 +123,6 @@ public class LobbyScreen extends ScreenAdapter {
                     clearLabels(feedbackLabels);
                     joinFeedback.setColor(Color.GREEN);
                     joinFeedback.setText("Waiting for host to start the game...");
-                    Gdx.graphics.setWindowedMode(650, 500);
 
                     megaUNO.setScreen(clientScreen);
                 } catch (ConnectException ex) {
@@ -164,13 +166,12 @@ public class LobbyScreen extends ScreenAdapter {
                 }
             }
         });
-        onChange(hostStartButton, () ->
-        {
+        onChange(hostStartButton, () -> {
             int port = Integer.parseInt(hostPortTextField.getText());
             try {
-                ClientScreen clientScreen = new ClientScreen(megaUNO, nickname, "localhost", port);
+                ClientScreen clientScreen = new ClientScreen(megaUNO, "localhost", port);
                 clientScreen.sendNickname(nickname);
-                Gdx.graphics.setWindowedMode(650, 500);
+
                 megaUNO.setScreen(clientScreen);
                 this.serverHost.start();
             } catch (ConnectException ex) {
@@ -228,9 +229,9 @@ public class LobbyScreen extends ScreenAdapter {
     public void render(float delta) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        megaUNO.batch.begin();
-        megaUNO.batch.draw(background, 0, 0, megaUNO.WINDOW_WIDTH, megaUNO.WINDOW_HEIGHT);
-        megaUNO.batch.end();
+        batch.begin();
+        batch.draw(background, 0, 0, megaUNO.WINDOW_WIDTH, megaUNO.WINDOW_HEIGHT);
+        batch.end();
 
         stage.draw();
         stage.act(Gdx.graphics.getDeltaTime());

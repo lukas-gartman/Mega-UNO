@@ -3,7 +3,7 @@ package org.megauno.app.viewcontroller.players.thisPlayer;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import org.megauno.app.application.ClientScreen;
+import org.megauno.app.viewcontroller.ClientScreen;
 import org.megauno.app.model.cards.CardType;
 import org.megauno.app.model.cards.Color;
 import org.megauno.app.model.cards.ICard;
@@ -19,8 +19,6 @@ import java.util.List;
  * Also contains the ClorOption, which shows color options for wildcards.
  */
 public class Card implements IDrawable {
-
-
     private static final Sprite red = ClientScreen.redCard;
     private static final Sprite blue = ClientScreen.blueCard;
     private static final Sprite yellow = ClientScreen.yellowCard;
@@ -31,12 +29,6 @@ public class Card implements IDrawable {
     private static final Sprite reverse = ClientScreen.reverse;
     private static final Sprite takeTwo = ClientScreen.take2;
     private static final Sprite takeFour = ClientScreen.take4;
-
-
-    public float x;
-    public float y;
-    public boolean selected = false;
-
     private final Sprite sprite;
     private final ICard card;
     private final Clickable clickable;
@@ -44,6 +36,10 @@ public class Card implements IDrawable {
     private final int cardId;
     // Null means there are no color options, otherwise it is a filled array
     private List<ColorOption> colorOptions = null;
+
+    public float x;
+    public float y;
+    private boolean selected = false;
 
     public Card(ICard card, int cardId, GameController gameController) {
         this.gameController = gameController;
@@ -54,7 +50,7 @@ public class Card implements IDrawable {
     }
 
 	/**
-	 * Returns the card ID of the diplayed card.
+	 * Returns the card ID of the displayed card.
 	 */
     public int getCardId() {
         return cardId;
