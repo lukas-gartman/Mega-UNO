@@ -20,6 +20,7 @@ public class Client {
     private BufferedReader br;
     private BufferedWriter bw;
     private JSONReader jsonReader;
+    private static int numOfRetryConnect = 0;
 
     /**
      * Set up client connection and listen to incoming messages from the server
@@ -81,13 +82,23 @@ public class Client {
      *
      * @param json the object to send
      */
-    public void sendJSON(JSONObject json) {
+    public void sendJSON(JSONObject json) throws ConnectException {
         try {
             this.bw.write(json.toString());
             this.bw.newLine();
             this.bw.flush();
         } catch (Exception ex) {
-            ex.printStackTrace();
+            if (numOfRetryConnect++ <= 3) {
+                System.out.println("Unable to reach server. Trying again...");
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+                sendJSON(json);
+            } else {
+                throw new ConnectException("Unable to reach server");
+            }
         }
     }
 

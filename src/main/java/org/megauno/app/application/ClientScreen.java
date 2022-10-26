@@ -212,39 +212,47 @@ public class ClientScreen extends ScreenAdapter implements GameController, ViewP
         return icard;
     }
 
+    private void sendJSON(JSONObject json) {
+        try {
+            client.sendJSON(json);
+        } catch (ConnectException ex) {
+            megaUNO.goToLobby();
+        }
+    }
+
     @Override
     public void selectCard(int cardId) {
-        client.sendJSON(new JSONObject().put("Type", "SelectCard").put("CardId", cardId));
+        sendJSON(new JSONObject().put("Type", "SelectCard").put("CardId", cardId));
     }
 
     @Override
     public void unSelectCard(int cardId) {
-        client.sendJSON(new JSONObject().put("Type", "UnSelectCard").put("CardId", cardId));
+        sendJSON(new JSONObject().put("Type", "UnSelectCard").put("CardId", cardId));
     }
 
     @Override
     public void commenceForth() {
-        client.sendJSON(new JSONObject().put("Type", "CommenceForth"));
+        sendJSON(new JSONObject().put("Type", "CommenceForth"));
     }
 
     @Override
     public void sayUno() {
-        client.sendJSON(new JSONObject().put("Type", "Uno"));
+        sendJSON(new JSONObject().put("Type", "Uno"));
     }
 
     @Override
     public void setColor(Color color) {
-        client.sendJSON(new JSONObject().put("Type", "SetColor").put("Color", color));
+        sendJSON(new JSONObject().put("Type", "SetColor").put("Color", color));
     }
 
     @Override
     public void drawCard() {
-        client.sendJSON(new JSONObject().put("Type", "DrawCard"));
+        sendJSON(new JSONObject().put("Type", "DrawCard"));
     }
 
     @Override
     public void sendNickname(String nickname) {
-        client.sendJSON(new JSONObject().put("Type", "PlayerNickname").put("Nickname", nickname));
+        sendJSON(new JSONObject().put("Type", "PlayerNickname").put("Nickname", nickname));
     }
 
     @Override
