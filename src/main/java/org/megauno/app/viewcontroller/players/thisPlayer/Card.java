@@ -16,7 +16,7 @@ import java.util.List;
 
 /**
  * Displays a card and handles what happens when you click it.
- * Also contains the ClorOption, which shows color options for wildcards.
+ * Also contains the ColorOption, which shows color options for wildcards.
  */
 public class Card implements IDrawable {
     private static final Sprite red = ClientScreen.redCard;
@@ -26,6 +26,10 @@ public class Card implements IDrawable {
     private static final Sprite nonColored = ClientScreen.whiteCard;
     private static final BitmapFont fnt = ClientScreen.minecraftFont;
     private static final Sprite wildCard = ClientScreen.wildCard;
+    private static final Sprite wildCardBlue = ClientScreen.wildCardBlue;
+    private static final Sprite wildCardGreen = ClientScreen.wildCardGreen;
+    private static final Sprite wildCardRed = ClientScreen.wildCardRed;
+    private static final Sprite wildCardYellow = ClientScreen.wildCardYellow;
     private static final Sprite reverse = ClientScreen.reverse;
     private static final Sprite takeTwo = ClientScreen.take2;
     private static final Sprite takeFour = ClientScreen.take4;
@@ -49,9 +53,9 @@ public class Card implements IDrawable {
         this.clickable = new Clickable(sprite.getWidth(), sprite.getHeight());
     }
 
-	/**
-	 * Returns the card ID of the displayed card.
-	 */
+    /**
+     * Returns the card ID of the displayed card.
+     */
     public int getCardId() {
         return cardId;
     }
@@ -105,7 +109,7 @@ public class Card implements IDrawable {
 
         // Draw card, with a tint if unselected
         if (!selected) {
-            batch.setColor(new com.badlogic.gdx.graphics.Color(0.7f, 0.7f, 0.7f, 0.7f));   // A bit greyed out
+            batch.setColor(new com.badlogic.gdx.graphics.Color(0.8f, 0.8f, 0.8f, 0.8f));   // A bit greyed out
             drawAll(batch);
             batch.setColor(com.badlogic.gdx.graphics.Color.WHITE);
         } else {
@@ -161,7 +165,16 @@ public class Card implements IDrawable {
     private Sprite getTypeInString() {
         Sprite special = null;
         switch (card.getType()) {
-            case WILDCARD -> special = wildCard;
+//            case WILDCARD -> special = wildCard;
+            case WILDCARD -> {
+                switch (card.getColor()) {
+                    case BLUE -> special = wildCardBlue;
+                    case GREEN -> special = wildCardGreen;
+                    case RED -> special = wildCardRed;
+                    case YELLOW -> special = wildCardYellow;
+                    case NONE -> special = wildCard;
+                }
+            }
             case REVERSECARD -> special = reverse;
             case TAKETWO -> special = takeTwo;
             case TAKEFOUR -> special = takeFour;
@@ -170,9 +183,9 @@ public class Card implements IDrawable {
     }
 
     /**
-	 * Visual class for representing a color picked when playing a wildcard.
-	 * Used by client by reading {@link ColorOption#wasSelected}.
-	 */
+     * Visual class for representing a color picked when playing a wildcard.
+     * Used by client by reading {@link ColorOption#wasSelected}.
+     */
     private class ColorOption implements IDrawable {
         // Used by parent card, could use an event here
         public boolean wasSelected = false;
@@ -191,7 +204,7 @@ public class Card implements IDrawable {
             this.clickable = new Clickable(sprite.getWidth(), sprite.getHeight());
         }
 
-		@Override
+        @Override
         public void draw(float delta, Batch batch) {
             // Check if clicked
             if (clickable.wasClicked(x, y)) {

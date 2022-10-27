@@ -47,7 +47,7 @@ public class Deck implements IDeck {
         HashMap<CardType, Integer> probabilities = new HashMap<>();
         //int distibution = (int) (CardType.stream().count() - 1);
         CardType.stream().forEach(c -> {
-            if (c.getTypeOf().equals("Standard")) probabilities.put(c, 66);
+            if (c.getTypeOf().equals("Standard")) probabilities.put(c, 89);
             else probabilities.put(c, 11);
         });
         return probabilities;
@@ -72,7 +72,10 @@ public class Deck implements IDeck {
             } else {
                 for (int i = 0; i < probabilities.get(ct); i++) {
                     deck.add(cardFactory.createActionCard(Color.getFromIndex(colorIndex), ct));
-                    colorIndex = (colorIndex + 1) % (Color.values().length - 1); // to ignore NONE
+                    if (ct == CardType.WILDCARD)
+                        colorIndex = Color.NONE.getIndex();
+                    else
+                        colorIndex = (colorIndex + 1) % (Color.values().length - 1); // to ignore NONE
                 }
             }
         }

@@ -46,6 +46,10 @@ public class ClientScreen extends ScreenAdapter implements GameController, ViewP
     static public Sprite tomte;
     static public Sprite whiteCard;
     static public Sprite wildCard;
+    static public Sprite wildCardBlue;
+    static public Sprite wildCardGreen;
+    static public Sprite wildCardRed;
+    static public Sprite wildCardYellow;
     static public Sprite yellowCard;
     static public BitmapFont minecraftFont;
     static public Sprite background;
@@ -92,24 +96,27 @@ public class ClientScreen extends ScreenAdapter implements GameController, ViewP
                 key -> new BitmapFont(Gdx.files.internal(key)), "assets/"
         );
 
-        this.blueCard = spriteDataFetcher.tryGetDataUnSafe("BlueCard.png");
+        this.blueCard = spriteDataFetcher.tryGetDataUnSafe("cards/BlueCard.png");
         this.backSideOfCard = spriteDataFetcher.tryGetDataUnSafe("Card.png");
-        this.greenCard = spriteDataFetcher.tryGetDataUnSafe("GreenCard.png");
-        this.redCard = spriteDataFetcher.tryGetDataUnSafe("RedCard.png");
-        this.reverse = spriteDataFetcher.tryGetDataUnSafe("Reverse.png");
-        this.take2 = spriteDataFetcher.tryGetDataUnSafe("Take2.png");
-        this.take4 = spriteDataFetcher.tryGetDataUnSafe("Take4.png");
+        this.greenCard = spriteDataFetcher.tryGetDataUnSafe("cards/GreenCard.png");
+        this.redCard = spriteDataFetcher.tryGetDataUnSafe("cards/RedCard.png");
+        this.reverse = spriteDataFetcher.tryGetDataUnSafe("cards/Reverse.png");
+        this.take2 = spriteDataFetcher.tryGetDataUnSafe("cards/Take2.png");
+        this.take4 = spriteDataFetcher.tryGetDataUnSafe("cards/Take4.png");
         this.tomte = spriteDataFetcher.tryGetDataUnSafe("Tomte.png");
-        this.whiteCard = spriteDataFetcher.tryGetDataUnSafe("WhiteCard.png");
-        this.wildCard = spriteDataFetcher.tryGetDataUnSafe("WildCard.png");
-        this.yellowCard = spriteDataFetcher.tryGetDataUnSafe("YellowCard.png");
+        this.whiteCard = spriteDataFetcher.tryGetDataUnSafe("cards/WhiteCard.png");
+        this.wildCard = spriteDataFetcher.tryGetDataUnSafe("cards/WildCard.png");
+        this.wildCardBlue = spriteDataFetcher.tryGetDataUnSafe("cards/WildCard-blue.png");
+        this.wildCardGreen = spriteDataFetcher.tryGetDataUnSafe("cards/WildCard-green.png");
+        this.wildCardRed = spriteDataFetcher.tryGetDataUnSafe("cards/WildCard-red.png");
+        this.wildCardYellow = spriteDataFetcher.tryGetDataUnSafe("cards/WildCard-yellow.png");
+        this.yellowCard = spriteDataFetcher.tryGetDataUnSafe("cards/YellowCard.png");
         this.minecraftFont = bitmapFontDataFetcher.tryGetDataUnSafe("minecraft.fnt");
         this.background = spriteDataFetcher.tryGetDataUnSafe("Background.png");
         this.commenceForth = spriteDataFetcher.tryGetDataUnSafe("CommenceForth.png");
         this.drawPile = spriteDataFetcher.tryGetDataUnSafe("DrawPile.png");
         this.sayUnoButton = spriteDataFetcher.tryGetDataUnSafe("SayUnoButton.png");
         root = new Root(megaUNO);
-
     }
 
     @Override
