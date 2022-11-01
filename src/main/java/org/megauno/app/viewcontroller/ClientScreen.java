@@ -111,7 +111,7 @@ public class ClientScreen extends ScreenAdapter implements GameController, ViewP
         this.wildCardRed = spriteDataFetcher.tryGetDataUnSafe("cards/WildCard-red.png");
         this.wildCardYellow = spriteDataFetcher.tryGetDataUnSafe("cards/WildCard-yellow.png");
         this.yellowCard = spriteDataFetcher.tryGetDataUnSafe("cards/YellowCard.png");
-        this.minecraftFont = bitmapFontDataFetcher.tryGetDataUnSafe("minecraft.fnt");
+        this.minecraftFont = bitmapFontDataFetcher.tryGetDataUnSafe("fonts/minecraft.fnt");
         this.background = spriteDataFetcher.tryGetDataUnSafe("Background.png");
         this.commenceForth = spriteDataFetcher.tryGetDataUnSafe("CommenceForth.png");
         this.drawPile = spriteDataFetcher.tryGetDataUnSafe("DrawPile.png");
